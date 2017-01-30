@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2016/12/28 13:40:29.000.390,=D:\SharedProjects\Projects\DS\SERVER\templates\ServerFunctionInvoker.html</Transaction>
+    <Transaction>2016/12/28 13:40:29.000.398,=D:\SharedProjects\Projects\DS\SERVER\images\expand.png</Transaction>
+    <Transaction>2016/12/28 13:40:29.000.327,=D:\SharedProjects\Projects\DS\SERVER\js\ServerFunctionInvoker.js</Transaction>
+    <Transaction>2016/12/28 13:40:29.000.394,=D:\SharedProjects\Projects\DS\SERVER\images\collapse.png</Transaction>
+    <Transaction>2016/12/28 13:40:29.000.361,=D:\SharedProjects\Projects\DS\SERVER\js\json-min.js</Transaction>
+    <Transaction>2016/12/28 13:40:29.000.280,=D:\SharedProjects\Projects\DS\SERVER\js\base64.js</Transaction>
+    <Transaction>2016/12/28 13:40:29.000.381,=D:\SharedProjects\Projects\DS\SERVER\css\ServerFunctionInvoker.css</Transaction>
+    <Transaction>2016/12/28 13:40:29.000.284,=D:\SharedProjects\Projects\DS\SERVER\js\connection.js</Transaction>
+    <Transaction>2016/12/28 13:40:29.000.419,=D:\SharedProjects\Projects\DS\SERVER\Unit2.pas</Transaction>
+    <Transaction>2016/12/28 13:40:29.000.172,=D:\SharedProjects\Projects\DS\SERVER\ServerMethodsUnit1.pas</Transaction>
+    <Transaction>2016/12/28 13:40:29.000.372,=D:\SharedProjects\Projects\DS\SERVER\js\CallbackFramework.js</Transaction>
+    <Transaction>2016/12/28 13:40:29.000.377,=D:\SharedProjects\Projects\DS\SERVER\css\main.css</Transaction>
+    <Transaction>2016/12/28 13:40:29.000.357,=D:\SharedProjects\Projects\DS\SERVER\js\ServerFunctionExecutor.js</Transaction>
+    <Transaction>2016/12/28 13:40:29.000.386,=D:\SharedProjects\Projects\DS\SERVER\templates\ReverseString.html</Transaction>
+    <Transaction>2016/12/28 13:40:29.000.367,=D:\SharedProjects\Projects\DS\SERVER\js\ServerFunctions.js</Transaction>
+    <Transaction>2016/12/28 13:40:29.000.051,=D:\SharedProjects\Projects\DS\SERVER\Unit1.pas</Transaction>
+    <Transaction>2016/12/28 13:41:17.000.957,D:\SharedProjects\Projects\DS\SERVER\Unit1.pas=D:\SharedProjects\Projects\DS\SERVER\ufrmMain.pas</Transaction>
+    <Transaction>2016/12/28 13:41:17.000.957,D:\SharedProjects\Projects\DS\SERVER\Unit1.dfm=D:\SharedProjects\Projects\DS\SERVER\ufrmMain.dfm</Transaction>
+    <Transaction>2016/12/28 13:41:47.000.867,D:\SharedProjects\Projects\DS\SERVER\ServerMethodsUnit1.pas=D:\SharedProjects\Projects\DS\SERVER\ServerMethodsUnit.pas</Transaction>
+    <Transaction>2016/12/28 13:42:21.000.238,D:\SharedProjects\Projects\DS\SERVER\Unit2.pas=D:\SharedProjects\Projects\DS\SERVER\WebModule.pas</Transaction>
+    <Transaction>2016/12/28 13:42:21.000.238,D:\SharedProjects\Projects\DS\SERVER\Unit2.dfm=D:\SharedProjects\Projects\DS\SERVER\WebModule.dfm</Transaction>
+    <Transaction>2016/12/28 13:45:03.000.810,=D:\SharedProjects\Projects\DS\SERVER\ClientClassesUnit1.pas</Transaction>
+    <Transaction>2016/12/28 13:45:03.000.930,=D:\SharedProjects\Projects\DS\SERVER\ClientModuleUnit1.pas</Transaction>
+    <Transaction>2016/12/28 13:47:07.000.970,D:\SharedProjects\Projects\DS\SERVER\ClientClassesUnit1.pas=D:\SharedProjects\Projects\DS\CLIENT\ClientClassesUnit.pas</Transaction>
+    <Transaction>2016/12/28 13:47:42.000.406,D:\SharedProjects\Projects\DS\SERVER\ClientModuleUnit1.pas=D:\SharedProjects\Projects\DS\CLIENT\ClientModule.pas</Transaction>
+    <Transaction>2016/12/28 13:47:42.000.406,D:\SharedProjects\Projects\DS\SERVER\ClientModuleUnit1.dfm=D:\SharedProjects\Projects\DS\CLIENT\ClientModule.dfm</Transaction>
+    <Transaction>2016/12/28 13:48:28.000.832,D:\SharedProjects\Projects\DS\CLIENT\ClientModule.pas=</Transaction>
+    <Transaction>2016/12/28 13:48:36.000.272,D:\SharedProjects\Projects\DS\CLIENT\ClientClassesUnit.pas=</Transaction>
+    <Transaction>2016/12/28 14:55:25.000.818,=D:\SharedProjects\Projects\DS\SERVER\Unit1.pas</Transaction>
+    <Transaction>2016/12/28 14:56:03.000.884,D:\SharedProjects\Projects\DS\SERVER\Unit1.pas=D:\SharedProjects\Projects\DS\uModel.pas</Transaction>
+    <Transaction>2016/12/29 07:47:44.000.026,=D:\SharedProjects\Projects\DS\SERVER\lib\uDBUtils.pas</Transaction>
+    <Transaction>2016/12/29 10:25:54.000.838,=D:\SharedProjects\Projects\DS\SERVER\Unit1.pas</Transaction>
+    <Transaction>2016/12/29 10:26:51.000.549,D:\SharedProjects\Projects\DS\SERVER\Unit1.pas=D:\SharedProjects\Projects\DS\SERVER\classes\uServerUOM.pas</Transaction>
+    <Transaction>2016/12/29 10:27:43.000.519,D:\SharedProjects\Projects\DS\SERVER\classes\uServerUOM.pas=</Transaction>
+    <Transaction>2017/01/08 09:32:30.000.930,=D:\SharedProjects\Projects\MokoDS\uDBUtils.pas</Transaction>
+    <Transaction>2017/01/08 10:15:29.000.150,=D:\SharedProjects\Projects\MokoDS\uAppUtils.pas</Transaction>
+    <Transaction>2017/01/13 22:41:58.000.822,=D:\SharedProjects\Projects\MokoDS\Server\Unit1.pas</Transaction>
+    <Transaction>2017/01/24 05:20:46.000.551,=D:\SharedProjects\Projects\MokoDS\Server\Unit1.pas</Transaction>
+    <Transaction>2017/01/24 05:21:28.000.060,D:\SharedProjects\Projects\MokoDS\Server\Unit1.pas=D:\SharedProjects\Projects\MokoDS\SERVER\uInterface.pas</Transaction>
+    <Transaction>2017/01/28 02:18:02.000.072,=D:\SharedProjects\Projects\MokoDS\uBarangUtils.pas</Transaction>
+  </Transactions>
+</BorlandProject>
