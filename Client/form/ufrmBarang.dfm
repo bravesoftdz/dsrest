@@ -188,6 +188,10 @@ inherited frmBarang: TfrmBarang
     object cxTSSatuan: TcxTabSheet
       Caption = 'Satuan'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object cxGridDBSatuan: TcxGrid
         Left = 0
         Top = 0
@@ -356,7 +360,7 @@ inherited frmBarang: TfrmBarang
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010105000800580018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010105000800600018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
