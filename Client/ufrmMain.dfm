@@ -46,6 +46,7 @@ object frmMain: TfrmMain
       Index = 1
     end
     object dxrbntbPenerimaanBarangMainTab1: TdxRibbonTab
+      Active = True
       Caption = 'Transaksi'
       Groups = <
         item
@@ -55,7 +56,6 @@ object frmMain: TfrmMain
       Index = 2
     end
     object dxrbntbPenerimaanBarangClosing: TdxRibbonTab
-      Active = True
       Caption = 'Closing'
       Groups = <
         item
@@ -450,7 +450,7 @@ object frmMain: TfrmMain
     Left = 688
     Top = 128
     Bitmap = {
-      494C01010B001800400020002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C01010B001800440020002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000008000000060000000010020000000000000C0
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

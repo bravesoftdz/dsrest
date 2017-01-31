@@ -76,12 +76,14 @@ object frmServer: TfrmServer
         Left = 78
         Top = 47
         TabOrder = 1
+        Text = '127.0.0.1'
         Width = 96
       end
       object edUser: TcxTextEdit
         Left = 78
         Top = 95
         TabOrder = 4
+        Text = 'sa'
         Width = 178
       end
       object edPassword: TcxTextEdit
@@ -90,6 +92,7 @@ object frmServer: TfrmServer
         Properties.EchoMode = eemPassword
         Properties.PasswordChar = '*'
         TabOrder = 5
+        Text = 'masterkey'
         Width = 178
       end
       object cbbEngine: TComboBox
@@ -98,7 +101,9 @@ object frmServer: TfrmServer
         Width = 178
         Height = 21
         Style = csDropDownList
+        ItemIndex = 1
         TabOrder = 0
+        Text = 'MSSQL'
         Items.Strings = (
           'PG'
           'MSSQL'
@@ -110,12 +115,14 @@ object frmServer: TfrmServer
         Left = 78
         Top = 71
         TabOrder = 3
+        Text = 'assalamHO'
         Width = 178
       end
       object edPort: TcxTextEdit
         Left = 209
         Top = 47
         TabOrder = 2
+        Text = '1433'
         Width = 47
       end
       object btnKonekDB: TButton
@@ -236,13 +243,13 @@ object frmServer: TfrmServer
     Top = 56
   end
   object FDConnection1: TFDConnection
-    Left = 272
-    Top = 192
+    Left = 304
+    Top = 160
   end
   object FDTransaction1: TFDTransaction
     Connection = FDConnection1
-    Left = 320
-    Top = 200
+    Left = 432
+    Top = 216
   end
   object FDMemTable1: TFDMemTable
     FetchOptions.AssignedValues = [evMode]
@@ -251,13 +258,13 @@ object frmServer: TfrmServer
     ResourceOptions.SilentMode = True
     UpdateOptions.AssignedValues = [uvCheckRequired]
     UpdateOptions.CheckRequired = False
-    Left = 280
-    Top = 200
+    Left = 368
+    Top = 264
   end
   object FDQuery1: TFDQuery
     Connection = FDConnection1
-    Left = 288
-    Top = 208
+    Left = 384
+    Top = 144
   end
   object Session1: TSession
     Left = 200

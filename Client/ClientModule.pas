@@ -58,7 +58,7 @@ implementation
 constructor TClientDataModule.Create(AOwner: TComponent);
 begin
   inherited;
-  FInstanceOwner := True;
+  FInstanceOwner := False;
 end;
 
 destructor TClientDataModule.Destroy;

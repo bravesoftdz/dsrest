@@ -97,7 +97,7 @@ implementation
 uses
   ufrmSupplier, ufrmKoneksi,uAppUtils, ufrmBarang, ufrmPenerimaanBarang,
   ClientClassesUnit2, ClientModule, ufrmPilihCabang, ufrmLapMutasiBarangPerTransaksi,
-  ufrmReturSupplier;
+  ufrmReturSupplier, udbutils;
 
 {$R *.dfm}
 
@@ -143,32 +143,20 @@ begin
       frmKoneksi.ShowModal;
     end;
 
-//    if TAppUtils.BacaRegistry('cabang') <> '' then
-//    begin
-//      with TServerCabangClient.Create(ClientDataModule.DSRestConnection, False) do
-//      begin
-//        try
-////          ClientDataModule.FreeAndNilCabang;
-////          ClientDataModule.Cabang := Retrieve(TAppUtils.BacaRegistry('cabang'));
-//        finally
-//          Free;
-//        end;
-//      end;
-//    end else begin
-//      with TfrmPilihCabang.Create(nil) do
-//      begin
-//        try
-//          ShowModal;
-//        finally
-//          Free;
-//        end;
-//      end;
-//    end;
-
-//    if ClientDataModule.Cabang <> nil then
-//    begin
-//      statDS.Panels[2].Text := 'Cabang : ' + ClientDataModule.Cabang.Nama;
-//    end;
+    if TAppUtils.BacaRegistry('cabang') <> '' then
+    begin
+      with TDBUtils.OpenDataset('select * from tcabang where id = ' + QuotedStr(TAppUtils.BacaRegistry('cabang'))) do
+      begin
+        try
+          if not IsEmpty then
+          begin
+//            ClientDataModule.
+          end;
+        finally
+          Free;
+        end;
+      end;
+    end;
   except
     frmKoneksi.ShowModal;
   end;
