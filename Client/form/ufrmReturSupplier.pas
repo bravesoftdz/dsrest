@@ -159,6 +159,7 @@ begin
     with TServerReturSupplierClient.Create(ClientDataModule.DSRestConnection, False) do
     begin
       ProvPB.DataSet := RetrieveCDS(ReturSupplier);
+      cdsPB.Close;
       cdsPB.Open;
 
       try

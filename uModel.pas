@@ -118,18 +118,21 @@ type
     FKeterangan: string;
     FNoBukti: string;
     FPenerimaanBarangItems: TObjectList<TPenerimaanBarangItem>;
+    FPeriode: Integer;
     FSupplier: TSupplier;
     FTglBukti: TDatetime;
     function GetPenerimaanBarangItems: TObjectList<TPenerimaanBarangItem>;
     procedure SetKeterangan(const Value: string);
+    procedure SetTglBukti(const Value: TDatetime);
   public
     property Cabang: TCabang read FCabang write FCabang;
     property Keterangan: string read FKeterangan write SetKeterangan;
     property NoBukti: string read FNoBukti write FNoBukti;
     property PenerimaanBarangItems: TObjectList<TPenerimaanBarangItem> read
         GetPenerimaanBarangItems write FPenerimaanBarangItems;
+    property Periode: Integer read FPeriode write FPeriode;
     property Supplier: TSupplier read FSupplier write FSupplier;
-    property TglBukti: TDatetime read FTglBukti write FTglBukti;
+    property TglBukti: TDatetime read FTglBukti write SetTglBukti;
   end;
 
 
@@ -220,19 +223,22 @@ type
     FCabang: TCabang;
     FKeterangan: string;
     FNoBukti: string;
+    FPeriode: Integer;
     FReturSupplierItems: TObjectList<TReturSupplierItem>;
     FSupplier: TSupplier;
     FTglBukti: TDatetime;
     function GetReturSupplierItems: TObjectList<TReturSupplierItem>;
     procedure SetKeterangan(const Value: string);
+    procedure SetTglBukti(const Value: TDatetime);
   public
     property Cabang: TCabang read FCabang write FCabang;
     property Keterangan: string read FKeterangan write SetKeterangan;
     property NoBukti: string read FNoBukti write FNoBukti;
+    property Periode: Integer read FPeriode write FPeriode;
     property ReturSupplierItems: TObjectList<TReturSupplierItem> read
         GetReturSupplierItems write FReturSupplierItems;
     property Supplier: TSupplier read FSupplier write FSupplier;
-    property TglBukti: TDatetime read FTglBukti write FTglBukti;
+    property TglBukti: TDatetime read FTglBukti write SetTglBukti;
   end;
 
 type
@@ -273,6 +279,12 @@ end;
 procedure TPenerimaanBarang.SetKeterangan(const Value: string);
 begin
   FKeterangan := Value;
+end;
+
+procedure TPenerimaanBarang.SetTglBukti(const Value: TDatetime);
+begin
+  FTglBukti := Value;
+  Periode   := StrToInt(FormatDateTime('YYYYMM', Value));
 end;
 
 function TBarang.GetBarangSatuanItems: TObjectList<TBarangSatuanItem>;
@@ -383,6 +395,12 @@ end;
 procedure TReturSupplier.SetKeterangan(const Value: string);
 begin
   FKeterangan := Value;
+end;
+
+procedure TReturSupplier.SetTglBukti(const Value: TDatetime);
+begin
+  FTglBukti := Value;
+  Periode   := StrToInt(FormatDateTime('YYYYMM', Value));
 end;
 
 end.

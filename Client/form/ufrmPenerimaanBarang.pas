@@ -151,24 +151,28 @@ begin
   inherited;
   if not IsBisaHapus then
     Exit;
+
+  if ClientDataModule.ServerPenerimaanBarangClient.Delete(PenerimaanBarang) then
+  begin
+    ActionRefreshExecute(Sender);
+    ActionBaruExecute(Sender);
+  end;
 end;
 
 procedure TfrmPenerimaanBarang.ActionRefreshExecute(Sender: TObject);
 begin
   inherited;
-    with TServerPenerimaanBarangClient.Create(ClientDataModule.DSRestConnection, False) do
-    begin
-      ProvPB.DataSet := RetrieveCDS(PenerimaanBarang);
-      cdsPB.Open;
+//  if ProvPB.DataSet <> nil then
+//    ProvPB.DataSet.Free;
 
-      try
-        TDBUtils.DataSetToCxDBGrid(cdsPB, cxGridDBTableDaftarPB);
-        cxGridDBTableDaftarPB.ApplyBestFit();
-      finally
-        Free;
-      end;
+  ProvPB.DataSet := ClientDataModule.ServerPenerimaanBarangClient.RetrieveCDS(PenerimaanBarang);
+  cdsPB.Close;
+  cdsPB.Open;
 
-  end;
+  TDBUtils.DataSetToCxDBGrid(cdsPB, cxGridDBTableDaftarPB);
+  cxGridDBTableDaftarPB.ApplyBestFit();
+
+
 end;
 
 procedure TfrmPenerimaanBarang.ActionSimpanExecute(Sender: TObject);
@@ -186,8 +190,9 @@ begin
       PenerimaanBarang.Supplier    := TSupplier.Create;
       PenerimaanBarang.Supplier.ID := cbbSupplier.EditValue;
       PenerimaanBarang.TglBukti    := edTglBukti.Date;
+
       PenerimaanBarang.Cabang      := TCabang.Create;
-//      PenerimaanBarang.Cabang.ID   := ClientDataModule.Cabang.ID;
+      PenerimaanBarang.Cabang.ID   := ClientDataModule.Cabang.ID;
 
 
       PenerimaanBarang.PenerimaanBarangItems.Clear;
