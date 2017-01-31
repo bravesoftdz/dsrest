@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 1/28/2017 6:31:25 AM
+// 1/31/2017 2:24:43 PM
 //
 
 unit ClientClassesUnit2;
@@ -84,6 +84,8 @@ type
   private
     FRetrieveCommand: TDSRestCommand;
     FRetrieveCommand_Cache: TDSRestCommand;
+    FRetrieveKodeCommand: TDSRestCommand;
+    FRetrieveKodeCommand_Cache: TDSRestCommand;
     FDeleteCommand: TDSRestCommand;
     FRetrieveCDSCommand: TDSRestCommand;
     FRetrieveCDSCommand_Cache: TDSRestCommand;
@@ -96,6 +98,8 @@ type
     destructor Destroy; override;
     function Retrieve(AID: string; const ARequestFilter: string = ''): TBarang;
     function Retrieve_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedTBarang;
+    function RetrieveKode(AKode: string; const ARequestFilter: string = ''): TBarang;
+    function RetrieveKode_Cache(AKode: string; const ARequestFilter: string = ''): IDSRestCachedTBarang;
     function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
     function RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string = ''): TDataSet;
     function RetrieveCDS_Cache(AAppObject: TAppObject; const ARequestFilter: string = ''): IDSRestCachedDataSet;
@@ -412,6 +416,18 @@ const
   TServerBarang_Retrieve_Cache: array [0..1] of TDSRestParameterMetaData =
   (
     (Name: 'AID'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerBarang_RetrieveKode: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AKode'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 37; TypeName: 'TBarang')
+  );
+
+  TServerBarang_RetrieveKode_Cache: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AKode'; Direction: 1; DBXType: 26; TypeName: 'string'),
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
@@ -1199,6 +1215,46 @@ begin
   Result := TDSRestCachedTBarang.Create(FRetrieveCommand_Cache.Parameters[1].Value.GetString);
 end;
 
+function TServerBarangClient.RetrieveKode(AKode: string; const ARequestFilter: string): TBarang;
+begin
+  if FRetrieveKodeCommand = nil then
+  begin
+    FRetrieveKodeCommand := FConnection.CreateCommand;
+    FRetrieveKodeCommand.RequestType := 'GET';
+    FRetrieveKodeCommand.Text := 'TServerBarang.RetrieveKode';
+    FRetrieveKodeCommand.Prepare(TServerBarang_RetrieveKode);
+  end;
+  FRetrieveKodeCommand.Parameters[0].Value.SetWideString(AKode);
+  FRetrieveKodeCommand.Execute(ARequestFilter);
+  if not FRetrieveKodeCommand.Parameters[1].Value.IsNull then
+  begin
+    FUnMarshal := TDSRestCommand(FRetrieveKodeCommand.Parameters[1].ConnectionHandler).GetJSONUnMarshaler;
+    try
+      Result := TBarang(FUnMarshal.UnMarshal(FRetrieveKodeCommand.Parameters[1].Value.GetJSONValue(True)));
+      if FInstanceOwner then
+        FRetrieveKodeCommand.FreeOnExecute(Result);
+    finally
+      FreeAndNil(FUnMarshal)
+    end
+  end
+  else
+    Result := nil;
+end;
+
+function TServerBarangClient.RetrieveKode_Cache(AKode: string; const ARequestFilter: string): IDSRestCachedTBarang;
+begin
+  if FRetrieveKodeCommand_Cache = nil then
+  begin
+    FRetrieveKodeCommand_Cache := FConnection.CreateCommand;
+    FRetrieveKodeCommand_Cache.RequestType := 'GET';
+    FRetrieveKodeCommand_Cache.Text := 'TServerBarang.RetrieveKode';
+    FRetrieveKodeCommand_Cache.Prepare(TServerBarang_RetrieveKode_Cache);
+  end;
+  FRetrieveKodeCommand_Cache.Parameters[0].Value.SetWideString(AKode);
+  FRetrieveKodeCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedTBarang.Create(FRetrieveKodeCommand_Cache.Parameters[1].Value.GetString);
+end;
+
 function TServerBarangClient.Delete(AAppObject: TAppObject; const ARequestFilter: string): Boolean;
 begin
   if FDeleteCommand = nil then
@@ -1346,6 +1402,8 @@ destructor TServerBarangClient.Destroy;
 begin
   FRetrieveCommand.DisposeOf;
   FRetrieveCommand_Cache.DisposeOf;
+  FRetrieveKodeCommand.DisposeOf;
+  FRetrieveKodeCommand_Cache.DisposeOf;
   FDeleteCommand.DisposeOf;
   FRetrieveCDSCommand.DisposeOf;
   FRetrieveCDSCommand_Cache.DisposeOf;

@@ -59,6 +59,7 @@ type
     procedure cxGridDBTableBarangCellDblClick(Sender: TcxCustomGridTableView;
         ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton; AShift:
         TShiftState; var AHandled: Boolean);
+    procedure edKodeKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
     FBarang: TBarang;
     function GetBarang: TBarang;
@@ -190,6 +191,24 @@ procedure TfrmBarang.cxGridDBTableBarangCellDblClick(Sender:
 begin
   inherited;
   LoadDataBarang(cxGridDBTableBarang.DataController.DataSource.DataSet.FieldByName('ID').AsString);
+end;
+
+procedure TfrmBarang.edKodeKeyDown(Sender: TObject; var Key: Word; Shift:
+    TShiftState);
+var
+  lBarang: tBarang;
+begin
+  inherited;
+  if Key = VK_RETURN then
+  begin
+    lBarang := ClientDataModule.ServerBarangClient.RetrieveKode(edKode.Text);
+    try
+      LoadDataBarang(lBarang.ID);
+    finally
+      lBarang.Free;
+    end;
+  end;
+
 end;
 
 function TfrmBarang.GetBarang: TBarang;

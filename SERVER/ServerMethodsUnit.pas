@@ -71,6 +71,7 @@ type
   protected
   public
     function Retrieve(AID : String): TBarang;
+    function RetrieveKode(AKode : String): TBarang;
   end;
 
 type
@@ -339,6 +340,24 @@ function TServerBarang.Retrieve(AID : String): TBarang;
 begin
   Result      := TBarang.Create;
   TDBUtils.LoadFromDB(Result, AID);
+end;
+
+function TServerBarang.RetrieveKode(AKode : String): TBarang;
+var
+  sSQL: string;
+begin
+  Result      := TBarang.Create;
+
+  sSQL := 'select id from tbarang where sku = ' + QuotedStr(AKode);
+  with TDBUtils.OpenDataset(sSQL) do
+  begin
+    try
+      if not IsEmpty then
+        TDBUtils.LoadFromDB(Result, FieldByName('id').AsString);
+    finally
+      Free;
+    end;
+  end;
 end;
 
 function TServerGroupBarang.Retrieve(AID : String): TGroupBarang;

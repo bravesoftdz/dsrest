@@ -39,8 +39,6 @@ inherited frmBarang: TfrmBarang
       Height = 282
       Align = alClient
       TabOrder = 1
-      ExplicitTop = 5
-      ExplicitHeight = 318
       object cxGridDBTableBarang: TcxGridDBTableView
         Navigator.Buttons.CustomButtons = <>
         OnCellDblClick = cxGridDBTableBarangCellDblClick
@@ -145,6 +143,7 @@ inherited frmBarang: TfrmBarang
         Top = 15
         TabOrder = 0
         Text = 'edKode'
+        OnKeyDown = edKodeKeyDown
         Width = 121
       end
       object edNama: TcxTextEdit
@@ -357,7 +356,7 @@ inherited frmBarang: TfrmBarang
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010105000800540018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010105000800580018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
