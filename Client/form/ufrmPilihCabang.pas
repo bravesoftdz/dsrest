@@ -8,7 +8,8 @@ uses
   cxContainer, cxEdit, StdCtrls, cxTextEdit, cxMaskEdit, cxDropDownEdit,
   cxLookupEdit, cxDBLookupEdit, cxDBExtLookupComboBox, cxStyles, cxCustomData,
   cxFilter, cxData, cxDataStorage, DB, cxDBData, cxGridCustomTableView,
-  cxGridTableView, cxGridDBTableView, cxClasses, cxGridCustomView, cxGrid, uModel;
+  cxGridTableView, cxGridDBTableView, cxClasses, cxGridCustomView, cxGrid, uModel,
+  cxNavigator, ClientModule;
 
 type
   TfrmPilihCabang = class(TForm)
@@ -39,7 +40,8 @@ uses
 
 procedure TfrmPilihCabang.btnPilihClick(Sender: TObject);
 begin
-  TAppUtils.TulisRegistry('cabang', cbbCabang.EditValue)
+  TDBUtils.LoadFromDB(ClientDataModule.Cabang, cbbCabang.EditValue);
+  TAppUtils.TulisRegistry('Cabang', ClientDataModule.Cabang.ID);
 end;
 
 procedure TfrmPilihCabang.FormCreate(Sender: TObject);

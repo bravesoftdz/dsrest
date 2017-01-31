@@ -145,20 +145,19 @@ begin
 
     if TAppUtils.BacaRegistry('cabang') <> '' then
     begin
-      with TDBUtils.OpenDataset('select * from tcabang where id = ' + QuotedStr(TAppUtils.BacaRegistry('cabang'))) do
-      begin
-        try
-          if not IsEmpty then
-          begin
-//            ClientDataModule.
-          end;
-        finally
-          Free;
-        end;
+      TDBUtils.LoadFromDB(ClientDataModule.Cabang, TAppUtils.BacaRegistry('cabang'));
+    end else begin
+      frmPilihCabang := TfrmPilihCabang.Create(Self);
+      try
+        frmPilihCabang.ShowModal;
+      finally
+        frmPilihCabang.Free();
       end;
     end;
-  except
-    frmKoneksi.ShowModal;
+
+    statDS.Panels[2].Text := 'Cabang : ' + ClientDataModule.Cabang.Nama;
+  finally
+    frmKoneksi.Free;
   end;
 end;
 

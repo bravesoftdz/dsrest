@@ -39,6 +39,7 @@ object frmPilihCabang: TfrmPilihCabang
     Width = 145
     Height = 25
     Caption = 'Pilih'
+    ModalResult = 1
     TabOrder = 1
     OnClick = btnPilihClick
   end
@@ -46,6 +47,7 @@ object frmPilihCabang: TfrmPilihCabang
     Left = 112
     Top = 56
     object cxGridDBTableCabang: TcxGridDBTableView
+      Navigator.Buttons.CustomButtons = <>
       DataController.KeyFieldNames = 'ID'
       DataController.Summary.DefaultGroupSummaryItems = <>
       DataController.Summary.FooterSummaryItems = <>

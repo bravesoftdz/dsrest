@@ -551,39 +551,39 @@ begin
 end;
 
 function TServerMaster.AfterSave(AOBject : TAppObject): Boolean;
-//var
-//  lLogAppObject: TLogAppObject;
-//  sSQL: string;
+var
+  lLogAppObject: TLogAppObject;
+  sSQL: string;
 begin
-//  Result := False;
-//
-//  sSQL := 'select * from TCabang where kode <> ''HO''';
-//  with TDBUtils.OpenDataset(sSQL) do
-//  begin
-//    while not Eof do
-//    begin
-//      lLogAppObject           := TLogAppObject.Create;
-//      lLogAppObject.NamaKelas := AOBject.ClassName;
-//      lLogAppObject.Cabang    := TCabang.Create;
-//      lLogAppObject.Cabang.ID := FieldByName('ID').AsString;
-//      lLogAppObject.IDTrans   := AOBject.ID;
-//      lLogAppObject.Operasi   := IntToStr(AOBject.ObjectState);
-//      lLogAppObject.Tanggal   := Now;
-//
-//
-//      with TServerLogAppObject.Create do
-//      begin
-//        try
-//          if not SaveNoCommit(lLogAppObject) then
-//            Exit;
-//        finally
-//          Free;
-//        end;
-//      end;
-//
-//      Next;
-//    end;
-//  end;
+  Result := False;
+
+  sSQL := 'select * from TCabang where kode <> ''HO''';
+  with TDBUtils.OpenDataset(sSQL) do
+  begin
+    while not Eof do
+    begin
+      lLogAppObject           := TLogAppObject.Create;
+      lLogAppObject.NamaKelas := AOBject.ClassName;
+      lLogAppObject.Cabang    := TCabang.Create;
+      lLogAppObject.Cabang.ID := FieldByName('ID').AsString;
+      lLogAppObject.IDTrans   := AOBject.ID;
+      lLogAppObject.Operasi   := IntToStr(AOBject.ObjectState);
+      lLogAppObject.Tanggal   := Now;
+
+
+      with TServerLogAppObject.Create do
+      begin
+        try
+          if not SaveNoCommit(lLogAppObject) then
+            Exit;
+        finally
+          Free;
+        end;
+      end;
+
+      Next;
+    end;
+  end;
 
   Result := True;
 end;

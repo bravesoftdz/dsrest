@@ -4,12 +4,14 @@ interface
 
 uses
   System.SysUtils, System.Classes,  ClientClassesUnit2, IPPeerClient,
-  Datasnap.DSClientRest;
+  Datasnap.DSClientRest, uModel;
 
 type
   TClientDataModule = class(TDataModule)
     DSRestConnection: TDSRestConnection;
+    procedure DataModuleCreate(Sender: TObject);
   private
+    FCabang: tcabang;
     FInstanceOwner: Boolean;
     FServerMethods1Client: TServerMethods1Client;
     FServerUOMClient: TServerUOMClient;
@@ -20,6 +22,7 @@ type
     FServerCabangClient: TServerCabangClient;
     FServerLogAppObjectClient: TServerLogAppObjectClient;
     FServerUtilsClient: TServerUtilsClient;
+    function GetCabang: tcabang;
     function GetServerMethods1Client: TServerMethods1Client;
     function GetServerUOMClient: TServerUOMClient;
     function GetServerSupplierClient: TServerSupplierClient;
@@ -33,6 +36,7 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
+    property Cabang: tcabang read GetCabang write FCabang;
     property InstanceOwner: Boolean read FInstanceOwner write FInstanceOwner;
     property ServerMethods1Client: TServerMethods1Client read GetServerMethods1Client write FServerMethods1Client;
     property ServerUOMClient: TServerUOMClient read GetServerUOMClient write FServerUOMClient;
@@ -61,6 +65,11 @@ begin
   FInstanceOwner := False;
 end;
 
+procedure TClientDataModule.DataModuleCreate(Sender: TObject);
+begin
+  FreeAndNil(FCabang);
+end;
+
 destructor TClientDataModule.Destroy;
 begin
   FServerMethods1Client.Free;
@@ -73,6 +82,16 @@ begin
   FServerLogAppObjectClient.Free;
   FServerUtilsClient.Free;
   inherited;
+end;
+
+function TClientDataModule.GetCabang: tcabang;
+begin
+  if FCabang = nil then
+  begin
+    FCabang := TCabang.Create;
+  end;
+
+  Result := FCabang;
 end;
 
 function TClientDataModule.GetServerMethods1Client: TServerMethods1Client;

@@ -268,31 +268,27 @@ procedure TfrmBarang.LoadDataBarang(AID : String);
 var
   i: Integer;
 begin
-  with TServerBarangClient.Create(ClientDataModule.DSRestConnection, False) do
+  with ClientDataModule.ServerBarangClient do
   begin
-    try
-      FreeAndNil(FBarang);
-      FBarang                  := Retrieve(AID);
+    FreeAndNil(FBarang);
+    FBarang                  := Retrieve(AID);
 
-      FID                      := Barang.ID;
-      edKode.Text              := Barang.SKU;
-      edNama.Text              := Barang.Nama;
-      cbbGroup.EditValue       := Barang.GroupBarang.ID;
-      cbbSatuanStock.EditValue := Barang.SatuanStock.ID;
-      cbbPPN.ItemIndex         := cbbPPN.Properties.Items.IndexOf(Barang.PPN);
+    FID                      := Barang.ID;
+    edKode.Text              := Barang.SKU;
+    edNama.Text              := Barang.Nama;
+    cbbGroup.EditValue       := Barang.GroupBarang.ID;
+    cbbSatuanStock.EditValue := Barang.SatuanStock.ID;
+    cbbPPN.ItemIndex         := cbbPPN.Properties.Items.IndexOf(Barang.PPN);
 
-      cxGridTableSatuan.DataController.RecordCount := Barang.BarangSatuanItems.Count;
-      for i := 0 to Barang.BarangSatuanItems.Count - 1 do
-      begin
-        cxGridTableSatuan.DataController.Values[i, cxGridTableSatuanColumnUOM.Index]               := Barang.BarangSatuanItems[i].UOM.ID;
-        cxGridTableSatuan.DataController.Values[i, cxGridTableSatuanColumnKonversi.Index]          := Barang.BarangSatuanItems[i].Konversi;
-        cxGridTableSatuan.DataController.Values[i, cxGridTableSatuanColumnHargaJual.Index]         := Barang.BarangSatuanItems[i].HargaJual;
-        cxGridTableSatuan.DataController.Values[i, cxGridTableSatuanColumnHargaJualBengkel.Index]  := Barang.BarangSatuanItems[i].HargaJualBengkel;
-        cxGridTableSatuan.DataController.Values[i, cxGridTableSatuanColumnHargaJualGrosir.Index]   := Barang.BarangSatuanItems[i].HargaJualGrosir;
-        cxGridTableSatuan.DataController.Values[i, cxGridTableSatuanColumnHargaJualKeliling.Index] := Barang.BarangSatuanItems[i].HargaJualKeliling;
-      end;
-    finally
-
+    cxGridTableSatuan.DataController.RecordCount := Barang.BarangSatuanItems.Count;
+    for i := 0 to Barang.BarangSatuanItems.Count - 1 do
+    begin
+      cxGridTableSatuan.DataController.Values[i, cxGridTableSatuanColumnUOM.Index]               := Barang.BarangSatuanItems[i].UOM.ID;
+      cxGridTableSatuan.DataController.Values[i, cxGridTableSatuanColumnKonversi.Index]          := Barang.BarangSatuanItems[i].Konversi;
+      cxGridTableSatuan.DataController.Values[i, cxGridTableSatuanColumnHargaJual.Index]         := Barang.BarangSatuanItems[i].HargaJual;
+      cxGridTableSatuan.DataController.Values[i, cxGridTableSatuanColumnHargaJualBengkel.Index]  := Barang.BarangSatuanItems[i].HargaJualBengkel;
+      cxGridTableSatuan.DataController.Values[i, cxGridTableSatuanColumnHargaJualGrosir.Index]   := Barang.BarangSatuanItems[i].HargaJualGrosir;
+      cxGridTableSatuan.DataController.Values[i, cxGridTableSatuanColumnHargaJualKeliling.Index] := Barang.BarangSatuanItems[i].HargaJualKeliling;
     end;
   end;
 end;
