@@ -736,7 +736,7 @@ end;
 
 function TServerClosingInventory.Close(APeriode : Integer): Boolean;
 begin
-  Result := False;
+//  Result := False;
 
 
 
