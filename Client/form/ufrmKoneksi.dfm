@@ -11,6 +11,7 @@ object frmKoneksi: TfrmKoneksi
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  Position = poMainFormCenter
   OnCreate = FormCreate
   OnShow = FormShow
   PixelsPerInch = 96
@@ -23,7 +24,6 @@ object frmKoneksi: TfrmKoneksi
     Align = alTop
     Caption = 'Koneksi Database Lokal'
     TabOrder = 0
-    ExplicitWidth = 261
     object lblServer: TLabel
       Left = 29
       Top = 51
@@ -144,8 +144,6 @@ object frmKoneksi: TfrmKoneksi
     Align = alClient
     Caption = 'Rest Server'
     TabOrder = 1
-    ExplicitWidth = 261
-    ExplicitHeight = 120
     object Label1: TLabel
       Left = 29
       Top = 20

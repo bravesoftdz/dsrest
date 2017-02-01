@@ -80,6 +80,7 @@ type
     dxbrlrgbtnSettingKoneksi: TdxBarLargeButton;
     actSettingKoneksi: TAction;
     procedure actApplicationExitExecute(Sender: TObject);
+    procedure actClosingInventoryExecute(Sender: TObject);
     procedure actMasSupplierExecute(Sender: TObject);
     procedure actMasterBarangExecute(Sender: TObject);
     procedure actPenerimaanBarangExecute(Sender: TObject);
@@ -100,13 +101,18 @@ implementation
 uses
   ufrmSupplier, ufrmKoneksi,uAppUtils, ufrmBarang, ufrmPenerimaanBarang,
   ClientClassesUnit2, ClientModule, ufrmPilihCabang, ufrmLapMutasiBarangPerTransaksi,
-  ufrmReturSupplier, udbutils;
+  ufrmReturSupplier, udbutils, ufrmClosingInventory;
 
 {$R *.dfm}
 
 procedure TfrmMain.actApplicationExitExecute(Sender: TObject);
 begin
   Application.Terminate;
+end;
+
+procedure TfrmMain.actClosingInventoryExecute(Sender: TObject);
+begin
+  frmClosingInventory := TfrmClosingInventory.Create(Self);
 end;
 
 procedure TfrmMain.actLapMutasiBarangExecute(Sender: TObject);

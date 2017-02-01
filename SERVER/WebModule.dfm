@@ -157,4 +157,10 @@ object WebModule2: TWebModule2
     Left = 544
     Top = 88
   end
+  object dsrvrclsClosingInventory: TDSServerClass
+    OnGetClass = dsrvrclsClosingInventoryGetClass
+    Server = DSServer1
+    Left = 384
+    Top = 232
+  end
 end

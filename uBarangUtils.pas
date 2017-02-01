@@ -32,8 +32,6 @@ begin
       Free;
     end;
   end;
-
-  Result := True;
 end;
 
 { TBarangUtils }

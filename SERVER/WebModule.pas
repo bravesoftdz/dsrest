@@ -28,9 +28,12 @@ type
     dsrvrclsStockSekarang: TDSServerClass;
     dsrvrclsLaporan: TDSServerClass;
     dsrvrclsReturSupplier: TDSServerClass;
+    dsrvrclsClosingInventory: TDSServerClass;
     procedure dsrvrclsBarangGetClass(DSServerClass: TDSServerClass; var
         PersistentClass: TPersistentClass);
     procedure dsrvrclsCabangGetClass(DSServerClass: TDSServerClass; var
+        PersistentClass: TPersistentClass);
+    procedure dsrvrclsClosingInventoryGetClass(DSServerClass: TDSServerClass; var
         PersistentClass: TPersistentClass);
     procedure dsrvrclsGroupBarangGetClass(DSServerClass: TDSServerClass; var
         PersistentClass: TPersistentClass);
@@ -170,6 +173,12 @@ procedure TWebModule2.dsrvrclsCabangGetClass(DSServerClass: TDSServerClass; var
     PersistentClass: TPersistentClass);
 begin
   PersistentClass := TServerCabang;
+end;
+
+procedure TWebModule2.dsrvrclsClosingInventoryGetClass(DSServerClass:
+    TDSServerClass; var PersistentClass: TPersistentClass);
+begin
+  PersistentClass := ServerMethodsUnit.TServerClosingInventory;
 end;
 
 procedure TWebModule2.dsrvrclsGroupBarangGetClass(DSServerClass:
