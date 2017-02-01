@@ -132,7 +132,7 @@ begin
   with TServerPenerimaanBarangClient.Create(ClientDataModule.DSRestConnection, False) do
   begin
     try
-      edTglBukti.Date := Now;
+//      edTglBukti.Date := Now;
       memKeterangan.Clear;
       edNoBukti.Text  := GenerateNoBukti(edTglBukti.Date, ClientDataModule.Cabang.Kode + '/PB');
       cxGridTablePenerimaanBarang.ClearRows;
@@ -328,6 +328,8 @@ begin
   InisialisasiSupplier;
   InisialisasiSKU;
   InisialisasiUOM;
+
+  edTglBukti.Date := Now;
   ActionBaruExecute(Sender);
 end;
 
