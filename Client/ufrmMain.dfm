@@ -38,7 +38,6 @@ object frmMain: TfrmMain
       Index = 0
     end
     object dxrbnTabMaster: TdxRibbonTab
-      Active = True
       Caption = 'Master'
       Groups = <
         item
@@ -56,7 +55,8 @@ object frmMain: TfrmMain
       Index = 2
     end
     object dxrbntbPenerimaanBarangClosing: TdxRibbonTab
-      Caption = 'Closing'
+      Active = True
+      Caption = 'Alat'
       Groups = <
         item
           Caption = 'Inventory'
@@ -306,6 +306,10 @@ object frmMain: TfrmMain
         item
           Visible = True
           ItemName = 'dxbrlrgbtnCLosingInventory'
+        end
+        item
+          Visible = True
+          ItemName = 'dxbrlrgbtnSettingKoneksi'
         end>
       OneOnRow = True
       Row = 0
@@ -359,6 +363,11 @@ object frmMain: TfrmMain
       Action = actClosingInventory
       Category = 0
       LargeImageIndex = 4
+    end
+    object dxbrlrgbtnSettingKoneksi: TdxBarLargeButton
+      Action = actSettingKoneksi
+      Category = 0
+      LargeImageIndex = 5
     end
     object dxbrlrgbtnExit: TdxBarLargeButton
       Action = actApplicationExit
@@ -439,8 +448,13 @@ object frmMain: TfrmMain
       OnExecute = actReturSupplierExecute
     end
     object actClosingInventory: TAction
-      Category = 'CLosing'
+      Category = 'Alat'
       Caption = 'Closing'
+    end
+    object actSettingKoneksi: TAction
+      Category = 'Alat'
+      Caption = 'Setting Koneksi'
+      OnExecute = actSettingKoneksiExecute
     end
   end
   object ImgListMainLarge: TImageList
@@ -450,7 +464,7 @@ object frmMain: TfrmMain
     Left = 688
     Top = 128
     Bitmap = {
-      494C01010B001800480020002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C01010B0018004C0020002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000008000000060000000010020000000000000C0
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

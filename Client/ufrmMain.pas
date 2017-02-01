@@ -77,6 +77,8 @@ type
     dxbrCLosing: TdxBar;
     dxbrlrgbtnCLosingInventory: TdxBarLargeButton;
     actClosingInventory: TAction;
+    dxbrlrgbtnSettingKoneksi: TdxBarLargeButton;
+    actSettingKoneksi: TAction;
     procedure actApplicationExitExecute(Sender: TObject);
     procedure actMasSupplierExecute(Sender: TObject);
     procedure actMasterBarangExecute(Sender: TObject);
@@ -84,6 +86,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure actLapMutasiBarangExecute(Sender: TObject);
     procedure actReturSupplierExecute(Sender: TObject);
+    procedure actSettingKoneksiExecute(Sender: TObject);
   private
     { Private declarations }
   public
@@ -131,12 +134,30 @@ begin
   frmReturSupplier := TfrmReturSupplier.Create(Self);
 end;
 
+procedure TfrmMain.actSettingKoneksiExecute(Sender: TObject);
+var
+  I: Integer;
+begin
+  if TAppUtils.Confirm('Untum mengubah setting koneksi, semua form harus ditutup. Lanjutkan ?') then
+  begin
+    for I := ComponentCount - 1 downto 0  do
+    begin
+      if (Components[i] is TForm) then
+        (Components[i] as TForm).Free;
+
+    end;
+
+    frmKoneksi := TfrmKoneksi.Create(Self);
+    frmKoneksi.ShowModal;
+  end;
+end;
+
 procedure TfrmMain.FormCreate(Sender: TObject);
 begin
   //  Caption := Caption + ' Ver : ' + TAppUtils.GetAppVersion;
   frmKoneksi := TfrmKoneksi.Create(Self);
   try
-    if TAppUtils.BacaRegistry('server') <> '' then
+    if TAppUtils.BacaRegistry('Database') <> '' then
     begin
       frmKoneksi.btnKonekDBClick(Sender);
     end else begin

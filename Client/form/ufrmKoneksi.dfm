@@ -2,8 +2,8 @@ object frmKoneksi: TfrmKoneksi
   Left = 0
   Top = 0
   Caption = 'Koneksi Database'
-  ClientHeight = 297
-  ClientWidth = 261
+  ClientHeight = 318
+  ClientWidth = 269
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -18,12 +18,12 @@ object frmKoneksi: TfrmKoneksi
   object grpKoneksiLokasi: TGroupBox
     Left = 0
     Top = 0
-    Width = 261
+    Width = 269
     Height = 177
     Align = alTop
     Caption = 'Koneksi Database Lokal'
     TabOrder = 0
-    ExplicitWidth = 267
+    ExplicitWidth = 261
     object lblServer: TLabel
       Left = 29
       Top = 51
@@ -69,14 +69,14 @@ object frmKoneksi: TfrmKoneksi
     object edServer: TcxTextEdit
       Left = 78
       Top = 47
-      TabOrder = 0
+      TabOrder = 1
       Text = '127.0.0.1'
       Width = 96
     end
     object edUser: TcxTextEdit
       Left = 78
       Top = 95
-      TabOrder = 1
+      TabOrder = 4
       Text = 'postgres'
       Width = 178
     end
@@ -85,7 +85,7 @@ object frmKoneksi: TfrmKoneksi
       Top = 119
       Properties.EchoMode = eemPassword
       Properties.PasswordChar = '*'
-      TabOrder = 2
+      TabOrder = 5
       Text = '1234'
       Width = 178
     end
@@ -96,26 +96,27 @@ object frmKoneksi: TfrmKoneksi
       Height = 21
       Style = csDropDownList
       ItemIndex = 0
-      TabOrder = 3
+      TabOrder = 0
       Text = 'PG'
       Items.Strings = (
         'PG'
         'MSSQL'
         'MYSQL'
         'ORA'
-        'IB')
+        'IB'
+        'SQLite')
     end
     object edDatabase: TcxTextEdit
       Left = 78
       Top = 71
-      TabOrder = 4
+      TabOrder = 3
       Text = 'motoroli'
       Width = 178
     end
     object edPort: TcxTextEdit
       Left = 209
       Top = 47
-      TabOrder = 5
+      TabOrder = 2
       Text = '5432'
       Width = 47
     end
@@ -138,15 +139,13 @@ object frmKoneksi: TfrmKoneksi
   object grpKoneksiRestServer: TGroupBox
     Left = 0
     Top = 177
-    Width = 261
-    Height = 120
+    Width = 269
+    Height = 141
     Align = alClient
     Caption = 'Rest Server'
     TabOrder = 1
-    ExplicitLeft = 48
-    ExplicitTop = 152
-    ExplicitWidth = 185
-    ExplicitHeight = 105
+    ExplicitWidth = 261
+    ExplicitHeight = 120
     object Label1: TLabel
       Left = 29
       Top = 20
@@ -221,5 +220,9 @@ object frmKoneksi: TfrmKoneksi
       TabOrder = 4
       OnClick = btnKonekDBClick
     end
+  end
+  object fdphysqltdrvrlnk1: TFDPhysSQLiteDriverLink
+    Left = 104
+    Top = 144
   end
 end

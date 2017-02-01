@@ -64,6 +64,7 @@ type
     FBarang: TBarang;
     function GetBarang: TBarang;
     function IsBisaSimpan: Boolean;
+    function IsDetailSatuanValid: Boolean;
     { Private declarations }
   protected
     procedure InisialisaiSupplier;
@@ -81,7 +82,7 @@ var
 implementation
 
 uses
-  DBClient, uDBUtils, uAppUtils;
+  DBClient, uDBUtils, uAppUtils,uBarangUtils;
 
 {$R *.dfm}
 
@@ -247,9 +248,61 @@ begin
   begin
     TAppUtils.Warning('Kode Belum Diisi');
     Exit;
+  end else if TBarangUtils.IsKodeBarangSudahAda(trim(edKode.Text), Barang.ID) then
+  begin
+    TAppUtils.Warning('Kode Sudah Dipakai');
+    Exit;
   end else if Trim(edNama.Text) = '' then
   begin
     TAppUtils.Warning('Nama Belum Diisi');
+    Exit;
+  end else if cbbGroup.EditValue = null then
+  begin
+    TAppUtils.Warning('Group Barang Belum Dipilih');
+    Exit;
+  end else if cbbSatuanStock.EditValue = null then
+  begin
+    TAppUtils.Warning('Satuan Stock Belum Dipilih');
+    Exit;
+  end else if not IsDetailSatuanValid then
+  begin
+    Exit;
+  end;
+
+
+  Result := True;
+end;
+
+function TfrmBarang.IsDetailSatuanValid: Boolean;
+var
+  I: Integer;
+  IsSatuanStockAda: Boolean;
+begin
+  Result := False;
+
+  if cxGridTableSatuan.DataController.RecordCount <= 0 then
+  begin
+    TAppUtils.Warning('Konversi Satuan Belum diisi');
+    Exit;
+  end;
+
+  IsSatuanStockAda := False;
+  for I := 0 to cxGridTableSatuan.DataController.RecordCount - 1 do
+  begin
+    if cxGridTableSatuan.GetString(i, cxGridTableSatuanColumnUOM.Index) = cbbSatuanStock.EditValue then
+    begin
+      IsSatuanStockAda := True;
+      if cxGridTableSatuan.GetDouble(i, cxGridTableSatuanColumnKonversi.Index) <> 1 then
+      begin
+        TAppUtils.Warning('Satuan Stock Harus Mempunyai Konversi = 1');
+        Exit;
+      end;
+    end;
+  end;
+
+  if not IsSatuanStockAda then
+  begin
+    TAppUtils.Warning('Satuan Stock Belum Ada Di Daftar Satuan');
     Exit;
   end;
 

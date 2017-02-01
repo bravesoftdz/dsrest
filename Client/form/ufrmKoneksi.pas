@@ -5,7 +5,8 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, cxGraphics, cxControls, cxLookAndFeels, cxLookAndFeelPainters,
-  cxContainer, cxEdit, StdCtrls, cxTextEdit,uDBUtils, uAppUtils, ClientModule;
+  cxContainer, cxEdit, StdCtrls, cxTextEdit,uDBUtils, uAppUtils, ClientModule,
+  FireDAC.Stan.Intf, FireDAC.Phys, FireDAC.Phys.SQLite;
 
 type
   TfrmKoneksi = class(TForm)
@@ -33,6 +34,7 @@ type
     edRestPassword: TcxTextEdit;
     edRestPort: TcxTextEdit;
     btnTestRestServer: TButton;
+    fdphysqltdrvrlnk1: TFDPhysSQLiteDriverLink;
     procedure FormCreate(Sender: TObject);
     procedure btnKonekDBClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -51,7 +53,7 @@ implementation
 
 procedure TfrmKoneksi.FormCreate(Sender: TObject);
 begin
-  if TAppUtils.BacaRegistry('Server') <> '' then
+  if TAppUtils.BacaRegistry('Database') <> '' then
   begin
     cbbEngine.ItemIndex := cbbEngine.Items.IndexOf(TAppUtils.BacaRegistry('Engine'));
     edServer.Text := TAppUtils.BacaRegistry('Server');

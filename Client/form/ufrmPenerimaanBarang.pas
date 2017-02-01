@@ -99,6 +99,8 @@ type
     procedure InisialisasiSKU;
     procedure InisialisasiUOM;
     function IsBisaHapus : Boolean;
+    function IsBisaSimpan: Boolean;
+    function IsDetailValid: Boolean;
     { Private declarations }
   protected
     property PenerimaanBarang: TPenerimaanBarang read GetPenerimaanBarang write
@@ -132,7 +134,7 @@ begin
     try
       edTglBukti.Date := Now;
       memKeterangan.Clear;
-      edNoBukti.Text  := GenerateNoBukti(edTglBukti.Date, 'PB');
+      edNoBukti.Text  := GenerateNoBukti(edTglBukti.Date, ClientDataModule.Cabang.Kode + '/PB');
       cxGridTablePenerimaanBarang.ClearRows;
 
       FreeAndNil(FPenerimaanBarang);
@@ -151,24 +153,28 @@ begin
   inherited;
   if not IsBisaHapus then
     Exit;
+
+  if ClientDataModule.ServerPenerimaanBarangClient.Delete(PenerimaanBarang) then
+  begin
+    ActionRefreshExecute(Sender);
+    ActionBaruExecute(Sender);
+  end;
 end;
 
 procedure TfrmPenerimaanBarang.ActionRefreshExecute(Sender: TObject);
 begin
   inherited;
-    with TServerPenerimaanBarangClient.Create(ClientDataModule.DSRestConnection, False) do
-    begin
-      ProvPB.DataSet := RetrieveCDS(PenerimaanBarang);
-      cdsPB.Open;
+//  if ProvPB.DataSet <> nil then
+//    ProvPB.DataSet.Free;
 
-      try
-        TDBUtils.DataSetToCxDBGrid(cdsPB, cxGridDBTableDaftarPB);
-        cxGridDBTableDaftarPB.ApplyBestFit();
-      finally
-        Free;
-      end;
+  ProvPB.DataSet := ClientDataModule.ServerPenerimaanBarangClient.RetrieveCDS(PenerimaanBarang);
+  cdsPB.Close;
+  cdsPB.Open;
 
-  end;
+  TDBUtils.DataSetToCxDBGrid(cdsPB, cxGridDBTableDaftarPB);
+  cxGridDBTableDaftarPB.ApplyBestFit();
+
+
 end;
 
 procedure TfrmPenerimaanBarang.ActionSimpanExecute(Sender: TObject);
@@ -177,6 +183,10 @@ var
   lPenerimaanBarangItem: TPenerimaanBarangItem;
 begin
   inherited;
+  if not IsBisaSimpan then
+    Exit;
+
+
   with TServerPenerimaanBarangClient.Create(ClientDataModule.DSRestConnection, False) do
   begin
     try
@@ -186,8 +196,9 @@ begin
       PenerimaanBarang.Supplier    := TSupplier.Create;
       PenerimaanBarang.Supplier.ID := cbbSupplier.EditValue;
       PenerimaanBarang.TglBukti    := edTglBukti.Date;
+
       PenerimaanBarang.Cabang      := TCabang.Create;
-//      PenerimaanBarang.Cabang.ID   := ClientDataModule.Cabang.ID;
+      PenerimaanBarang.Cabang.ID   := ClientDataModule.Cabang.ID;
 
 
       PenerimaanBarang.PenerimaanBarangItems.Clear;
@@ -409,6 +420,69 @@ begin
     if not TAppUtils.Confirm('Anda yakin akan menghapus Data ?') then
       Exit;
 
+
+  Result := True;
+end;
+
+function TfrmPenerimaanBarang.IsBisaSimpan: Boolean;
+begin
+  Result := False;
+
+  if cbbSupplier.EditValue = null then
+  begin
+    TAppUtils.Warning('Supplier Belum Dipilih');
+    Exit;
+  end else if not IsDetailValid then
+  begin
+    Exit;
+
+  end;
+
+
+  Result := True;
+end;
+
+function TfrmPenerimaanBarang.IsDetailValid: Boolean;
+var
+  I: Integer;
+begin
+  Result := False;
+
+  if cxGridTablePenerimaanBarang.DataController.RecordCount <= 0 then
+  begin
+    TAppUtils.Warning('Detail Penerimaan Belum Diisi');
+    Exit;
+  end else begin
+    for I := 0 to cxGridTablePenerimaanBarang.DataController.RecordCount - 1 do
+    begin
+      if cxGridTablePenerimaanBarang.DataController.Values[i, cxGridTablePenerimaanBarangColumnSKU.Index] = null then
+      begin
+        TAppUtils.Warning('SKU Baris ke ' + IntToStr(i+1) + ' Belum Diisi');
+        Exit;
+      end else if cxGridTablePenerimaanBarang.DataController.Values[i, cxGridTablePenerimaanBarangColumnSatuan.Index] = null then
+      begin
+        TAppUtils.Warning('UOM Baris ke ' + IntToStr(i+1) + ' Belum Diisi');
+        Exit;
+      end else if cxGridTablePenerimaanBarang.DataController.Values[i, cxGridTablePenerimaanBarangColumnHarga.Index] = null then
+      begin
+        TAppUtils.Warning('Harga Baris ke ' + IntToStr(i+1) + ' Belum Diisi');
+        Exit;
+      end else if cxGridTablePenerimaanBarang.DataController.Values[i, cxGridTablePenerimaanBarangColumnHarga.Index] <= 0 then
+      begin
+        TAppUtils.Warning('Harga Baris ke ' + IntToStr(i+1) + ' Belum Diisi');
+        Exit;
+      end else if cxGridTablePenerimaanBarang.DataController.Values[i, cxGridTablePenerimaanBarangColumnQty.Index] = null then
+      begin
+        TAppUtils.Warning('Qty Baris ke ' + IntToStr(i+1) + ' Belum Diisi');
+        Exit;
+      end else if cxGridTablePenerimaanBarang.DataController.Values[i, cxGridTablePenerimaanBarangColumnQty.Index] <= 0 then
+      begin
+        TAppUtils.Warning('Qty Baris ke ' + IntToStr(i+1) + ' Belum Diisi');
+        Exit;
+      end;
+
+    end;
+  end;
 
   Result := True;
 end;

@@ -62,7 +62,9 @@ begin
   ADConnection.Params.Add('Database=' + ADatabase);
   ADConnection.Params.Add('User_Name=' + AUser);
   ADConnection.Params.Add('Password=' + APassword);
-  ADConnection.Params.Add('Port=' + APort);
+
+  if APort <> '' then
+    ADConnection.Params.Add('Port=' + APort);
 
   ADConnection.Connected := True;
   if ADConnection.Connected then
