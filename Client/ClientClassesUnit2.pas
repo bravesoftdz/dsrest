@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 1/31/2017 2:24:43 PM
+// 2/1/2017 11:39:47 PM
 //
 
 unit ClientClassesUnit2;
@@ -254,6 +254,28 @@ type
     function RetrieveNoBukti(ANoBukti: string; const ARequestFilter: string = ''): TReturSupplier;
     function RetrieveNoBukti_Cache(ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedTReturSupplier;
     function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
+    function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
+    function RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string = ''): TDataSet;
+    function RetrieveCDS_Cache(AAppObject: TAppObject; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function RetrieveCDSJSON(const ARequestFilter: string = ''): TJSONArray;
+    function RetrieveCDSJSON_Cache(const ARequestFilter: string = ''): IDSRestCachedJSONArray;
+    function Save(AOBject: TAppObject; const ARequestFilter: string = ''): Boolean;
+  end;
+
+  TServerClosingInventoryClient = class(TDSAdminRestClient)
+  private
+    FCloseCommand: TDSRestCommand;
+    FDeleteCommand: TDSRestCommand;
+    FRetrieveCDSCommand: TDSRestCommand;
+    FRetrieveCDSCommand_Cache: TDSRestCommand;
+    FRetrieveCDSJSONCommand: TDSRestCommand;
+    FRetrieveCDSJSONCommand_Cache: TDSRestCommand;
+    FSaveCommand: TDSRestCommand;
+  public
+    constructor Create(ARestConnection: TDSRestConnection); overload;
+    constructor Create(ARestConnection: TDSRestConnection; AInstanceOwner: Boolean); overload;
+    destructor Destroy; override;
+    function Close(APeriode: Integer; ACabang: TCabang; const ARequestFilter: string = ''): Boolean;
     function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
     function RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string = ''): TDataSet;
     function RetrieveCDS_Cache(AAppObject: TAppObject; const ARequestFilter: string = ''): IDSRestCachedDataSet;
@@ -747,6 +769,47 @@ const
   );
 
   TServerReturSupplier_Save: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AOBject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
+  TServerClosingInventory_Close: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'APeriode'; Direction: 1; DBXType: 6; TypeName: 'Integer'),
+    (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
+  TServerClosingInventory_Delete: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
+  TServerClosingInventory_RetrieveCDS: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TServerClosingInventory_RetrieveCDS_Cache: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerClosingInventory_RetrieveCDSJSON: array [0..0] of TDSRestParameterMetaData =
+  (
+    (Name: ''; Direction: 4; DBXType: 37; TypeName: 'TJSONArray')
+  );
+
+  TServerClosingInventory_RetrieveCDSJSON_Cache: array [0..0] of TDSRestParameterMetaData =
+  (
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerClosingInventory_Save: array [0..1] of TDSRestParameterMetaData =
   (
     (Name: 'AOBject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
@@ -2579,6 +2642,188 @@ begin
   FRetrieveNoBuktiCommand.DisposeOf;
   FRetrieveNoBuktiCommand_Cache.DisposeOf;
   FGenerateNoBuktiCommand.DisposeOf;
+  FDeleteCommand.DisposeOf;
+  FRetrieveCDSCommand.DisposeOf;
+  FRetrieveCDSCommand_Cache.DisposeOf;
+  FRetrieveCDSJSONCommand.DisposeOf;
+  FRetrieveCDSJSONCommand_Cache.DisposeOf;
+  FSaveCommand.DisposeOf;
+  inherited;
+end;
+
+function TServerClosingInventoryClient.Close(APeriode: Integer; ACabang: TCabang; const ARequestFilter: string): Boolean;
+begin
+  if FCloseCommand = nil then
+  begin
+    FCloseCommand := FConnection.CreateCommand;
+    FCloseCommand.RequestType := 'POST';
+    FCloseCommand.Text := 'TServerClosingInventory."Close"';
+    FCloseCommand.Prepare(TServerClosingInventory_Close);
+  end;
+  FCloseCommand.Parameters[0].Value.SetInt32(APeriode);
+  if not Assigned(ACabang) then
+    FCloseCommand.Parameters[1].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FCloseCommand.Parameters[1].ConnectionHandler).GetJSONMarshaler;
+    try
+      FCloseCommand.Parameters[1].Value.SetJSONValue(FMarshal.Marshal(ACabang), True);
+      if FInstanceOwner then
+        ACabang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FCloseCommand.Execute(ARequestFilter);
+  Result := FCloseCommand.Parameters[2].Value.GetBoolean;
+end;
+
+function TServerClosingInventoryClient.Delete(AAppObject: TAppObject; const ARequestFilter: string): Boolean;
+begin
+  if FDeleteCommand = nil then
+  begin
+    FDeleteCommand := FConnection.CreateCommand;
+    FDeleteCommand.RequestType := 'POST';
+    FDeleteCommand.Text := 'TServerClosingInventory."Delete"';
+    FDeleteCommand.Prepare(TServerClosingInventory_Delete);
+  end;
+  if not Assigned(AAppObject) then
+    FDeleteCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FDeleteCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FDeleteCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FDeleteCommand.Execute(ARequestFilter);
+  Result := FDeleteCommand.Parameters[1].Value.GetBoolean;
+end;
+
+function TServerClosingInventoryClient.RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string): TDataSet;
+begin
+  if FRetrieveCDSCommand = nil then
+  begin
+    FRetrieveCDSCommand := FConnection.CreateCommand;
+    FRetrieveCDSCommand.RequestType := 'POST';
+    FRetrieveCDSCommand.Text := 'TServerClosingInventory."RetrieveCDS"';
+    FRetrieveCDSCommand.Prepare(TServerClosingInventory_RetrieveCDS);
+  end;
+  if not Assigned(AAppObject) then
+    FRetrieveCDSCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FRetrieveCDSCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FRetrieveCDSCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FRetrieveCDSCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FRetrieveCDSCommand.Parameters[1].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FRetrieveCDSCommand.FreeOnExecute(Result);
+end;
+
+function TServerClosingInventoryClient.RetrieveCDS_Cache(AAppObject: TAppObject; const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FRetrieveCDSCommand_Cache = nil then
+  begin
+    FRetrieveCDSCommand_Cache := FConnection.CreateCommand;
+    FRetrieveCDSCommand_Cache.RequestType := 'POST';
+    FRetrieveCDSCommand_Cache.Text := 'TServerClosingInventory."RetrieveCDS"';
+    FRetrieveCDSCommand_Cache.Prepare(TServerClosingInventory_RetrieveCDS_Cache);
+  end;
+  if not Assigned(AAppObject) then
+    FRetrieveCDSCommand_Cache.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FRetrieveCDSCommand_Cache.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FRetrieveCDSCommand_Cache.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FRetrieveCDSCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FRetrieveCDSCommand_Cache.Parameters[1].Value.GetString);
+end;
+
+function TServerClosingInventoryClient.RetrieveCDSJSON(const ARequestFilter: string): TJSONArray;
+begin
+  if FRetrieveCDSJSONCommand = nil then
+  begin
+    FRetrieveCDSJSONCommand := FConnection.CreateCommand;
+    FRetrieveCDSJSONCommand.RequestType := 'GET';
+    FRetrieveCDSJSONCommand.Text := 'TServerClosingInventory.RetrieveCDSJSON';
+    FRetrieveCDSJSONCommand.Prepare(TServerClosingInventory_RetrieveCDSJSON);
+  end;
+  FRetrieveCDSJSONCommand.Execute(ARequestFilter);
+  Result := TJSONArray(FRetrieveCDSJSONCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
+end;
+
+function TServerClosingInventoryClient.RetrieveCDSJSON_Cache(const ARequestFilter: string): IDSRestCachedJSONArray;
+begin
+  if FRetrieveCDSJSONCommand_Cache = nil then
+  begin
+    FRetrieveCDSJSONCommand_Cache := FConnection.CreateCommand;
+    FRetrieveCDSJSONCommand_Cache.RequestType := 'GET';
+    FRetrieveCDSJSONCommand_Cache.Text := 'TServerClosingInventory.RetrieveCDSJSON';
+    FRetrieveCDSJSONCommand_Cache.Prepare(TServerClosingInventory_RetrieveCDSJSON_Cache);
+  end;
+  FRetrieveCDSJSONCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedJSONArray.Create(FRetrieveCDSJSONCommand_Cache.Parameters[0].Value.GetString);
+end;
+
+function TServerClosingInventoryClient.Save(AOBject: TAppObject; const ARequestFilter: string): Boolean;
+begin
+  if FSaveCommand = nil then
+  begin
+    FSaveCommand := FConnection.CreateCommand;
+    FSaveCommand.RequestType := 'POST';
+    FSaveCommand.Text := 'TServerClosingInventory."Save"';
+    FSaveCommand.Prepare(TServerClosingInventory_Save);
+  end;
+  if not Assigned(AOBject) then
+    FSaveCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FSaveCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FSaveCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AOBject), True);
+      if FInstanceOwner then
+        AOBject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FSaveCommand.Execute(ARequestFilter);
+  Result := FSaveCommand.Parameters[1].Value.GetBoolean;
+end;
+
+constructor TServerClosingInventoryClient.Create(ARestConnection: TDSRestConnection);
+begin
+  inherited Create(ARestConnection);
+end;
+
+constructor TServerClosingInventoryClient.Create(ARestConnection: TDSRestConnection; AInstanceOwner: Boolean);
+begin
+  inherited Create(ARestConnection, AInstanceOwner);
+end;
+
+destructor TServerClosingInventoryClient.Destroy;
+begin
+  FCloseCommand.DisposeOf;
   FDeleteCommand.DisposeOf;
   FRetrieveCDSCommand.DisposeOf;
   FRetrieveCDSCommand_Cache.DisposeOf;

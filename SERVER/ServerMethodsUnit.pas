@@ -127,8 +127,9 @@ type
 
   TServerClosingInventory = class(TCRUD)
   private
+//    function ClosingPenerimaan(APeriode: Integer): Boolean;
   public
-    function Close(APeriode : Integer): Boolean;
+    function Close(APeriode : Integer; ACabang : TCabang): Boolean;
   end;
 
 
@@ -753,14 +754,89 @@ begin
 
 end;
 
-function TServerClosingInventory.Close(APeriode : Integer): Boolean;
+function TServerClosingInventory.Close(APeriode : Integer; ACabang : TCabang):
+    Boolean;
+var
+  lCDS: TClientDataSet;
+  lClosingInventory: TClosingInventory;
+  lServerClosingInventory: TServerClosingInventory;
+  sSQL: string;
 begin
-//  Result := False;
+  Result := False;
 
+  sSQL   := 'select barang, uom, sum(qty) as qty, sum(rp) as rp from (' +
+            ' select barang,uom,qty,rp from tclosinginventory' +
+            ' where periode = ' + IntToStr(TAppUtils.DecPeriode(APeriode)) +
+            ' and cabang = ' + QuotedStr(ACabang.ID) +
+            ' union all' +
+            ' select c.id as barang,d.id as uom,' +
+            '     sum(b.qty * b.konversi) as Qty,' +
+            '     sum(b.qty * b.hargabeli) as Rp' +
+            '     from tpenerimaanbarang a' +
+            '     inner join tpenerimaanbarangitem b on a.id = b.penerimaanbarang' +
+            '     inner join tbarang c on b.barang = c.id' +
+            '     inner join tuom d on c.satuanstock = d.id' +
+            '     left join tcabang e on a.cabang = e.id' +
+            '     where a.periode = ' + IntToStr(APeriode) +
+            '     and cabang =' + QuotedStr(ACabang.ID) +
+            '     group by c.id,d.id' +
+            '     union all' +
+            '     select c.id,d.id,' +
+            '     sum(-1 * b.qty * b.konversi),' +
+            '     sum(-1 * b.qty * b.hargabeli)' +
+            '     from tretursupplier a' +
+            '     inner join tretursupplieritem b on a.id = b.retursupplier' +
+            '     inner join tbarang c on b.barang = c.id' +
+            '     inner join tuom d on c.satuanstock = d.id' +
+            '     left join tcabang e on a.cabang = e.id' +
+            '     where a.periode = ' + IntToStr(APeriode) +
+            '     and cabang =' + QuotedStr(ACabang.ID) +
+            '     group by c.id,d.id' +
+            '    ) mutasi' +
+            '    group by barang, uom';
 
+  lCDS := TDBUtils.OpenDataset(sSQL);
+  lServerClosingInventory := TServerClosingInventory.Create;
+  ADConnection.StartTransaction;
+  try
+    while not lCDS.Eof do
+    begin
+      lClosingInventory := TClosingInventory.Create;
+      try
+        lClosingInventory.Barang := TBarang.CreateID(lCDS.FieldByName('barang').AsString);
+        lClosingInventory.Cabang := TCabang.CreateID(ACabang.ID);
+        lClosingInventory.UOM    := TUOM.CreateID(lCDS.FieldByName('uom').AsString);
+        lClosingInventory.Qty    := lCDS.FieldByName('qty').AsFloat;
+        lClosingInventory.Rp     := lCDS.FieldByName('rp').AsFloat;
+
+        if not lServerClosingInventory.SaveNoCommit(lClosingInventory) then
+        begin
+          ADConnection.Rollback;
+          Exit;
+        end;
+      finally
+        lClosingInventory.Free;
+      end;
+
+      lCDS.Next;
+    end;
+
+    ADConnection.Commit;
+
+  finally
+    ADConnection.Rollback;
+    lCDS.Free;
+    lServerClosingInventory.Free;
+  end;
 
   Result := True;
 end;
+
+//function TServerClosingInventory.ClosingPenerimaan(APeriode: Integer): Boolean;
+//begin
+//  Result := False;
+//   TODO -cMM: TServerClosingInventory.ClosingPenerimaan default body inserted
+//end;
 
 end.
 

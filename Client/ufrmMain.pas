@@ -80,6 +80,7 @@ type
     dxbrlrgbtnSettingKoneksi: TdxBarLargeButton;
     actSettingKoneksi: TAction;
     procedure actApplicationExitExecute(Sender: TObject);
+    procedure actClosingInventoryExecute(Sender: TObject);
     procedure actMasSupplierExecute(Sender: TObject);
     procedure actMasterBarangExecute(Sender: TObject);
     procedure actPenerimaanBarangExecute(Sender: TObject);
@@ -100,13 +101,18 @@ implementation
 uses
   ufrmSupplier, ufrmKoneksi,uAppUtils, ufrmBarang, ufrmPenerimaanBarang,
   ClientClassesUnit2, ClientModule, ufrmPilihCabang, ufrmLapMutasiBarangPerTransaksi,
-  ufrmReturSupplier, udbutils;
+  ufrmReturSupplier, udbutils, ufrmClosingInventory;
 
 {$R *.dfm}
 
 procedure TfrmMain.actApplicationExitExecute(Sender: TObject);
 begin
   Application.Terminate;
+end;
+
+procedure TfrmMain.actClosingInventoryExecute(Sender: TObject);
+begin
+  frmClosingInventory := TfrmClosingInventory.Create(Self);
 end;
 
 procedure TfrmMain.actLapMutasiBarangExecute(Sender: TObject);
@@ -157,11 +163,20 @@ begin
   //  Caption := Caption + ' Ver : ' + TAppUtils.GetAppVersion;
   frmKoneksi := TfrmKoneksi.Create(Self);
   try
-    if TAppUtils.BacaRegistry('Database') <> '' then
+    if (TAppUtils.BacaRegistry('Database') = '') or (TAppUtils.BacaRegistry('RestServer') = '')then
     begin
-      frmKoneksi.btnKonekDBClick(Sender);
-    end else begin
       frmKoneksi.ShowModal;
+    end else begin
+      try
+        frmKoneksi.btnKonekDBClick(Sender);
+
+        ClientDataModule.DSRestConnection.Host := TAppUtils.BacaRegistry('RestServer');
+        ClientDataModule.DSRestConnection.Port := StrToInt(TAppUtils.BacaRegistry('RestPort'));
+
+//        ClientDataModule.DSRestConnection.TestConnection();
+      except
+        frmKoneksi.ShowModal;
+      end;
     end;
 
     if TAppUtils.BacaRegistry('cabang') <> '' then
@@ -177,6 +192,8 @@ begin
     end;
 
     statDS.Panels[2].Text := 'Cabang : ' + ClientDataModule.Cabang.Nama;
+    statDS.Panels[1].Text := 'Rest Server : ' + ClientDataModule.DSRestConnection.Host + ':' + IntToStr(ClientDataModule.DSRestConnection.Port);
+    statDS.Panels[0].Text := 'Local DB : ' + ADConnection.Params.Text;
   finally
     frmKoneksi.Free;
   end;

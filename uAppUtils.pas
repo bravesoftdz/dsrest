@@ -126,7 +126,7 @@ type
     class procedure InisialisasiProgressBar(AParent : TWinControl; AMax : Integer;
         ANomorPB : Integer = 0);
     class procedure FinalisasiProgressBar(ANomorPB : Integer = 0);
-    function IncPeriode(APeriode : Integer): Integer;
+    class function DecPeriode(APeriode : Integer): Integer;
     class function StrToBytes(const value: string): TBytes;
   end;
 
@@ -1243,7 +1243,7 @@ begin
   end;
 end;
 
-function TAppUtils.IncPeriode(APeriode : Integer): Integer;
+class function TAppUtils.DecPeriode(APeriode : Integer): Integer;
 begin
   case APeriode of
     201101 : Result := 201012;

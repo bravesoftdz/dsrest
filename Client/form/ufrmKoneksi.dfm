@@ -11,6 +11,7 @@ object frmKoneksi: TfrmKoneksi
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  Position = poMainFormCenter
   OnCreate = FormCreate
   OnShow = FormShow
   PixelsPerInch = 96
@@ -23,7 +24,6 @@ object frmKoneksi: TfrmKoneksi
     Align = alTop
     Caption = 'Koneksi Database Lokal'
     TabOrder = 0
-    ExplicitWidth = 261
     object lblServer: TLabel
       Left = 29
       Top = 51
@@ -70,14 +70,12 @@ object frmKoneksi: TfrmKoneksi
       Left = 78
       Top = 47
       TabOrder = 1
-      Text = '127.0.0.1'
       Width = 96
     end
     object edUser: TcxTextEdit
       Left = 78
       Top = 95
       TabOrder = 4
-      Text = 'postgres'
       Width = 178
     end
     object edPassword: TcxTextEdit
@@ -86,7 +84,6 @@ object frmKoneksi: TfrmKoneksi
       Properties.EchoMode = eemPassword
       Properties.PasswordChar = '*'
       TabOrder = 5
-      Text = '1234'
       Width = 178
     end
     object cbbEngine: TComboBox
@@ -110,14 +107,12 @@ object frmKoneksi: TfrmKoneksi
       Left = 78
       Top = 71
       TabOrder = 3
-      Text = 'motoroli'
       Width = 178
     end
     object edPort: TcxTextEdit
       Left = 209
       Top = 47
       TabOrder = 2
-      Text = '5432'
       Width = 47
     end
     object btnKonekDB: TButton
@@ -144,8 +139,6 @@ object frmKoneksi: TfrmKoneksi
     Align = alClient
     Caption = 'Rest Server'
     TabOrder = 1
-    ExplicitWidth = 261
-    ExplicitHeight = 120
     object Label1: TLabel
       Left = 29
       Top = 20
@@ -178,7 +171,6 @@ object frmKoneksi: TfrmKoneksi
       Left = 78
       Top = 16
       TabOrder = 0
-      Text = '127.0.0.1'
       Width = 96
     end
     object edRestUser: TcxTextEdit
@@ -200,9 +192,8 @@ object frmKoneksi: TfrmKoneksi
     object edRestPort: TcxTextEdit
       Left = 209
       Top = 16
-      Enabled = False
+      Properties.ReadOnly = False
       TabOrder = 3
-      Text = '8080'
       Width = 47
     end
     object btnTestRestServer: TButton
@@ -218,7 +209,7 @@ object frmKoneksi: TfrmKoneksi
       Font.Style = []
       ParentFont = False
       TabOrder = 4
-      OnClick = btnKonekDBClick
+      OnClick = btnTestRestServerClick
     end
   end
   object fdphysqltdrvrlnk1: TFDPhysSQLiteDriverLink

@@ -37,6 +37,7 @@ type
     fdphysqltdrvrlnk1: TFDPhysSQLiteDriverLink;
     procedure FormCreate(Sender: TObject);
     procedure btnKonekDBClick(Sender: TObject);
+    procedure btnTestRestServerClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private
     { Private declarations }
@@ -55,12 +56,15 @@ procedure TfrmKoneksi.FormCreate(Sender: TObject);
 begin
   if TAppUtils.BacaRegistry('Database') <> '' then
   begin
-    cbbEngine.ItemIndex := cbbEngine.Items.IndexOf(TAppUtils.BacaRegistry('Engine'));
-    edServer.Text := TAppUtils.BacaRegistry('Server');
-    edDatabase.Text := TAppUtils.BacaRegistry('Database');
-    edUser.Text := TAppUtils.BacaRegistry('User_Name');
-    edPassword.Text := TAppUtils.BacaRegistry('Password');
-    edPort.Text := TAppUtils.BacaRegistry('Port');
+    cbbEngine.ItemIndex  := cbbEngine.Items.IndexOf(TAppUtils.BacaRegistry('Engine'));
+    edServer.Text        := TAppUtils.BacaRegistry('Server');
+    edDatabase.Text      := TAppUtils.BacaRegistry('Database');
+    edUser.Text          := TAppUtils.BacaRegistry('User_Name');
+    edPassword.Text      := TAppUtils.BacaRegistry('Password');
+    edPort.Text          := TAppUtils.BacaRegistry('Port');
+
+    edRestServer.Text    := TAppUtils.BacaRegistry('RestServer');
+    edRestPort.Text    := TAppUtils.BacaRegistry('RestPort');
   end;
 end;
 
@@ -77,6 +81,25 @@ begin
     ADConnection.Close;
     btnKonekDB.Caption := 'Connect';
 //    grpRestServer.Enabled := False;
+  end;
+end;
+
+procedure TfrmKoneksi.btnTestRestServerClick(Sender: TObject);
+begin
+  ClientDataModule.DSRestConnection.Host := edRestServer.Text;
+  ClientDataModule.DSRestConnection.Port := StrToInt(edRestPort.Text);
+
+  try
+    ClientDataModule.DSRestConnection.TestConnection();
+
+    TAppUtils.TulisRegistry('RestServer', edRestServer.Text);
+    TAppUtils.TulisRegistry('RestPort', edRestPort.Text);
+  except
+    on E : Exception do
+    begin
+      TAppUtils.Error(E.Message);
+    end;
+
   end;
 end;
 
