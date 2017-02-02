@@ -127,6 +127,10 @@
             <Form>frmClosingInventory</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="form\ufrmLapStockSekarang.pas">
+            <Form>frmLapStockSekarang</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

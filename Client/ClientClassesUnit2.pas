@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 2/1/2017 11:39:47 PM
+// 2/3/2017 6:04:17 AM
 //
 
 unit ClientClassesUnit2;
@@ -11,6 +11,7 @@ uses Datasnap.DSProxyRest, Datasnap.DSClientRest, Data.DBXCommon, Data.DBXClient
 
 type
 
+  IDSRestCachedTStockSekarang = interface;
   IDSRestCachedTReturSupplier = interface;
   IDSRestCachedTLogAppObject = interface;
   IDSRestCachedTGroupBarang = interface;
@@ -220,6 +221,30 @@ type
     function CheckKoneksi(const ARequestFilter: string = ''): Boolean;
   end;
 
+  TServerStockSekarangClient = class(TDSAdminRestClient)
+  private
+    FRetrieveCommand: TDSRestCommand;
+    FRetrieveCommand_Cache: TDSRestCommand;
+    FDeleteCommand: TDSRestCommand;
+    FRetrieveCDSCommand: TDSRestCommand;
+    FRetrieveCDSCommand_Cache: TDSRestCommand;
+    FRetrieveCDSJSONCommand: TDSRestCommand;
+    FRetrieveCDSJSONCommand_Cache: TDSRestCommand;
+    FSaveCommand: TDSRestCommand;
+  public
+    constructor Create(ARestConnection: TDSRestConnection); overload;
+    constructor Create(ARestConnection: TDSRestConnection; AInstanceOwner: Boolean); overload;
+    destructor Destroy; override;
+    function Retrieve(ABarang: TBarang; const ARequestFilter: string = ''): TStockSekarang;
+    function Retrieve_Cache(ABarang: TBarang; const ARequestFilter: string = ''): IDSRestCachedTStockSekarang;
+    function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
+    function RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string = ''): TDataSet;
+    function RetrieveCDS_Cache(AAppObject: TAppObject; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function RetrieveCDSJSON(const ARequestFilter: string = ''): TJSONArray;
+    function RetrieveCDSJSON_Cache(const ARequestFilter: string = ''): IDSRestCachedJSONArray;
+    function Save(AOBject: TAppObject; const ARequestFilter: string = ''): Boolean;
+  end;
+
   TServerLaporanClient = class(TDSAdminRestClient)
   private
     FRetriveMutasiBarangCommand: TDSRestCommand;
@@ -284,6 +309,11 @@ type
     function Save(AOBject: TAppObject; const ARequestFilter: string = ''): Boolean;
   end;
 
+  IDSRestCachedTStockSekarang = interface(IDSRestCachedObject<TStockSekarang>)
+  end;
+
+  TDSRestCachedTStockSekarang = class(TDSRestCachedObject<TStockSekarang>, IDSRestCachedTStockSekarang, IDSRestCachedCommand)
+  end;
   IDSRestCachedTReturSupplier = interface(IDSRestCachedObject<TReturSupplier>)
   end;
 
@@ -692,6 +722,52 @@ const
 
   TServerUtils_CheckKoneksi: array [0..0] of TDSRestParameterMetaData =
   (
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
+  TServerStockSekarang_Retrieve: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'ABarang'; Direction: 1; DBXType: 37; TypeName: 'TBarang'),
+    (Name: ''; Direction: 4; DBXType: 37; TypeName: 'TStockSekarang')
+  );
+
+  TServerStockSekarang_Retrieve_Cache: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'ABarang'; Direction: 1; DBXType: 37; TypeName: 'TBarang'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerStockSekarang_Delete: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
+  TServerStockSekarang_RetrieveCDS: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TServerStockSekarang_RetrieveCDS_Cache: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerStockSekarang_RetrieveCDSJSON: array [0..0] of TDSRestParameterMetaData =
+  (
+    (Name: ''; Direction: 4; DBXType: 37; TypeName: 'TJSONArray')
+  );
+
+  TServerStockSekarang_RetrieveCDSJSON_Cache: array [0..0] of TDSRestParameterMetaData =
+  (
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerStockSekarang_Save: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AOBject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
   );
 
@@ -2344,6 +2420,226 @@ end;
 destructor TServerUtilsClient.Destroy;
 begin
   FCheckKoneksiCommand.DisposeOf;
+  inherited;
+end;
+
+function TServerStockSekarangClient.Retrieve(ABarang: TBarang; const ARequestFilter: string): TStockSekarang;
+begin
+  if FRetrieveCommand = nil then
+  begin
+    FRetrieveCommand := FConnection.CreateCommand;
+    FRetrieveCommand.RequestType := 'POST';
+    FRetrieveCommand.Text := 'TServerStockSekarang."Retrieve"';
+    FRetrieveCommand.Prepare(TServerStockSekarang_Retrieve);
+  end;
+  if not Assigned(ABarang) then
+    FRetrieveCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FRetrieveCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FRetrieveCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(ABarang), True);
+      if FInstanceOwner then
+        ABarang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FRetrieveCommand.Execute(ARequestFilter);
+  if not FRetrieveCommand.Parameters[1].Value.IsNull then
+  begin
+    FUnMarshal := TDSRestCommand(FRetrieveCommand.Parameters[1].ConnectionHandler).GetJSONUnMarshaler;
+    try
+      Result := TStockSekarang(FUnMarshal.UnMarshal(FRetrieveCommand.Parameters[1].Value.GetJSONValue(True)));
+      if FInstanceOwner then
+        FRetrieveCommand.FreeOnExecute(Result);
+    finally
+      FreeAndNil(FUnMarshal)
+    end
+  end
+  else
+    Result := nil;
+end;
+
+function TServerStockSekarangClient.Retrieve_Cache(ABarang: TBarang; const ARequestFilter: string): IDSRestCachedTStockSekarang;
+begin
+  if FRetrieveCommand_Cache = nil then
+  begin
+    FRetrieveCommand_Cache := FConnection.CreateCommand;
+    FRetrieveCommand_Cache.RequestType := 'POST';
+    FRetrieveCommand_Cache.Text := 'TServerStockSekarang."Retrieve"';
+    FRetrieveCommand_Cache.Prepare(TServerStockSekarang_Retrieve_Cache);
+  end;
+  if not Assigned(ABarang) then
+    FRetrieveCommand_Cache.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FRetrieveCommand_Cache.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FRetrieveCommand_Cache.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(ABarang), True);
+      if FInstanceOwner then
+        ABarang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FRetrieveCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedTStockSekarang.Create(FRetrieveCommand_Cache.Parameters[1].Value.GetString);
+end;
+
+function TServerStockSekarangClient.Delete(AAppObject: TAppObject; const ARequestFilter: string): Boolean;
+begin
+  if FDeleteCommand = nil then
+  begin
+    FDeleteCommand := FConnection.CreateCommand;
+    FDeleteCommand.RequestType := 'POST';
+    FDeleteCommand.Text := 'TServerStockSekarang."Delete"';
+    FDeleteCommand.Prepare(TServerStockSekarang_Delete);
+  end;
+  if not Assigned(AAppObject) then
+    FDeleteCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FDeleteCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FDeleteCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FDeleteCommand.Execute(ARequestFilter);
+  Result := FDeleteCommand.Parameters[1].Value.GetBoolean;
+end;
+
+function TServerStockSekarangClient.RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string): TDataSet;
+begin
+  if FRetrieveCDSCommand = nil then
+  begin
+    FRetrieveCDSCommand := FConnection.CreateCommand;
+    FRetrieveCDSCommand.RequestType := 'POST';
+    FRetrieveCDSCommand.Text := 'TServerStockSekarang."RetrieveCDS"';
+    FRetrieveCDSCommand.Prepare(TServerStockSekarang_RetrieveCDS);
+  end;
+  if not Assigned(AAppObject) then
+    FRetrieveCDSCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FRetrieveCDSCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FRetrieveCDSCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FRetrieveCDSCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FRetrieveCDSCommand.Parameters[1].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FRetrieveCDSCommand.FreeOnExecute(Result);
+end;
+
+function TServerStockSekarangClient.RetrieveCDS_Cache(AAppObject: TAppObject; const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FRetrieveCDSCommand_Cache = nil then
+  begin
+    FRetrieveCDSCommand_Cache := FConnection.CreateCommand;
+    FRetrieveCDSCommand_Cache.RequestType := 'POST';
+    FRetrieveCDSCommand_Cache.Text := 'TServerStockSekarang."RetrieveCDS"';
+    FRetrieveCDSCommand_Cache.Prepare(TServerStockSekarang_RetrieveCDS_Cache);
+  end;
+  if not Assigned(AAppObject) then
+    FRetrieveCDSCommand_Cache.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FRetrieveCDSCommand_Cache.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FRetrieveCDSCommand_Cache.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FRetrieveCDSCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FRetrieveCDSCommand_Cache.Parameters[1].Value.GetString);
+end;
+
+function TServerStockSekarangClient.RetrieveCDSJSON(const ARequestFilter: string): TJSONArray;
+begin
+  if FRetrieveCDSJSONCommand = nil then
+  begin
+    FRetrieveCDSJSONCommand := FConnection.CreateCommand;
+    FRetrieveCDSJSONCommand.RequestType := 'GET';
+    FRetrieveCDSJSONCommand.Text := 'TServerStockSekarang.RetrieveCDSJSON';
+    FRetrieveCDSJSONCommand.Prepare(TServerStockSekarang_RetrieveCDSJSON);
+  end;
+  FRetrieveCDSJSONCommand.Execute(ARequestFilter);
+  Result := TJSONArray(FRetrieveCDSJSONCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
+end;
+
+function TServerStockSekarangClient.RetrieveCDSJSON_Cache(const ARequestFilter: string): IDSRestCachedJSONArray;
+begin
+  if FRetrieveCDSJSONCommand_Cache = nil then
+  begin
+    FRetrieveCDSJSONCommand_Cache := FConnection.CreateCommand;
+    FRetrieveCDSJSONCommand_Cache.RequestType := 'GET';
+    FRetrieveCDSJSONCommand_Cache.Text := 'TServerStockSekarang.RetrieveCDSJSON';
+    FRetrieveCDSJSONCommand_Cache.Prepare(TServerStockSekarang_RetrieveCDSJSON_Cache);
+  end;
+  FRetrieveCDSJSONCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedJSONArray.Create(FRetrieveCDSJSONCommand_Cache.Parameters[0].Value.GetString);
+end;
+
+function TServerStockSekarangClient.Save(AOBject: TAppObject; const ARequestFilter: string): Boolean;
+begin
+  if FSaveCommand = nil then
+  begin
+    FSaveCommand := FConnection.CreateCommand;
+    FSaveCommand.RequestType := 'POST';
+    FSaveCommand.Text := 'TServerStockSekarang."Save"';
+    FSaveCommand.Prepare(TServerStockSekarang_Save);
+  end;
+  if not Assigned(AOBject) then
+    FSaveCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FSaveCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FSaveCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AOBject), True);
+      if FInstanceOwner then
+        AOBject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FSaveCommand.Execute(ARequestFilter);
+  Result := FSaveCommand.Parameters[1].Value.GetBoolean;
+end;
+
+constructor TServerStockSekarangClient.Create(ARestConnection: TDSRestConnection);
+begin
+  inherited Create(ARestConnection);
+end;
+
+constructor TServerStockSekarangClient.Create(ARestConnection: TDSRestConnection; AInstanceOwner: Boolean);
+begin
+  inherited Create(ARestConnection, AInstanceOwner);
+end;
+
+destructor TServerStockSekarangClient.Destroy;
+begin
+  FRetrieveCommand.DisposeOf;
+  FRetrieveCommand_Cache.DisposeOf;
+  FDeleteCommand.DisposeOf;
+  FRetrieveCDSCommand.DisposeOf;
+  FRetrieveCDSCommand_Cache.DisposeOf;
+  FRetrieveCDSJSONCommand.DisposeOf;
+  FRetrieveCDSJSONCommand_Cache.DisposeOf;
+  FSaveCommand.DisposeOf;
   inherited;
 end;
 

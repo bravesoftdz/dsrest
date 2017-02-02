@@ -79,6 +79,8 @@ type
     actClosingInventory: TAction;
     dxbrlrgbtnSettingKoneksi: TdxBarLargeButton;
     actSettingKoneksi: TAction;
+    dxbrlrgbtnLapStockSekarang: TdxBarLargeButton;
+    actLapStockSekarang: TAction;
     procedure actApplicationExitExecute(Sender: TObject);
     procedure actClosingInventoryExecute(Sender: TObject);
     procedure actMasSupplierExecute(Sender: TObject);
@@ -86,6 +88,7 @@ type
     procedure actPenerimaanBarangExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure actLapMutasiBarangExecute(Sender: TObject);
+    procedure actLapStockSekarangExecute(Sender: TObject);
     procedure actReturSupplierExecute(Sender: TObject);
     procedure actSettingKoneksiExecute(Sender: TObject);
   private
@@ -101,7 +104,7 @@ implementation
 uses
   ufrmSupplier, ufrmKoneksi,uAppUtils, ufrmBarang, ufrmPenerimaanBarang,
   ClientClassesUnit2, ClientModule, ufrmPilihCabang, ufrmLapMutasiBarangPerTransaksi,
-  ufrmReturSupplier, udbutils, ufrmClosingInventory;
+  ufrmReturSupplier, udbutils, ufrmClosingInventory, ufrmLapStockSekarang;
 
 {$R *.dfm}
 
@@ -118,6 +121,11 @@ end;
 procedure TfrmMain.actLapMutasiBarangExecute(Sender: TObject);
 begin
   frmLapMutasiBarangPerTransaksi := TfrmLapMutasiBarangPerTransaksi.Create(Self);
+end;
+
+procedure TfrmMain.actLapStockSekarangExecute(Sender: TObject);
+begin
+  frmLapStockSekarang := TfrmLapStockSekarang.Create(Self);
 end;
 
 procedure TfrmMain.actMasSupplierExecute(Sender: TObject);

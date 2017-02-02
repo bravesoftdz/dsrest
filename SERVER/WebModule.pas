@@ -66,6 +66,8 @@ type
       var PersistentClass: TPersistentClass);
     procedure dsrvrclsReturSupplierGetClass(DSServerClass: TDSServerClass; var
         PersistentClass: TPersistentClass);
+    procedure dsrvrclsStockSekarangGetClass(DSServerClass: TDSServerClass; var
+        PersistentClass: TPersistentClass);
   private
     FIP: string;
     { Private declarations }
@@ -217,6 +219,12 @@ procedure TWebModule2.dsrvrclsServerUtilsGetClass(DSServerClass:
 begin
   PersistentClass := TServerUtils;
 
+end;
+
+procedure TWebModule2.dsrvrclsStockSekarangGetClass(DSServerClass:
+    TDSServerClass; var PersistentClass: TPersistentClass);
+begin
+  PersistentClass := ServerMethodsUnit.TServerStockSekarang;
 end;
 
 procedure TWebModule2.dsrvrclsSupplierGetClass(DSServerClass: TDSServerClass;

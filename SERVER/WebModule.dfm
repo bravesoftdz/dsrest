@@ -142,6 +142,8 @@ object WebModule2: TWebModule2
     Top = 24
   end
   object dsrvrclsStockSekarang: TDSServerClass
+    OnGetClass = dsrvrclsStockSekarangGetClass
+    Server = DSServer1
     Left = 520
     Top = 16
   end

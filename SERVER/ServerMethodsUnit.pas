@@ -654,9 +654,23 @@ end;
 function TServerReturSupplier.BeforeSave(AOBject : TAppObject): Boolean;
 var
   i: Integer;
+  lBarang: TBarang;
   lRSupLama: TReturSupplier;
 begin
   Result := False;
+
+  for I := 0 to TReturSupplier(AOBject).ReturSupplierItems.count - 1 do
+  begin
+    with TServerStockSekarang.Create do
+    begin
+      try
+        lBarang := TReturSupplier(AOBject).ReturSupplierItems[i].Barang;
+        TReturSupplier(AOBject).ReturSupplierItems[i].HargaAVG := Retrieve(lBarang).Rp / Retrieve(lBarang).Qty *TReturSupplier(AOBject).ReturSupplierItems[i].Konversi;
+      finally
+        Free;
+      end;
+    end;
+  end;
 
   lRSupLama := Retrieve(AOBject.ID);
   try
@@ -726,7 +740,6 @@ begin
         lStockSekarang           := Retrieve(lRSup.ReturSupplierItems[i].Barang);
         lStockSekarang.Cabang    := TCabang.Create;
         lStockSekarang.Cabang.ID := lRSup.Cabang.ID;
-//        dKonversi                := lRSup.ReturSupplierItems[i].Konversi;
 
         with TServerBarang.Create do
         begin

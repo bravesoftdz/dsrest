@@ -94,6 +94,8 @@ begin
 
     TAppUtils.TulisRegistry('RestServer', edRestServer.Text);
     TAppUtils.TulisRegistry('RestPort', edRestPort.Text);
+
+    TAppUtils.Information('Berhasil Membangun Koneksi ke Rest Server');
   except
     on E : Exception do
     begin

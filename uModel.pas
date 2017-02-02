@@ -197,6 +197,7 @@ type
   private
     FBarang: TBarang;
     FDiskon: Double;
+    FHargaAVG: Double;
     FHargaBeli: Double;
     FReturSupplier: TReturSupplier;
     FPPN: Double;
@@ -209,6 +210,7 @@ type
     procedure SetHeaderProperty(AHeaderProperty : TAppObject); override;
     property Barang: TBarang read FBarang write FBarang;
     property Diskon: Double read FDiskon write FDiskon;
+    property HargaAVG: Double read FHargaAVG write FHargaAVG;
     property HargaBeli: Double read FHargaBeli write FHargaBeli;
     property HargaSetelahDiskon: Double read GetHargaSetelahDiskon;
     property ReturSupplier: TReturSupplier read FReturSupplier write FReturSupplier;
@@ -294,22 +296,6 @@ begin
 
   Result := FBarangSatuanItems;
 end;
-
-//function TBarang.GetSatuanStock: TUOM;
-//var
-//  i: Integer;
-//begin
-//  Result := nil;
-//
-//  for i := 0 to BarangSatuanItems.Count - 1 do
-//  begin
-//    if BarangSatuanItems[i].Konversi = 1 then
-//    begin
-//      Result := BarangSatuanItems[i].UOM;
-//      Exit;
-//    end;
-//  end;
-//end;
 
 function TBarang.KonversiPC(AUOM : TUOM): Double;
 var

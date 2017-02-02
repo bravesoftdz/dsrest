@@ -188,8 +188,7 @@ begin
       ReturSupplier.Supplier.ID := cbbSupplier.EditValue;
       ReturSupplier.TglBukti    := edTglBukti.Date;
       ReturSupplier.Cabang      := TCabang.Create;
-//      ReturSupplier.Cabang.ID   := ClientDataModule.Cabang.ID;
-
+      ReturSupplier.Cabang.ID   := ClientDataModule.Cabang.ID;
 
       ReturSupplier.ReturSupplierItems.Clear;
       for i := 0 to cxGridTableReturSupplier.DataController.RecordCount - 1 do
@@ -200,6 +199,7 @@ begin
 
         lReturSupplierItem.Diskon           := cxGridTableReturSupplier.GetDouble(i, cxgrdclmnGridTableReturSupplierColumnDiskon.Index);
         lReturSupplierItem.HargaBeli        := cxGridTableReturSupplier.GetDouble(i, cxgrdclmnGridTableReturSupplierColumnHarga.Index);
+//        lReturSupplierItem.HargaAVG         :=
         lReturSupplierItem.PPN              := cxGridTableReturSupplier.GetDouble(i, cxgrdclmnGridTableReturSupplierColumnPPN.Index);
         lReturSupplierItem.Qty              := cxGridTableReturSupplier.GetDouble(i, cxgrdclmnGridTableReturSupplierColumnQty.Index);
         lReturSupplierItem.UOM              := TUOM.Create;

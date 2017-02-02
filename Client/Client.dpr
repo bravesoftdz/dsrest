@@ -17,7 +17,8 @@ uses
   ufrmLapMutasiBarangPerTransaksi in 'form\ufrmLapMutasiBarangPerTransaksi.pas' {frmLapMutasiBarangPerTransaksi},
   uBarangUtils in '..\uBarangUtils.pas',
   ufrmPenerimaanBarang in 'form\ufrmPenerimaanBarang.pas' {frmPenerimaanBarang},
-  ufrmClosingInventory in 'form\ufrmClosingInventory.pas' {frmClosingInventory};
+  ufrmClosingInventory in 'form\ufrmClosingInventory.pas' {frmClosingInventory},
+  ufrmLapStockSekarang in 'form\ufrmLapStockSekarang.pas' {frmLapStockSekarang};
 
 {$R *.res}
 
