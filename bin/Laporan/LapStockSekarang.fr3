@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<TfrxReport Version="5.3.16" DotMatrixReport="False" IniFile="\Software\Fast Reports" PreviewOptions.Buttons="4095" PreviewOptions.Zoom="1" PrintOptions.Printer="Default" PrintOptions.PrintOnSheet="0" ReportOptions.CreateDate="42769.4369762847" ReportOptions.Description.Text="" ReportOptions.LastChange="42769.4813569907" ScriptLanguage="PascalScript" ScriptText.Text="begin&#13;&#10;&#13;&#10;end." StoreInDFM="False">
+  <Datasets>
+    <item DataSet="Q0" DataSetName="Q0"/>
+  </Datasets>
+  <TfrxDataPage Name="Data" Height="1000" Left="0" Top="0" Width="1000"/>
+  <TfrxReportPage Name="Page1" PaperWidth="215.9" PaperHeight="279.4" PaperSize="1" LeftMargin="10" RightMargin="10" TopMargin="10" BottomMargin="10" ColumnWidth="0" ColumnPositions.Text="" HGuides.Text="" VGuides.Text="">
+    <TfrxMasterData Name="MasterData1" FillType="ftBrush" FillGap.Top="0" FillGap.Left="0" FillGap.Bottom="0" FillGap.Right="0" Height="22.67718" Left="0" Top="18.89765" Width="740.409927" ColumnWidth="0" ColumnGap="0" DataSet="Q0" DataSetName="Q0" RowCount="0">
+      <TfrxMemoView Name="Memo1" Left="11.33859" Top="0" Width="98.26778" Height="18.89765" DataField="sku" DataSet="Q0" DataSetName="Q0" Text="[Q0.&#34;sku&#34;]"/>
+      <TfrxMemoView Name="Memo2" Left="120.94496" Top="0" Width="166.29932" Height="18.89765" DataField="nama" DataSet="Q0" DataSetName="Q0" Text="[Q0.&#34;nama&#34;]"/>
+      <TfrxMemoView Name="Memo3" Left="294.80334" Top="0" Width="117.16543" Height="18.89765" DataField="uom" DataSet="Q0" DataSetName="Q0" Text="[Q0.&#34;uom&#34;]"/>
+      <TfrxMemoView Name="Memo4" Left="423.30736" Top="0" Width="79.37013" Height="18.89765" DataField="qty" DataSet="Q0" DataSetName="Q0" Text="[Q0.&#34;qty&#34;]"/>
+      <TfrxMemoView Name="Memo5" Left="525.35467" Top="0" Width="79.37013" Height="18.89765" DataField="rp" DataSet="Q0" DataSetName="Q0" Text="[Q0.&#34;rp&#34;]"/>
+    </TfrxMasterData>
+  </TfrxReportPage>
+</TfrxReport>
