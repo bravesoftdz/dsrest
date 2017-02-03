@@ -12,7 +12,7 @@ uses
   cxGridLevel, cxGridCustomView, cxCurrencyEdit,uAppUtils, ClientModule, ClientClassesUnit2,
   Datasnap.Provider, Datasnap.DBClient, uDBUtils, Vcl.StdCtrls, cxContainer,
   Vcl.ComCtrls, dxCore, cxDateUtils, cxTextEdit, cxMaskEdit, cxDropDownEdit,
-  cxCalendar;
+  cxCalendar, dxBarExtDBItems;
 
 type
   TfrmLapMutasiBarangPerTransaksi = class(TfrmDefault)

@@ -10,7 +10,8 @@ uses
   cxCustomData, cxFilter, cxData, cxDataStorage, DB, cxDBData,
   cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGridLevel,
   cxGridCustomView, cxGrid, Grids, DBGrids, DBClient, Provider,
-  cxPCdxBarPopupMenu, cxPC, cxMemo, ImgList, uModel, cxNavigator, System.Actions;
+  cxPCdxBarPopupMenu, cxPC, cxMemo, ImgList, uModel, cxNavigator, System.Actions,
+  dxBarExtDBItems;
 
 type
   TfrmSupplier = class(TfrmDefault)

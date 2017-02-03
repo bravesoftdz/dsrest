@@ -10,7 +10,9 @@ uses
   cxCustomData, cxFilter, cxData, cxDataStorage, cxEdit, cxNavigator, Data.DB,
   cxDBData, cxGridLevel, cxGridCustomView, cxGridCustomTableView,
   cxGridTableView, cxGridDBTableView, uModel, Datasnap.DBClient,
-  Datasnap.Provider;
+  Datasnap.Provider, cxCurrencyEdit, cxDBExtLookupComboBox, cxContainer,
+  cxTextEdit, cxMaskEdit, cxDropDownEdit, cxLookupEdit, cxDBLookupEdit,
+  Vcl.StdCtrls, dxBarExtDBItems, cxCheckBox, cxBarEditItem;
 
 type
   TfrmLapStockSekarang = class(TfrmDefault)
@@ -19,9 +21,21 @@ type
     cxGridDBStockSekarang: TcxGrid;
     dtstprvdrStockSekarang: TDataSetProvider;
     cdsStockSekarang: TClientDataSet;
+    cxGridColGridDBTableStockSekarangColumnSKU: TcxGridDBColumn;
+    cxGridColGridDBTableStockSekarangColumnNama: TcxGridDBColumn;
+    cxGridColGridDBTableStockSekarangColumnUOM: TcxGridDBColumn;
+    cxGridColGridDBTableStockSekarangColumnQty: TcxGridDBColumn;
+    cxGridColGridDBTableStockSekarangColumnRP: TcxGridDBColumn;
+    cxGridDBTableBarang: TcxGridDBTableView;
+    cxGridColGridDBTableGridRepTransaksiDBTableViewBarangColumnSKU: TcxGridDBColumn;
+    cxGridColGridDBTableGridRepTransaksiDBTableViewBarangColumnNama: TcxGridDBColumn;
+    cxGridDBTableUOM: TcxGridDBTableView;
+    cxGridColGridDBTableGridRepTransaksiDBTableViewUOMColumnNama: TcxGridDBColumn;
     procedure ActionRefreshExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
   private
+    procedure InisialisasiCDSBarang;
+    procedure InisialisasiCDSUOM;
     { Private declarations }
   public
     { Public declarations }
@@ -49,8 +63,16 @@ begin
       dtstprvdrStockSekarang.DataSet := RetrieveCDS(lStockSekarang);
       cdsStockSekarang.Open;
 
-      TDBUtils.DataSetToCxDBGrid(cdsStockSekarang, cxGridDBTableStockSekarang, True);
-      cxGridDBTableStockSekarang.ApplyBestFit();
+      if not chkKonsolidasi.EditValue then
+      begin
+        cdsStockSekarang.Filter   := ' cabang = ' + QuotedStr(cbbLUCabang.KeyValue);
+        cdsStockSekarang.Filtered := True;
+      end else begin
+        cdsStockSekarang.Filtered := False;
+      end;
+
+      cxGridDBTableStockSekarang.SetDataset(cdsStockSekarang);
+      cxGridColGridDBTableStockSekarangColumnNama.ApplyBestFit();
     finally
       lStockSekarang.Free;
       Free;
@@ -63,6 +85,29 @@ begin
   inherited;
   pnlListTransaksi.Visible := False;
   splTransaksi.Visible     := False;
+
+  InisialisasiCDSUOM;
+  InisialisasiCDSBarang;
+
+//  cbbLUCabang.EditValue := ClientDataModule.Cabang.ID;
+//  cbbLUCabang.Enabled   := ClientDataModule.Cabang.IsHO <> 0;
+//  cbbLUCabang.
+end;
+
+procedure TfrmLapStockSekarang.InisialisasiCDSBarang;
+var
+  sSQL: string;
+begin
+  sSQL := 'Select * from TBarang';
+  cxGridDBTableBarang.SetDataset(sSQL);
+end;
+
+procedure TfrmLapStockSekarang.InisialisasiCDSUOM;
+var
+  sSQL: string;
+begin
+  sSQL := 'Select * from TUOM';
+  cxGridDBTableUOM.SetDataset(sSQL);
 end;
 
 end.

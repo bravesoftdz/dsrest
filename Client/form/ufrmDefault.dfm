@@ -14,6 +14,7 @@ object frmDefault: TfrmDefault
   OldCreateOrder = False
   Visible = True
   OnClose = FormClose
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object splTransaksi: TSplitter
@@ -64,7 +65,7 @@ object frmDefault: TfrmDefault
     LookAndFeel.Kind = lfUltraFlat
     PopupMenuLinks = <>
     UseSystemFont = True
-    Left = 400
+    Left = 576
     Top = 8
     DockControlHeights = (
       0
@@ -102,6 +103,17 @@ object frmDefault: TfrmDefault
         item
           Visible = True
           ItemName = 'dxBarLargeButtonRefresh'
+        end
+        item
+          UserDefine = [udWidth]
+          UserWidth = 187
+          Visible = True
+          ItemName = 'cbbLUCabang'
+        end
+        item
+          ViewLayout = ivlGlyphControlCaption
+          Visible = True
+          ItemName = 'chkKonsolidasi'
         end>
       OneOnRow = True
       Row = 0
@@ -149,9 +161,39 @@ object frmDefault: TfrmDefault
       SyncImageIndex = False
       ImageIndex = -1
     end
+    object cbbLUCabang: TdxBarLookupCombo
+      Caption = 'New Item'
+      Category = 0
+      Hint = 'New Item'
+      Visible = ivAlways
+      Glyph.Data = {
+        F6000000424DF600000000000000760000002800000010000000100000000100
+        0400000000008000000000000000000000001000000000000000000000000000
+        8000008000000080800080000000800080008080000080808000C0C0C0000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00DDDDDDDDDDDD
+        DDDD000000000000000D0FFFF0FFFFFFFF0D0F77F0F777777F0D0CCCC0CCCCCC
+        CC0D0C77C0C777777C0D0CCCC0CCCCCCCC0D0F77F0F777777F0D0FFFF0FFFFFF
+        FF0D0F77F0F777777F0D0FFFF0FFFFFFFF0D000000000000000D0FFFCCCCFFF0
+        DDDD0F777777FFF0DDDD0FFFCCCCFFF0DDDD000000000000DDDD}
+      KeyField = 'ID'
+      ListField = 'Nama'
+      ListSource = dsCabang
+      RowCount = 7
+    end
+    object chkKonsolidasi: TcxBarEditItem
+      Caption = 'Konsolidasi'
+      Category = 0
+      Hint = 'Konsolidasi'
+      Visible = ivAlways
+      ShowCaption = True
+      Width = 0
+      PropertiesClassName = 'TcxCheckBoxProperties'
+      Properties.ImmediatePost = True
+      InternalEditValue = 0
+    end
   end
   object ActionListForm: TActionList
-    Left = 360
+    Left = 640
     Top = 8
     object ActionBaru: TAction
       Caption = 'Baru'
@@ -167,11 +209,10 @@ object frmDefault: TfrmDefault
     end
     object ActionRefresh: TAction
       Caption = 'Refresh'
-      OnExecute = ActionRefreshExecute
     end
   end
   object cxStyleRepTrans: TcxStyleRepository
-    Left = 504
+    Left = 672
     Top = 8
     PixelsPerInch = 96
     object cxstylGridHeader: TcxStyle
@@ -190,8 +231,22 @@ object frmDefault: TfrmDefault
     end
   end
   object cxGridRepTransaksi: TcxGridViewRepository
-    Left = 440
+    Left = 608
     Top = 8
+    object cxGridDBTableCabang: TcxGridDBTableView
+      Navigator.Buttons.CustomButtons = <>
+      DataController.Summary.DefaultGroupSummaryItems = <>
+      DataController.Summary.FooterSummaryItems = <>
+      DataController.Summary.SummaryGroups = <>
+      object cxGridColCabangKode: TcxGridDBColumn
+        Caption = 'Kode '
+        DataBinding.FieldName = 'Kode'
+      end
+      object cxGridColCabangNama: TcxGridDBColumn
+        Caption = 'Nama '
+        DataBinding.FieldName = 'Nama'
+      end
+    end
   end
   object ilButton: TImageList
     ColorDepth = cd32Bit
@@ -200,7 +255,7 @@ object frmDefault: TfrmDefault
     Left = 216
     Top = 184
     Bitmap = {
-      494C010105000800340018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010105000800540018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -800,5 +855,21 @@ object frmDefault: TfrmDefault
       F0000F000001800003F3FF1FF8001F000003C00003F0003FFE007F800007E000
       07F8007FFFFFFFE0000FFFFFFFFFFFFF00000000000000000000000000000000
       000000000000}
+  end
+  object dsCabang: TDataSource
+    DataSet = cdsCabang
+    Left = 352
+    Top = 176
+  end
+  object DSPCabang: TDataSetProvider
+    Left = 464
+    Top = 144
+  end
+  object cdsCabang: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'DSPCabang'
+    Left = 496
+    Top = 144
   end
 end

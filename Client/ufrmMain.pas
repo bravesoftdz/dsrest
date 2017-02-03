@@ -81,6 +81,9 @@ type
     actSettingKoneksi: TAction;
     dxbrlrgbtnLapStockSekarang: TdxBarLargeButton;
     actLapStockSekarang: TAction;
+    dxbrlrgbtnGantiCabang: TdxBarLargeButton;
+    actAlatGantiCabang: TAction;
+    procedure actAlatGantiCabangExecute(Sender: TObject);
     procedure actApplicationExitExecute(Sender: TObject);
     procedure actClosingInventoryExecute(Sender: TObject);
     procedure actMasSupplierExecute(Sender: TObject);
@@ -92,6 +95,7 @@ type
     procedure actReturSupplierExecute(Sender: TObject);
     procedure actSettingKoneksiExecute(Sender: TObject);
   private
+    procedure UpdateStatusBar;
     { Private declarations }
   public
     { Public declarations }
@@ -107,6 +111,26 @@ uses
   ufrmReturSupplier, udbutils, ufrmClosingInventory, ufrmLapStockSekarang;
 
 {$R *.dfm}
+
+procedure TfrmMain.actAlatGantiCabangExecute(Sender: TObject);
+var
+  I: Integer;
+begin
+if TAppUtils.Confirm('Untuk Pindah Cabang semua form harus ditutup. Lanjutkan ?') then
+  begin
+    for I := ComponentCount - 1 downto 0  do
+    begin
+      if (Components[i] is TForm) then
+        (Components[i] as TForm).Free;
+
+    end;
+
+    frmPilihCabang := TfrmPilihCabang.Create(Self);
+    frmPilihCabang.ShowModal;
+
+    UpdateStatusBar;
+  end;
+end;
 
 procedure TfrmMain.actApplicationExitExecute(Sender: TObject);
 begin
@@ -152,7 +176,7 @@ procedure TfrmMain.actSettingKoneksiExecute(Sender: TObject);
 var
   I: Integer;
 begin
-  if TAppUtils.Confirm('Untum mengubah setting koneksi, semua form harus ditutup. Lanjutkan ?') then
+  if TAppUtils.Confirm('Untuk mengubah setting koneksi, semua form harus ditutup. Lanjutkan ?') then
   begin
     for I := ComponentCount - 1 downto 0  do
     begin
@@ -180,8 +204,6 @@ begin
 
         ClientDataModule.DSRestConnection.Host := TAppUtils.BacaRegistry('RestServer');
         ClientDataModule.DSRestConnection.Port := StrToInt(TAppUtils.BacaRegistry('RestPort'));
-
-//        ClientDataModule.DSRestConnection.TestConnection();
       except
         frmKoneksi.ShowModal;
       end;
@@ -199,12 +221,17 @@ begin
       end;
     end;
 
-    statDS.Panels[2].Text := 'Cabang : ' + ClientDataModule.Cabang.Nama;
-    statDS.Panels[1].Text := 'Rest Server : ' + ClientDataModule.DSRestConnection.Host + ':' + IntToStr(ClientDataModule.DSRestConnection.Port);
-    statDS.Panels[0].Text := 'Local DB : ' + ADConnection.Params.Text;
+    UpdateStatusBar;
   finally
     frmKoneksi.Free;
   end;
+end;
+
+procedure TfrmMain.UpdateStatusBar;
+begin
+  statDS.Panels[2].Text := 'Cabang : ' + ClientDataModule.Cabang.Nama;
+  statDS.Panels[1].Text := 'Rest Server : ' + ClientDataModule.DSRestConnection.Host + ':' + IntToStr(ClientDataModule.DSRestConnection.Port);
+  statDS.Panels[0].Text := 'Local DB : ' + ADConnection.Params.Text;
 end;
 
 end.

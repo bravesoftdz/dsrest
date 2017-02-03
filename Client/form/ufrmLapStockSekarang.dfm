@@ -1,35 +1,132 @@
 inherited frmLapStockSekarang: TfrmLapStockSekarang
   Caption = 'Laporan Stock Sekarang'
-  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
+  inherited splTransaksi: TSplitter
+    Left = 0
+    Top = 88
+    Width = 717
+    Height = 8
+    Cursor = crVSplit
+    Align = alTop
+    ExplicitLeft = 0
+    ExplicitTop = 235
+    ExplicitWidth = 91
+    ExplicitHeight = 8
+  end
+  inherited pnlListTransaksi: TPanel
+    Width = 717
+    Height = 38
+    Align = alTop
+    ExplicitWidth = 717
+    ExplicitHeight = 38
+  end
   object cxGridDBStockSekarang: TcxGrid [3]
-    Left = 193
-    Top = 50
-    Width = 524
-    Height = 276
+    Left = 0
+    Top = 96
+    Width = 717
+    Height = 230
     Align = alClient
     TabOrder = 6
-    ExplicitLeft = 240
-    ExplicitTop = 96
-    ExplicitWidth = 250
-    ExplicitHeight = 200
     object cxGridDBTableStockSekarang: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       DataController.Summary.DefaultGroupSummaryItems = <>
       DataController.Summary.FooterSummaryItems = <>
       DataController.Summary.SummaryGroups = <>
+      Styles.ContentEven = cxstylGridEven
+      Styles.ContentOdd = cxstylGridOdd
+      Styles.Header = cxstylGridHeader
+      object cxGridColGridDBTableStockSekarangColumnSKU: TcxGridDBColumn
+        Caption = 'SKU'
+        DataBinding.FieldName = 'Barang'
+        PropertiesClassName = 'TcxExtLookupComboBoxProperties'
+        Properties.View = cxGridDBTableBarang
+        Properties.KeyFieldNames = 'ID'
+        Properties.ListFieldItem = cxGridColGridDBTableGridRepTransaksiDBTableViewBarangColumnSKU
+        HeaderAlignmentHorz = taCenter
+        Width = 96
+      end
+      object cxGridColGridDBTableStockSekarangColumnNama: TcxGridDBColumn
+        Caption = 'Nama'
+        DataBinding.FieldName = 'Barang'
+        PropertiesClassName = 'TcxExtLookupComboBoxProperties'
+        Properties.View = cxGridDBTableBarang
+        Properties.KeyFieldNames = 'ID'
+        Properties.ListFieldItem = cxGridColGridDBTableGridRepTransaksiDBTableViewBarangColumnNama
+        HeaderAlignmentHorz = taCenter
+      end
+      object cxGridColGridDBTableStockSekarangColumnUOM: TcxGridDBColumn
+        Caption = 'UOM '
+        DataBinding.FieldName = 'UOM'
+        PropertiesClassName = 'TcxExtLookupComboBoxProperties'
+        Properties.View = cxGridDBTableUOM
+        Properties.KeyFieldNames = 'ID'
+        Properties.ListFieldItem = cxGridColGridDBTableGridRepTransaksiDBTableViewUOMColumnNama
+        HeaderAlignmentHorz = taCenter
+        Width = 81
+      end
+      object cxGridColGridDBTableStockSekarangColumnQty: TcxGridDBColumn
+        Caption = 'Qty '
+        DataBinding.FieldName = 'Qty'
+        PropertiesClassName = 'TcxCurrencyEditProperties'
+        Properties.DisplayFormat = ',#.##;(,#.##)'
+        HeaderAlignmentHorz = taCenter
+        Width = 85
+      end
+      object cxGridColGridDBTableStockSekarangColumnRP: TcxGridDBColumn
+        Caption = 'Rupiah'
+        DataBinding.FieldName = 'Rp'
+        PropertiesClassName = 'TcxCurrencyEditProperties'
+        Properties.DisplayFormat = ',#.##;(,#.##)'
+        HeaderAlignmentHorz = taCenter
+        Width = 108
+      end
     end
     object cxgrdlvlGridDBStockSekarangLevel1: TcxGridLevel
       GridView = cxGridDBTableStockSekarang
     end
   end
   inherited dxBarManagerForm: TdxBarManager
+    Left = 608
     DockControlHeights = (
       0
       0
       50
       0)
+    inherited dxBarManager1Bar1: TdxBar
+      ItemLinks = <
+        item
+          Visible = True
+          ItemName = 'dxBarLargeButtonNew'
+        end
+        item
+          Visible = True
+          ItemName = 'dxBarLargeButtonSave'
+        end
+        item
+          Visible = True
+          ItemName = 'dxBarLargeButtonDel'
+        end
+        item
+          Visible = True
+          ItemName = 'dxBarLargeButtonEdit'
+        end
+        item
+          Visible = True
+          ItemName = 'dxBarLargeButtonRefresh'
+        end
+        item
+          UserDefine = [udWidth]
+          UserWidth = 174
+          Visible = True
+          ItemName = 'cbbLUCabang'
+        end
+        item
+          ViewLayout = ivlGlyphControlCaption
+          Visible = True
+          ItemName = 'chkKonsolidasi'
+        end>
+    end
     inherited dxBarLargeButtonNew: TdxBarLargeButton
       ImageIndex = -1
     end
@@ -46,12 +143,47 @@ inherited frmLapStockSekarang: TfrmLapStockSekarang
       ImageIndex = -1
     end
   end
+  inherited ActionListForm: TActionList
+    inherited ActionRefresh: TAction
+      OnExecute = ActionRefreshExecute
+    end
+  end
   inherited cxStyleRepTrans: TcxStyleRepository
+    Left = 640
     PixelsPerInch = 96
+  end
+  inherited cxGridRepTransaksi: TcxGridViewRepository
+    Left = 672
+    object cxGridDBTableBarang: TcxGridDBTableView
+      Navigator.Buttons.CustomButtons = <>
+      DataController.KeyFieldNames = 'ID'
+      DataController.Summary.DefaultGroupSummaryItems = <>
+      DataController.Summary.FooterSummaryItems = <>
+      DataController.Summary.SummaryGroups = <>
+      object cxGridColGridDBTableGridRepTransaksiDBTableViewBarangColumnSKU: TcxGridDBColumn
+        Caption = 'SKU '
+        DataBinding.FieldName = 'SKU'
+      end
+      object cxGridColGridDBTableGridRepTransaksiDBTableViewBarangColumnNama: TcxGridDBColumn
+        Caption = 'Nama '
+        DataBinding.FieldName = 'Nama'
+      end
+    end
+    object cxGridDBTableUOM: TcxGridDBTableView
+      Navigator.Buttons.CustomButtons = <>
+      DataController.KeyFieldNames = 'ID'
+      DataController.Summary.DefaultGroupSummaryItems = <>
+      DataController.Summary.FooterSummaryItems = <>
+      DataController.Summary.SummaryGroups = <>
+      object cxGridColGridDBTableGridRepTransaksiDBTableViewUOMColumnNama: TcxGridDBColumn
+        Caption = 'UOM '
+        DataBinding.FieldName = 'UOM'
+      end
+    end
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C0101050008003C0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C0101050008005C0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

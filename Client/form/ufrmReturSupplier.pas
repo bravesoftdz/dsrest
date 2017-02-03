@@ -12,7 +12,7 @@ uses
   cxGridCustomTableView, cxGridTableView, cxGridLevel, cxGrid, cxCurrencyEdit,
   ImgList, uModel, ClientClassesUnit2, DB, cxDBData, cxGridDBTableView,
   cxDBExtLookupComboBox, Provider, DBClient, cxNavigator, dxCore, cxDateUtils,
-  System.Actions;
+  System.Actions, dxBarExtDBItems;
 
 type
   TfrmReturSupplier = class(TfrmDefault)

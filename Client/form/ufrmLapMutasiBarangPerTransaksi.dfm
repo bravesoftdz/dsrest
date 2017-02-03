@@ -23,14 +23,14 @@ inherited frmLapMutasiBarangPerTransaksi: TfrmLapMutasiBarangPerTransaksi
   inherited cxSBTransaksi: TdxStatusBar
     Top = 405
     Width = 765
-    ExplicitTop = -20
-    ExplicitWidth = 124
+    ExplicitTop = 405
+    ExplicitWidth = 765
   end
   inherited pnlListTransaksi: TPanel
     Width = 765
     Height = 47
     Align = alTop
-    ExplicitWidth = 124
+    ExplicitWidth = 765
     ExplicitHeight = 47
     object lblAwal: TLabel
       Left = 16
@@ -68,8 +68,6 @@ inherited frmLapMutasiBarangPerTransaksi: TfrmLapMutasiBarangPerTransaksi
     Height = 300
     Align = alClient
     TabOrder = 6
-    ExplicitWidth = 124
-    ExplicitHeight = 221
     object cxGridDBTableMutasiBarang: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       DataController.Summary.DefaultGroupSummaryItems = <>
@@ -171,12 +169,17 @@ inherited frmLapMutasiBarangPerTransaksi: TfrmLapMutasiBarangPerTransaksi
       ImageIndex = -1
     end
   end
+  inherited ActionListForm: TActionList
+    inherited ActionRefresh: TAction
+      OnExecute = ActionRefreshExecute
+    end
+  end
   inherited cxStyleRepTrans: TcxStyleRepository
     PixelsPerInch = 96
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010105000800400018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010105000800440018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

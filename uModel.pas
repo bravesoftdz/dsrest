@@ -25,9 +25,11 @@ type
 
   TCabang = class(TAppObject)
   private
+    FIsHO: Integer;
     FKode: string;
     FNama: string;
   public
+    property IsHO: Integer read FIsHO write FIsHO;
     property Kode: string read FKode write FKode;
     property Nama: string read FNama write FNama;
   end;

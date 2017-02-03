@@ -11,7 +11,8 @@ uses
   ClientModule, cxCustomData, cxFilter, cxData, cxDataStorage, DB, cxDBData,
   cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGridCustomView,
   cxGrid, cxGridLevel, cxPCdxBarPopupMenu, cxPC, cxCurrencyEdit, ImgList, uModel,
-  cxNavigator, System.Actions;
+  cxNavigator, System.Actions, Datasnap.DBClient, Datasnap.Provider,
+  dxBarExtDBItems, cxCheckBox, cxBarEditItem;
 
 type
   TfrmBarang = class(TfrmDefault)
@@ -82,7 +83,7 @@ var
 implementation
 
 uses
-  DBClient, uDBUtils, uAppUtils,uBarangUtils;
+   uDBUtils, uAppUtils,uBarangUtils;
 
 {$R *.dfm}
 

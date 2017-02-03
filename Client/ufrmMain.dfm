@@ -314,6 +314,10 @@ object frmMain: TfrmMain
         item
           Visible = True
           ItemName = 'dxbrlrgbtnSettingKoneksi'
+        end
+        item
+          Visible = True
+          ItemName = 'dxbrlrgbtnGantiCabang'
         end>
       OneOnRow = True
       Row = 0
@@ -376,6 +380,12 @@ object frmMain: TfrmMain
     object dxbrlrgbtnLapStockSekarang: TdxBarLargeButton
       Action = actLapStockSekarang
       Category = 0
+      LargeImageIndex = 10
+    end
+    object dxbrlrgbtnGantiCabang: TdxBarLargeButton
+      Action = actAlatGantiCabang
+      Category = 0
+      LargeImageIndex = 2
     end
     object dxbrlrgbtnExit: TdxBarLargeButton
       Action = actApplicationExit
@@ -470,6 +480,11 @@ object frmMain: TfrmMain
       Caption = 'Stock Sekarang'
       OnExecute = actLapStockSekarangExecute
     end
+    object actAlatGantiCabang: TAction
+      Category = 'Alat'
+      Caption = 'Ganti Cabang'
+      OnExecute = actAlatGantiCabangExecute
+    end
   end
   object ImgListMainLarge: TImageList
     ColorDepth = cd32Bit
@@ -478,7 +493,7 @@ object frmMain: TfrmMain
     Left = 688
     Top = 128
     Bitmap = {
-      494C01010B0018005C0020002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C01010B001800640020002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000008000000060000000010020000000000000C0
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

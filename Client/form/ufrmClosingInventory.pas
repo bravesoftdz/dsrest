@@ -6,7 +6,10 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ufrmDefault, cxGraphics, cxControls,
   cxLookAndFeels, cxLookAndFeelPainters, Vcl.ImgList, cxGrid, cxStyles,
-  cxClasses, System.Actions, Vcl.ActnList, dxBar, Vcl.ExtCtrls, dxStatusBar, ClientModule, ClientClassesUnit2, uModel;
+  cxClasses, System.Actions, Vcl.ActnList, dxBar, Vcl.ExtCtrls, dxStatusBar, ClientModule, ClientClassesUnit2, uModel,
+  cxCustomData, cxFilter, cxData, cxDataStorage, cxEdit, cxNavigator, Data.DB,
+  cxDBData, Datasnap.DBClient, Datasnap.Provider, cxGridCustomTableView,
+  cxGridTableView, cxGridDBTableView, cxGridCustomView, dxBarExtDBItems;
 
 type
   TfrmClosingInventory = class(TfrmDefault)
