@@ -12,7 +12,12 @@ uses
   cxGridTableView, cxGridDBTableView, uModel, Datasnap.DBClient,
   Datasnap.Provider, cxCurrencyEdit, cxDBExtLookupComboBox, cxContainer,
   cxTextEdit, cxMaskEdit, cxDropDownEdit, cxLookupEdit, cxDBLookupEdit,
-  Vcl.StdCtrls, dxBarExtDBItems, cxCheckBox, cxBarEditItem;
+  Vcl.StdCtrls, dxBarExtDBItems, cxCheckBox, cxBarEditItem, dxPSGlbl, dxPSUtl,
+  dxPSEngn, dxPrnPg, dxBkgnd, dxWrap, dxPrnDev, dxPSCompsProvider,
+  dxPSFillPatterns, dxPSEdgePatterns, dxPSPDFExportCore, dxPSPDFExport,
+  cxDrawTextUtils, dxPSPrVwStd, dxPSPrVwAdv, dxPSPrVwRibbon,
+  dxPScxPageControlProducer, dxPScxEditorProducers, dxPScxExtEditorProducers,
+  dxPrnDlg, dxPgsDlg, dxPSCore, dxPScxGridLnk, dxPScxGridLayoutViewLnk, frxClass;
 
 type
   TfrmLapStockSekarang = class(TfrmDefault)
@@ -31,6 +36,7 @@ type
     cxGridColGridDBTableGridRepTransaksiDBTableViewBarangColumnNama: TcxGridDBColumn;
     cxGridDBTableUOM: TcxGridDBTableView;
     cxGridColGridDBTableGridRepTransaksiDBTableViewUOMColumnNama: TcxGridDBColumn;
+    procedure actCetakExecute(Sender: TObject);
     procedure ActionRefreshExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
   private
@@ -47,29 +53,41 @@ var
 implementation
 uses
   uAppUtils, ClientModule, ClientClassesUnit2, uDBUtils,
-  System.StrUtils, System.DateUtils;
+  System.StrUtils, System.DateUtils, uReport;
 
 {$R *.dfm}
+
+procedure TfrmLapStockSekarang.actCetakExecute(Sender: TObject);
+var
+  lReport: TTSReport;
+begin
+  inherited;
+
+  lReport := TTSReport.Create(Self);
+  try
+    lReport.AddDataset(cdsStockSekarang);
+    lReport.ShowReport('LapStockSekarang');
+  finally
+    lReport.Free;
+  end;
+
+end;
 
 procedure TfrmLapStockSekarang.ActionRefreshExecute(Sender: TObject);
 var
   lStockSekarang: TStockSekarang;
 begin
   inherited;
-  with TServerStockSekarangClient.Create(ClientDataModule.DSRestConnection, False) do
+  with TServerLaporanClient.Create(ClientDataModule.DSRestConnection, False) do
   begin
     lStockSekarang := TStockSekarang.Create;
     try
-      dtstprvdrStockSekarang.DataSet := RetrieveCDS(lStockSekarang);
-      cdsStockSekarang.Open;
+      if chkKonsolidasi.EditValue then
+        dtstprvdrStockSekarang.DataSet := LaporanStockSekarang(nil)
+      else
+        dtstprvdrStockSekarang.DataSet := LaporanStockSekarang(TCabang.CreateID(cbbLUCabang.KeyValue));
 
-      if not chkKonsolidasi.EditValue then
-      begin
-        cdsStockSekarang.Filter   := ' cabang = ' + QuotedStr(cbbLUCabang.KeyValue);
-        cdsStockSekarang.Filtered := True;
-      end else begin
-        cdsStockSekarang.Filtered := False;
-      end;
+      cdsStockSekarang.Open;
 
       cxGridDBTableStockSekarang.SetDataset(cdsStockSekarang);
       cxGridColGridDBTableStockSekarangColumnNama.ApplyBestFit();

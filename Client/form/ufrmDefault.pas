@@ -10,7 +10,11 @@ uses
   cxDataStorage, cxEdit, cxNavigator, Data.DB, cxDBData, cxGridCustomTableView,
   cxGridTableView, cxGridDBTableView, cxGridCustomView, Datasnap.DBClient,
   Datasnap.Provider, ClientModule, ClientClassesUnit2, uModel, cxCheckBox,
-  cxBarEditItem, cxDBExtLookupComboBox;
+  cxBarEditItem, cxDBExtLookupComboBox, dxPSGlbl, dxPSUtl, dxPSEngn, dxPrnPg,
+  dxBkgnd, dxWrap, dxPrnDev, dxPSCompsProvider, dxPSFillPatterns,
+  dxPSEdgePatterns, dxPSPDFExportCore, dxPSPDFExport, cxDrawTextUtils,
+  dxPSPrVwStd, dxPSPrVwAdv, dxPSPrVwRibbon, dxPScxPageControlProducer,
+  dxPScxEditorProducers, dxPScxExtEditorProducers, dxPrnDlg, dxPgsDlg, dxPSCore;
 
 type
   TfrmDefault = class(TForm)

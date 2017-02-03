@@ -1,5 +1,7 @@
 inherited frmLapStockSekarang: TfrmLapStockSekarang
   Caption = 'Laporan Stock Sekarang'
+  ExplicitWidth = 733
+  ExplicitHeight = 385
   PixelsPerInch = 96
   TextHeight = 13
   inherited splTransaksi: TSplitter
@@ -37,31 +39,20 @@ inherited frmLapStockSekarang: TfrmLapStockSekarang
       Styles.ContentOdd = cxstylGridOdd
       Styles.Header = cxstylGridHeader
       object cxGridColGridDBTableStockSekarangColumnSKU: TcxGridDBColumn
-        Caption = 'SKU'
-        DataBinding.FieldName = 'Barang'
-        PropertiesClassName = 'TcxExtLookupComboBoxProperties'
-        Properties.View = cxGridDBTableBarang
-        Properties.KeyFieldNames = 'ID'
-        Properties.ListFieldItem = cxGridColGridDBTableGridRepTransaksiDBTableViewBarangColumnSKU
+        DataBinding.FieldName = 'SKU'
+        PropertiesClassName = 'TcxTextEditProperties'
         HeaderAlignmentHorz = taCenter
         Width = 96
       end
       object cxGridColGridDBTableStockSekarangColumnNama: TcxGridDBColumn
-        Caption = 'Nama'
-        DataBinding.FieldName = 'Barang'
-        PropertiesClassName = 'TcxExtLookupComboBoxProperties'
-        Properties.View = cxGridDBTableBarang
-        Properties.KeyFieldNames = 'ID'
-        Properties.ListFieldItem = cxGridColGridDBTableGridRepTransaksiDBTableViewBarangColumnNama
+        DataBinding.FieldName = 'Nama'
+        PropertiesClassName = 'TcxTextEditProperties'
         HeaderAlignmentHorz = taCenter
       end
       object cxGridColGridDBTableStockSekarangColumnUOM: TcxGridDBColumn
         Caption = 'UOM '
         DataBinding.FieldName = 'UOM'
-        PropertiesClassName = 'TcxExtLookupComboBoxProperties'
-        Properties.View = cxGridDBTableUOM
-        Properties.KeyFieldNames = 'ID'
-        Properties.ListFieldItem = cxGridColGridDBTableGridRepTransaksiDBTableViewUOMColumnNama
+        PropertiesClassName = 'TcxTextEditProperties'
         HeaderAlignmentHorz = taCenter
         Width = 81
       end
@@ -144,6 +135,9 @@ inherited frmLapStockSekarang: TfrmLapStockSekarang
     end
   end
   inherited ActionListForm: TActionList
+    inherited actCetak: TAction
+      OnExecute = actCetakExecute
+    end
     inherited ActionRefresh: TAction
       OnExecute = ActionRefreshExecute
     end
@@ -183,7 +177,7 @@ inherited frmLapStockSekarang: TfrmLapStockSekarang
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C0101050008005C0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010105000800600018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -792,7 +786,7 @@ inherited frmLapStockSekarang: TfrmLapStockSekarang
     Aggregates = <>
     Params = <>
     ProviderName = 'dtstprvdrStockSekarang'
-    Left = 360
-    Top = 184
+    Left = 576
+    Top = 144
   end
 end

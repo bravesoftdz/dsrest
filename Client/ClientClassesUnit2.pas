@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 2/3/2017 6:04:17 AM
+// 2/3/2017 11:23:32 AM
 //
 
 unit ClientClassesUnit2;
@@ -247,12 +247,16 @@ type
 
   TServerLaporanClient = class(TDSAdminRestClient)
   private
+    FLaporanStockSekarangCommand: TDSRestCommand;
+    FLaporanStockSekarangCommand_Cache: TDSRestCommand;
     FRetriveMutasiBarangCommand: TDSRestCommand;
     FRetriveMutasiBarangCommand_Cache: TDSRestCommand;
   public
     constructor Create(ARestConnection: TDSRestConnection); overload;
     constructor Create(ARestConnection: TDSRestConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
+    function LaporanStockSekarang(ACabang: TCabang; const ARequestFilter: string = ''): TDataSet;
+    function LaporanStockSekarang_Cache(ACabang: TCabang; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function RetriveMutasiBarang(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; const ARequestFilter: string = ''): TDataSet;
     function RetriveMutasiBarang_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; const ARequestFilter: string = ''): IDSRestCachedDataSet;
   end;
@@ -769,6 +773,18 @@ const
   (
     (Name: 'AOBject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
+  TServerLaporan_LaporanStockSekarang: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TServerLaporan_LaporanStockSekarang_Cache: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
   TServerLaporan_RetriveMutasiBarang: array [0..2] of TDSRestParameterMetaData =
@@ -2643,6 +2659,61 @@ begin
   inherited;
 end;
 
+function TServerLaporanClient.LaporanStockSekarang(ACabang: TCabang; const ARequestFilter: string): TDataSet;
+begin
+  if FLaporanStockSekarangCommand = nil then
+  begin
+    FLaporanStockSekarangCommand := FConnection.CreateCommand;
+    FLaporanStockSekarangCommand.RequestType := 'POST';
+    FLaporanStockSekarangCommand.Text := 'TServerLaporan."LaporanStockSekarang"';
+    FLaporanStockSekarangCommand.Prepare(TServerLaporan_LaporanStockSekarang);
+  end;
+  if not Assigned(ACabang) then
+    FLaporanStockSekarangCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FLaporanStockSekarangCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FLaporanStockSekarangCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(ACabang), True);
+      if FInstanceOwner then
+        ACabang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FLaporanStockSekarangCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FLaporanStockSekarangCommand.Parameters[1].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FLaporanStockSekarangCommand.FreeOnExecute(Result);
+end;
+
+function TServerLaporanClient.LaporanStockSekarang_Cache(ACabang: TCabang; const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FLaporanStockSekarangCommand_Cache = nil then
+  begin
+    FLaporanStockSekarangCommand_Cache := FConnection.CreateCommand;
+    FLaporanStockSekarangCommand_Cache.RequestType := 'POST';
+    FLaporanStockSekarangCommand_Cache.Text := 'TServerLaporan."LaporanStockSekarang"';
+    FLaporanStockSekarangCommand_Cache.Prepare(TServerLaporan_LaporanStockSekarang_Cache);
+  end;
+  if not Assigned(ACabang) then
+    FLaporanStockSekarangCommand_Cache.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FLaporanStockSekarangCommand_Cache.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FLaporanStockSekarangCommand_Cache.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(ACabang), True);
+      if FInstanceOwner then
+        ACabang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FLaporanStockSekarangCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FLaporanStockSekarangCommand_Cache.Parameters[1].Value.GetString);
+end;
+
 function TServerLaporanClient.RetriveMutasiBarang(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; const ARequestFilter: string): TDataSet;
 begin
   if FRetriveMutasiBarangCommand = nil then
@@ -2688,6 +2759,8 @@ end;
 
 destructor TServerLaporanClient.Destroy;
 begin
+  FLaporanStockSekarangCommand.DisposeOf;
+  FLaporanStockSekarangCommand_Cache.DisposeOf;
   FRetriveMutasiBarangCommand.DisposeOf;
   FRetriveMutasiBarangCommand_Cache.DisposeOf;
   inherited;

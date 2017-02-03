@@ -11,6 +11,7 @@ type
 
   TServerLaporan = class(TInterfacedPersistent)
   public
+    function LaporanStockSekarang(ACabang : TCabang): TDataset;
     function RetriveMutasiBarang(ATglAwal , ATglAtglAkhir : TDateTime) : TDataset;
 
   end;
@@ -621,6 +622,24 @@ begin
       Free;
     end;
   end;
+end;
+
+function TServerLaporan.LaporanStockSekarang(ACabang : TCabang): TDataset;
+var
+  sSQL: string;
+begin
+  sSQL := 'select b.sku, b.nama, c.uom , d.nama as cabang, a.qty, a.rp' +
+          ' from tstocksekarang a' +
+          ' INNER JOIN tbarang b on a.barang = b.id' +
+          ' INNER JOIN tuom c on a.uom = c.id' +
+          ' INNER JOIN tcabang d on a.cabang = d.id';
+
+  if ACabang <> nil then
+    sSQL := sSQL + ' where a.cabang = ' + QuotedStr(ACabang.Id);
+
+  sSQL := sSQL + ' order by b.sku';
+
+  Result := TDBUtils.OpenDataset(sSQL);
 end;
 
 { TLaporan }
