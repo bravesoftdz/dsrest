@@ -19,7 +19,8 @@ uses
   ufrmPenerimaanBarang in 'form\ufrmPenerimaanBarang.pas' {frmPenerimaanBarang},
   ufrmClosingInventory in 'form\ufrmClosingInventory.pas' {frmClosingInventory},
   ufrmLapStockSekarang in 'form\ufrmLapStockSekarang.pas' {frmLapStockSekarang},
-  ufrmPembayaranSupplier in 'form\ufrmPembayaranSupplier.pas' {frmPembayaranSupplier};
+  ufrmPembayaranSupplier in 'form\ufrmPembayaranSupplier.pas' {frmPembayaranSupplier},
+  uReport in '..\uReport.pas';
 
 {$R *.res}
 

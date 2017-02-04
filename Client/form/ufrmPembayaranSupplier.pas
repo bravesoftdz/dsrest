@@ -10,10 +10,15 @@ uses
   Datasnap.DBClient, Datasnap.Provider, Vcl.ImgList, cxGridCustomTableView,
   cxGridTableView, cxGridDBTableView, cxGridCustomView, cxGrid, cxClasses,
   System.Actions, Vcl.ActnList, cxBarEditItem, dxBar, dxBarExtDBItems,
-  Vcl.ExtCtrls, dxStatusBar;
+  Vcl.ExtCtrls, dxStatusBar, ClientModule, ClientClassesUnit2, uModel,
+  cxContainer, cxTextEdit, Vcl.ComCtrls, Vcl.StdCtrls;
 
 type
   TfrmPembayaranSupplier = class(TfrmDefault)
+    lblNoBukti: TLabel;
+    dtpTglBukti: TDateTimePicker;
+    lblTglBukti: TLabel;
+    edNoBukti: TcxTextEdit;
   private
     { Private declarations }
   public
@@ -24,6 +29,8 @@ var
   frmPembayaranSupplier: TfrmPembayaranSupplier;
 
 implementation
+uses
+  uAppUtils, uDBUtils, System.StrUtils, System.DateUtils;
 
 {$R *.dfm}
 

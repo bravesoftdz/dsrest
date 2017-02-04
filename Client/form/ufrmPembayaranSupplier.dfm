@@ -4,6 +4,36 @@ inherited frmPembayaranSupplier: TfrmPembayaranSupplier
   ExplicitHeight = 385
   PixelsPerInch = 96
   TextHeight = 13
+  object lblNoBukti: TLabel [1]
+    Left = 208
+    Top = 64
+    Width = 39
+    Height = 13
+    Caption = 'No Bukti'
+  end
+  object lblTglBukti: TLabel [2]
+    Left = 209
+    Top = 96
+    Width = 38
+    Height = 13
+    Caption = 'Tanggal'
+  end
+  object dtpTglBukti: TDateTimePicker [5]
+    Left = 264
+    Top = 88
+    Width = 186
+    Height = 21
+    Date = 42770.434359722230000000
+    Time = 42770.434359722230000000
+    TabOrder = 6
+  end
+  object edNoBukti: TcxTextEdit [6]
+    Left = 264
+    Top = 61
+    TabOrder = 7
+    Text = 'edNoBukti'
+    Width = 186
+  end
   inherited dxBarManagerForm: TdxBarManager
     DockControlHeights = (
       0
@@ -31,7 +61,7 @@ inherited frmPembayaranSupplier: TfrmPembayaranSupplier
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010105000800600018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010105000800640018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -631,5 +661,9 @@ inherited frmPembayaranSupplier: TfrmPembayaranSupplier
       F0000F000001800003F3FF1FF8001F000003C00003F0003FFE007F800007E000
       07F8007FFFFFFFE0000FFFFFFFFFFFFF00000000000000000000000000000000
       000000000000}
+  end
+  inherited dsCabang: TDataSource
+    Left = 592
+    Top = 120
   end
 end

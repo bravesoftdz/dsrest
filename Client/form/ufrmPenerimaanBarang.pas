@@ -62,6 +62,8 @@ type
     cdsPB: TClientDataSet;
     cxgrdbclmnGridDBTableDaftarPBSupplier: TcxGridDBColumn;
     cxgrdbclmnGridDBTableDaftarPBKeterangan: TcxGridDBColumn;
+    DSPSlip: TDataSetProvider;
+    cdsSlip: TClientDataSet;
     procedure actCetakExecute(Sender: TObject);
     procedure ActionBaruExecute(Sender: TObject);
     procedure ActionHapusExecute(Sender: TObject);
@@ -116,14 +118,33 @@ var
 
 implementation
 uses
-  ClientModule, uDBUtils, uAppUtils, uBarangUtils;
+   ClientModule, uDBUtils, uAppUtils, uBarangUtils, uReport ;
 
 {$R *.dfm}
 
 procedure TfrmPenerimaanBarang.actCetakExecute(Sender: TObject);
+var
+  lReport: TTSReport;
 begin
   inherited;
-  //
+
+  lReport := TTSReport.Create(Self);
+  try
+    DSPSlip.DataSet := ClientDataModule.ServerPenerimaanBarangClient.RetrieveCDSlip(FID);
+    cdsSlip := TClientDataSet.Create(lReport);
+    cdsSlip.SetProvider(DSPSlip);
+    cdsSlip.Open;
+
+
+  //  cxGridDBTableDaftarPB.SetDataset(cdsSlip);
+    lReport.AddDataset(TDBUtils.OpenDataset('select * from tcabang'));
+    lReport.AddDataset(cdsSlip);
+    lReport.ShowReport('SlipPenerimaanBarang');
+  finally
+    lReport.Free;
+  end;
+
+
 end;
 
 procedure TfrmPenerimaanBarang.ActionBaruExecute(Sender: TObject);
@@ -170,6 +191,7 @@ begin
   ProvPB.DataSet := ClientDataModule.ServerPenerimaanBarangClient.RetrieveCDS(PenerimaanBarang);
   cdsPB.Close;
   cdsPB.Open;
+
 
   TDBUtils.DataSetToCxDBGrid(cdsPB, cxGridDBTableDaftarPB);
   cxGridDBTableDaftarPB.ApplyBestFit();

@@ -90,6 +90,7 @@ type
     function BeforeSave(AOBject : TAppObject): Boolean; override;
   public
     function Retrieve(AID : String): TPenerimaanBarang;
+    function RetrieveCDSlip(AID : String): TDataset;
     function RetrieveNoBukti(ANoBukti : String): TPenerimaanBarang;
   end;
 
@@ -136,6 +137,7 @@ type
   TServerPembayaranSupplier = class(TCRUD)
   public
     function Retrieve(AID : String): TPembayaranSupplier;
+    function RetrieveCDS2: TDataset;
   end;
 
 
@@ -410,6 +412,24 @@ function TServerPenerimaanBarang.Retrieve(AID : String): TPenerimaanBarang;
 begin
   Result := TPenerimaanBarang.Create;
   TDBUtils.LoadFromDB(Result, AID);
+end;
+
+function TServerPenerimaanBarang.RetrieveCDSlip(AID : String): TDataset;
+var
+  sSQL: string;
+begin
+  sSQL   := 'select a.nobukti, a.tglbukti, f.nama as supplier, a.keterangan,' +
+            ' e.nama as cabang, c.sku, c.nama as Barang, d.uom as uom,' +
+            ' b.hargabeli, b.qty, b.diskon, b.ppn, b.konversi' +
+            ' from tpenerimaanbarang a' +
+            ' INNER JOIN tpenerimaanbarangitem b on a.id = b.penerimaanbarang' +
+            ' INNER JOIN tbarang c on b.barang = c.id' +
+            ' INNER JOIN tuom d on b.uom = d.id' +
+            ' INNER JOIN tcabang e on a.cabang = e.id' +
+            ' INNER JOIN tsupplier f on a.supplier = f.id ' +
+            ' where a.id = ' + QuotedStr(AID);
+
+  Result := TDBUtils.OpenDataset(sSQL);
 end;
 
 function TServerPenerimaanBarang.RetrieveNoBukti(ANoBukti : String):
@@ -875,11 +895,19 @@ begin
   TDBUtils.LoadFromDB(Result, AID);
 end;
 
-//function TServerClosingInventory.ClosingPenerimaan(APeriode: Integer): Boolean;
-//begin
-//  Result := False;
-//   TODO -cMM: TServerClosingInventory.ClosingPenerimaan default body inserted
-//end;
+function TServerPembayaranSupplier.RetrieveCDS2: TDataset;
+var
+  sSQL: string;
+begin
+  sSQL := 'select a.nobukti, a.tglbukti,b.nobukti as Penerimaan, a.pokok, a.ppn' +
+          ' , a.biaya, (a.pokok + a.ppn + a.biaya) as Total' +
+          ' from tpembayaransupplier a ' +
+          ' INNER JOIN tpenerimaanbarang b on a.penerimaanbarang = b.id' +
+          ' ORDER BY a.tglbukti DESC';
+
+  Result := TDBUtils.OpenDataset(sSQL);
+end;
+
 
 end.
 

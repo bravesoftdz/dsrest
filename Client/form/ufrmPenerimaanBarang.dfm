@@ -186,6 +186,8 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
           Height = 222
           Align = alClient
           TabOrder = 0
+          ExplicitLeft = 1
+          ExplicitTop = -1
           object cxGridTablePenerimaanBarang: TcxGridTableView
             Navigator.Buttons.CustomButtons = <>
             DataController.Summary.DefaultGroupSummaryItems = <>
@@ -447,7 +449,7 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010105000800600018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010105000800640018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1048,6 +1050,14 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
       07F8007FFFFFFFE0000FFFFFFFFFFFFF00000000000000000000000000000000
       000000000000}
   end
+  inherited DSPCabang: TDataSetProvider
+    Left = 272
+    Top = 8
+  end
+  inherited cdsCabang: TClientDataSet
+    Left = 304
+    Top = 8
+  end
   object dsPB: TDataSource
     Left = 392
     Top = 224
@@ -1062,6 +1072,17 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
     Params = <>
     ProviderName = 'ProvPB'
     Left = 432
+    Top = 224
+  end
+  object DSPSlip: TDataSetProvider
+    Left = 488
+    Top = 224
+  end
+  object cdsSlip: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'DSPSlip'
+    Left = 528
     Top = 224
   end
 end

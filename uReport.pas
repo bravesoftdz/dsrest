@@ -182,10 +182,15 @@ begin
 end;
 
 procedure TTSReport.AddDataset(ADataset: TClientDataSet; ASQL, AName: String);
+var
+  lCDS: TClientdataset;
 begin
+  lCDS := TClientDataSet.Create(Self);
+  lCDS.CloneCursor(ADataset, False);
+
   with Datasets.Add do
   begin
-    CDS     := ADataset;
+    CDS     := lCDS;
     CDSName := AName;
     SQL     := ASQL;
   end;
