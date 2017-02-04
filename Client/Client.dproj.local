@@ -42,8 +42,8 @@
     <Transaction>2017/01/12 23:23:58.000.564,=D:\SharedProjects\Projects\MokoDS\Client\Unit1.pas</Transaction>
     <Transaction>2017/01/13 23:23:27.000.672,=D:\SharedProjects\Projects\MokoDS\Client\Unit1.pas</Transaction>
     <Transaction>2017/01/19 23:30:43.000.719,=D:\SharedProjects\Projects\MokoDS\Client\Unit1.pas</Transaction>
-    <Transaction>2017/01/19 23:31:25.000.247,D:\SharedProjects\Projects\MokoDS\Client\form\ufrmPilihCabang.dfm=D:\SharedProjects\Projects\MokoDS\Client\Unit1.dfm</Transaction>
     <Transaction>2017/01/19 23:31:25.000.247,D:\SharedProjects\Projects\MokoDS\Client\form\ufrmPilihCabang.pas=D:\SharedProjects\Projects\MokoDS\Client\Unit1.pas</Transaction>
+    <Transaction>2017/01/19 23:31:25.000.247,D:\SharedProjects\Projects\MokoDS\Client\form\ufrmPilihCabang.dfm=D:\SharedProjects\Projects\MokoDS\Client\Unit1.dfm</Transaction>
     <Transaction>2017/01/26 05:22:46.000.423,D:\SharedProjects\Projects\MokoDS\Client\ClientClassesUnit1.pas=</Transaction>
     <Transaction>2017/01/26 05:23:05.000.968,=D:\SharedProjects\Projects\MokoDS\Client\ClientClassesUnit2.pas</Transaction>
     <Transaction>2017/01/26 05:24:44.000.758,=D:\SharedProjects\Projects\MokoDS\Client\ClientClassesUnit1.pas</Transaction>
@@ -54,19 +54,22 @@
     <Transaction>2017/01/26 05:30:18.000.536,D:\SharedProjects\Projects\MokoDS\Client\ClientModuleUnit1.pas=D:\SharedProjects\Projects\MokoDS\Client\ClientModule.pas</Transaction>
     <Transaction>2017/01/26 05:30:47.000.453,=D:\SharedProjects\Projects\MokoDS\Client\ClientClassesUnit2.pas</Transaction>
     <Transaction>2017/01/28 00:45:31.000.927,=D:\SharedProjects\Projects\MokoDS\Client\Unit1.pas</Transaction>
-    <Transaction>2017/01/28 00:46:24.000.775,D:\SharedProjects\Projects\MokoDS\Client\Unit1.dfm=D:\SharedProjects\Projects\MokoDS\Client\form\ufrmLapMutasiBarangPerTransaksi.dfm</Transaction>
     <Transaction>2017/01/28 00:46:24.000.775,D:\SharedProjects\Projects\MokoDS\Client\Unit1.pas=D:\SharedProjects\Projects\MokoDS\Client\form\ufrmLapMutasiBarangPerTransaksi.pas</Transaction>
+    <Transaction>2017/01/28 00:46:24.000.775,D:\SharedProjects\Projects\MokoDS\Client\Unit1.dfm=D:\SharedProjects\Projects\MokoDS\Client\form\ufrmLapMutasiBarangPerTransaksi.dfm</Transaction>
     <Transaction>2017/01/28 02:10:07.000.929,=D:\SharedProjects\Projects\MokoDS\Client\Unit1.pas</Transaction>
     <Transaction>2017/01/28 02:10:21.000.766,D:\SharedProjects\Projects\MokoDS\uBarangUtils.pas=D:\SharedProjects\Projects\MokoDS\Client\Unit1.pas</Transaction>
     <Transaction>2017/01/28 06:05:59.000.527,D:\SharedProjects\Projects\MokoDS\Client\form\ufrmPenerimaanBarang.dfm=D:\SharedProjects\Projects\MokoDS\Client\form\ufrmReturSupplier.dfm</Transaction>
     <Transaction>2017/01/28 06:05:59.000.527,D:\SharedProjects\Projects\MokoDS\Client\form\ufrmPenerimaanBarang.pas=D:\SharedProjects\Projects\MokoDS\Client\form\ufrmReturSupplier.pas</Transaction>
     <Transaction>2017/01/28 06:06:55.000.318,=D:\SharedProjects\Projects\MokoDS\Client\form\ufrmPenerimaanBarang.pas</Transaction>
     <Transaction>2017/01/28 09:45:20.000.730,=D:\SharedProjects\Projects\MokoDS\Client\Unit1.pas</Transaction>
-    <Transaction>2017/01/28 09:47:18.000.030,D:\SharedProjects\Projects\MokoDS\Client\form\ufrmClosingInventory.dfm=D:\SharedProjects\Projects\MokoDS\Client\Unit1.dfm</Transaction>
     <Transaction>2017/01/28 09:47:18.000.020,D:\SharedProjects\Projects\MokoDS\Client\form\ufrmClosingInventory.pas=D:\SharedProjects\Projects\MokoDS\Client\Unit1.pas</Transaction>
+    <Transaction>2017/01/28 09:47:18.000.030,D:\SharedProjects\Projects\MokoDS\Client\form\ufrmClosingInventory.dfm=D:\SharedProjects\Projects\MokoDS\Client\Unit1.dfm</Transaction>
     <Transaction>2017/02/03 05:52:27.000.398,=D:\SharedProjects\Projects\DSRest\Client\Unit1.pas</Transaction>
     <Transaction>2017/02/03 05:53:52.000.402,D:\SharedProjects\Projects\DSRest\Client\form\ufrmLapStockSekarang.dfm=D:\SharedProjects\Projects\DSRest\Client\Unit1.dfm</Transaction>
     <Transaction>2017/02/03 05:53:52.000.402,D:\SharedProjects\Projects\DSRest\Client\form\ufrmLapStockSekarang.pas=D:\SharedProjects\Projects\DSRest\Client\Unit1.pas</Transaction>
-    <Transaction>2017/02/03 10:37:26.965,=D:\SharedProjects\Projects\dsrest\uReport.pas</Transaction>
+    <Transaction>2017/02/03 10:37:26.000.965,=D:\SharedProjects\Projects\dsrest\uReport.pas</Transaction>
+    <Transaction>2017/02/04 06:36:29.765,=D:\SharedProjects\Projects\DSRest\Client\Unit1.pas</Transaction>
+    <Transaction>2017/02/04 06:37:57.151,D:\SharedProjects\Projects\DSRest\Client\form\ufrmPembayaranSupplier.dfm=D:\SharedProjects\Projects\DSRest\Client\Unit1.dfm</Transaction>
+    <Transaction>2017/02/04 06:37:57.151,D:\SharedProjects\Projects\DSRest\Client\form\ufrmPembayaranSupplier.pas=D:\SharedProjects\Projects\DSRest\Client\Unit1.pas</Transaction>
   </Transactions>
 </BorlandProject>

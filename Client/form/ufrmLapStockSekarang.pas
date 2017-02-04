@@ -36,7 +36,6 @@ type
     cxGridColGridDBTableGridRepTransaksiDBTableViewBarangColumnNama: TcxGridDBColumn;
     cxGridDBTableUOM: TcxGridDBTableView;
     cxGridColGridDBTableGridRepTransaksiDBTableViewUOMColumnNama: TcxGridDBColumn;
-    procedure actCetakExecute(Sender: TObject);
     procedure ActionRefreshExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
   private
@@ -53,25 +52,9 @@ var
 implementation
 uses
   uAppUtils, ClientModule, ClientClassesUnit2, uDBUtils,
-  System.StrUtils, System.DateUtils, uReport;
+  System.StrUtils, System.DateUtils;
 
 {$R *.dfm}
-
-procedure TfrmLapStockSekarang.actCetakExecute(Sender: TObject);
-var
-  lReport: TTSReport;
-begin
-  inherited;
-
-  lReport := TTSReport.Create(Self);
-  try
-    lReport.AddDataset(cdsStockSekarang);
-    lReport.ShowReport('LapStockSekarang');
-  finally
-    lReport.Free;
-  end;
-
-end;
 
 procedure TfrmLapStockSekarang.ActionRefreshExecute(Sender: TObject);
 var

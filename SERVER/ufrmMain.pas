@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, AppEvnts, StdCtrls, IdHTTPWebBrokerBridge, HTTPApp, cxGraphics,
+  Dialogs, AppEvnts, StdCtrls, IdHTTPWebBrokerBridge, HTTPApp,
   cxControls, cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit,
   cxTextEdit,  uDBUtils, cxStyles,
   cxCustomData, cxFilter, cxData, cxDataStorage, cxDBData, cxGridLevel,
@@ -16,7 +16,7 @@ uses
   FireDAC.Phys.MSSQL, Data.DB, FireDAC.Stan.Option, FireDAC.Stan.Error,
   FireDAC.Phys.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async,
   FireDAC.Comp.Client, FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf,
-  FireDAC.Comp.DataSet, FireDAC.DApt, Bde.DBTables;
+  FireDAC.Comp.DataSet, FireDAC.DApt, Bde.DBTables, cxGraphics;
 
 type
   TfrmServer = class(TForm)

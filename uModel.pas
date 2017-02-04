@@ -263,6 +263,34 @@ type
     property UOM: TUOM read FUOM write FUOM;
   end;
 
+  TPembayaranSupplier = class(TAppObject)
+  private
+    FBank: string;
+    FBiaya: Double;
+    FJenisBayar: string;
+    FKeterangan: string;
+    FNoBukti: string;
+    FPokok: Double;
+    FNoRef: String;
+    FPenerimaanBarang: Double;
+    FPPN: Double;
+    FTglBukti: TDatetime;
+    FTglGiro: Integer;
+  public
+    property Bank: string read FBank write FBank;
+    property Biaya: Double read FBiaya write FBiaya;
+    property JenisBayar: string read FJenisBayar write FJenisBayar;
+    property Keterangan: string read FKeterangan write FKeterangan;
+    property NoBukti: string read FNoBukti write FNoBukti;
+    property Pokok: Double read FPokok write FPokok;
+    property NoRef: String read FNoRef write FNoRef;
+    property PenerimaanBarang: Double read FPenerimaanBarang write
+        FPenerimaanBarang;
+    property PPN: Double read FPPN write FPPN;
+    property TglBukti: TDatetime read FTglBukti write FTglBukti;
+    property TglGiro: Integer read FTglGiro write FTglGiro;
+  end;
+
 
 
 

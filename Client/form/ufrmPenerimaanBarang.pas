@@ -12,7 +12,7 @@ uses
   cxGridCustomTableView, cxGridTableView, cxGridLevel, cxGrid, cxCurrencyEdit,
   ImgList, uModel, ClientClassesUnit2, DB, cxDBData, cxGridDBTableView,
   cxDBExtLookupComboBox, Provider, DBClient, cxNavigator, dxCore, cxDateUtils,
-  System.Actions, dxBarExtDBItems;
+  System.Actions, dxBarExtDBItems, cxCheckBox, cxBarEditItem;
 
 type
   TfrmPenerimaanBarang = class(TfrmDefault)
@@ -132,7 +132,7 @@ begin
   with TServerPenerimaanBarangClient.Create(ClientDataModule.DSRestConnection, False) do
   begin
     try
-//      edTglBukti.Date := Now;
+      FID := '';
       memKeterangan.Clear;
       edNoBukti.Text  := GenerateNoBukti(edTglBukti.Date, ClientDataModule.Cabang.Kode + '/PB');
       cxGridTablePenerimaanBarang.ClearRows;

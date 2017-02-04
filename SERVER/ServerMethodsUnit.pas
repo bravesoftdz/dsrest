@@ -133,6 +133,11 @@ type
     function Close(APeriode : Integer; ACabang : TCabang): Boolean;
   end;
 
+  TServerPembayaranSupplier = class(TCRUD)
+  public
+    function Retrieve(AID : String): TPembayaranSupplier;
+  end;
+
 
 
 
@@ -862,6 +867,12 @@ begin
   end;
 
   Result := True;
+end;
+
+function TServerPembayaranSupplier.Retrieve(AID : String): TPembayaranSupplier;
+begin
+  Result      := TPembayaranSupplier.Create;
+  TDBUtils.LoadFromDB(Result, AID);
 end;
 
 //function TServerClosingInventory.ClosingPenerimaan(APeriode: Integer): Boolean;

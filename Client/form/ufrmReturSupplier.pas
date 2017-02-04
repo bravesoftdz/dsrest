@@ -12,7 +12,7 @@ uses
   cxGridCustomTableView, cxGridTableView, cxGridLevel, cxGrid, cxCurrencyEdit,
   ImgList, uModel, ClientClassesUnit2, DB, cxDBData, cxGridDBTableView,
   cxDBExtLookupComboBox, Provider, DBClient, cxNavigator, dxCore, cxDateUtils,
-  System.Actions, dxBarExtDBItems;
+  System.Actions, dxBarExtDBItems, cxCheckBox, cxBarEditItem;
 
 type
   TfrmReturSupplier = class(TfrmDefault)
@@ -134,6 +134,7 @@ begin
       memKeterangan.Clear;
       edNoBukti.Text  := GenerateNoBukti(edTglBukti.Date, 'RS');
       cxGridTableReturSupplier.ClearRows;
+      FID := '';
 
       FreeAndNil(FReturSupplier);
 
