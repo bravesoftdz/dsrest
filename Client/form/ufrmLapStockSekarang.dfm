@@ -135,9 +135,6 @@ inherited frmLapStockSekarang: TfrmLapStockSekarang
     end
   end
   inherited ActionListForm: TActionList
-    inherited actCetak: TAction
-      OnExecute = actCetakExecute
-    end
     inherited ActionRefresh: TAction
       OnExecute = ActionRefreshExecute
     end
@@ -177,7 +174,7 @@ inherited frmLapStockSekarang: TfrmLapStockSekarang
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010105000800600018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010105000800640018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

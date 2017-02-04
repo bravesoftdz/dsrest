@@ -29,6 +29,7 @@ type
     dsrvrclsLaporan: TDSServerClass;
     dsrvrclsReturSupplier: TDSServerClass;
     dsrvrclsClosingInventory: TDSServerClass;
+    dsrvrclsPembayaranSupplier: TDSServerClass;
     procedure dsrvrclsBarangGetClass(DSServerClass: TDSServerClass; var
         PersistentClass: TPersistentClass);
     procedure dsrvrclsCabangGetClass(DSServerClass: TDSServerClass; var
@@ -64,6 +65,8 @@ type
     procedure WebModuleCreate(Sender: TObject);
     procedure dsrvrclsLaporanGetClass(DSServerClass: TDSServerClass;
       var PersistentClass: TPersistentClass);
+    procedure dsrvrclsPembayaranSupplierGetClass(DSServerClass: TDSServerClass; var
+        PersistentClass: TPersistentClass);
     procedure dsrvrclsReturSupplierGetClass(DSServerClass: TDSServerClass; var
         PersistentClass: TPersistentClass);
     procedure dsrvrclsStockSekarangGetClass(DSServerClass: TDSServerClass; var
@@ -200,6 +203,12 @@ procedure TWebModule2.dsrvrclsLogAppObjectGetClass(DSServerClass:
     TDSServerClass; var PersistentClass: TPersistentClass);
 begin
   PersistentClass := TServerLogAppObject;
+end;
+
+procedure TWebModule2.dsrvrclsPembayaranSupplierGetClass(DSServerClass:
+    TDSServerClass; var PersistentClass: TPersistentClass);
+begin
+  PersistentClass := TServerPembayaranSupplier;
 end;
 
 procedure TWebModule2.dsrvrclsPenerimaanBarangGetClass(DSServerClass:

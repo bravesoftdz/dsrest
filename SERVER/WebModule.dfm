@@ -165,4 +165,10 @@ object WebModule2: TWebModule2
     Left = 384
     Top = 232
   end
+  object dsrvrclsPembayaranSupplier: TDSServerClass
+    OnGetClass = dsrvrclsPembayaranSupplierGetClass
+    Server = DSServer1
+    Left = 648
+    Top = 96
+  end
 end
