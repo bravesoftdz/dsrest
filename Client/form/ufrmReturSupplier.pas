@@ -62,6 +62,8 @@ type
     cdsPB: TClientDataSet;
     cxgrdbclmnGridDBTableDaftarPBSupplier: TcxGridDBColumn;
     cxgrdbclmnGridDBTableDaftarPBKeterangan: TcxGridDBColumn;
+    lblNoPB: TLabel;
+    edNoPB: TcxTextEdit;
     procedure actCetakExecute(Sender: TObject);
     procedure ActionBaruExecute(Sender: TObject);
     procedure ActionHapusExecute(Sender: TObject);
@@ -91,6 +93,7 @@ type
       var Error: Boolean);
     procedure cxGridDBTableDaftarPBEditing(Sender: TcxCustomGridTableView;
       AItem: TcxCustomGridTableItem; var AAllow: Boolean);
+    procedure edNoPBKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
     FReturSupplier: TReturSupplier;
     function GetReturSupplier: TReturSupplier;
@@ -99,6 +102,8 @@ type
     procedure InisialisasiSKU;
     procedure InisialisasiUOM;
     function IsBisaHapus : Boolean;
+    function IsBisaSimpan: Boolean;
+    function IsDetailValid: Boolean;
     { Private declarations }
   protected
     property ReturSupplier: TReturSupplier read GetReturSupplier write
@@ -130,11 +135,14 @@ begin
   with TServerReturSupplierClient.Create(ClientDataModule.DSRestConnection, False) do
   begin
     try
-      edTglBukti.Date := Now;
-      memKeterangan.Clear;
-      edNoBukti.Text  := GenerateNoBukti(edTglBukti.Date, 'RS');
+      edTglBukti.Date       := Now;
+      edNoBukti.Text        := GenerateNoBukti(edTglBukti.Date, 'RS');
+      edNoPB.Text           := '';
+      cbbSupplier.EditValue := Null;
+      FID                   := '';
+
       cxGridTableReturSupplier.ClearRows;
-      FID := '';
+      memKeterangan.Clear;
 
       FreeAndNil(FReturSupplier);
 
@@ -179,6 +187,9 @@ var
   lReturSupplierItem: TReturSupplierItem;
 begin
   inherited;
+  if not IsBisaSimpan then
+    Exit;
+
   with TServerReturSupplierClient.Create(ClientDataModule.DSRestConnection, False) do
   begin
     try
@@ -313,6 +324,40 @@ begin
   cxGridTableReturSupplier.DataController.Values[cxGridTableReturSupplier.DataController.FocusedRecordIndex, cxgrdclmnGridTableReturSupplierColumnNama.Index] := sID;
 end;
 
+procedure TfrmReturSupplier.edNoPBKeyDown(Sender: TObject; var Key: Word;
+    Shift: TShiftState);
+var
+  i: Integer;
+begin
+  inherited;
+  if Key = VK_RETURN then
+  begin
+    with ClientDataModule.ServerPenerimaanBarangClient do
+    begin
+      ReturSupplier.PenerimaanBarang := RetrieveNoBukti(edNoPB.Text);
+      cbbSupplier.EditValue            := ReturSupplier.PenerimaanBarang.Supplier.ID;
+
+      cxGridTableReturSupplier.ClearRows;
+      for i := 0 to ReturSupplier.PenerimaanBarang.PenerimaanBarangItems.Count - 1 do
+      begin
+        cxGridTableReturSupplier.DataController.RecordCount := i + 1;
+        cxGridTableReturSupplier.SetValue(i, cxgrdclmnGridTableReturSupplierColumnSKU.Index, FReturSupplier.PenerimaanBarang.PenerimaanBarangItems[i].Barang.ID);
+        cxGridTableReturSupplier.SetValue(i, cxgrdclmnGridTableReturSupplierColumnNama.Index, FReturSupplier.PenerimaanBarang.PenerimaanBarangItems[i].Barang.ID);
+        cxGridTableReturSupplier.SetValue(i, cxgrdclmnGridTableReturSupplierColumnSatuan.Index, FReturSupplier.PenerimaanBarang.PenerimaanBarangItems[i].UOM.ID);
+        cxGridTableReturSupplier.SetDouble(i, cxgrdclmnGridTableReturSupplierColumnHarga.Index, FReturSupplier.PenerimaanBarang.PenerimaanBarangItems[i].HargaBeli);
+        cxGridTableReturSupplier.SetDouble(i, cxgrdclmnGridTableReturSupplierColumnQty.Index, FReturSupplier.PenerimaanBarang.PenerimaanBarangItems[i].Qty);
+        cxGridTableReturSupplier.SetDouble(i, cxgrdclmnGridTableReturSupplierColumnDiskon.Index,FReturSupplier.PenerimaanBarang.PenerimaanBarangItems[i].Diskon);
+        cxGridTableReturSupplier.SetDouble(i, cxgrdclmnGridTableReturSupplierColumnPPN.Index, FReturSupplier.PenerimaanBarang.PenerimaanBarangItems[i].PPN);
+
+        cxGridTableReturSupplier.DataController.FocusedRecordIndex := i;
+        HitungNilaiNilaiPerBaris(FReturSupplier.PenerimaanBarang.PenerimaanBarangItems[i].PPN, cxgrdclmnGridTableReturSupplierColumnPPN.Index);
+
+
+      end;
+    end;
+  end;
+end;
+
 procedure TfrmReturSupplier.FormShow(Sender: TObject);
 begin
   inherited;
@@ -411,6 +456,69 @@ begin
     if not TAppUtils.Confirm('Anda yakin akan menghapus Data ?') then
       Exit;
 
+
+  Result := True;
+end;
+
+function TfrmReturSupplier.IsBisaSimpan: Boolean;
+begin
+  Result := False;
+
+  if cbbSupplier.EditValue = null then
+  begin
+    TAppUtils.Warning('Supplier Belum Dipilih');
+    Exit;
+  end else if not IsDetailValid then
+  begin
+    Exit;
+
+  end;
+
+
+  Result := True;
+end;
+
+function TfrmReturSupplier.IsDetailValid: Boolean;
+var
+  I: Integer;
+begin
+  Result := False;
+
+  if cxGridTableReturSupplier.DataController.RecordCount <= 0 then
+  begin
+    TAppUtils.Warning('Detail Penerimaan Belum Diisi');
+    Exit;
+  end else begin
+    for I := 0 to cxGridTableReturSupplier.DataController.RecordCount - 1 do
+    begin
+      if cxGridTableReturSupplier.DataController.Values[i, cxgrdclmnGridTableReturSupplierColumnSKU.Index] = null then
+      begin
+        TAppUtils.Warning('SKU Baris ke ' + IntToStr(i+1) + ' Belum Diisi');
+        Exit;
+      end else if cxGridTableReturSupplier.DataController.Values[i, cxgrdclmnGridTableReturSupplierColumnSatuan.Index] = null then
+      begin
+        TAppUtils.Warning('UOM Baris ke ' + IntToStr(i+1) + ' Belum Diisi');
+        Exit;
+      end else if cxGridTableReturSupplier.DataController.Values[i, cxgrdclmnGridTableReturSupplierColumnHarga.Index] = null then
+      begin
+        TAppUtils.Warning('Harga Baris ke ' + IntToStr(i+1) + ' Belum Diisi');
+        Exit;
+      end else if cxGridTableReturSupplier.DataController.Values[i, cxgrdclmnGridTableReturSupplierColumnQty.Index] = null then
+      begin
+        TAppUtils.Warning('Qty Baris ke ' + IntToStr(i+1) + ' Belum Diisi');
+        Exit;
+      end else if cxGridTableReturSupplier.DataController.Values[i, cxgrdclmnGridTableReturSupplierColumnHarga.Index] <= 0 then
+      begin
+        TAppUtils.Warning('Harga Baris ke ' + IntToStr(i+1) + ' Belum Diisi');
+        Exit;
+      end else if cxGridTableReturSupplier.DataController.Values[i, cxgrdclmnGridTableReturSupplierColumnQty.Index] <= 0 then
+      begin
+        TAppUtils.Warning('Qty Baris ke ' + IntToStr(i+1) + ' Belum Diisi');
+        Exit;
+      end;
+
+    end;
+  end;
 
   Result := True;
 end;

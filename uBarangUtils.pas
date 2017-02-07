@@ -19,7 +19,10 @@ var
 begin
   Result := False;
 
-  sSQL := 'select count(id) from tbarang where id <> ' + QuotedStr(AID);
+  sSQL := 'select count(id)' +
+          ' from tbarang where id <> ' + QuotedStr(AID) +
+          ' and sku = ' + QuotedStr(AKode);
+
   with TDBUtils.OpenDataset(sSQL) do
   begin
     try

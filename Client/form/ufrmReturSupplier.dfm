@@ -4,6 +4,7 @@ inherited frmReturSupplier: TfrmReturSupplier
   ClientWidth = 984
   WindowState = wsMaximized
   OnShow = FormShow
+  ExplicitLeft = -234
   ExplicitWidth = 1000
   ExplicitHeight = 473
   PixelsPerInch = 96
@@ -105,32 +106,39 @@ inherited frmReturSupplier: TfrmReturSupplier
       object tsHeader: TTabSheet
         Caption = 'Header Penerimaan'
         object lblNoBukti: TLabel
-          Left = 23
+          Left = 36
           Top = 8
           Width = 39
           Height = 13
           Caption = 'No Bukti'
         end
         object lblTglBukti: TLabel
-          Left = 22
+          Left = 35
           Top = 32
           Width = 40
           Height = 13
           Caption = 'Tgl Bukti'
         end
         object lblSupplier: TLabel
-          Left = 24
-          Top = 56
+          Left = 293
+          Top = 7
           Width = 38
           Height = 13
           Caption = 'Supplier'
         end
         object lblKeterangan: TLabel
-          Left = 262
-          Top = 7
+          Left = 275
+          Top = 32
           Width = 56
           Height = 13
           Caption = 'Keterangan'
+        end
+        object lblNoPB: TLabel
+          Left = 3
+          Top = 57
+          Width = 72
+          Height = 13
+          Caption = 'No Penerimaan'
         end
         object edNoBukti: TcxTextEdit
           Left = 80
@@ -143,29 +151,38 @@ inherited frmReturSupplier: TfrmReturSupplier
         end
         object edTglBukti: TcxDateEdit
           Left = 80
-          Top = 27
+          Top = 28
           TabOrder = 1
           Width = 121
         end
         object memKeterangan: TcxMemo
           Left = 336
-          Top = 3
+          Top = 28
           Lines.Strings = (
             'memKeterangan')
-          TabOrder = 3
-          Height = 72
+          TabOrder = 4
+          Height = 46
           Width = 192
         end
         object cbbSupplier: TcxExtLookupComboBox
-          Left = 80
-          Top = 52
+          Left = 336
+          Top = 3
           Properties.DropDownAutoSize = True
           Properties.FocusPopup = True
           Properties.View = cxGridDBTableSupplier
           Properties.KeyFieldNames = 'ID'
           Properties.ListFieldItem = cxgrdbclmnGridDBTableSupplierColumnNama
-          TabOrder = 2
+          TabOrder = 3
           Width = 145
+        end
+        object edNoPB: TcxTextEdit
+          Left = 80
+          Top = 53
+          Properties.ReadOnly = False
+          TabOrder = 2
+          Text = 'edNoBukti'
+          OnKeyDown = edNoPBKeyDown
+          Width = 121
         end
       end
     end
@@ -447,7 +464,7 @@ inherited frmReturSupplier: TfrmReturSupplier
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010105000800680018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C0101050008006C0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1047,6 +1064,14 @@ inherited frmReturSupplier: TfrmReturSupplier
       F0000F000001800003F3FF1FF8001F000003C00003F0003FFE007F800007E000
       07F8007FFFFFFFE0000FFFFFFFFFFFFF00000000000000000000000000000000
       000000000000}
+  end
+  inherited DSPCabang: TDataSetProvider
+    Left = 472
+    Top = 224
+  end
+  inherited cdsCabang: TClientDataSet
+    Left = 512
+    Top = 232
   end
   object dsPB: TDataSource
     Left = 392

@@ -12,7 +12,7 @@ uses
   cxGridLevel, cxGridCustomView, cxCurrencyEdit,uAppUtils, ClientModule, ClientClassesUnit2,
   Datasnap.Provider, Datasnap.DBClient, uDBUtils, Vcl.StdCtrls, cxContainer,
   Vcl.ComCtrls, dxCore, cxDateUtils, cxTextEdit, cxMaskEdit, cxDropDownEdit,
-  cxCalendar, dxBarExtDBItems;
+  cxCalendar, dxBarExtDBItems, cxCheckBox, cxBarEditItem;
 
 type
   TfrmLapMutasiBarangPerTransaksi = class(TfrmDefault)
@@ -47,6 +47,8 @@ var
   frmLapMutasiBarangPerTransaksi: TfrmLapMutasiBarangPerTransaksi;
 
 implementation
+uses
+  System.DateUtils;
 
 {$R *.dfm}
 
@@ -70,7 +72,7 @@ end;
 procedure TfrmLapMutasiBarangPerTransaksi.FormShow(Sender: TObject);
 begin
   inherited;
-  edAwal.Date := Now;
+  edAwal.Date := StartOfTheMonth(Now);
   edAkhir.Date:= Now;
 end;
 

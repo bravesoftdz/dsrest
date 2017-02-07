@@ -4,3 +4,4 @@ delete from tretursupplieritem;
 delete from tretursupplier;
 delete from tstocksekarang;
 delete from tclosinginventory;
+delete from tmutasistock;

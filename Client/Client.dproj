@@ -195,7 +195,6 @@
                 <Platform value="Win64">False</Platform>
             </Platforms>
             <DataSnapProxyLookup>
-                <ClientClassesUnit1>{8961835E-B586-45F6-AAC0-F7AE96B9A726}</ClientClassesUnit1>
                 <ClientClassesUnit2>{6D25B838-E6CA-4EB1-9BE6-44F1AC2252B4}</ClientClassesUnit2>
             </DataSnapProxyLookup>
         </BorlandProject>

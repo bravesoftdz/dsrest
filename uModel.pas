@@ -199,7 +199,6 @@ type
   private
     FBarang: TBarang;
     FDiskon: Double;
-    FHargaAVG: Double;
     FHargaBeli: Double;
     FReturSupplier: TReturSupplier;
     FPPN: Double;
@@ -212,7 +211,6 @@ type
     procedure SetHeaderProperty(AHeaderProperty : TAppObject); override;
     property Barang: TBarang read FBarang write FBarang;
     property Diskon: Double read FDiskon write FDiskon;
-    property HargaAVG: Double read FHargaAVG write FHargaAVG;
     property HargaBeli: Double read FHargaBeli write FHargaBeli;
     property HargaSetelahDiskon: Double read GetHargaSetelahDiskon;
     property ReturSupplier: TReturSupplier read FReturSupplier write FReturSupplier;
@@ -227,6 +225,7 @@ type
     FCabang: TCabang;
     FKeterangan: string;
     FNoBukti: string;
+    FPenerimaanBarang: TPenerimaanBarang;
     FPeriode: Integer;
     FReturSupplierItems: TObjectList<TReturSupplierItem>;
     FSupplier: TSupplier;
@@ -238,6 +237,8 @@ type
     property Cabang: TCabang read FCabang write FCabang;
     property Keterangan: string read FKeterangan write SetKeterangan;
     property NoBukti: string read FNoBukti write FNoBukti;
+    property PenerimaanBarang: TPenerimaanBarang read FPenerimaanBarang write
+        FPenerimaanBarang;
     property Periode: Integer read FPeriode write FPeriode;
     property ReturSupplierItems: TObjectList<TReturSupplierItem> read
         GetReturSupplierItems write FReturSupplierItems;
@@ -289,6 +290,36 @@ type
     property PPN: Double read FPPN write FPPN;
     property TglBukti: TDatetime read FTglBukti write FTglBukti;
     property TglGiro: Integer read FTglGiro write FTglGiro;
+  end;
+
+  TMutasiStock = class(TAppObject)
+  private
+    FBarang: TBarang;
+    FCabang: TCabang;
+    FHarga: Double;
+    FKeterangan: string;
+    FKonversi: Double;
+    FTransaksi: string;
+    FNoBukti: string;
+    FPeriode: Integer;
+    FQtyIn: Double;
+    FQtyOut: Double;
+    FTglBukti: TDatetime;
+    FUOM: TUOM;
+    function GetPeriode: Integer;
+  public
+    property Barang: TBarang read FBarang write FBarang;
+    property Cabang: TCabang read FCabang write FCabang;
+    property Harga: Double read FHarga write FHarga;
+    property Keterangan: string read FKeterangan write FKeterangan;
+    property Konversi: Double read FKonversi write FKonversi;
+    property Transaksi: string read FTransaksi write FTransaksi;
+    property NoBukti: string read FNoBukti write FNoBukti;
+    property Periode: Integer read GetPeriode write FPeriode;
+    property QtyIn: Double read FQtyIn write FQtyIn;
+    property QtyOut: Double read FQtyOut write FQtyOut;
+    property TglBukti: TDatetime read FTglBukti write FTglBukti;
+    property UOM: TUOM read FUOM write FUOM;
   end;
 
 
@@ -417,6 +448,12 @@ procedure TReturSupplier.SetTglBukti(const Value: TDatetime);
 begin
   FTglBukti := Value;
   Periode   := StrToInt(FormatDateTime('YYYYMM', Value));
+end;
+
+function TMutasiStock.GetPeriode: Integer;
+begin
+  FPeriode  := StrToInt(FormatDateTime('yyyyMM', TglBukti));
+  Result := FPeriode;
 end;
 
 end.

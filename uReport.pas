@@ -3,7 +3,7 @@ unit uReport;
 interface
 
 uses
-  Forms, Classes, Db, frxDesgn, frxClass, frxChart,
+  Forms, Classes, Db, frxDesgn, frxClass,
   frxRich, frxBarcode, ImgList, ComCtrls, ExtCtrls, frxOLE,
   frxCross, frxDMPExport, frxExportImage, frxExportRTF,
    frxExportHTML, frxGZip, frxExportPDF,

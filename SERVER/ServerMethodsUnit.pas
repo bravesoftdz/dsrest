@@ -84,6 +84,7 @@ type
 
   TServerPenerimaanBarang = class(TServerTransaction, IBisaSimpanStock)
   private
+    function SimpanMutasiStock(AAppObject : TAppObject): Boolean; stdcall;
     function SimpanStockSekarang(AAppObject : TAppObject): Boolean; stdcall;
   protected
     function AfterSave(AOBject : TAppObject): Boolean; override;
@@ -113,10 +114,13 @@ type
 
   TServerStockSekarang = class(TCRUD)
   public
+    function HapusMutasi(ANoBukti : String): Boolean;
     function Retrieve(ABarang : TBarang): TStockSekarang;
   end;
 
   TServerReturSupplier = class(TServerTransaction, IBisaSimpanStock)
+  strict private
+    function SimpanMutasiStock(AAppObject : TAppObject): Boolean; stdcall;
   private
     function SimpanStockSekarang(AAppObject : TAppObject): Boolean; stdcall;
   protected
@@ -377,7 +381,11 @@ end;
 
 function TServerPenerimaanBarang.AfterSave(AOBject : TAppObject): Boolean;
 begin
-  Result := SimpanStockSekarang(AOBject);
+  Result := False;
+
+  if SimpanStockSekarang(AOBject) then
+    if SimpanMutasiStock(AOBject) then
+      Result := True;
 end;
 
 function TServerPenerimaanBarang.BeforeSave(AOBject : TAppObject): Boolean;
@@ -452,6 +460,49 @@ begin
   end;
 
 
+end;
+
+function TServerPenerimaanBarang.SimpanMutasiStock(AAppObject : TAppObject):
+    Boolean;
+var
+  i: Integer;
+  lMutasiStock: TMutasiStock;
+  lPB: TPenerimaanBarang;
+begin
+  Result := False;
+
+  with TServerStockSekarang.Create do
+  begin
+    try
+      lPB := TPenerimaanBarang(AAppObject);
+
+      if not HapusMutasi(lPB.NoBukti) then
+        Exit;
+
+      for i := 0 to lPB.PenerimaanBarangItems.Count - 1 do
+      begin
+        lMutasiStock            := TMutasiStock.Create;
+        lMutasiStock.Barang     := TBarang.CreateID(lPB.PenerimaanBarangItems[i].Barang.ID);
+        lMutasiStock.Cabang     := TCabang.CreateID(lPB.Cabang.ID);
+        lMutasiStock.UOM        := TUOM.CreateID(lPB.PenerimaanBarangItems[i].UOM.ID);
+        lMutasiStock.Harga      := lPB.PenerimaanBarangItems[i].HargaBeli;
+        lMutasiStock.QtyIn      := lPB.PenerimaanBarangItems[i].Qty;
+        lMutasiStock.QtyOut     := 0;
+        lMutasiStock.Keterangan := lPB.NoBukti;
+        lMutasiStock.NoBukti    := lPB.NoBukti;
+        lMutasiStock.Transaksi  := 'Penerimaan Barang';
+        lMutasiStock.TglBukti   := lPB.TglBukti;
+        lMutasiStock.Konversi   := lPB.PenerimaanBarangItems[i].Konversi;
+
+        if not SaveNoCommit(lMutasiStock) then
+          Exit;
+      end;
+    finally
+      Free;
+    end;
+  end;
+
+  Result := True;
 end;
 
 function TServerPenerimaanBarang.SimpanStockSekarang(AAppObject : TAppObject):
@@ -626,6 +677,22 @@ begin
   Result := True;
 end;
 
+function TServerStockSekarang.HapusMutasi(ANoBukti : String): Boolean;
+var
+  sSQL: string;
+begin
+  sSQL   := 'delete from tmutasistock' +
+            ' where nobukti = ' + QuotedStr(ANoBukti);
+
+  try
+    TDBUtils.ExecuteSQL(sSQL);
+    Result := True;
+  except
+    Result := False;
+  end;
+
+end;
+
 function TServerStockSekarang.Retrieve(ABarang : TBarang): TStockSekarang;
 var
   sID: string;
@@ -698,23 +765,23 @@ end;
 function TServerReturSupplier.BeforeSave(AOBject : TAppObject): Boolean;
 var
   i: Integer;
-  lBarang: TBarang;
+//  lBarang: TBarang;
   lRSupLama: TReturSupplier;
 begin
   Result := False;
 
-  for I := 0 to TReturSupplier(AOBject).ReturSupplierItems.count - 1 do
-  begin
-    with TServerStockSekarang.Create do
-    begin
-      try
-        lBarang := TReturSupplier(AOBject).ReturSupplierItems[i].Barang;
-        TReturSupplier(AOBject).ReturSupplierItems[i].HargaAVG := Retrieve(lBarang).Rp / Retrieve(lBarang).Qty *TReturSupplier(AOBject).ReturSupplierItems[i].Konversi;
-      finally
-        Free;
-      end;
-    end;
-  end;
+//  for I := 0 to TReturSupplier(AOBject).ReturSupplierItems.count - 1 do
+//  begin
+//    with TServerStockSekarang.Create do
+//    begin
+//      try
+//        lBarang := TReturSupplier(AOBject).ReturSupplierItems[i].Barang;
+//        TReturSupplier(AOBject).ReturSupplierItems[i].HargaAVG := Retrieve(lBarang).Rp / Retrieve(lBarang).Qty *TReturSupplier(AOBject).ReturSupplierItems[i].Konversi;
+//      finally
+//        Free;
+//      end;
+//    end;
+//  end;
 
   lRSupLama := Retrieve(AOBject.ID);
   try
@@ -763,6 +830,12 @@ begin
   end;
 
 
+end;
+
+function TServerReturSupplier.SimpanMutasiStock(AAppObject : TAppObject):
+    Boolean;
+begin
+  Result := True;
 end;
 
 function TServerReturSupplier.SimpanStockSekarang(AAppObject : TAppObject):

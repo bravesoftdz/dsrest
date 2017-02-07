@@ -22,6 +22,7 @@ type
     FServerCabangClient: TServerCabangClient;
     FServerLogAppObjectClient: TServerLogAppObjectClient;
     FServerUtilsClient: TServerUtilsClient;
+    FServerReturSupplierClient: TServerReturSupplierClient;
     function GetCabang: tcabang;
     function GetServerMethods1Client: TServerMethods1Client;
     function GetServerUOMClient: TServerUOMClient;
@@ -32,6 +33,7 @@ type
     function GetServerCabangClient: TServerCabangClient;
     function GetServerLogAppObjectClient: TServerLogAppObjectClient;
     function GetServerUtilsClient: TServerUtilsClient;
+    function GetServerReturSupplierClient: TServerReturSupplierClient;
     { Private declarations }
   public
     constructor Create(AOwner: TComponent); override;
@@ -47,6 +49,8 @@ type
     property ServerCabangClient: TServerCabangClient read GetServerCabangClient write FServerCabangClient;
     property ServerLogAppObjectClient: TServerLogAppObjectClient read GetServerLogAppObjectClient write FServerLogAppObjectClient;
     property ServerUtilsClient: TServerUtilsClient read GetServerUtilsClient write FServerUtilsClient;
+    property ServerReturSupplierClient: TServerReturSupplierClient read
+        GetServerReturSupplierClient write FServerReturSupplierClient;
 
 end;
 
@@ -81,6 +85,8 @@ begin
   FServerCabangClient.Free;
   FServerLogAppObjectClient.Free;
   FServerUtilsClient.Free;
+  FServerReturSupplierClient.Free;
+
   inherited;
 end;
 
@@ -147,6 +153,14 @@ begin
   if FServerUtilsClient = nil then
     FServerUtilsClient:= TServerUtilsClient.Create(DSRestConnection, FInstanceOwner);
   Result := FServerUtilsClient;
+end;
+
+function TClientDataModule.GetServerReturSupplierClient:
+    TServerReturSupplierClient;
+begin
+  if FServerReturSupplierClient = nil then
+    FServerReturSupplierClient:= TServerReturSupplierClient.Create(DSRestConnection, FInstanceOwner);
+  Result := FServerReturSupplierClient;
 end;
 
 end.
