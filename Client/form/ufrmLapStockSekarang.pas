@@ -70,6 +70,7 @@ begin
       else
         dtstprvdrStockSekarang.DataSet := LaporanStockSekarang(TCabang.CreateID(cbbLUCabang.KeyValue));
 
+      cdsStockSekarang.Close;
       cdsStockSekarang.Open;
 
       cxGridDBTableStockSekarang.SetDataset(cdsStockSekarang);

@@ -83,11 +83,15 @@ type
   end;
 
   TServerPenerimaanBarang = class(TServerTransaction, IBisaSimpanStock)
+  strict private
+    function HapusMutasi(ANoBukti : String): Boolean; stdcall;
   private
     function SimpanMutasiStock(AAppObject : TAppObject): Boolean; stdcall;
-    function SimpanStockSekarang(AAppObject : TAppObject): Boolean; stdcall;
+    function SimpanStockSekarang(AAppObject : TAppObject; AIsMenghapus : Boolean =
+        False): Boolean; stdcall;
   protected
     function AfterSave(AOBject : TAppObject): Boolean; override;
+    function AfterDelete(AOBject : TAppObject): Boolean; override;
     function BeforeSave(AOBject : TAppObject): Boolean; override;
   public
     function Retrieve(AID : String): TPenerimaanBarang;
@@ -120,9 +124,11 @@ type
 
   TServerReturSupplier = class(TServerTransaction, IBisaSimpanStock)
   strict private
+    function HapusMutasi(ANoBukti : String): Boolean; stdcall;
     function SimpanMutasiStock(AAppObject : TAppObject): Boolean; stdcall;
   private
-    function SimpanStockSekarang(AAppObject : TAppObject): Boolean; stdcall;
+    function SimpanStockSekarang(AAppObject : TAppObject; AIsMenghapus : Boolean =
+        False): Boolean; stdcall;
   protected
     function AfterSave(AOBject : TAppObject): Boolean; override;
     function BeforeSave(AOBject : TAppObject): Boolean; override;
@@ -388,9 +394,19 @@ begin
       Result := True;
 end;
 
+function TServerPenerimaanBarang.AfterDelete(AOBject : TAppObject): Boolean;
+begin
+  Result := False;
+
+  if SimpanStockSekarang(AOBject, True) then
+  begin
+    if HapusMutasi(TPenerimaanBarang(AOBject).NoBukti) then
+      Result := True;
+  end;
+end;
+
 function TServerPenerimaanBarang.BeforeSave(AOBject : TAppObject): Boolean;
 var
-  i: Integer;
   lPBLama: TPenerimaanBarang;
 begin
   Result := False;
@@ -399,12 +415,7 @@ begin
   try
     if AOBject.ObjectState <> 1 then
     begin
-      for i := 0 to lPBLama.PenerimaanBarangItems.Count - 1 do
-      begin
-        lPBLama.PenerimaanBarangItems[i].Qty := -1 * lPBLama.PenerimaanBarangItems[i].Qty;
-      end;
-
-      if NOT SimpanStockSekarang(lPBLama) then
+      if NOT SimpanStockSekarang(lPBLama, True) then
         Exit;
     end;
   finally
@@ -414,6 +425,22 @@ begin
   
   Result := True;
 
+end;
+
+function TServerPenerimaanBarang.HapusMutasi(ANoBukti : String): Boolean;
+begin
+  Result := False;
+
+  with TServerStockSekarang.Create do
+  begin
+    try
+      if not HapusMutasi(ANoBukti) then
+        Exit;
+    finally
+      Free;
+    end;
+  end;
+  Result := True;
 end;
 
 function TServerPenerimaanBarang.Retrieve(AID : String): TPenerimaanBarang;
@@ -471,14 +498,13 @@ var
 begin
   Result := False;
 
+  lPB := TPenerimaanBarang(AAppObject);
+  if not HapusMutasi(lPB.NoBukti) then
+    Exit;
+
   with TServerStockSekarang.Create do
   begin
     try
-      lPB := TPenerimaanBarang(AAppObject);
-
-      if not HapusMutasi(lPB.NoBukti) then
-        Exit;
-
       for i := 0 to lPB.PenerimaanBarangItems.Count - 1 do
       begin
         lMutasiStock            := TMutasiStock.Create;
@@ -505,8 +531,8 @@ begin
   Result := True;
 end;
 
-function TServerPenerimaanBarang.SimpanStockSekarang(AAppObject : TAppObject):
-    Boolean;
+function TServerPenerimaanBarang.SimpanStockSekarang(AAppObject : TAppObject;
+    AIsMenghapus : Boolean = False): Boolean;
 var
   dKonversi: Double;
   i: Integer;
@@ -519,6 +545,15 @@ begin
   begin
     try
       lPB := TPenerimaanBarang(AAppObject);
+
+      if AIsMenghapus then
+      begin
+        for i := 0 to lPB.PenerimaanBarangItems.Count - 1 do
+        begin
+          lPB.PenerimaanBarangItems[i].Qty := -1 * lPB.PenerimaanBarangItems[i].Qty;
+        end;
+      end;
+
       for i := 0 to lPB.PenerimaanBarangItems.Count - 1 do
       begin
         lStockSekarang           := Retrieve(lPB.PenerimaanBarangItems[i].Barang);
@@ -724,7 +759,9 @@ begin
           ' from tstocksekarang a' +
           ' INNER JOIN tbarang b on a.barang = b.id' +
           ' INNER JOIN tuom c on a.uom = c.id' +
-          ' INNER JOIN tcabang d on a.cabang = d.id';
+          ' INNER JOIN tcabang d on a.cabang = d.id' +
+          ' order b.sku, b.nama'
+          ;
 
   if ACabang <> nil then
     sSQL := sSQL + ' where a.cabang = ' + QuotedStr(ACabang.Id);
@@ -751,7 +788,8 @@ begin
           ' sum(saldoakhir) as saldoakhir' +
           ' from proc_mutasi_barang_per_transaksi(' + TAppUtils.QuotD(ATglAwal) + ',' +
             TAppUtils.QuotDt(EndOfTheDay(ATglAtglAkhir)) + ')' +
-          ' group by cabang , barang , nama';
+          ' group by cabang , barang , nama' +
+          ' order by barang, nama';
 
   Result   := TDBUtils.OpenDataset(sSQL);
 end;
@@ -804,6 +842,11 @@ begin
 
 end;
 
+function TServerReturSupplier.HapusMutasi(ANoBukti : String): Boolean;
+begin
+  Result := False;
+end;
+
 function TServerReturSupplier.Retrieve(AID : String): TReturSupplier;
 begin
   Result := TReturSupplier.Create;
@@ -838,8 +881,8 @@ begin
   Result := True;
 end;
 
-function TServerReturSupplier.SimpanStockSekarang(AAppObject : TAppObject):
-    Boolean;
+function TServerReturSupplier.SimpanStockSekarang(AAppObject : TAppObject;
+    AIsMenghapus : Boolean = False): Boolean;
 var
   dKonversi: Double;
   i: Integer;
@@ -847,6 +890,11 @@ var
   lStockSekarang: TStockSekarang;
 begin
   Result := False;
+
+  if AIsMenghapus then
+  begin
+
+  end;
 
   with TServerStockSekarang.Create do
   begin

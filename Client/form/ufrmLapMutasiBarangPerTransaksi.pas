@@ -59,6 +59,7 @@ begin
   begin
     try
       ProvMutasi.DataSet := RetriveMutasiBarang(edAwal.Date,edAkhir.Date);
+      cdsMutasi.Close;
       cdsMutasi.Open;
 
       TDBUtils.DataSetToCxDBGrid(cdsMutasi, cxGridDBTableMutasiBarang);
