@@ -491,6 +491,7 @@ var
   sGenericItemClassName: string;
 //  sX: string;
 begin
+
   sSQL := 'select * from ' + AOBject.ClassName
           + ' where id = ' + QuotedStr(AID);
 

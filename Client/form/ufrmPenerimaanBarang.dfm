@@ -186,8 +186,6 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
           Height = 222
           Align = alClient
           TabOrder = 0
-          ExplicitLeft = 1
-          ExplicitTop = -1
           object cxGridTablePenerimaanBarang: TcxGridTableView
             Navigator.Buttons.CustomButtons = <>
             DataController.Summary.DefaultGroupSummaryItems = <>
@@ -250,7 +248,9 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
               Properties.View = cxGridDBTableUOM
               Properties.KeyFieldNames = 'ID'
               Properties.ListFieldItem = cxgrdbclmnGridDBTableUOMColumnUOM
+              Properties.OnInitPopup = cxGridTablePenerimaanBarangColumnSatuanPropertiesInitPopup
               HeaderAlignmentHorz = taCenter
+              Width = 92
             end
             object cxGridTablePenerimaanBarangColumnHarga: TcxGridColumn
               Caption = 'Harga'
@@ -431,6 +431,7 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
     end
     object cxGridDBTableUOM: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
+      FilterBox.Visible = fvNever
       DataController.KeyFieldNames = 'ID'
       DataController.Summary.DefaultGroupSummaryItems = <>
       DataController.Summary.FooterSummaryItems = <>
@@ -445,11 +446,16 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
         Caption = ' UOM '
         DataBinding.FieldName = 'UOM'
       end
+      object cxgrdbclmnGridDBTableUOMColumnID: TcxGridDBColumn
+        Caption = 'ID '
+        DataBinding.FieldName = 'ID'
+        Visible = False
+      end
     end
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010105000800640018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C0101050008006C0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

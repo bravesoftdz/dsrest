@@ -93,7 +93,7 @@ inherited frmBarang: TfrmBarang
     Height = 324
     Align = alClient
     TabOrder = 6
-    Properties.ActivePage = cxTSHeader
+    Properties.ActivePage = cxTSSatuan
     Properties.CustomButtons.Buttons = <>
     ClientRectBottom = 320
     ClientRectLeft = 4
@@ -225,7 +225,7 @@ inherited frmBarang: TfrmBarang
             Width = 119
           end
           object cxGridTableSatuanColumnHargaJual: TcxGridColumn
-            Caption = 'Harga Jual'
+            Caption = 'Harga Umum'
             DataBinding.ValueType = 'Currency'
             PropertiesClassName = 'TcxCurrencyEditProperties'
             Properties.Alignment.Horz = taRightJustify
@@ -242,15 +242,6 @@ inherited frmBarang: TfrmBarang
             HeaderAlignmentHorz = taCenter
             Width = 131
           end
-          object cxGridTableSatuanColumnHargaJualGrosir: TcxGridColumn
-            Caption = 'Harga Jual Grosir'
-            DataBinding.ValueType = 'Currency'
-            PropertiesClassName = 'TcxCurrencyEditProperties'
-            Properties.Alignment.Horz = taRightJustify
-            Properties.DisplayFormat = ',0.00;(,0.00)'
-            HeaderAlignmentHorz = taCenter
-            Width = 113
-          end
           object cxGridTableSatuanColumnHargaJualKeliling: TcxGridColumn
             Caption = 'Harga Jual Keliling'
             DataBinding.ValueType = 'Currency'
@@ -259,6 +250,15 @@ inherited frmBarang: TfrmBarang
             Properties.DisplayFormat = ',0.00;(,0.00)'
             HeaderAlignmentHorz = taCenter
             Width = 140
+          end
+          object cxGridTableSatuanColumnHargaJualGrosir: TcxGridColumn
+            Caption = 'Harga Jual Grosir'
+            DataBinding.ValueType = 'Currency'
+            PropertiesClassName = 'TcxCurrencyEditProperties'
+            Properties.Alignment.Horz = taRightJustify
+            Properties.DisplayFormat = ',0.00;(,0.00)'
+            HeaderAlignmentHorz = taCenter
+            Width = 113
           end
         end
         object cxgrdlvlSatuan: TcxGridLevel
@@ -359,7 +359,7 @@ inherited frmBarang: TfrmBarang
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010105000800680018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C0101050008006C0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

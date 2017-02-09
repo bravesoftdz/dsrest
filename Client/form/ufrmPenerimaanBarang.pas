@@ -64,6 +64,7 @@ type
     cxgrdbclmnGridDBTableDaftarPBKeterangan: TcxGridDBColumn;
     DSPSlip: TDataSetProvider;
     cdsSlip: TClientDataSet;
+    cxgrdbclmnGridDBTableUOMColumnID: TcxGridDBColumn;
     procedure actCetakExecute(Sender: TObject);
     procedure ActionBaruExecute(Sender: TObject);
     procedure ActionHapusExecute(Sender: TObject);
@@ -93,6 +94,8 @@ type
       var Error: Boolean);
     procedure cxGridDBTableDaftarPBEditing(Sender: TcxCustomGridTableView;
       AItem: TcxCustomGridTableItem; var AAllow: Boolean);
+    procedure cxGridTablePenerimaanBarangColumnSatuanPropertiesInitPopup(
+      Sender: TObject);
   private
     FPenerimaanBarang: TPenerimaanBarang;
     function GetPenerimaanBarang: TPenerimaanBarang;
@@ -331,6 +334,39 @@ begin
   inherited;
   dNilai :=  DisplayValue;
   HitungNilaiNilaiPerBaris(dNilai, cxGridTablePenerimaanBarangColumnQty.Index);
+end;
+
+procedure TfrmPenerimaanBarang.cxGridTablePenerimaanBarangColumnSatuanPropertiesInitPopup(
+  Sender: TObject);
+var
+  lBrg: TBarang;
+  sIDBarang: string;
+  i: Integer;
+begin
+  inherited;
+  sIDBarang := cxGridTablePenerimaanBarang.GetString(cxGridTablePenerimaanBarang.DataController.FocusedRecordIndex, cxGridTablePenerimaanBarangColumnSKU.Index);
+  if sIDBarang = '' then
+    Exit;
+
+  with cxGridDBTableUOM.DataController.Filter do
+  begin
+    BeginUpdate;
+    lBrg := TBarang.Create;
+    TDBUtils.LoadFromDB(lBrg, sIDBarang);
+    try
+      Root.Clear;
+      Root.BoolOperatorKind :=  fboOr;
+      for i := 0 to lBrg.BarangSatuanItems.Count - 1 do
+      begin
+        Root.AddItem(cxgrdbclmnGridDBTableUOMColumnID, foEqual,lBrg.BarangSatuanItems[i].UOM.ID, lBrg.BarangSatuanItems[i].UOM.ID);
+      end;
+
+     DataController.Filter.Active := True;
+    finally
+      EndUpdate;
+      lBrg.Free;
+    end;
+  end;
 end;
 
 procedure TfrmPenerimaanBarang.cxGridTablePenerimaanBarangColumnSKUPropertiesValidate(
