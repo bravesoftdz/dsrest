@@ -322,10 +322,32 @@ type
     property UOM: TUOM read FUOM write FUOM;
   end;
 
-
-
-
-
+type
+  TInvoiceSupplierItem = class(TAppObjectItem)
+  private
+    FBarang: TBarang;
+    FDiskon: Double;
+    FHargaBeli: Double;
+    FPenerimaanBarang: TPenerimaanBarang;
+    FPPN: Double;
+    FQty: Double;
+    FUOM: TUOM;
+    FKonversi : Double;
+    function GetHargaSetelahDiskon: Double;
+  public
+    function GetHeaderField: string; override;
+    procedure SetHeaderProperty(AHeaderProperty : TAppObject); override;
+    property Barang: TBarang read FBarang write FBarang;
+    property Diskon: Double read FDiskon write FDiskon;
+    property HargaBeli: Double read FHargaBeli write FHargaBeli;
+    property HargaSetelahDiskon: Double read GetHargaSetelahDiskon;
+    property PenerimaanBarang: TPenerimaanBarang read FPenerimaanBarang write
+        FPenerimaanBarang;
+    property PPN: Double read FPPN write FPPN;
+    property Qty: Double read FQty write FQty;
+    property UOM: TUOM read FUOM write FUOM;
+    property Konversi : Double read FKonversi write FKonversi;
+  end;
 
 
 implementation
@@ -454,6 +476,21 @@ function TMutasiStock.GetPeriode: Integer;
 begin
   FPeriode  := StrToInt(FormatDateTime('yyyyMM', TglBukti));
   Result := FPeriode;
+end;
+
+function TInvoiceSupplierItem.GetHargaSetelahDiskon: Double;
+begin
+  Result := HargaBeli * (100 - Diskon) / 100;
+end;
+
+function TInvoiceSupplierItem.GetHeaderField: string;
+begin
+  Result := 'InvoiceSupplier';
+end;
+
+procedure TInvoiceSupplierItem.SetHeaderProperty(AHeaderProperty : TAppObject);
+begin
+  PenerimaanBarang := TPenerimaanBarang(AHeaderProperty);
 end;
 
 end.
