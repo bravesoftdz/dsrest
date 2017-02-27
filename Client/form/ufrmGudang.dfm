@@ -1,36 +1,19 @@
-inherited frmSupplier: TfrmSupplier
-  Caption = 'Supplier'
-  ClientHeight = 462
-  ExplicitWidth = 733
-  ExplicitHeight = 501
+inherited frmGudang: TfrmGudang
+  Caption = 'Gudang'
   PixelsPerInch = 96
   TextHeight = 13
-  inherited splTransaksi: TSplitter
-    Left = 361
-    Height = 392
-    ExplicitLeft = 161
-    ExplicitHeight = 392
-  end
-  inherited cxSBTransaksi: TdxStatusBar
-    Top = 442
-    ExplicitTop = 442
-  end
   inherited pnlListTransaksi: TPanel
-    Width = 361
-    Height = 392
-    ExplicitWidth = 361
-    ExplicitHeight = 392
-    object cxGridDBSupplier: TcxGrid
+    object cxGridDBGudang: TcxGrid
       Left = 1
       Top = 1
-      Width = 359
-      Height = 390
+      Width = 183
+      Height = 274
       Align = alClient
       TabOrder = 0
-      object cxGridDBTableSupplier: TcxGridDBTableView
+      ExplicitWidth = 359
+      ExplicitHeight = 390
+      object cxGridDBTableGudang: TcxGridDBTableView
         Navigator.Buttons.CustomButtons = <>
-        OnCellDblClick = cxGridDBTableSupplierCellDblClick
-        OnEditing = cxGridDBTableSupplierEditing
         DataController.Summary.DefaultGroupSummaryItems = <>
         DataController.Summary.FooterSummaryItems = <>
         DataController.Summary.SummaryGroups = <>
@@ -38,43 +21,46 @@ inherited frmSupplier: TfrmSupplier
         Styles.ContentEven = cxstylGridEven
         Styles.ContentOdd = cxstylGridOdd
         Styles.Header = cxstylGridHeader
-        object cxgrdbclmnGridDBTableSupplierColumnKode: TcxGridDBColumn
+        object cxgrdbclmnGridDBTableGudangColumnKode: TcxGridDBColumn
           DataBinding.FieldName = 'Kode'
           HeaderAlignmentHorz = taCenter
           Width = 87
         end
-        object cxgrdbclmnGridDBTableSupplierColumnNama: TcxGridDBColumn
+        object cxgrdbclmnGridDBTableGudangColumnNama: TcxGridDBColumn
           DataBinding.FieldName = 'Nama'
           HeaderAlignmentHorz = taCenter
           Width = 138
         end
-        object cxgrdbclmnGridDBTableSupplierColumnAlamat: TcxGridDBColumn
-          DataBinding.FieldName = 'Alamat'
-          HeaderAlignmentHorz = taCenter
-          Width = 130
-        end
       end
-      object cxgrdlvlSupplier: TcxGridLevel
-        GridView = cxGridDBTableSupplier
+      object cxgrdlvlGudang: TcxGridLevel
+        GridView = cxGridDBTableGudang
       end
     end
   end
   object cxPCInput: TcxPageControl [3]
-    Left = 369
+    Left = 193
     Top = 50
-    Width = 348
-    Height = 392
+    Width = 524
+    Height = 276
     Align = alClient
     TabOrder = 6
     Properties.ActivePage = Input
     Properties.CustomButtons.Buttons = <>
-    ClientRectBottom = 388
+    ExplicitLeft = 369
+    ExplicitTop = -46
+    ExplicitWidth = 348
+    ExplicitHeight = 392
+    ClientRectBottom = 272
     ClientRectLeft = 4
-    ClientRectRight = 344
+    ClientRectRight = 520
     ClientRectTop = 24
     object Input: TcxTabSheet
       Caption = 'Input'
       ImageIndex = 0
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object lblKode: TLabel
         Left = 19
         Top = 17
@@ -89,13 +75,6 @@ inherited frmSupplier: TfrmSupplier
         Height = 13
         Caption = 'Nama'
       end
-      object lblAlamat: TLabel
-        Left = 10
-        Top = 63
-        Width = 33
-        Height = 13
-        Caption = 'Alamat'
-      end
       object edKode: TcxTextEdit
         Left = 49
         Top = 13
@@ -108,15 +87,6 @@ inherited frmSupplier: TfrmSupplier
         Top = 38
         TabOrder = 1
         Text = 'edNama'
-        Width = 185
-      end
-      object memAlamt: TcxMemo
-        Left = 49
-        Top = 63
-        Lines.Strings = (
-          'memAlamt')
-        TabOrder = 2
-        Height = 89
         Width = 185
       end
     end
@@ -150,21 +120,15 @@ inherited frmSupplier: TfrmSupplier
     inherited ActionSimpan: TAction
       OnExecute = ActionSimpanExecute
     end
-    inherited ActionHapus: TAction
-      OnExecute = ActionHapusExecute
-    end
-    inherited ActionRefresh: TAction
-      OnExecute = ActionRefreshExecute
-    end
   end
   inherited cxStyleRepTrans: TcxStyleRepository
-    Left = 456
-    Top = 16
     PixelsPerInch = 96
   end
   inherited ilButton: TImageList
+    Left = 512
+    Top = 88
     Bitmap = {
-      494C010105000800440018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010105000800600018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -764,5 +728,17 @@ inherited frmSupplier: TfrmSupplier
       F0000F000001800003F3FF1FF8001F000003C00003F0003FFE007F800007E000
       07F8007FFFFFFFE0000FFFFFFFFFFFFF00000000000000000000000000000000
       000000000000}
+  end
+  inherited dsCabang: TDataSource
+    Left = 544
+    Top = 88
+  end
+  inherited DSPCabang: TDataSetProvider
+    Left = 584
+    Top = 88
+  end
+  inherited cdsCabang: TClientDataSet
+    Left = 616
+    Top = 88
   end
 end

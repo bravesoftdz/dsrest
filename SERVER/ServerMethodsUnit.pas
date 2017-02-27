@@ -27,7 +27,7 @@ type
   public
     function Delete(AAppObject : TAppObject): Boolean; virtual;
     function RetrieveCDS(AAppObject : TAppObject): TDataSet; virtual;
-    function RetrieveCDSJSON: TJSONArray;
+//    function RetrieveCDSJSON: TJSONArray;
     function Save(AOBject : TAppObject): Boolean; virtual;
   end;
 
@@ -149,6 +149,12 @@ type
   public
     function Retrieve(AID : String): TPembayaranSupplier;
     function RetrieveCDS2: TDataset;
+  end;
+
+  TServerGudang = class(TServerMaster)
+  public
+    function Retrieve(AID : String): TGudang;
+    function RetrieveKode(AKode : String): TGudang;
   end;
 
 
@@ -313,31 +319,31 @@ begin
   Result := StringReplace(Self.ClassName,'Server','', [rfIgnoreCase]);
 end;
 
-function TCRUD.RetrieveCDSJSON: TJSONArray;
-var
-  I: Integer;
-  jRecord: TJSONObject;
-begin
-  Result := TJSONArray.Create; ;
-
-  with TDBUtils.OpenDataset('select* from tbarang') do
-  begin
-    try
-      while not Eof do
-      begin
-        jRecord := TJSONObject.Create;
-        for I := 0 to FieldCount - 1 do
-        jRecord.AddPair(
-        Fields[I].FieldName,TJSONString.Create (Fields[I].AsString));
-        Result.AddElement(jRecord);
-
-        Next;
-      end;
-    finally
-      Free;
-    end;
-  end;
-end;
+//function TCRUD.RetrieveCDSJSON: TJSONArray;
+//var
+//  I: Integer;
+//  jRecord: TJSONObject;
+//begin
+//  Result := TJSONArray.Create; ;
+//
+//  with TDBUtils.OpenDataset('select* from tbarang') do
+//  begin
+//    try
+//      while not Eof do
+//      begin
+//        jRecord := TJSONObject.Create;
+//        for I := 0 to FieldCount - 1 do
+//        jRecord.AddPair(
+//        Fields[I].FieldName,TJSONString.Create (Fields[I].AsString));
+//        Result.AddElement(jRecord);
+//
+//        Next;
+//      end;
+//    finally
+//      Free;
+//    end;
+//  end;
+//end;
 
 function TCRUD.SaveNoCommit(AOBject : TAppObject): Boolean;
 begin
@@ -520,6 +526,7 @@ begin
         lMutasiStock.Transaksi  := 'Penerimaan Barang';
         lMutasiStock.TglBukti   := lPB.TglBukti;
         lMutasiStock.Konversi   := lPB.PenerimaanBarangItems[i].Konversi;
+        lMutasiStock.Gudang     := TGudang.CreateID(lPB.Gudang.ID);
 
         if not SaveNoCommit(lMutasiStock) then
           Exit;
@@ -558,8 +565,8 @@ begin
       for i := 0 to lPB.PenerimaanBarangItems.Count - 1 do
       begin
         lStockSekarang           := Retrieve(lPB.PenerimaanBarangItems[i].Barang);
-        lStockSekarang.Cabang    := TCabang.Create;
-        lStockSekarang.Cabang.ID := lPB.Cabang.ID;
+        lStockSekarang.Cabang    := TCabang.CreateID(lPB.Cabang.ID);
+        lStockSekarang.Gudang    := TGudang.CreateID(lPB.Gudang.ID);
 //        dKonversi                := lPB.PenerimaanBarangItems[i].Konversi;
 
         with TServerBarang.Create do
@@ -1072,6 +1079,30 @@ begin
           ' ORDER BY a.tglbukti DESC';
 
   Result := TDBUtils.OpenDataset(sSQL);
+end;
+
+function TServerGudang.Retrieve(AID : String): TGudang;
+begin
+  Result      := TGudang.Create;
+  TDBUtils.LoadFromDB(Result, AID);
+end;
+
+function TServerGudang.RetrieveKode(AKode : String): TGudang;
+var
+  sSQL: string;
+begin
+  Result      := TGudang.Create;
+
+  sSQL := 'select id from TGudang where kode = ' + QuotedStr(AKode);
+  with TDBUtils.OpenDataset(sSQL) do
+  begin
+    try
+      if not IsEmpty then
+        TDBUtils.LoadFromDB(Result, FieldByName('id').AsString);
+    finally
+      Free;
+    end;
+  end;
 end;
 
 

@@ -1,6 +1,6 @@
 ﻿// 
 // Created by the DataSnap proxy generator.
-// 2/2/2017 2:14:23 PM
+// 2/28/2017 3:07:52 AM
 // 
 
 function DSAdmin(connectionInfo)
@@ -855,30 +855,6 @@ function TServerSupplier(connectionInfo)
   };
 
   /*
-   * @return result - Type on server: TJSONArray
-   */
-  this.RetrieveCDSJSON = function() {
-    var returnObject = this.executor.executeMethod('RetrieveCDSJSON', "GET", [], arguments[0], true, arguments[1], arguments[2]);
-    if (arguments[0] == null) {
-      if (returnObject != null && returnObject.result != null && isArray(returnObject.result)) {
-        var resultArray = returnObject.result;
-        var resultObject = new Object();
-        resultObject.result = resultArray[0];
-        if (returnObject.cacheId != null && returnObject.cmdIndex != null) {
-          resultObject._cacheId = returnObject.cacheId;
-          resultObject._cmdIndex = returnObject.cmdIndex;
-        }
-        return resultObject;
-      }
-      return returnObject;
-    }
-  };
-
-  this.RetrieveCDSJSON_URL = function() {
-    return this.executor.getMethodURL("RetrieveCDSJSON", "GET", [], arguments[0])[0];
-  };
-
-  /*
    * @param AOBject [in] - Type on server: TAppObject
    * @return result - Type on server: Boolean
    */
@@ -994,30 +970,6 @@ function TServerBarang(connectionInfo)
   };
 
   /*
-   * @return result - Type on server: TJSONArray
-   */
-  this.RetrieveCDSJSON = function() {
-    var returnObject = this.executor.executeMethod('RetrieveCDSJSON', "GET", [], arguments[0], true, arguments[1], arguments[2]);
-    if (arguments[0] == null) {
-      if (returnObject != null && returnObject.result != null && isArray(returnObject.result)) {
-        var resultArray = returnObject.result;
-        var resultObject = new Object();
-        resultObject.result = resultArray[0];
-        if (returnObject.cacheId != null && returnObject.cmdIndex != null) {
-          resultObject._cacheId = returnObject.cacheId;
-          resultObject._cmdIndex = returnObject.cmdIndex;
-        }
-        return resultObject;
-      }
-      return returnObject;
-    }
-  };
-
-  this.RetrieveCDSJSON_URL = function() {
-    return this.executor.getMethodURL("RetrieveCDSJSON", "GET", [], arguments[0])[0];
-  };
-
-  /*
    * @param AOBject [in] - Type on server: TAppObject
    * @return result - Type on server: Boolean
    */
@@ -1107,30 +1059,6 @@ function TServerGroupBarang(connectionInfo)
   };
 
   /*
-   * @return result - Type on server: TJSONArray
-   */
-  this.RetrieveCDSJSON = function() {
-    var returnObject = this.executor.executeMethod('RetrieveCDSJSON', "GET", [], arguments[0], true, arguments[1], arguments[2]);
-    if (arguments[0] == null) {
-      if (returnObject != null && returnObject.result != null && isArray(returnObject.result)) {
-        var resultArray = returnObject.result;
-        var resultObject = new Object();
-        resultObject.result = resultArray[0];
-        if (returnObject.cacheId != null && returnObject.cmdIndex != null) {
-          resultObject._cacheId = returnObject.cacheId;
-          resultObject._cmdIndex = returnObject.cmdIndex;
-        }
-        return resultObject;
-      }
-      return returnObject;
-    }
-  };
-
-  this.RetrieveCDSJSON_URL = function() {
-    return this.executor.getMethodURL("RetrieveCDSJSON", "GET", [], arguments[0])[0];
-  };
-
-  /*
    * @param AOBject [in] - Type on server: TAppObject
    * @return result - Type on server: Boolean
    */
@@ -1177,6 +1105,32 @@ function TServerPenerimaanBarang(connectionInfo)
 
   this.Retrieve_URL = function(AID) {
     return this.executor.getMethodURL("Retrieve", "GET", [AID], arguments[1])[0];
+  };
+
+  /*
+   * @param AID [in] - Type on server: string
+   * @return result - Type on server: TDataSet
+   */
+  this.RetrieveCDSlip = function(AID) {
+    var returnObject = this.executor.executeMethod('RetrieveCDSlip', "GET", [AID], arguments[1], true, arguments[2], arguments[3]);
+    if (arguments[1] == null) {
+      if (returnObject != null && returnObject.result != null && isArray(returnObject.result)) {
+        var resultArray = returnObject.result;
+        var resultObject = new Object();
+        resultObject.AID = AID;
+        resultObject.result = resultArray[0];
+        if (returnObject.cacheId != null && returnObject.cmdIndex != null) {
+          resultObject._cacheId = returnObject.cacheId;
+          resultObject._cmdIndex = returnObject.cmdIndex;
+        }
+        return resultObject;
+      }
+      return returnObject;
+    }
+  };
+
+  this.RetrieveCDSlip_URL = function(AID) {
+    return this.executor.getMethodURL("RetrieveCDSlip", "GET", [AID], arguments[1])[0];
   };
 
   /*
@@ -1270,30 +1224,6 @@ function TServerPenerimaanBarang(connectionInfo)
   };
 
   /*
-   * @return result - Type on server: TJSONArray
-   */
-  this.RetrieveCDSJSON = function() {
-    var returnObject = this.executor.executeMethod('RetrieveCDSJSON', "GET", [], arguments[0], true, arguments[1], arguments[2]);
-    if (arguments[0] == null) {
-      if (returnObject != null && returnObject.result != null && isArray(returnObject.result)) {
-        var resultArray = returnObject.result;
-        var resultObject = new Object();
-        resultObject.result = resultArray[0];
-        if (returnObject.cacheId != null && returnObject.cmdIndex != null) {
-          resultObject._cacheId = returnObject.cacheId;
-          resultObject._cmdIndex = returnObject.cmdIndex;
-        }
-        return resultObject;
-      }
-      return returnObject;
-    }
-  };
-
-  this.RetrieveCDSJSON_URL = function() {
-    return this.executor.getMethodURL("RetrieveCDSJSON", "GET", [], arguments[0])[0];
-  };
-
-  /*
    * @param AOBject [in] - Type on server: TAppObject
    * @return result - Type on server: Boolean
    */
@@ -1380,30 +1310,6 @@ function TServerCabang(connectionInfo)
       }
       return returnObject;
     }
-  };
-
-  /*
-   * @return result - Type on server: TJSONArray
-   */
-  this.RetrieveCDSJSON = function() {
-    var returnObject = this.executor.executeMethod('RetrieveCDSJSON', "GET", [], arguments[0], true, arguments[1], arguments[2]);
-    if (arguments[0] == null) {
-      if (returnObject != null && returnObject.result != null && isArray(returnObject.result)) {
-        var resultArray = returnObject.result;
-        var resultObject = new Object();
-        resultObject.result = resultArray[0];
-        if (returnObject.cacheId != null && returnObject.cmdIndex != null) {
-          resultObject._cacheId = returnObject.cacheId;
-          resultObject._cmdIndex = returnObject.cmdIndex;
-        }
-        return resultObject;
-      }
-      return returnObject;
-    }
-  };
-
-  this.RetrieveCDSJSON_URL = function() {
-    return this.executor.getMethodURL("RetrieveCDSJSON", "GET", [], arguments[0])[0];
   };
 
   /*
@@ -1496,30 +1402,6 @@ function TServerLogAppObject(connectionInfo)
   };
 
   /*
-   * @return result - Type on server: TJSONArray
-   */
-  this.RetrieveCDSJSON = function() {
-    var returnObject = this.executor.executeMethod('RetrieveCDSJSON', "GET", [], arguments[0], true, arguments[1], arguments[2]);
-    if (arguments[0] == null) {
-      if (returnObject != null && returnObject.result != null && isArray(returnObject.result)) {
-        var resultArray = returnObject.result;
-        var resultObject = new Object();
-        resultObject.result = resultArray[0];
-        if (returnObject.cacheId != null && returnObject.cmdIndex != null) {
-          resultObject._cacheId = returnObject.cacheId;
-          resultObject._cmdIndex = returnObject.cmdIndex;
-        }
-        return resultObject;
-      }
-      return returnObject;
-    }
-  };
-
-  this.RetrieveCDSJSON_URL = function() {
-    return this.executor.getMethodURL("RetrieveCDSJSON", "GET", [], arguments[0])[0];
-  };
-
-  /*
    * @param AOBject [in] - Type on server: TAppObject
    * @return result - Type on server: Boolean
    */
@@ -1563,9 +1445,138 @@ function TServerUtils(connectionInfo)
   };
 }
 
+function TServerStockSekarang(connectionInfo)
+{
+  this.executor = new ServerFunctionExecutor("TServerStockSekarang",connectionInfo);
+
+  /*
+   * @param ANoBukti [in] - Type on server: string
+   * @return result - Type on server: Boolean
+   */
+  this.HapusMutasi = function(ANoBukti) {
+    var returnObject = this.executor.executeMethod('HapusMutasi', "GET", [ANoBukti], arguments[1], true, arguments[2], arguments[3]);
+    if (arguments[1] == null) {
+      if (returnObject != null && returnObject.result != null && isArray(returnObject.result)) {
+        var resultArray = returnObject.result;
+        var resultObject = new Object();
+        resultObject.ANoBukti = ANoBukti;
+        resultObject.result = resultArray[0];
+        return resultObject;
+      }
+      return returnObject;
+    }
+  };
+
+  this.HapusMutasi_URL = function(ANoBukti) {
+    return this.executor.getMethodURL("HapusMutasi", "GET", [ANoBukti], arguments[1])[0];
+  };
+
+  /*
+   * @param ABarang [in] - Type on server: TBarang
+   * @return result - Type on server: TStockSekarang
+   */
+  this.Retrieve = function(ABarang) {
+    var returnObject = this.executor.executeMethod('"Retrieve"', "POST", [ABarang], arguments[1], true, arguments[2], arguments[3]);
+    if (arguments[1] == null) {
+      if (returnObject != null && returnObject.result != null && isArray(returnObject.result)) {
+        var resultArray = returnObject.result;
+        var resultObject = new Object();
+        resultObject.ABarang = ABarang;
+        resultObject.result = resultArray[0];
+        if (returnObject.cacheId != null && returnObject.cmdIndex != null) {
+          resultObject._cacheId = returnObject.cacheId;
+          resultObject._cmdIndex = returnObject.cmdIndex;
+        }
+        return resultObject;
+      }
+      return returnObject;
+    }
+  };
+
+  /*
+   * @param AAppObject [in] - Type on server: TAppObject
+   * @return result - Type on server: Boolean
+   */
+  this.Delete = function(AAppObject) {
+    var returnObject = this.executor.executeMethod('"Delete"', "POST", [AAppObject], arguments[1], true, arguments[2], arguments[3]);
+    if (arguments[1] == null) {
+      if (returnObject != null && returnObject.result != null && isArray(returnObject.result)) {
+        var resultArray = returnObject.result;
+        var resultObject = new Object();
+        resultObject.AAppObject = AAppObject;
+        resultObject.result = resultArray[0];
+        return resultObject;
+      }
+      return returnObject;
+    }
+  };
+
+  /*
+   * @param AAppObject [in] - Type on server: TAppObject
+   * @return result - Type on server: TDataSet
+   */
+  this.RetrieveCDS = function(AAppObject) {
+    var returnObject = this.executor.executeMethod('"RetrieveCDS"', "POST", [AAppObject], arguments[1], true, arguments[2], arguments[3]);
+    if (arguments[1] == null) {
+      if (returnObject != null && returnObject.result != null && isArray(returnObject.result)) {
+        var resultArray = returnObject.result;
+        var resultObject = new Object();
+        resultObject.AAppObject = AAppObject;
+        resultObject.result = resultArray[0];
+        if (returnObject.cacheId != null && returnObject.cmdIndex != null) {
+          resultObject._cacheId = returnObject.cacheId;
+          resultObject._cmdIndex = returnObject.cmdIndex;
+        }
+        return resultObject;
+      }
+      return returnObject;
+    }
+  };
+
+  /*
+   * @param AOBject [in] - Type on server: TAppObject
+   * @return result - Type on server: Boolean
+   */
+  this.Save = function(AOBject) {
+    var returnObject = this.executor.executeMethod('"Save"', "POST", [AOBject], arguments[1], true, arguments[2], arguments[3]);
+    if (arguments[1] == null) {
+      if (returnObject != null && returnObject.result != null && isArray(returnObject.result)) {
+        var resultArray = returnObject.result;
+        var resultObject = new Object();
+        resultObject.AOBject = AOBject;
+        resultObject.result = resultArray[0];
+        return resultObject;
+      }
+      return returnObject;
+    }
+  };
+}
+
 function TServerLaporan(connectionInfo)
 {
   this.executor = new ServerFunctionExecutor("TServerLaporan",connectionInfo);
+
+  /*
+   * @param ACabang [in] - Type on server: TCabang
+   * @return result - Type on server: TDataSet
+   */
+  this.LaporanStockSekarang = function(ACabang) {
+    var returnObject = this.executor.executeMethod('"LaporanStockSekarang"', "POST", [ACabang], arguments[1], true, arguments[2], arguments[3]);
+    if (arguments[1] == null) {
+      if (returnObject != null && returnObject.result != null && isArray(returnObject.result)) {
+        var resultArray = returnObject.result;
+        var resultObject = new Object();
+        resultObject.ACabang = ACabang;
+        resultObject.result = resultArray[0];
+        if (returnObject.cacheId != null && returnObject.cmdIndex != null) {
+          resultObject._cacheId = returnObject.cacheId;
+          resultObject._cmdIndex = returnObject.cmdIndex;
+        }
+        return resultObject;
+      }
+      return returnObject;
+    }
+  };
 
   /*
    * @param ATglAwal [in] - Type on server: TDateTime
@@ -1717,30 +1728,6 @@ function TServerReturSupplier(connectionInfo)
   };
 
   /*
-   * @return result - Type on server: TJSONArray
-   */
-  this.RetrieveCDSJSON = function() {
-    var returnObject = this.executor.executeMethod('RetrieveCDSJSON', "GET", [], arguments[0], true, arguments[1], arguments[2]);
-    if (arguments[0] == null) {
-      if (returnObject != null && returnObject.result != null && isArray(returnObject.result)) {
-        var resultArray = returnObject.result;
-        var resultObject = new Object();
-        resultObject.result = resultArray[0];
-        if (returnObject.cacheId != null && returnObject.cmdIndex != null) {
-          resultObject._cacheId = returnObject.cacheId;
-          resultObject._cmdIndex = returnObject.cmdIndex;
-        }
-        return resultObject;
-      }
-      return returnObject;
-    }
-  };
-
-  this.RetrieveCDSJSON_URL = function() {
-    return this.executor.getMethodURL("RetrieveCDSJSON", "GET", [], arguments[0])[0];
-  };
-
-  /*
    * @param AOBject [in] - Type on server: TAppObject
    * @return result - Type on server: Boolean
    */
@@ -1824,10 +1811,59 @@ function TServerClosingInventory(connectionInfo)
   };
 
   /*
-   * @return result - Type on server: TJSONArray
+   * @param AOBject [in] - Type on server: TAppObject
+   * @return result - Type on server: Boolean
    */
-  this.RetrieveCDSJSON = function() {
-    var returnObject = this.executor.executeMethod('RetrieveCDSJSON', "GET", [], arguments[0], true, arguments[1], arguments[2]);
+  this.Save = function(AOBject) {
+    var returnObject = this.executor.executeMethod('"Save"', "POST", [AOBject], arguments[1], true, arguments[2], arguments[3]);
+    if (arguments[1] == null) {
+      if (returnObject != null && returnObject.result != null && isArray(returnObject.result)) {
+        var resultArray = returnObject.result;
+        var resultObject = new Object();
+        resultObject.AOBject = AOBject;
+        resultObject.result = resultArray[0];
+        return resultObject;
+      }
+      return returnObject;
+    }
+  };
+}
+
+function TServerPembayaranSupplier(connectionInfo)
+{
+  this.executor = new ServerFunctionExecutor("TServerPembayaranSupplier",connectionInfo);
+
+  /*
+   * @param AID [in] - Type on server: string
+   * @return result - Type on server: TPembayaranSupplier
+   */
+  this.Retrieve = function(AID) {
+    var returnObject = this.executor.executeMethod('Retrieve', "GET", [AID], arguments[1], true, arguments[2], arguments[3]);
+    if (arguments[1] == null) {
+      if (returnObject != null && returnObject.result != null && isArray(returnObject.result)) {
+        var resultArray = returnObject.result;
+        var resultObject = new Object();
+        resultObject.AID = AID;
+        resultObject.result = resultArray[0];
+        if (returnObject.cacheId != null && returnObject.cmdIndex != null) {
+          resultObject._cacheId = returnObject.cacheId;
+          resultObject._cmdIndex = returnObject.cmdIndex;
+        }
+        return resultObject;
+      }
+      return returnObject;
+    }
+  };
+
+  this.Retrieve_URL = function(AID) {
+    return this.executor.getMethodURL("Retrieve", "GET", [AID], arguments[1])[0];
+  };
+
+  /*
+   * @return result - Type on server: TDataSet
+   */
+  this.RetrieveCDS2 = function() {
+    var returnObject = this.executor.executeMethod('RetrieveCDS2', "GET", [], arguments[0], true, arguments[1], arguments[2]);
     if (arguments[0] == null) {
       if (returnObject != null && returnObject.result != null && isArray(returnObject.result)) {
         var resultArray = returnObject.result;
@@ -1843,8 +1879,48 @@ function TServerClosingInventory(connectionInfo)
     }
   };
 
-  this.RetrieveCDSJSON_URL = function() {
-    return this.executor.getMethodURL("RetrieveCDSJSON", "GET", [], arguments[0])[0];
+  this.RetrieveCDS2_URL = function() {
+    return this.executor.getMethodURL("RetrieveCDS2", "GET", [], arguments[0])[0];
+  };
+
+  /*
+   * @param AAppObject [in] - Type on server: TAppObject
+   * @return result - Type on server: Boolean
+   */
+  this.Delete = function(AAppObject) {
+    var returnObject = this.executor.executeMethod('"Delete"', "POST", [AAppObject], arguments[1], true, arguments[2], arguments[3]);
+    if (arguments[1] == null) {
+      if (returnObject != null && returnObject.result != null && isArray(returnObject.result)) {
+        var resultArray = returnObject.result;
+        var resultObject = new Object();
+        resultObject.AAppObject = AAppObject;
+        resultObject.result = resultArray[0];
+        return resultObject;
+      }
+      return returnObject;
+    }
+  };
+
+  /*
+   * @param AAppObject [in] - Type on server: TAppObject
+   * @return result - Type on server: TDataSet
+   */
+  this.RetrieveCDS = function(AAppObject) {
+    var returnObject = this.executor.executeMethod('"RetrieveCDS"', "POST", [AAppObject], arguments[1], true, arguments[2], arguments[3]);
+    if (arguments[1] == null) {
+      if (returnObject != null && returnObject.result != null && isArray(returnObject.result)) {
+        var resultArray = returnObject.result;
+        var resultObject = new Object();
+        resultObject.AAppObject = AAppObject;
+        resultObject.result = resultArray[0];
+        if (returnObject.cacheId != null && returnObject.cmdIndex != null) {
+          resultObject._cacheId = returnObject.cacheId;
+          resultObject._cmdIndex = returnObject.cmdIndex;
+        }
+        return resultObject;
+      }
+      return returnObject;
+    }
   };
 
   /*
@@ -1870,15 +1946,17 @@ var JSProxyClassList = {
   "DSAdmin": ["GetPlatformName","ClearResources","FindPackages","FindClasses","FindMethods","CreateServerClasses","DropServerClasses","CreateServerMethods","DropServerMethods","GetServerClasses","ListClasses","DescribeClass","ListMethods","DescribeMethod","GetServerMethods","GetServerMethodParameters","GetDatabaseConnectionProperties","GetDSServerName","ConsumeClientChannel","ConsumeClientChannelTimeout","CloseClientChannel","RegisterClientCallbackServer","UnregisterClientCallback","BroadcastToChannel","BroadcastObjectToChannel","NotifyCallback","NotifyObject"],
   "TServerMethods1": ["EchoString","GetUOM","Hitung","ReverseString","SaveUOM"],
   "TServerUOM": ["Retrieve","RetrieveKode"],
-  "TServerSupplier": ["Retrieve","Delete","RetrieveCDS","RetrieveCDSJSON","Save"],
-  "TServerBarang": ["Retrieve","RetrieveKode","Delete","RetrieveCDS","RetrieveCDSJSON","Save"],
-  "TServerGroupBarang": ["Retrieve","Delete","RetrieveCDS","RetrieveCDSJSON","Save"],
-  "TServerPenerimaanBarang": ["Retrieve","RetrieveNoBukti","GenerateNoBukti","Delete","RetrieveCDS","RetrieveCDSJSON","Save"],
-  "TServerCabang": ["Retrieve","Delete","RetrieveCDS","RetrieveCDSJSON","Save"],
-  "TServerLogAppObject": ["Retrieve","Delete","RetrieveCDS","RetrieveCDSJSON","Save"],
+  "TServerSupplier": ["Retrieve","Delete","RetrieveCDS","Save"],
+  "TServerBarang": ["Retrieve","RetrieveKode","Delete","RetrieveCDS","Save"],
+  "TServerGroupBarang": ["Retrieve","Delete","RetrieveCDS","Save"],
+  "TServerPenerimaanBarang": ["Retrieve","RetrieveCDSlip","RetrieveNoBukti","GenerateNoBukti","Delete","RetrieveCDS","Save"],
+  "TServerCabang": ["Retrieve","Delete","RetrieveCDS","Save"],
+  "TServerLogAppObject": ["Retrieve","Delete","RetrieveCDS","Save"],
   "TServerUtils": ["CheckKoneksi"],
-  "TServerLaporan": ["RetriveMutasiBarang"],
-  "TServerReturSupplier": ["Retrieve","RetrieveNoBukti","GenerateNoBukti","Delete","RetrieveCDS","RetrieveCDSJSON","Save"],
-  "TServerClosingInventory": ["Close","Delete","RetrieveCDS","RetrieveCDSJSON","Save"]
+  "TServerStockSekarang": ["HapusMutasi","Retrieve","Delete","RetrieveCDS","Save"],
+  "TServerLaporan": ["LaporanStockSekarang","RetriveMutasiBarang"],
+  "TServerReturSupplier": ["Retrieve","RetrieveNoBukti","GenerateNoBukti","Delete","RetrieveCDS","Save"],
+  "TServerClosingInventory": ["Close","Delete","RetrieveCDS","Save"],
+  "TServerPembayaranSupplier": ["Retrieve","RetrieveCDS2","Delete","RetrieveCDS","Save"]
 };
 

@@ -266,8 +266,4 @@ object frmServer: TfrmServer
     Left = 384
     Top = 144
   end
-  object Session1: TSession
-    Left = 200
-    Top = 272
-  end
 end

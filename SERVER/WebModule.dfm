@@ -150,8 +150,8 @@ object WebModule2: TWebModule2
   object dsrvrclsLaporan: TDSServerClass
     OnGetClass = dsrvrclsLaporanGetClass
     Server = DSServer1
-    Left = 376
-    Top = 224
+    Left = 328
+    Top = 144
   end
   object dsrvrclsReturSupplier: TDSServerClass
     OnGetClass = dsrvrclsReturSupplierGetClass
@@ -162,13 +162,19 @@ object WebModule2: TWebModule2
   object dsrvrclsClosingInventory: TDSServerClass
     OnGetClass = dsrvrclsClosingInventoryGetClass
     Server = DSServer1
-    Left = 384
-    Top = 232
+    Left = 432
+    Top = 152
   end
   object dsrvrclsPembayaranSupplier: TDSServerClass
     OnGetClass = dsrvrclsPembayaranSupplierGetClass
     Server = DSServer1
-    Left = 648
-    Top = 96
+    Left = 664
+    Top = 88
+  end
+  object dsrvrclsGudang: TDSServerClass
+    OnGetClass = dsrvrclsGudangGetClass
+    Server = DSServer1
+    Left = 544
+    Top = 160
   end
 end

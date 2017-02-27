@@ -12,7 +12,7 @@ uses
   cxGridCustomTableView, cxGridTableView, cxGridLevel, cxGrid, cxCurrencyEdit,
   ImgList, uModel, ClientClassesUnit2, DB, cxDBData, cxGridDBTableView,
   cxDBExtLookupComboBox, Provider, DBClient, cxNavigator, dxCore, cxDateUtils,
-  System.Actions, dxBarExtDBItems, cxCheckBox, cxBarEditItem;
+  System.Actions, dxBarExtDBItems, cxCheckBox, cxBarEditItem, System.ImageList;
 
 type
   TfrmPenerimaanBarang = class(TfrmDefault)
@@ -222,8 +222,7 @@ begin
       PenerimaanBarang.Supplier.ID := cbbSupplier.EditValue;
       PenerimaanBarang.TglBukti    := edTglBukti.Date;
 
-      PenerimaanBarang.Cabang      := TCabang.Create;
-      PenerimaanBarang.Cabang.ID   := ClientDataModule.Cabang.ID;
+      PenerimaanBarang.Cabang      := TCabang.CreateID(ClientDataModule.Cabang.ID);
 
 
       PenerimaanBarang.PenerimaanBarangItems.Clear;

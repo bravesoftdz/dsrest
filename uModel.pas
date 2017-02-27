@@ -9,7 +9,7 @@ type
   TBarangSatuanItem = class;
   TPenerimaanBarang = class;
   TReturSupplier = class;
-
+  
   TAppObject = class(TObject)
   private
     FID: string;
@@ -30,6 +30,17 @@ type
     FNama: string;
   public
     property IsHO: Integer read FIsHO write FIsHO;
+    property Kode: string read FKode write FKode;
+    property Nama: string read FNama write FNama;
+  end;
+
+   TGudang = class(TAppObject)
+  private
+    FCabang: TCabang;
+    FKode: string;
+    FNama: string;
+  public
+    property Cabang: TCabang read FCabang write FCabang;
     property Kode: string read FKode write FKode;
     property Nama: string read FNama write FNama;
   end;
@@ -117,6 +128,7 @@ type
   TPenerimaanBarang = class(TAppObject)
   private
     FCabang: TCabang;
+    FGudang: TGudang;
     FKeterangan: string;
     FNoBukti: string;
     FPenerimaanBarangItems: TObjectList<TPenerimaanBarangItem>;
@@ -128,6 +140,7 @@ type
     procedure SetTglBukti(const Value: TDatetime);
   public
     property Cabang: TCabang read FCabang write FCabang;
+    property Gudang: TGudang read FGudang write FGudang;
     property Keterangan: string read FKeterangan write SetKeterangan;
     property NoBukti: string read FNoBukti write FNoBukti;
     property PenerimaanBarangItems: TObjectList<TPenerimaanBarangItem> read
@@ -184,12 +197,14 @@ type
   private
     FBarang: TBarang;
     FCabang: TCabang;
+    FGudang: TGudang;
     FQty: Double;
     FRp: Double;
     FUOM: TUOM;
   public
     property Barang: TBarang read FBarang write FBarang;
     property Cabang: TCabang read FCabang write FCabang;
+    property Gudang: TGudang read FGudang write FGudang;
     property Qty: Double read FQty write FQty;
     property Rp: Double read FRp write FRp;
     property UOM: TUOM read FUOM write FUOM;
@@ -296,6 +311,7 @@ type
   private
     FBarang: TBarang;
     FCabang: TCabang;
+    FGudang: TGudang;
     FHarga: Double;
     FKeterangan: string;
     FKonversi: Double;
@@ -310,6 +326,7 @@ type
   public
     property Barang: TBarang read FBarang write FBarang;
     property Cabang: TCabang read FCabang write FCabang;
+    property Gudang: TGudang read FGudang write FGudang;
     property Harga: Double read FHarga write FHarga;
     property Keterangan: string read FKeterangan write FKeterangan;
     property Konversi: Double read FKonversi write FKonversi;
@@ -348,6 +365,8 @@ type
     property UOM: TUOM read FUOM write FUOM;
     property Konversi : Double read FKonversi write FKonversi;
   end;
+
+
 
 
 implementation

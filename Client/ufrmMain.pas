@@ -10,7 +10,9 @@ uses
   StdCtrls,
   ComCtrls, System.Actions, FireDAC.UI.Intf, FireDAC.VCLUI.Wait,
   FireDAC.Comp.UI, FireDAC.Phys.PG, FireDAC.Stan.Intf, FireDAC.Phys,
-  FireDAC.Phys.ODBCBase, FireDAC.Phys.MSSQL, Firedac.Dapt;
+  FireDAC.Phys.ODBCBase, FireDAC.Phys.MSSQL, Firedac.Dapt,
+  dxRibbonCustomizationForm, FireDAC.Phys.MSSQLDef, FireDAC.Phys.PGDef,
+  System.ImageList;
 
 type
 //  RawUTF8 = type AnsiString;
@@ -48,7 +50,7 @@ type
     dxBarLargeButton: TdxBarLargeButton;
     dxbrlrgbtnBarLargeAsset: TdxBarLargeButton;
     actMasterBarang: TAction;
-    actMasterPropertyAsset: TAction;
+    actMasterGudang: TAction;
     dxbrlrgbtnBarLargeAssetProperty: TdxBarLargeButton;
     actApplicationExit: TAction;
     dxbrlrgbtnExit: TdxBarLargeButton;
@@ -92,6 +94,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure actLapMutasiBarangExecute(Sender: TObject);
     procedure actLapStockSekarangExecute(Sender: TObject);
+    procedure actMasterGudangExecute(Sender: TObject);
     procedure actReturSupplierExecute(Sender: TObject);
     procedure actSettingKoneksiExecute(Sender: TObject);
   private
@@ -108,7 +111,8 @@ implementation
 uses
   ufrmSupplier, ufrmKoneksi,uAppUtils, ufrmBarang, ufrmPenerimaanBarang,
   ClientClassesUnit2, ClientModule, ufrmPilihCabang, ufrmLapMutasiBarangPerTransaksi,
-  ufrmReturSupplier, udbutils, ufrmClosingInventory, ufrmLapStockSekarang;
+  ufrmReturSupplier, udbutils, ufrmClosingInventory, ufrmLapStockSekarang,
+  ufrmGudang;
 
 {$R *.dfm}
 
@@ -160,6 +164,11 @@ end;
 procedure TfrmMain.actMasterBarangExecute(Sender: TObject);
 begin
   frmBarang := TfrmBarang.Create(Self);
+end;
+
+procedure TfrmMain.actMasterGudangExecute(Sender: TObject);
+begin
+  frmGudang := TfrmGudang.Create(Self);
 end;
 
 procedure TfrmMain.actPenerimaanBarangExecute(Sender: TObject);
