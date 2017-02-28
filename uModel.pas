@@ -238,6 +238,7 @@ type
   TReturSupplier = class(TAppObject)
   private
     FCabang: TCabang;
+    FGudang: TGudang;
     FKeterangan: string;
     FNoBukti: string;
     FPenerimaanBarang: TPenerimaanBarang;
@@ -250,6 +251,7 @@ type
     procedure SetTglBukti(const Value: TDatetime);
   public
     property Cabang: TCabang read FCabang write FCabang;
+    property Gudang: TGudang read FGudang write FGudang;
     property Keterangan: string read FKeterangan write SetKeterangan;
     property NoBukti: string read FNoBukti write FNoBukti;
     property PenerimaanBarang: TPenerimaanBarang read FPenerimaanBarang write

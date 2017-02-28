@@ -127,10 +127,17 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
         end
         object lblKeterangan: TLabel
           Left = 262
-          Top = 7
+          Top = 32
           Width = 56
           Height = 13
           Caption = 'Keterangan'
+        end
+        object lblGudang: TLabel
+          Left = 280
+          Top = 7
+          Width = 37
+          Height = 13
+          Caption = 'Gudang'
         end
         object edNoBukti: TcxTextEdit
           Left = 80
@@ -149,11 +156,11 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
         end
         object memKeterangan: TcxMemo
           Left = 336
-          Top = 3
+          Top = 27
           Lines.Strings = (
             'memKeterangan')
-          TabOrder = 3
-          Height = 72
+          TabOrder = 4
+          Height = 43
           Width = 192
         end
         object cbbSupplier: TcxExtLookupComboBox
@@ -166,6 +173,17 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
           Properties.ListFieldItem = cxgrdbclmnGridDBTableSupplierColumnNama
           TabOrder = 2
           Width = 145
+        end
+        object cbbGudang: TcxExtLookupComboBox
+          Left = 336
+          Top = 3
+          Properties.DropDownAutoSize = True
+          Properties.FocusPopup = True
+          Properties.View = cxGridDBTableGudang
+          Properties.KeyFieldNames = 'ID'
+          Properties.ListFieldItem = cxGridColGudangNama
+          TabOrder = 3
+          Width = 192
         end
       end
     end
@@ -452,10 +470,31 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
         Visible = False
       end
     end
+    object cxGridDBTableGudang: TcxGridDBTableView
+      Navigator.Buttons.CustomButtons = <>
+      DataController.KeyFieldNames = 'ID'
+      DataController.Summary.DefaultGroupSummaryItems = <>
+      DataController.Summary.FooterSummaryItems = <>
+      DataController.Summary.SummaryGroups = <>
+      OptionsData.CancelOnExit = False
+      OptionsData.Deleting = False
+      OptionsData.DeletingConfirmation = False
+      OptionsData.Editing = False
+      OptionsData.Inserting = False
+      OptionsView.GroupByBox = False
+      object cxGridColGudangNama: TcxGridDBColumn
+        Caption = 'Nama '
+        DataBinding.FieldName = 'Nama'
+      end
+      object cxGridColGudangKode: TcxGridDBColumn
+        Caption = 'Kode '
+        DataBinding.FieldName = 'Kode'
+      end
+    end
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C0101050008006C0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010105000800780018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

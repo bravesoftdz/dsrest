@@ -1,5 +1,7 @@
 inherited frmGudang: TfrmGudang
   Caption = 'Gudang'
+  ExplicitWidth = 733
+  ExplicitHeight = 385
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnlListTransaksi: TPanel
@@ -10,23 +12,29 @@ inherited frmGudang: TfrmGudang
       Height = 274
       Align = alClient
       TabOrder = 0
-      ExplicitWidth = 359
-      ExplicitHeight = 390
       object cxGridDBTableGudang: TcxGridDBTableView
         Navigator.Buttons.CustomButtons = <>
+        OnCellDblClick = cxGridDBTableGudangCellDblClick
         DataController.Summary.DefaultGroupSummaryItems = <>
         DataController.Summary.FooterSummaryItems = <>
         DataController.Summary.SummaryGroups = <>
+        OptionsData.CancelOnExit = False
+        OptionsData.Deleting = False
+        OptionsData.DeletingConfirmation = False
+        OptionsData.Editing = False
+        OptionsData.Inserting = False
         OptionsView.GroupByBox = False
         Styles.ContentEven = cxstylGridEven
         Styles.ContentOdd = cxstylGridOdd
         Styles.Header = cxstylGridHeader
         object cxgrdbclmnGridDBTableGudangColumnKode: TcxGridDBColumn
+          Caption = 'Kode '
           DataBinding.FieldName = 'Kode'
           HeaderAlignmentHorz = taCenter
           Width = 87
         end
         object cxgrdbclmnGridDBTableGudangColumnNama: TcxGridDBColumn
+          Caption = 'Nama '
           DataBinding.FieldName = 'Nama'
           HeaderAlignmentHorz = taCenter
           Width = 138
@@ -46,10 +54,6 @@ inherited frmGudang: TfrmGudang
     TabOrder = 6
     Properties.ActivePage = Input
     Properties.CustomButtons.Buttons = <>
-    ExplicitLeft = 369
-    ExplicitTop = -46
-    ExplicitWidth = 348
-    ExplicitHeight = 392
     ClientRectBottom = 272
     ClientRectLeft = 4
     ClientRectRight = 520
@@ -57,10 +61,6 @@ inherited frmGudang: TfrmGudang
     object Input: TcxTabSheet
       Caption = 'Input'
       ImageIndex = 0
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object lblKode: TLabel
         Left = 19
         Top = 17
@@ -120,6 +120,12 @@ inherited frmGudang: TfrmGudang
     inherited ActionSimpan: TAction
       OnExecute = ActionSimpanExecute
     end
+    inherited ActionHapus: TAction
+      OnExecute = ActionHapusExecute
+    end
+    inherited ActionRefresh: TAction
+      OnExecute = ActionRefreshExecute
+    end
   end
   inherited cxStyleRepTrans: TcxStyleRepository
     PixelsPerInch = 96
@@ -128,7 +134,7 @@ inherited frmGudang: TfrmGudang
     Left = 512
     Top = 88
     Bitmap = {
-      494C010105000800600018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010105000800680018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

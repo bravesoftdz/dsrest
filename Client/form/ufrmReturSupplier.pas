@@ -12,7 +12,7 @@ uses
   cxGridCustomTableView, cxGridTableView, cxGridLevel, cxGrid, cxCurrencyEdit,
   ImgList, uModel, ClientClassesUnit2, DB, cxDBData, cxGridDBTableView,
   cxDBExtLookupComboBox, Provider, DBClient, cxNavigator, dxCore, cxDateUtils,
-  System.Actions, dxBarExtDBItems, cxCheckBox, cxBarEditItem;
+  System.Actions, dxBarExtDBItems, cxCheckBox, cxBarEditItem, System.ImageList;
 
 type
   TfrmReturSupplier = class(TfrmDefault)
@@ -167,8 +167,8 @@ begin
   inherited;
     with TServerReturSupplierClient.Create(ClientDataModule.DSRestConnection, False) do
     begin
-      ProvPB.DataSet := RetrieveCDS(ReturSupplier);
       cdsPB.Close;
+      ProvPB.DataSet := RetrieveCDS(ReturSupplier);
       cdsPB.Open;
 
       try
@@ -196,11 +196,10 @@ begin
       ReturSupplier.ID          := FID;
       ReturSupplier.NoBukti     := edNoBukti.Text;
       ReturSupplier.Keterangan  := memKeterangan.Text;
-      ReturSupplier.Supplier    := TSupplier.Create;
-      ReturSupplier.Supplier.ID := cbbSupplier.EditValue;
+      ReturSupplier.Supplier    := TSupplier.CreateID(cbbSupplier.EditValue);
       ReturSupplier.TglBukti    := edTglBukti.Date;
-      ReturSupplier.Cabang      := TCabang.Create;
-      ReturSupplier.Cabang.ID   := ClientDataModule.Cabang.ID;
+      ReturSupplier.Cabang      := TCabang.CreateID(ClientDataModule.Cabang.ID);
+      ReturSupplier.Gudang      := TGudang.CreateID(ReturSupplier.PenerimaanBarang.Gudang.ID);
 
       ReturSupplier.ReturSupplierItems.Clear;
       for i := 0 to cxGridTableReturSupplier.DataController.RecordCount - 1 do
@@ -532,12 +531,15 @@ begin
     try
       FreeAndNil(FReturSupplier);
       FReturSupplier := RetrieveNoBukti(ANoBukti);
-      FID               := ReturSupplier.ID;
+      FID            := ReturSupplier.ID;
 
       if ReturSupplier <> nil then
       begin
         edNoBukti.Text := ReturSupplier.NoBukti;
         edTglBukti.Date:= ReturSupplier.TglBukti;
+
+        ReturSupplier.PenerimaanBarang := ClientDataModule.ServerPenerimaanBarangClient.Retrieve(ReturSupplier.PenerimaanBarang.ID);
+        edNoPB.Text    := ReturSupplier.PenerimaanBarang.NoBukti;
 
         if ReturSupplier.Supplier.ID <> '' then
           cbbSupplier.EditValue := ReturSupplier.Supplier.ID;

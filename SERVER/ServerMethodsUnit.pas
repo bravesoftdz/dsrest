@@ -119,7 +119,7 @@ type
   TServerStockSekarang = class(TCRUD)
   public
     function HapusMutasi(ANoBukti : String): Boolean;
-    function Retrieve(ABarang : TBarang): TStockSekarang;
+    function Retrieve(ABarang : TBarang; AGudang : TGudang): TStockSekarang;
   end;
 
   TServerReturSupplier = class(TServerTransaction, IBisaSimpanStock)
@@ -564,7 +564,7 @@ begin
 
       for i := 0 to lPB.PenerimaanBarangItems.Count - 1 do
       begin
-        lStockSekarang           := Retrieve(lPB.PenerimaanBarangItems[i].Barang);
+        lStockSekarang           := Retrieve(lPB.PenerimaanBarangItems[i].Barang, lPB.Gudang);
         lStockSekarang.Cabang    := TCabang.CreateID(lPB.Cabang.ID);
         lStockSekarang.Gudang    := TGudang.CreateID(lPB.Gudang.ID);
 //        dKonversi                := lPB.PenerimaanBarangItems[i].Konversi;
@@ -736,7 +736,8 @@ begin
 
 end;
 
-function TServerStockSekarang.Retrieve(ABarang : TBarang): TStockSekarang;
+function TServerStockSekarang.Retrieve(ABarang : TBarang; AGudang : TGudang):
+    TStockSekarang;
 var
   sID: string;
   sSQL: string;
@@ -747,7 +748,9 @@ begin
     Exit;
 
   sSQL := 'select id from ' + TStockSekarang.ClassName
-          + ' where barang = ' + QuotedStr(ABarang.ID);
+          + ' where barang = ' + QuotedStr(ABarang.ID)
+          + ' and gudang = ' + QuotedStr(AGudang.ID);
+
   with TDBUtils.OpenDataset(sSQL) do
   begin
     try
@@ -763,18 +766,20 @@ function TServerLaporan.LaporanStockSekarang(ACabang : TCabang): TDataset;
 var
   sSQL: string;
 begin
-  sSQL := 'select b.sku, b.nama, c.uom , d.nama as cabang, a.qty, a.rp' +
+  sSQL := 'select e.nama as gudang, b.sku, b.nama, c.uom , d.nama as cabang, a.qty, a.rp' +
           ' from tstocksekarang a' +
           ' INNER JOIN tbarang b on a.barang = b.id' +
           ' INNER JOIN tuom c on a.uom = c.id' +
-          ' INNER JOIN tcabang d on a.cabang = d.id' ;
+          ' INNER JOIN tcabang d on a.cabang = d.id' +
+          ' INNER JOIN tgudang e on a.gudang = e.id'
+          ;
 //          ' order b.sku, b.nama'
 //          ;
 
   if ACabang <> nil then
     sSQL := sSQL + ' where a.cabang = ' + QuotedStr(ACabang.Id);
 
-  sSQL := sSQL + ' order by b.sku';
+  sSQL := sSQL + ' order by e.nama,  b.sku';
 
   Result := TDBUtils.OpenDataset(sSQL);
 end;
@@ -789,14 +794,14 @@ begin
   if DayOf(ATglAwal) <> 1 then
     raise Exception.Create('Periode laporan harus dimulai dari awal bulan');
 
-  sSQL := 'select cabang , barang , nama , sum(saldoawal) as saldoawal,' +
+  sSQL := 'select cabang ,gudang, barang , nama , sum(saldoawal) as saldoawal,' +
           ' sum(penerimaan) as penerimaan , sum(retursupplier) as retursupplier,' +
           ' sum(penjualan) as penjualan , sum(returcustomer) as returcustomer,' +
           ' sum(koreksiplus) as koreksiplus, sum(koreksiminus) as koreksiminus,' +
           ' sum(saldoakhir) as saldoakhir' +
           ' from proc_mutasi_barang_per_transaksi(' + TAppUtils.QuotD(ATglAwal) + ',' +
             TAppUtils.QuotDt(EndOfTheDay(ATglAtglAkhir)) + ')' +
-          ' group by cabang , barang , nama' +
+          ' group by cabang ,gudang, barang , nama' +
           ' order by barang, nama';
 
   Result   := TDBUtils.OpenDataset(sSQL);
@@ -910,6 +915,7 @@ begin
         lMutasiStock            := TMutasiStock.Create;
         lMutasiStock.Barang     := TBarang.CreateID(lRS.ReturSupplierItems[i].Barang.ID);
         lMutasiStock.Cabang     := TCabang.CreateID(lRS.Cabang.ID);
+        lMutasiStock.Gudang     := TGudang.CreateID(lRS.Gudang.ID);
         lMutasiStock.UOM        := TUOM.CreateID(lRS.ReturSupplierItems[i].UOM.ID);
         lMutasiStock.Harga      := lRS.ReturSupplierItems[i].HargaBeli;
         lMutasiStock.QtyIn      := 0;
@@ -954,9 +960,9 @@ begin
     try
       for i := 0 to lRSup.ReturSupplierItems.Count - 1 do
       begin
-        lStockSekarang           := Retrieve(lRSup.ReturSupplierItems[i].Barang);
-        lStockSekarang.Cabang    := TCabang.Create;
-        lStockSekarang.Cabang.ID := lRSup.Cabang.ID;
+        lStockSekarang           := Retrieve(lRSup.ReturSupplierItems[i].Barang, lRSup.Gudang);
+        lStockSekarang.Cabang    := TCabang.CreateID(lRSup.Cabang.ID);
+        lStockSekarang.Gudang    := TGudang.CreateID(lRSup.Gudang.ID);
 
         with TServerBarang.Create do
         begin

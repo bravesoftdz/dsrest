@@ -65,6 +65,11 @@ type
     DSPSlip: TDataSetProvider;
     cdsSlip: TClientDataSet;
     cxgrdbclmnGridDBTableUOMColumnID: TcxGridDBColumn;
+    lblGudang: TLabel;
+    cbbGudang: TcxExtLookupComboBox;
+    cxGridDBTableGudang: TcxGridDBTableView;
+    cxGridColGudangKode: TcxGridDBColumn;
+    cxGridColGudangNama: TcxGridDBColumn;
     procedure actCetakExecute(Sender: TObject);
     procedure ActionBaruExecute(Sender: TObject);
     procedure ActionHapusExecute(Sender: TObject);
@@ -102,6 +107,7 @@ type
     procedure HitungNilaiNilaiPerBaris(dNilai: Double; Acolumn : Integer);
     procedure InisialisasiSupplier;
     procedure InisialisasiSKU;
+    procedure InisialisasiGudang;
     procedure InisialisasiUOM;
     function IsBisaHapus : Boolean;
     function IsBisaSimpan: Boolean;
@@ -191,8 +197,8 @@ begin
 //  if ProvPB.DataSet <> nil then
 //    ProvPB.DataSet.Free;
 
-  ProvPB.DataSet := ClientDataModule.ServerPenerimaanBarangClient.RetrieveCDS(PenerimaanBarang);
   cdsPB.Close;
+  ProvPB.DataSet := ClientDataModule.ServerPenerimaanBarangClient.RetrieveCDS(PenerimaanBarang);
   cdsPB.Open;
 
 
@@ -218,8 +224,8 @@ begin
       PenerimaanBarang.ID          := FID;
       PenerimaanBarang.NoBukti     := edNoBukti.Text;
       PenerimaanBarang.Keterangan  := memKeterangan.Text;
-      PenerimaanBarang.Supplier    := TSupplier.Create;
-      PenerimaanBarang.Supplier.ID := cbbSupplier.EditValue;
+      PenerimaanBarang.Supplier    := TSupplier.CreateID(cbbSupplier.EditValue);
+      PenerimaanBarang.Gudang      := TGudang.CreateID(cbbGudang.EditValue);
       PenerimaanBarang.TglBukti    := edTglBukti.Date;
 
       PenerimaanBarang.Cabang      := TCabang.CreateID(ClientDataModule.Cabang.ID);
@@ -385,6 +391,7 @@ begin
   InisialisasiSupplier;
   InisialisasiSKU;
   InisialisasiUOM;
+  InisialisasiGudang;
 
   edTglBukti.Date := Now;
   ActionBaruExecute(Sender);
@@ -462,6 +469,16 @@ var
 begin
   sSQL := 'select * from tsupplier';
   cxGridDBTableSupplier.SetDataset(sSQL);
+end;
+
+procedure TfrmPenerimaanBarang.InisialisasiGudang;
+var
+  sSQL: string;
+begin
+  sSQL := 'select * from tgudang' +
+          ' where cabang = ' + QuotedStr(ClientDataModule.Cabang.ID);
+
+  cxGridDBTableGudang.SetDataset(sSQL);
 end;
 
 procedure TfrmPenerimaanBarang.InisialisasiUOM;
@@ -564,6 +581,9 @@ begin
 
         if PenerimaanBarang.Supplier.ID <> '' then
           cbbSupplier.EditValue := PenerimaanBarang.Supplier.ID;
+
+        if PenerimaanBarang.Gudang.ID <> '' then
+          cbbGudang.EditValue := PenerimaanBarang.Gudang.ID;
 
         memKeterangan.Lines.Text := PenerimaanBarang.Keterangan;
 

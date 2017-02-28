@@ -28,7 +28,12 @@ type
     cxgrdlvlGudang: TcxGridLevel;
     procedure FormCreate(Sender: TObject);
     procedure ActionBaruExecute(Sender: TObject);
+    procedure ActionHapusExecute(Sender: TObject);
+    procedure ActionRefreshExecute(Sender: TObject);
     procedure ActionSimpanExecute(Sender: TObject);
+    procedure cxGridDBTableGudangCellDblClick(Sender: TcxCustomGridTableView;
+        ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton; AShift:
+        TShiftState; var AHandled: Boolean);
   private
     FGudang: TGudang;
     function GetGudang: TGudang;
@@ -42,6 +47,8 @@ var
   frmGudang: TfrmGudang;
 
 implementation
+uses
+  uDBUtils, uAppUtils;
 
 {$R *.dfm}
 
@@ -56,14 +63,39 @@ begin
   inherited;
   edKode.Text := '';
   edNama.Text := '';
+  FID         := '';
+end;
+
+procedure TfrmGudang.ActionHapusExecute(Sender: TObject);
+begin
+  inherited;
+  if not TAppUtils.ConfirmHapus then
+    Exit;
+
+  if ClientDataModule.ServerGudangClient.Delete(FGudang) then
+      ActionBaruExecute(Sender);
+end;
+
+procedure TfrmGudang.ActionRefreshExecute(Sender: TObject);
+var
+  sSQL: string;
+begin
+  inherited;
+  sSQL := 'select * from ' + TGudang.ClassName;
+  if ClientDataModule.Cabang.IsHO <> 1 then
+    sSQL := sSQL + ' where cabang = ' + QuotedStr(ClientDataModule.Cabang.ID);
+
+  TDBUtils.DataSetToCxDBGrid(TDBUtils.OpenDataset(sSQL), cxGridDBTableGudang);
 end;
 
 procedure TfrmGudang.ActionSimpanExecute(Sender: TObject);
 begin
   inherited;
   try
-    Gudang.Kode := edKode.Text;
-    Gudang.Nama := edNama.Text;
+    Gudang.Kode   := edKode.Text;
+    Gudang.Nama   := edNama.Text;
+    Gudang.ID     := FID;
+
     Gudang.Cabang := TCabang.CreateID(ClientDataModule.Cabang.ID);
 
     if ClientDataModule.ServerGudangClient.Save(FGudang) then
@@ -71,6 +103,24 @@ begin
   finally
     FreeAndNil(FGudang);
   end;
+end;
+
+procedure TfrmGudang.cxGridDBTableGudangCellDblClick(Sender:
+    TcxCustomGridTableView; ACellViewInfo: TcxGridTableDataCellViewInfo;
+    AButton: TMouseButton; AShift: TShiftState; var AHandled: Boolean);
+begin
+  inherited;
+  if cxGridDBTableGudang.DataController.FocusedRecordIndex >= 0 then
+  begin
+    FreeAndNil(FGudang);
+
+
+    FGudang     := ClientDataModule.ServerGudangClient.Retrieve(cxGridDBTableGudang.DataController.DataSource.DataSet.FieldByName('ID').AsString);
+    edKode.Text := Gudang.Kode;
+    edNama.Text := Gudang.Nama;
+    FID         := Gudang.ID;
+  end;
+
 end;
 
 function TfrmGudang.GetGudang: TGudang;

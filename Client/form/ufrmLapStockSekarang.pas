@@ -17,7 +17,8 @@ uses
   dxPSFillPatterns, dxPSEdgePatterns, dxPSPDFExportCore, dxPSPDFExport,
   cxDrawTextUtils, dxPSPrVwStd, dxPSPrVwAdv, dxPSPrVwRibbon,
   dxPScxPageControlProducer, dxPScxEditorProducers, dxPScxExtEditorProducers,
-  dxPrnDlg, dxPgsDlg, dxPSCore, dxPScxGridLnk, dxPScxGridLayoutViewLnk, frxClass;
+  dxPrnDlg, dxPgsDlg, dxPSCore, dxPScxGridLnk, dxPScxGridLayoutViewLnk, frxClass,
+  System.ImageList;
 
 type
   TfrmLapStockSekarang = class(TfrmDefault)
@@ -36,6 +37,7 @@ type
     cxGridColGridDBTableGridRepTransaksiDBTableViewBarangColumnNama: TcxGridDBColumn;
     cxGridDBTableUOM: TcxGridDBTableView;
     cxGridColGridDBTableGridRepTransaksiDBTableViewUOMColumnNama: TcxGridDBColumn;
+    cxGridColGridDBTableStockSekarangColumnGudang: TcxGridDBColumn;
     procedure ActionRefreshExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
   private
@@ -65,16 +67,18 @@ begin
   begin
     lStockSekarang := TStockSekarang.Create;
     try
+      cdsStockSekarang.Close;
+
       if chkKonsolidasi.EditValue then
         dtstprvdrStockSekarang.DataSet := LaporanStockSekarang(nil)
       else
         dtstprvdrStockSekarang.DataSet := LaporanStockSekarang(TCabang.CreateID(cbbLUCabang.KeyValue));
 
-      cdsStockSekarang.Close;
       cdsStockSekarang.Open;
 
       cxGridDBTableStockSekarang.SetDataset(cdsStockSekarang);
       cxGridColGridDBTableStockSekarangColumnNama.ApplyBestFit();
+      cxGridColGridDBTableStockSekarangColumnGudang.ApplyBestFit();
     finally
       lStockSekarang.Free;
       Free;
