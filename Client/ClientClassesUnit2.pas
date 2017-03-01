@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 2/28/2017 5:55:52 AM
+// 3/2/2017 6:08:08 AM
 //
 
 unit ClientClassesUnit2;
@@ -217,8 +217,8 @@ type
     constructor Create(ARestConnection: TDSRestConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
     function HapusMutasi(ANoBukti: string; const ARequestFilter: string = ''): Boolean;
-    function Retrieve(ABarang: TBarang; const ARequestFilter: string = ''): TStockSekarang;
-    function Retrieve_Cache(ABarang: TBarang; const ARequestFilter: string = ''): IDSRestCachedTStockSekarang;
+    function Retrieve(ABarang: TBarang; AGudang: TGudang; const ARequestFilter: string = ''): TStockSekarang;
+    function Retrieve_Cache(ABarang: TBarang; AGudang: TGudang; const ARequestFilter: string = ''): IDSRestCachedTStockSekarang;
     function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
     function RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string = ''): TDataSet;
     function RetrieveCDS_Cache(AAppObject: TAppObject; const ARequestFilter: string = ''): IDSRestCachedDataSet;
@@ -227,6 +227,8 @@ type
 
   TServerLaporanClient = class(TDSAdminRestClient)
   private
+    FLaporanKartokCommand: TDSRestCommand;
+    FLaporanKartokCommand_Cache: TDSRestCommand;
     FLaporanStockSekarangCommand: TDSRestCommand;
     FLaporanStockSekarangCommand_Cache: TDSRestCommand;
     FRetriveMutasiBarangCommand: TDSRestCommand;
@@ -235,6 +237,8 @@ type
     constructor Create(ARestConnection: TDSRestConnection); overload;
     constructor Create(ARestConnection: TDSRestConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
+    function LaporanKartok(ATglAwal: TDateTime; ATglAkhir: TDateTime; ABarang: TBarang; AGudang: TGudang; ACabang: TCabang; const ARequestFilter: string = ''): TDataSet;
+    function LaporanKartok_Cache(ATglAwal: TDateTime; ATglAkhir: TDateTime; ABarang: TBarang; AGudang: TGudang; ACabang: TCabang; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function LaporanStockSekarang(ACabang: TCabang; const ARequestFilter: string = ''): TDataSet;
     function LaporanStockSekarang_Cache(ACabang: TCabang; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function RetriveMutasiBarang(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; const ARequestFilter: string = ''): TDataSet;
@@ -717,15 +721,17 @@ const
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
   );
 
-  TServerStockSekarang_Retrieve: array [0..1] of TDSRestParameterMetaData =
+  TServerStockSekarang_Retrieve: array [0..2] of TDSRestParameterMetaData =
   (
     (Name: 'ABarang'; Direction: 1; DBXType: 37; TypeName: 'TBarang'),
+    (Name: 'AGudang'; Direction: 1; DBXType: 37; TypeName: 'TGudang'),
     (Name: ''; Direction: 4; DBXType: 37; TypeName: 'TStockSekarang')
   );
 
-  TServerStockSekarang_Retrieve_Cache: array [0..1] of TDSRestParameterMetaData =
+  TServerStockSekarang_Retrieve_Cache: array [0..2] of TDSRestParameterMetaData =
   (
     (Name: 'ABarang'; Direction: 1; DBXType: 37; TypeName: 'TBarang'),
+    (Name: 'AGudang'; Direction: 1; DBXType: 37; TypeName: 'TGudang'),
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
@@ -751,6 +757,26 @@ const
   (
     (Name: 'AOBject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
+  TServerLaporan_LaporanKartok: array [0..5] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ATglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ABarang'; Direction: 1; DBXType: 37; TypeName: 'TBarang'),
+    (Name: 'AGudang'; Direction: 1; DBXType: 37; TypeName: 'TGudang'),
+    (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TServerLaporan_LaporanKartok_Cache: array [0..5] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ATglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ABarang'; Direction: 1; DBXType: 37; TypeName: 'TBarang'),
+    (Name: 'AGudang'; Direction: 1; DBXType: 37; TypeName: 'TGudang'),
+    (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
   TServerLaporan_LaporanStockSekarang: array [0..1] of TDSRestParameterMetaData =
@@ -2370,7 +2396,7 @@ begin
   Result := FHapusMutasiCommand.Parameters[1].Value.GetBoolean;
 end;
 
-function TServerStockSekarangClient.Retrieve(ABarang: TBarang; const ARequestFilter: string): TStockSekarang;
+function TServerStockSekarangClient.Retrieve(ABarang: TBarang; AGudang: TGudang; const ARequestFilter: string): TStockSekarang;
 begin
   if FRetrieveCommand = nil then
   begin
@@ -2392,12 +2418,25 @@ begin
       FreeAndNil(FMarshal)
     end
     end;
-  FRetrieveCommand.Execute(ARequestFilter);
-  if not FRetrieveCommand.Parameters[1].Value.IsNull then
+  if not Assigned(AGudang) then
+    FRetrieveCommand.Parameters[1].Value.SetNull
+  else
   begin
-    FUnMarshal := TDSRestCommand(FRetrieveCommand.Parameters[1].ConnectionHandler).GetJSONUnMarshaler;
+    FMarshal := TDSRestCommand(FRetrieveCommand.Parameters[1].ConnectionHandler).GetJSONMarshaler;
     try
-      Result := TStockSekarang(FUnMarshal.UnMarshal(FRetrieveCommand.Parameters[1].Value.GetJSONValue(True)));
+      FRetrieveCommand.Parameters[1].Value.SetJSONValue(FMarshal.Marshal(AGudang), True);
+      if FInstanceOwner then
+        AGudang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FRetrieveCommand.Execute(ARequestFilter);
+  if not FRetrieveCommand.Parameters[2].Value.IsNull then
+  begin
+    FUnMarshal := TDSRestCommand(FRetrieveCommand.Parameters[2].ConnectionHandler).GetJSONUnMarshaler;
+    try
+      Result := TStockSekarang(FUnMarshal.UnMarshal(FRetrieveCommand.Parameters[2].Value.GetJSONValue(True)));
       if FInstanceOwner then
         FRetrieveCommand.FreeOnExecute(Result);
     finally
@@ -2408,7 +2447,7 @@ begin
     Result := nil;
 end;
 
-function TServerStockSekarangClient.Retrieve_Cache(ABarang: TBarang; const ARequestFilter: string): IDSRestCachedTStockSekarang;
+function TServerStockSekarangClient.Retrieve_Cache(ABarang: TBarang; AGudang: TGudang; const ARequestFilter: string): IDSRestCachedTStockSekarang;
 begin
   if FRetrieveCommand_Cache = nil then
   begin
@@ -2430,8 +2469,21 @@ begin
       FreeAndNil(FMarshal)
     end
     end;
+  if not Assigned(AGudang) then
+    FRetrieveCommand_Cache.Parameters[1].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FRetrieveCommand_Cache.Parameters[1].ConnectionHandler).GetJSONMarshaler;
+    try
+      FRetrieveCommand_Cache.Parameters[1].Value.SetJSONValue(FMarshal.Marshal(AGudang), True);
+      if FInstanceOwner then
+        AGudang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
   FRetrieveCommand_Cache.ExecuteCache(ARequestFilter);
-  Result := TDSRestCachedTStockSekarang.Create(FRetrieveCommand_Cache.Parameters[1].Value.GetString);
+  Result := TDSRestCachedTStockSekarang.Create(FRetrieveCommand_Cache.Parameters[2].Value.GetString);
 end;
 
 function TServerStockSekarangClient.Delete(AAppObject: TAppObject; const ARequestFilter: string): Boolean;
@@ -2563,6 +2615,117 @@ begin
   inherited;
 end;
 
+function TServerLaporanClient.LaporanKartok(ATglAwal: TDateTime; ATglAkhir: TDateTime; ABarang: TBarang; AGudang: TGudang; ACabang: TCabang; const ARequestFilter: string): TDataSet;
+begin
+  if FLaporanKartokCommand = nil then
+  begin
+    FLaporanKartokCommand := FConnection.CreateCommand;
+    FLaporanKartokCommand.RequestType := 'POST';
+    FLaporanKartokCommand.Text := 'TServerLaporan."LaporanKartok"';
+    FLaporanKartokCommand.Prepare(TServerLaporan_LaporanKartok);
+  end;
+  FLaporanKartokCommand.Parameters[0].Value.AsDateTime := ATglAwal;
+  FLaporanKartokCommand.Parameters[1].Value.AsDateTime := ATglAkhir;
+  if not Assigned(ABarang) then
+    FLaporanKartokCommand.Parameters[2].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FLaporanKartokCommand.Parameters[2].ConnectionHandler).GetJSONMarshaler;
+    try
+      FLaporanKartokCommand.Parameters[2].Value.SetJSONValue(FMarshal.Marshal(ABarang), True);
+      if FInstanceOwner then
+        ABarang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  if not Assigned(AGudang) then
+    FLaporanKartokCommand.Parameters[3].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FLaporanKartokCommand.Parameters[3].ConnectionHandler).GetJSONMarshaler;
+    try
+      FLaporanKartokCommand.Parameters[3].Value.SetJSONValue(FMarshal.Marshal(AGudang), True);
+      if FInstanceOwner then
+        AGudang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  if not Assigned(ACabang) then
+    FLaporanKartokCommand.Parameters[4].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FLaporanKartokCommand.Parameters[4].ConnectionHandler).GetJSONMarshaler;
+    try
+      FLaporanKartokCommand.Parameters[4].Value.SetJSONValue(FMarshal.Marshal(ACabang), True);
+      if FInstanceOwner then
+        ACabang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FLaporanKartokCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FLaporanKartokCommand.Parameters[5].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FLaporanKartokCommand.FreeOnExecute(Result);
+end;
+
+function TServerLaporanClient.LaporanKartok_Cache(ATglAwal: TDateTime; ATglAkhir: TDateTime; ABarang: TBarang; AGudang: TGudang; ACabang: TCabang; const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FLaporanKartokCommand_Cache = nil then
+  begin
+    FLaporanKartokCommand_Cache := FConnection.CreateCommand;
+    FLaporanKartokCommand_Cache.RequestType := 'POST';
+    FLaporanKartokCommand_Cache.Text := 'TServerLaporan."LaporanKartok"';
+    FLaporanKartokCommand_Cache.Prepare(TServerLaporan_LaporanKartok_Cache);
+  end;
+  FLaporanKartokCommand_Cache.Parameters[0].Value.AsDateTime := ATglAwal;
+  FLaporanKartokCommand_Cache.Parameters[1].Value.AsDateTime := ATglAkhir;
+  if not Assigned(ABarang) then
+    FLaporanKartokCommand_Cache.Parameters[2].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FLaporanKartokCommand_Cache.Parameters[2].ConnectionHandler).GetJSONMarshaler;
+    try
+      FLaporanKartokCommand_Cache.Parameters[2].Value.SetJSONValue(FMarshal.Marshal(ABarang), True);
+      if FInstanceOwner then
+        ABarang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  if not Assigned(AGudang) then
+    FLaporanKartokCommand_Cache.Parameters[3].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FLaporanKartokCommand_Cache.Parameters[3].ConnectionHandler).GetJSONMarshaler;
+    try
+      FLaporanKartokCommand_Cache.Parameters[3].Value.SetJSONValue(FMarshal.Marshal(AGudang), True);
+      if FInstanceOwner then
+        AGudang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  if not Assigned(ACabang) then
+    FLaporanKartokCommand_Cache.Parameters[4].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FLaporanKartokCommand_Cache.Parameters[4].ConnectionHandler).GetJSONMarshaler;
+    try
+      FLaporanKartokCommand_Cache.Parameters[4].Value.SetJSONValue(FMarshal.Marshal(ACabang), True);
+      if FInstanceOwner then
+        ACabang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FLaporanKartokCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FLaporanKartokCommand_Cache.Parameters[5].Value.GetString);
+end;
+
 function TServerLaporanClient.LaporanStockSekarang(ACabang: TCabang; const ARequestFilter: string): TDataSet;
 begin
   if FLaporanStockSekarangCommand = nil then
@@ -2663,6 +2826,8 @@ end;
 
 destructor TServerLaporanClient.Destroy;
 begin
+  FLaporanKartokCommand.DisposeOf;
+  FLaporanKartokCommand_Cache.DisposeOf;
   FLaporanStockSekarangCommand.DisposeOf;
   FLaporanStockSekarangCommand_Cache.DisposeOf;
   FRetriveMutasiBarangCommand.DisposeOf;

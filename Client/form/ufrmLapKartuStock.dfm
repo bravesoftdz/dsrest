@@ -1,275 +1,138 @@
-object frmDefault: TfrmDefault
-  Left = 0
-  Top = 0
-  Caption = 'frmDefault'
-  ClientHeight = 346
-  ClientWidth = 717
-  Color = clBtnFace
-  Font.Charset = DEFAULT_CHARSET
-  Font.Color = clWindowText
-  Font.Height = -11
-  Font.Name = 'Tahoma'
-  Font.Style = []
-  FormStyle = fsMDIChild
-  OldCreateOrder = False
-  Visible = True
-  OnClose = FormClose
-  OnCreate = FormCreate
+inherited frmLapKartuStock: TfrmLapKartuStock
+  Caption = 'Kartu Stock'
+  ClientHeight = 417
+  ClientWidth = 721
+  OnShow = FormShow
+  ExplicitWidth = 737
+  ExplicitHeight = 456
   PixelsPerInch = 96
   TextHeight = 13
-  object splTransaksi: TSplitter
-    Left = 185
-    Top = 50
-    Width = 8
-    Height = 276
-    Hint = 'Geser Kanan Kiri'
-    ExplicitTop = 46
-    ExplicitHeight = 280
-  end
-  object cxSBTransaksi: TdxStatusBar
+  inherited splTransaksi: TSplitter
     Left = 0
-    Top = 326
-    Width = 717
-    Height = 20
-    Panels = <>
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = []
+    Top = 121
+    Width = 721
+    Height = 8
+    Cursor = crVSplit
+    Align = alTop
+    ExplicitLeft = 0
+    ExplicitTop = 235
+    ExplicitWidth = 91
+    ExplicitHeight = 8
   end
-  object pnlListTransaksi: TPanel
+  inherited cxSBTransaksi: TdxStatusBar
+    Top = 397
+    Width = 721
+    ExplicitTop = 397
+    ExplicitWidth = 721
+  end
+  inherited pnlListTransaksi: TPanel
+    Width = 721
+    Height = 71
+    Align = alTop
+    ExplicitWidth = 721
+    ExplicitHeight = 71
+    object lblAwal: TLabel
+      Left = 15
+      Top = 17
+      Width = 36
+      Height = 13
+      Caption = 'Periode'
+    end
+    object lblSD: TLabel
+      Left = 181
+      Top = 17
+      Width = 19
+      Height = 13
+      Caption = 's.d.'
+    end
+    object lblGudang: TLabel
+      Left = 14
+      Top = 44
+      Width = 37
+      Height = 13
+      Caption = 'Gudang'
+    end
+    object edAwal: TcxDateEdit
+      Left = 56
+      Top = 13
+      Properties.DisplayFormat = 'dd/MMM/yyyy'
+      TabOrder = 0
+      Width = 121
+    end
+    object edAkhir: TcxDateEdit
+      Left = 204
+      Top = 13
+      Properties.DisplayFormat = 'dd/MMM/yyyy'
+      TabOrder = 1
+      Width = 121
+    end
+    object cbbGudang: TcxExtLookupComboBox
+      Left = 56
+      Top = 40
+      Properties.DropDownAutoSize = True
+      Properties.FocusPopup = True
+      Properties.View = cxGridDBTableWarehouse
+      Properties.KeyFieldNames = 'ID'
+      Properties.ListFieldItem = cxGridColWHNama
+      TabOrder = 2
+      Width = 269
+    end
+  end
+  object cxGridDBLapMutasi: TcxGrid [3]
     Left = 0
-    Top = 50
-    Width = 185
-    Height = 276
-    Align = alLeft
-    TabOrder = 5
+    Top = 129
+    Width = 721
+    Height = 268
+    Align = alClient
+    TabOrder = 6
+    object cxGridDBTableKartok: TcxGridDBTableView
+      Navigator.Buttons.CustomButtons = <>
+      DataController.Summary.DefaultGroupSummaryItems = <>
+      DataController.Summary.FooterSummaryItems = <>
+      DataController.Summary.SummaryGroups = <>
+    end
+    object cxgrdlvlGridLapMutasiLevelLapMutasi: TcxGridLevel
+      GridView = cxGridDBTableKartok
+    end
   end
-  object dxBarManagerForm: TdxBarManager
-    AutoDockColor = False
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -12
-    Font.Name = 'Segoe UI'
-    Font.Style = []
-    Categories.Strings = (
-      'Default')
-    Categories.ItemsVisibles = (
-      2)
-    Categories.Visibles = (
-      True)
-    DockColor = clBtnFace
-    ImageOptions.LargeImages = ilButton
-    ImageOptions.LargeIcons = True
-    LookAndFeel.Kind = lfUltraFlat
-    PopupMenuLinks = <>
-    UseSystemFont = True
-    Left = 576
-    Top = 8
+  inherited dxBarManagerForm: TdxBarManager
     DockControlHeights = (
       0
       0
       50
       0)
-    object dxBarManager1Bar1: TdxBar
-      Caption = 'Button'
-      CaptionButtons = <>
-      DockedDockingStyle = dsTop
-      DockedLeft = 0
-      DockedTop = 0
-      DockingStyle = dsTop
-      FloatLeft = 481
-      FloatTop = 8
-      FloatClientWidth = 0
-      FloatClientHeight = 0
-      ItemLinks = <
-        item
-          Visible = True
-          ItemName = 'dxBarLargeButtonNew'
-        end
-        item
-          Visible = True
-          ItemName = 'dxBarLargeButtonSave'
-        end
-        item
-          Visible = True
-          ItemName = 'dxBarLargeButtonDel'
-        end
-        item
-          Visible = True
-          ItemName = 'dxBarLargeButtonEdit'
-        end
-        item
-          Visible = True
-          ItemName = 'dxBarLargeButtonRefresh'
-        end
-        item
-          UserDefine = [udWidth]
-          UserWidth = 187
-          Visible = True
-          ItemName = 'cbbLUCabang'
-        end
-        item
-          ViewLayout = ivlGlyphControlCaption
-          Visible = True
-          ItemName = 'chkKonsolidasi'
-        end>
-      OneOnRow = True
-      Row = 0
-      UseOwnFont = False
-      Visible = True
-      WholeRow = False
-    end
-    object dxBarLargeButtonNew: TdxBarLargeButton
-      Action = ActionBaru
-      Category = 0
-      LargeImageIndex = 0
-      AutoGrayScale = False
-      SyncImageIndex = False
+    inherited dxBarLargeButtonNew: TdxBarLargeButton
       ImageIndex = -1
     end
-    object dxBarLargeButtonSave: TdxBarLargeButton
-      Action = ActionSimpan
-      Category = 0
-      LargeImageIndex = 1
-      AutoGrayScale = False
-      SyncImageIndex = False
+    inherited dxBarLargeButtonSave: TdxBarLargeButton
       ImageIndex = -1
     end
-    object dxBarLargeButtonEdit: TdxBarLargeButton
-      Action = actCetak
-      Category = 0
-      LargeImageIndex = 3
-      AutoGrayScale = False
-      SyncImageIndex = False
+    inherited dxBarLargeButtonEdit: TdxBarLargeButton
       ImageIndex = -1
     end
-    object dxBarLargeButtonDel: TdxBarLargeButton
-      Action = ActionHapus
-      Category = 0
-      LargeImageIndex = 2
-      AutoGrayScale = False
-      SyncImageIndex = False
+    inherited dxBarLargeButtonDel: TdxBarLargeButton
       ImageIndex = -1
     end
-    object dxBarLargeButtonRefresh: TdxBarLargeButton
-      Action = ActionRefresh
-      Category = 0
-      LargeImageIndex = 4
-      AutoGrayScale = False
-      SyncImageIndex = False
+    inherited dxBarLargeButtonRefresh: TdxBarLargeButton
       ImageIndex = -1
-    end
-    object cbbLUCabang: TdxBarLookupCombo
-      Caption = 'New Item'
-      Category = 0
-      Hint = 'New Item'
-      Visible = ivAlways
-      Glyph.Data = {
-        F6000000424DF600000000000000760000002800000010000000100000000100
-        0400000000008000000000000000000000001000000000000000000000000000
-        8000008000000080800080000000800080008080000080808000C0C0C0000000
-        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00DDDDDDDDDDDD
-        DDDD000000000000000D0FFFF0FFFFFFFF0D0F77F0F777777F0D0CCCC0CCCCCC
-        CC0D0C77C0C777777C0D0CCCC0CCCCCCCC0D0F77F0F777777F0D0FFFF0FFFFFF
-        FF0D0F77F0F777777F0D0FFFF0FFFFFFFF0D000000000000000D0FFFCCCCFFF0
-        DDDD0F777777FFF0DDDD0FFFCCCCFFF0DDDD000000000000DDDD}
-      KeyField = 'ID'
-      ListField = 'Nama'
-      ListSource = dsCabang
-      RowCount = 7
-    end
-    object chkKonsolidasi: TcxBarEditItem
-      Caption = 'Konsolidasi'
-      Category = 0
-      Hint = 'Konsolidasi'
-      Visible = ivAlways
-      ShowCaption = True
-      Width = 0
-      PropertiesClassName = 'TcxCheckBoxProperties'
-      Properties.ImmediatePost = True
-      InternalEditValue = 0
     end
   end
-  object ActionListForm: TActionList
-    Left = 640
-    Top = 8
-    object ActionBaru: TAction
-      Caption = 'Baru'
-    end
-    object ActionSimpan: TAction
-      Caption = 'Simpan'
-    end
-    object actCetak: TAction
-      Caption = 'Cetak'
-    end
-    object ActionHapus: TAction
-      Caption = 'Hapus'
-    end
-    object ActionRefresh: TAction
-      Caption = 'Refresh'
+  inherited ActionListForm: TActionList
+    inherited ActionRefresh: TAction
+      OnExecute = ActionRefreshExecute
     end
   end
-  object cxStyleRepTrans: TcxStyleRepository
-    Left = 672
-    Top = 8
+  inherited cxStyleRepTrans: TcxStyleRepository
     PixelsPerInch = 96
-    object cxstylGridHeader: TcxStyle
-      AssignedValues = [svFont]
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'Tahoma'
-      Font.Style = [fsBold]
-    end
-    object cxstylGridOdd: TcxStyle
-      AssignedValues = [svColor]
-      Color = clGradientInactiveCaption
-    end
-    object cxstylGridEven: TcxStyle
+  end
+  inherited cxGridRepTransaksi: TcxGridViewRepository
+    inherited cxGridDBTableWarehouse: TcxGridDBTableView
+      DataController.KeyFieldNames = 'ID'
     end
   end
-  object cxGridRepTransaksi: TcxGridViewRepository
-    Left = 608
-    Top = 8
-    object cxGridDBTableCabang: TcxGridDBTableView
-      Navigator.Buttons.CustomButtons = <>
-      DataController.Summary.DefaultGroupSummaryItems = <>
-      DataController.Summary.FooterSummaryItems = <>
-      DataController.Summary.SummaryGroups = <>
-      object cxGridColCabangKode: TcxGridDBColumn
-        Caption = 'Kode '
-        DataBinding.FieldName = 'Kode'
-      end
-      object cxGridColCabangNama: TcxGridDBColumn
-        Caption = 'Nama '
-        DataBinding.FieldName = 'Nama'
-      end
-    end
-    object cxGridDBTableWarehouse: TcxGridDBTableView
-      Navigator.Buttons.CustomButtons = <>
-      DataController.Summary.DefaultGroupSummaryItems = <>
-      DataController.Summary.FooterSummaryItems = <>
-      DataController.Summary.SummaryGroups = <>
-      object cxGridColWHKode: TcxGridDBColumn
-        Caption = 'Kode '
-        DataBinding.FieldName = 'Kode'
-      end
-      object cxGridColWHNama: TcxGridDBColumn
-        Caption = 'Nama '
-        DataBinding.FieldName = 'Nama'
-      end
-    end
-  end
-  object ilButton: TImageList
-    ColorDepth = cd32Bit
-    Height = 24
-    Width = 24
-    Left = 216
-    Top = 184
+  inherited ilButton: TImageList
     Bitmap = {
-      494C010105000800600018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010105000800680018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -869,21 +732,5 @@ object frmDefault: TfrmDefault
       F0000F000001800003F3FF1FF8001F000003C00003F0003FFE007F800007E000
       07F8007FFFFFFFE0000FFFFFFFFFFFFF00000000000000000000000000000000
       000000000000}
-  end
-  object dsCabang: TDataSource
-    DataSet = cdsCabang
-    Left = 352
-    Top = 176
-  end
-  object DSPCabang: TDataSetProvider
-    Left = 464
-    Top = 144
-  end
-  object cdsCabang: TClientDataSet
-    Aggregates = <>
-    Params = <>
-    ProviderName = 'DSPCabang'
-    Left = 496
-    Top = 144
   end
 end

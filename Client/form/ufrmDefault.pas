@@ -49,6 +49,9 @@ type
     DSPCabang: TDataSetProvider;
     cdsCabang: TClientDataSet;
     chkKonsolidasi: TcxBarEditItem;
+    cxGridDBTableWarehouse: TcxGridDBTableView;
+    cxGridColWHKode: TcxGridDBColumn;
+    cxGridColWHNama: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private

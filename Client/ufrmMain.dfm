@@ -38,7 +38,6 @@ object frmMain: TfrmMain
       Index = 0
     end
     object dxrbnTabMaster: TdxRibbonTab
-      Active = True
       Caption = 'Master'
       Groups = <
         item
@@ -65,6 +64,7 @@ object frmMain: TfrmMain
       Index = 3
     end
     object dxrbntbLaporan: TdxRibbonTab
+      Active = True
       Caption = 'Laporan'
       Groups = <
         item
@@ -290,6 +290,10 @@ object frmMain: TfrmMain
         item
           Visible = True
           ItemName = 'dxbrlrgbtnLapStockSekarang'
+        end
+        item
+          Visible = True
+          ItemName = 'dxbrlrgbtn1'
         end>
       OneOnRow = True
       Row = 0
@@ -386,6 +390,23 @@ object frmMain: TfrmMain
       Action = actAlatGantiCabang
       Category = 0
       LargeImageIndex = 2
+    end
+    object dxbrsbtm1: TdxBarSubItem
+      Action = actLapKartok
+      Category = 0
+      LargeImageIndex = 10
+      ItemLinks = <>
+    end
+    object dxbrbtn1: TdxBarButton
+      Caption = #208#194#189#168#176#180#197#165
+      Category = 0
+      Hint = #208#194#189#168#176#180#197#165
+      Visible = ivAlways
+    end
+    object dxbrlrgbtn1: TdxBarLargeButton
+      Action = actLapKartok
+      Category = 0
+      LargeImageIndex = 10
     end
     object dxbrlrgbtnExit: TdxBarLargeButton
       Action = actApplicationExit
@@ -486,6 +507,11 @@ object frmMain: TfrmMain
       Caption = 'Ganti Cabang'
       OnExecute = actAlatGantiCabangExecute
     end
+    object actLapKartok: TAction
+      Category = 'Laporan'
+      Caption = 'Kartu Stok'
+      OnExecute = actLapKartokExecute
+    end
   end
   object ImgListMainLarge: TImageList
     ColorDepth = cd32Bit
@@ -494,7 +520,7 @@ object frmMain: TfrmMain
     Left = 688
     Top = 128
     Bitmap = {
-      494C01010C001800700020002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C01010C001800740020002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000800000008000000001002000000000000000
       0100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

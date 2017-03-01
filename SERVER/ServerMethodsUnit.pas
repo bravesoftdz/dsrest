@@ -11,6 +11,8 @@ type
 
   TServerLaporan = class(TInterfacedPersistent)
   public
+    function LaporanKartok(ATglAwal , ATglAkhir : TDateTime; ABarang : TBarang;
+        AGudang : TGudang; ACabang : TCabang): TDataset;
     function LaporanStockSekarang(ACabang : TCabang): TDataset;
     function RetriveMutasiBarang(ATglAwal , ATglAtglAkhir : TDateTime) : TDataset;
 
@@ -760,6 +762,53 @@ begin
       Free;
     end;
   end;
+end;
+
+function TServerLaporan.LaporanKartok(ATglAwal , ATglAkhir : TDateTime; ABarang
+    : TBarang; AGudang : TGudang; ACabang : TCabang): TDataset;
+var
+  sSQL: string;
+begin
+  sSQL := 'select 1 as Urutan, cast(' + TAppUtils.QuotD(StartOfTheMonth(ATglAwal)) + ' as date) as TglBukti,' +
+          QuotedStr('Saldo Awal') + ' as NoBukti, b.Nama as Cabang, c.Nama as Gudang,' +
+          ' d.nama as Barang,  0 as Qtyout, qty as qtyin, e.uom, 1 as konversi,' +
+          ' a.rp as harga, e.uom as satuanstock,' +
+          QuotedStr('Saldo Awal') + ' as Transaksi ' +
+          ' from tclosinginventory a' +
+          ' inner join tcabang b on a.cabang =b.id' +
+          ' inner join tgudang c on a.gudang = c.id' +
+          ' inner join tbarang d on a.barang = d.id' +
+          ' inner join tuom e on a.uom = e.id' +
+          ' where periode = ' + FormatDateTime('yyyyMM', StartOfTheMonth(ATglAwal)) +
+          ' and a.barang = ' + QuotedStr(ABarang.ID);
+
+  if AGudang <> nil then
+    sSQL := sSQL + ' and a.gudang = ' + QuotedStr(AGudang.ID);
+
+  if ACabang <> nil then
+    sSQL := sSQL + ' and a.cabang = ' + QuotedStr(ACabang.ID);
+
+  sSQL := sSQL + ' union all ' +
+                 ' select 2,a.Tglbukti, a.NoBukti, b.Nama as Cabang, c.Nama as Gudang, d.nama as Barang,  a.qtyout, a.qtyin, e.uom, a.konversi, a.harga,' +
+                 ' f.uom as satuanstock, a.Transaksi' +
+                 ' from tmutasistock a' +
+                 ' inner join tcabang b on a.cabang =b.id' +
+                 ' inner join tgudang c on a.gudang = c.id' +
+                 ' inner join tbarang d on a.barang = d.id' +
+                 ' inner join tuom e on a.uom = e.id' +
+                 ' left join tuom f on d.satuanstock = f.id' +
+                 ' where a.tglbukti <= ' + TAppUtils.QuotDt(EndOfTheDay(ATglAkhir)) +
+                 ' and a.tglbukti >= ' + TAppUtils.QuotDt(StartOfTheDay(ATglAwal));
+
+  if AGudang <> nil then
+    sSQL := sSQL + ' and a.gudang = ' + QuotedStr(AGudang.ID);
+
+  if ACabang <> nil then
+    sSQL := sSQL + ' and a.cabang = ' + QuotedStr(ACabang.ID);
+
+  sSQL := sSQL + ' order by 1 ,2,3 ';
+
+  Result := TDBUtils.OpenDataset(sSQL);
 end;
 
 function TServerLaporan.LaporanStockSekarang(ACabang : TCabang): TDataset;

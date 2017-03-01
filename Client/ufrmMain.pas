@@ -12,7 +12,7 @@ uses
   FireDAC.Comp.UI, FireDAC.Phys.PG, FireDAC.Stan.Intf, FireDAC.Phys,
   FireDAC.Phys.ODBCBase, FireDAC.Phys.MSSQL, Firedac.Dapt,
   dxRibbonCustomizationForm, FireDAC.Phys.MSSQLDef, FireDAC.Phys.PGDef,
-  System.ImageList;
+  System.ImageList, ufrmLapKartuStock;
 
 type
 //  RawUTF8 = type AnsiString;
@@ -85,9 +85,14 @@ type
     actLapStockSekarang: TAction;
     dxbrlrgbtnGantiCabang: TdxBarLargeButton;
     actAlatGantiCabang: TAction;
+    actLapKartok: TAction;
+    dxbrsbtm1: TdxBarSubItem;
+    dxbrbtn1: TdxBarButton;
+    dxbrlrgbtn1: TdxBarLargeButton;
     procedure actAlatGantiCabangExecute(Sender: TObject);
     procedure actApplicationExitExecute(Sender: TObject);
     procedure actClosingInventoryExecute(Sender: TObject);
+    procedure actLapKartokExecute(Sender: TObject);
     procedure actMasSupplierExecute(Sender: TObject);
     procedure actMasterBarangExecute(Sender: TObject);
     procedure actPenerimaanBarangExecute(Sender: TObject);
@@ -144,6 +149,11 @@ end;
 procedure TfrmMain.actClosingInventoryExecute(Sender: TObject);
 begin
   frmClosingInventory := TfrmClosingInventory.Create(Self);
+end;
+
+procedure TfrmMain.actLapKartokExecute(Sender: TObject);
+begin
+  frmLapKartuStock := TfrmLapKartuStock.Create(Self);
 end;
 
 procedure TfrmMain.actLapMutasiBarangExecute(Sender: TObject);

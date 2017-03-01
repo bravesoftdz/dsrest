@@ -21,7 +21,8 @@ uses
   ufrmLapStockSekarang in 'form\ufrmLapStockSekarang.pas' {frmLapStockSekarang},
   ufrmPembayaranSupplier in 'form\ufrmPembayaranSupplier.pas' {frmPembayaranSupplier},
   uReport in '..\uReport.pas',
-  ufrmGudang in 'form\ufrmGudang.pas' {frmGudang};
+  ufrmGudang in 'form\ufrmGudang.pas' {frmGudang},
+  ufrmLapKartuStock in 'form\ufrmLapKartuStock.pas' {frmLapKartuStock};
 
 {$R *.res}
 
