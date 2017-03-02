@@ -9,7 +9,7 @@ inherited frmLapKartuStock: TfrmLapKartuStock
   TextHeight = 13
   inherited splTransaksi: TSplitter
     Left = 0
-    Top = 121
+    Top = 145
     Width = 721
     Height = 8
     Cursor = crVSplit
@@ -27,10 +27,10 @@ inherited frmLapKartuStock: TfrmLapKartuStock
   end
   inherited pnlListTransaksi: TPanel
     Width = 721
-    Height = 71
+    Height = 95
     Align = alTop
     ExplicitWidth = 721
-    ExplicitHeight = 71
+    ExplicitHeight = 95
     object lblAwal: TLabel
       Left = 15
       Top = 17
@@ -48,6 +48,13 @@ inherited frmLapKartuStock: TfrmLapKartuStock
     object lblGudang: TLabel
       Left = 14
       Top = 44
+      Width = 37
+      Height = 13
+      Caption = 'Gudang'
+    end
+    object lblBarang: TLabel
+      Left = 14
+      Top = 71
       Width = 37
       Height = 13
       Caption = 'Gudang'
@@ -77,12 +84,23 @@ inherited frmLapKartuStock: TfrmLapKartuStock
       TabOrder = 2
       Width = 269
     end
+    object cbbBarang: TcxExtLookupComboBox
+      Left = 56
+      Top = 67
+      Properties.DropDownAutoSize = True
+      Properties.FocusPopup = True
+      Properties.View = cxGridDBTableWarehouse
+      Properties.KeyFieldNames = 'ID'
+      Properties.ListFieldItem = cxGridColWHNama
+      TabOrder = 3
+      Width = 269
+    end
   end
   object cxGridDBLapMutasi: TcxGrid [3]
     Left = 0
-    Top = 129
+    Top = 153
     Width = 721
-    Height = 268
+    Height = 244
     Align = alClient
     TabOrder = 6
     object cxGridDBTableKartok: TcxGridDBTableView
@@ -132,7 +150,7 @@ inherited frmLapKartuStock: TfrmLapKartuStock
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010105000800680018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010105000800740018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

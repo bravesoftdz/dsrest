@@ -13,7 +13,7 @@ uses
   dxBarExtDBItems, Vcl.ExtCtrls, dxStatusBar, cxGridLevel, cxContainer,
   Vcl.ComCtrls, dxCore, cxDateUtils, cxTextEdit, cxMaskEdit, cxDropDownEdit,
   cxCalendar, Vcl.StdCtrls, cxLookupEdit, cxDBLookupEdit, cxDBExtLookupComboBox,
-  uModel;
+  uModel, dxBarExtItems;
 
 type
   TfrmLapKartuStock = class(TfrmDefault)
@@ -26,11 +26,15 @@ type
     edAkhir: TcxDateEdit;
     lblGudang: TLabel;
     cbbGudang: TcxExtLookupComboBox;
+    lblBarang: TLabel;
+    cbbBarang: TcxExtLookupComboBox;
     procedure ActionRefreshExecute(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private
+    procedure InisialisasiCBBBarang;
     procedure InisialisasiGudang;
     { Private declarations }
+  protected
   public
     { Public declarations }
   end;
@@ -46,16 +50,24 @@ uses
 
 procedure TfrmLapKartuStock.ActionRefreshExecute(Sender: TObject);
 var
+  lBarang: TBarang;
+  lCabang: TCabang;
   lDS: TDataset;
+  lGudang: TGudang;
 begin
   inherited;
 
-  with TServerLaporanClient.Create(ClientDataModule.DSRestConnection, False) do
+  with TServerLaporanClient.Create(ClientDataModule.DSRestConnection) do
   begin
     try
-      lDS := LaporanKartok(edAwal.Date, edAkhir.Date,tbarang.CreateID('77c6982b-e923-49c8-8083-93d3db27df72'), nil, nil);
+      lBarang := TBarang.CreateID(cbbBarang.EditValue);
+      lGudang := TGudang.CreateID(cbbGudang.EditValue);
+      lCabang := TCabang.CreateID(cbbLUCabang.KeyValue);
+
+      lDS := LaporanKartok(edAwal.Date, edAkhir.Date,lBarang, lGudang, lCabang);
       cxGridDBTableKartok.SetDataset(lDS, True);
       cxGridDBTableKartok.ApplyBestFit();
+      cxGridDBTableKartok.SetVisibleColumns(['urutan'], False);
     finally
 
     end;
@@ -70,14 +82,29 @@ begin
   edAkhir.Date:= Now;
 
   InisialisasiGudang;
+  InisialisasiCBBBarang;
+end;
+
+procedure TfrmLapKartuStock.InisialisasiCBBBarang;
+var
+  lCDSBarang: TClientDataSet;
+  sSQL: string;
+begin
+  sSQL := 'select id,Nama,SKU from TBarang';
+  lCDSBarang := TDBUtils.OpenDataset(sSQL);
+  cbbBarang.Properties.LoadFromCDS(lCDSBarang,'ID','Nama',['ID'],Self);
+  cbbBarang.Properties.SetMultiPurposeLookup;
 end;
 
 procedure TfrmLapKartuStock.InisialisasiGudang;
 var
+  lCDSGudang: TClientDataSet;
   sSQL: string;
 begin
-  sSQL := 'select * from TGudang';
-  cxGridDBTableWarehouse.SetDataset(sSQL);
+  sSQL := 'select Nama,Kode,ID from TGudang';
+  lCDSGudang := TDBUtils.OpenDataset(sSQL);
+  cbbGudang.Properties.LoadFromCDS(lCDSGudang,'ID','Nama',['ID'],Self);
+  cbbGudang.Properties.SetMultiPurposeLookup;
 end;
 
 end.

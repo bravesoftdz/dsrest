@@ -3,7 +3,6 @@ program Client;
 uses
   Forms,
   ufrmMain in 'ufrmMain.pas' {frmMain},
-  ufrmDefault in 'form\ufrmDefault.pas' {frmDefault},
   ufrmReturSupplier in 'form\ufrmReturSupplier.pas' {frmReturSupplier},
   uModel in '..\uModel.pas',
   ufrmSupplier in 'form\ufrmSupplier.pas' {frmSupplier},
@@ -22,7 +21,9 @@ uses
   ufrmPembayaranSupplier in 'form\ufrmPembayaranSupplier.pas' {frmPembayaranSupplier},
   uReport in '..\uReport.pas',
   ufrmGudang in 'form\ufrmGudang.pas' {frmGudang},
-  ufrmLapKartuStock in 'form\ufrmLapKartuStock.pas' {frmLapKartuStock};
+  ufrmLapKartuStock in 'form\ufrmLapKartuStock.pas' {frmLapKartuStock},
+  ufrmDefault in 'form\ufrmDefault.pas' {frmDefault},
+  ufrmPilihGrid in 'form\ufrmPilihGrid.pas' {frmPilihGrid};
 
 {$R *.res}
 

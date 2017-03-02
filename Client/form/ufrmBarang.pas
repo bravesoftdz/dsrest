@@ -12,7 +12,8 @@ uses
   cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGridCustomView,
   cxGrid, cxGridLevel, cxPCdxBarPopupMenu, cxPC, cxCurrencyEdit, ImgList, uModel,
   cxNavigator, System.Actions, Datasnap.DBClient, Datasnap.Provider,
-  dxBarExtDBItems, cxCheckBox, cxBarEditItem;
+  dxBarExtDBItems, cxCheckBox, cxBarEditItem, dxBarBuiltInMenu, dxBarExtItems,
+  System.ImageList;
 
 type
   TfrmBarang = class(TfrmDefault)
