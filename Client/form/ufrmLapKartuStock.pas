@@ -65,6 +65,9 @@ begin
       lCabang := TCabang.CreateID(cbbLUCabang.KeyValue);
 
       lDS := LaporanKartok(edAwal.Date, edAkhir.Date,lBarang, lGudang, lCabang);
+
+
+//      lDS.Open;
       cxGridDBTableKartok.SetDataset(lDS, True);
       cxGridDBTableKartok.ApplyBestFit();
       cxGridDBTableKartok.SetVisibleColumns(['urutan'], False);

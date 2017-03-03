@@ -106,15 +106,15 @@ begin
 end;
 
 procedure TfrmDefault.FormCreate(Sender: TObject);
-var
-  I: Integer;
+//var
+//  I: Integer;
 begin
   InisialisasiCDSCabang;
 
-  for I := 0 to cxGridRepTransaksi.Count  do
-  begin
-    cxGridRepTransaksi.Items[i].Tag := 99;
-  end;
+//  for I := 0 to cxGridRepTransaksi.Count  do
+//  begin
+//    cxGridRepTransaksi.Items[i].Tag := 99;
+//  end;
 end;
 
 procedure TfrmDefault.FormClose(Sender: TObject; var Action: TCloseAction);

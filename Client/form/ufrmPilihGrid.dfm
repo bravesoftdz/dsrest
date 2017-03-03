@@ -11,6 +11,7 @@ object frmPilihGrid: TfrmPilihGrid
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  Position = poMainFormCenter
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
@@ -22,7 +23,6 @@ object frmPilihGrid: TfrmPilihGrid
     Align = alClient
     ItemHeight = 13
     TabOrder = 0
-    ExplicitHeight = 105
   end
   object pnlButton: TPanel
     Left = 0
@@ -31,7 +31,6 @@ object frmPilihGrid: TfrmPilihGrid
     Height = 41
     Align = alBottom
     TabOrder = 1
-    ExplicitTop = 167
     object btnOK: TButton
       Left = 143
       Top = 6

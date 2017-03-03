@@ -14,7 +14,8 @@ uses
   uDBUtils in '..\uDBUtils.pas',
   uAppUtils in '..\uAppUtils.pas',
   uInterface in 'uInterface.pas',
-  uBarangUtils in '..\uBarangUtils.pas';
+  uBarangUtils in '..\uBarangUtils.pas',
+  uPenjualan in '..\model\uPenjualan.pas';
 
 {$R *.res}
 

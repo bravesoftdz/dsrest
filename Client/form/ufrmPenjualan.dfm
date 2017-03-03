@@ -1,335 +1,370 @@
-object frmDefault: TfrmDefault
-  Left = 0
-  Top = 0
-  Caption = 'frmDefault'
-  ClientHeight = 346
-  ClientWidth = 717
-  Color = clBtnFace
-  Font.Charset = DEFAULT_CHARSET
-  Font.Color = clWindowText
-  Font.Height = -11
-  Font.Name = 'Tahoma'
-  Font.Style = []
-  FormStyle = fsMDIChild
-  OldCreateOrder = False
-  Visible = True
-  OnClose = FormClose
-  OnCreate = FormCreate
+inherited frmPenjualan: TfrmPenjualan
+  Caption = 'Penjualan'
+  ClientHeight = 429
+  ClientWidth = 775
+  ExplicitWidth = 791
+  ExplicitHeight = 468
   PixelsPerInch = 96
   TextHeight = 13
-  object splTransaksi: TSplitter
-    Left = 185
+  inherited splTransaksi: TSplitter
+    Left = 17
+    Height = 359
+  end
+  inherited cxSBTransaksi: TdxStatusBar
+    Top = 409
+    Width = 775
+  end
+  inherited pnlListTransaksi: TPanel
+    Width = 17
+    Height = 359
+    Visible = False
+    ExplicitWidth = 17
+    ExplicitHeight = 359
+  end
+  object pnlInput: TPanel [3]
+    Left = 25
     Top = 50
-    Width = 8
-    Height = 276
-    Hint = 'Geser Kanan Kiri'
-    ExplicitTop = 46
-    ExplicitHeight = 280
+    Width = 750
+    Height = 359
+    Align = alClient
+    TabOrder = 6
+    ExplicitLeft = 272
+    ExplicitTop = 176
+    ExplicitWidth = 185
+    ExplicitHeight = 41
+    object pgcHeader: TPageControl
+      Left = 1
+      Top = 1
+      Width = 748
+      Height = 136
+      ActivePage = tsHeader
+      Align = alTop
+      TabOrder = 0
+      ExplicitWidth = 580
+      object tsHeader: TTabSheet
+        Caption = 'Penjualan'
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
+        object lblNoBukti: TLabel
+          Left = 23
+          Top = 8
+          Width = 39
+          Height = 13
+          Caption = 'No Bukti'
+        end
+        object lblTglBukti: TLabel
+          Left = 22
+          Top = 32
+          Width = 40
+          Height = 13
+          Caption = 'Tgl Bukti'
+        end
+        object lblSupplier: TLabel
+          Left = 17
+          Top = 56
+          Width = 45
+          Height = 13
+          Caption = 'Salesman'
+        end
+        object lblKeterangan: TLabel
+          Left = 310
+          Top = 32
+          Width = 56
+          Height = 13
+          Caption = 'Keterangan'
+        end
+        object lblGudang: TLabel
+          Left = 24
+          Top = 81
+          Width = 37
+          Height = 13
+          Caption = 'Gudang'
+        end
+        object lblJthTempo: TLabel
+          Left = 316
+          Top = 6
+          Width = 50
+          Height = 13
+          Caption = 'Jth Tempo'
+        end
+        object edNoBukti: TcxTextEdit
+          Left = 72
+          Top = 3
+          Enabled = False
+          Properties.ReadOnly = True
+          TabOrder = 0
+          Text = 'edNoBukti'
+          Width = 121
+        end
+        object edTglBukti: TcxDateEdit
+          Left = 72
+          Top = 28
+          TabOrder = 1
+          Width = 121
+        end
+        object memKeterangan: TcxMemo
+          Left = 376
+          Top = 28
+          Lines.Strings = (
+            'memKeterangan')
+          TabOrder = 4
+          Height = 43
+          Width = 192
+        end
+        object cbbSalesman: TcxExtLookupComboBox
+          Left = 72
+          Top = 53
+          Properties.DropDownAutoSize = True
+          Properties.FocusPopup = True
+          TabOrder = 2
+          Width = 192
+        end
+        object cbbGudang: TcxExtLookupComboBox
+          Left = 72
+          Top = 78
+          Properties.DropDownAutoSize = True
+          Properties.FocusPopup = True
+          TabOrder = 3
+          Width = 192
+        end
+        object edJthTempo: TcxDateEdit
+          Left = 376
+          Top = 3
+          TabOrder = 5
+          Width = 121
+        end
+      end
+    end
+    object pgcDetail: TPageControl
+      Left = 1
+      Top = 137
+      Width = 748
+      Height = 221
+      ActivePage = tsDetailPenerimaan
+      Align = alClient
+      TabOrder = 1
+      ExplicitTop = 113
+      ExplicitWidth = 574
+      ExplicitHeight = 250
+      object tsDetailPenerimaan: TTabSheet
+        Caption = 'Detail Penerimaan'
+        ExplicitWidth = 514
+        ExplicitHeight = 134
+        object cxGridDBPenjualan: TcxGrid
+          Left = 0
+          Top = 0
+          Width = 740
+          Height = 193
+          Align = alClient
+          TabOrder = 0
+          ExplicitWidth = 514
+          ExplicitHeight = 134
+          object cxGridTablePenjualan: TcxGridTableView
+            Navigator.Buttons.CustomButtons = <>
+            DataController.Summary.DefaultGroupSummaryItems = <>
+            DataController.Summary.FooterSummaryItems = <
+              item
+                Format = ',0.00;(,0.00)'
+                Kind = skSum
+                Column = cxgrdclmnGridTablePenjualanColumnDiskonRp
+              end
+              item
+                Format = ',0.00;(,0.00)'
+                Kind = skSum
+                Column = cxgrdclmnGridTablePenjualanColumnPPNRp
+              end
+              item
+                Format = ',0.00;(,0.00)'
+                Kind = skSum
+                Column = cxgrdclmnGridTablePenjualanColumnTotal
+              end
+              item
+                Format = ',0.00;(,0.00)'
+                Kind = skSum
+                Column = cxgrdclmnGridTablePenjualanColumnSubTotalRp
+              end>
+            DataController.Summary.SummaryGroups = <>
+            OptionsBehavior.FocusFirstCellOnNewRecord = True
+            OptionsBehavior.GoToNextCellOnEnter = True
+            OptionsBehavior.FocusCellOnCycle = True
+            OptionsData.Appending = True
+            OptionsView.Footer = True
+            OptionsView.GroupByBox = False
+            Styles.ContentEven = cxstylGridEven
+            Styles.ContentOdd = cxstylGridOdd
+            Styles.Header = cxstylGridHeader
+            object cxgrdclmnGridTablePenjualanColumnSKU: TcxGridColumn
+              Caption = 'SKU'
+              PropertiesClassName = 'TcxExtLookupComboBoxProperties'
+              Properties.DropDownAutoSize = True
+              Properties.FocusPopup = True
+              HeaderAlignmentHorz = taCenter
+            end
+            object cxgrdclmnGridTablePenjualanColumnNama: TcxGridColumn
+              Caption = 'Nama'
+              PropertiesClassName = 'TcxExtLookupComboBoxProperties'
+              Properties.DropDownAutoSize = True
+              HeaderAlignmentHorz = taCenter
+              Width = 142
+            end
+            object cxgrdclmnGridTablePenjualanColumnSatuan: TcxGridColumn
+              Caption = 'Satuan'
+              PropertiesClassName = 'TcxExtLookupComboBoxProperties'
+              Properties.OnInitPopup = cxgrdclmnGridTablePenjualanColumnSatuanPropertiesInitPopup
+              HeaderAlignmentHorz = taCenter
+              Width = 92
+            end
+            object cxgrdclmnGridTablePenjualanColumnHarga: TcxGridColumn
+              Caption = 'Harga'
+              DataBinding.ValueType = 'Float'
+              PropertiesClassName = 'TcxCurrencyEditProperties'
+              Properties.Alignment.Horz = taRightJustify
+              Properties.DisplayFormat = ',0.##;(,0.##)'
+              HeaderAlignmentHorz = taCenter
+            end
+            object cxgrdclmnGridTablePenjualanColumnQty: TcxGridColumn
+              Caption = 'Qty'
+              DataBinding.ValueType = 'Float'
+              PropertiesClassName = 'TcxCurrencyEditProperties'
+              Properties.Alignment.Horz = taRightJustify
+              Properties.DisplayFormat = ',0.##;(,0.##)'
+              HeaderAlignmentHorz = taCenter
+            end
+            object cxgrdclmnGridTablePenjualanColumnDiskon: TcxGridColumn
+              Caption = 'Diskon %'
+              DataBinding.ValueType = 'Float'
+              PropertiesClassName = 'TcxCurrencyEditProperties'
+              Properties.Alignment.Horz = taRightJustify
+              Properties.DisplayFormat = ',0.##;(,0.##)'
+              HeaderAlignmentHorz = taCenter
+            end
+            object cxgrdclmnGridTablePenjualanColumnPPN: TcxGridColumn
+              Caption = 'PPN %'
+              DataBinding.ValueType = 'Float'
+              PropertiesClassName = 'TcxCurrencyEditProperties'
+              Properties.Alignment.Horz = taRightJustify
+              Properties.DisplayFormat = ',0.##;(,0.##)'
+              HeaderAlignmentHorz = taCenter
+            end
+            object cxgrdclmnGridTablePenjualanColumnSubTotalRp: TcxGridColumn
+              Caption = 'Sub Total (Rp)'
+              DataBinding.ValueType = 'Float'
+              PropertiesClassName = 'TcxCurrencyEditProperties'
+              Properties.Alignment.Horz = taRightJustify
+              Properties.DisplayFormat = ',0.##;(,0.##)'
+              Properties.ReadOnly = True
+              FooterAlignmentHorz = taRightJustify
+              HeaderAlignmentHorz = taCenter
+              Options.Editing = False
+              Width = 97
+            end
+            object cxgrdclmnGridTablePenjualanColumnDiskonRp: TcxGridColumn
+              Caption = 'Dikon (Rp)'
+              DataBinding.ValueType = 'Float'
+              PropertiesClassName = 'TcxCurrencyEditProperties'
+              Properties.Alignment.Horz = taRightJustify
+              Properties.DisplayFormat = ',0.##;(,0.##)'
+              Properties.ReadOnly = True
+              FooterAlignmentHorz = taRightJustify
+              HeaderAlignmentHorz = taCenter
+              Options.Editing = False
+              Width = 94
+            end
+            object cxgrdclmnGridTablePenjualanColumnPPNRp: TcxGridColumn
+              Caption = 'PPN (Rp)'
+              DataBinding.ValueType = 'Float'
+              PropertiesClassName = 'TcxCurrencyEditProperties'
+              Properties.Alignment.Horz = taRightJustify
+              Properties.DisplayFormat = ',0.##;(,0.##)'
+              Properties.ReadOnly = True
+              FooterAlignmentHorz = taRightJustify
+              HeaderAlignmentHorz = taCenter
+              Options.Editing = False
+              Width = 87
+            end
+            object cxgrdclmnGridTablePenjualanColumnTotal: TcxGridColumn
+              Caption = 'Total (Rp)'
+              DataBinding.ValueType = 'Float'
+              PropertiesClassName = 'TcxCurrencyEditProperties'
+              Properties.Alignment.Horz = taRightJustify
+              Properties.DisplayFormat = ',0.##;(,0.##)'
+              Properties.ReadOnly = True
+              FooterAlignmentHorz = taRightJustify
+              HeaderAlignmentHorz = taCenter
+              Options.Editing = False
+              Width = 78
+            end
+          end
+          object cxgrdlvlPenerimaanBarang: TcxGridLevel
+            GridView = cxGridTablePenjualan
+          end
+        end
+      end
+    end
   end
-  object cxSBTransaksi: TdxStatusBar
-    Left = 0
-    Top = 326
-    Width = 717
-    Height = 20
-    Panels = <>
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = []
-  end
-  object pnlListTransaksi: TPanel
-    Left = 0
-    Top = 50
-    Width = 185
-    Height = 276
-    Align = alLeft
-    TabOrder = 5
-  end
-  object dxBarManagerForm: TdxBarManager
-    AutoDockColor = False
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -12
-    Font.Name = 'Segoe UI'
-    Font.Style = []
-    Categories.Strings = (
-      'Default')
-    Categories.ItemsVisibles = (
-      2)
-    Categories.Visibles = (
-      True)
-    DockColor = clBtnFace
-    ImageOptions.LargeImages = ilButton
-    ImageOptions.LargeIcons = True
-    LookAndFeel.Kind = lfUltraFlat
-    PopupMenuLinks = <>
-    UseSystemFont = True
-    Left = 576
-    Top = 136
+  inherited dxBarManagerForm: TdxBarManager
+    Left = 72
+    Top = 320
     DockControlHeights = (
       0
       0
       50
       0)
-    object dxBarManager1Bar1: TdxBar
-      Caption = 'Button'
-      CaptionButtons = <>
-      DockedDockingStyle = dsTop
-      DockedLeft = 0
-      DockedTop = 0
-      DockingStyle = dsTop
-      FloatLeft = 481
-      FloatTop = 8
-      FloatClientWidth = 0
-      FloatClientHeight = 0
-      Images = ilButton
-      ItemLinks = <
-        item
-          Visible = True
-          ItemName = 'dxBarLargeButtonNew'
-        end
-        item
-          Visible = True
-          ItemName = 'dxBarLargeButtonSave'
-        end
-        item
-          Visible = True
-          ItemName = 'dxBarLargeButtonDel'
-        end
-        item
-          Visible = True
-          ItemName = 'dxBarLargeButtonEdit'
-        end
-        item
-          Visible = True
-          ItemName = 'dxBarLargeButtonRefresh'
-        end
-        item
-          Visible = True
-          ItemName = 'dxbrlrgbtn1'
-        end
-        item
-          Visible = True
-          ItemName = 'dxbrstc1'
-        end
-        item
-          UserDefine = [udWidth]
-          UserWidth = 187
-          Visible = True
-          ItemName = 'cbbLUCabang'
-        end
-        item
-          ViewLayout = ivlGlyphControlCaption
-          Visible = True
-          ItemName = 'chkKonsolidasi'
-        end>
-      OneOnRow = True
-      Row = 0
-      UseOwnFont = False
-      Visible = True
-      WholeRow = False
-    end
-    object dxBarLargeButtonNew: TdxBarLargeButton
-      Action = ActionBaru
-      Category = 0
-      LargeImageIndex = 0
-      AutoGrayScale = False
-      SyncImageIndex = False
+    inherited dxBarLargeButtonNew: TdxBarLargeButton
       ImageIndex = -1
     end
-    object dxBarLargeButtonSave: TdxBarLargeButton
-      Action = ActionSimpan
-      Category = 0
-      LargeImageIndex = 1
-      AutoGrayScale = False
-      SyncImageIndex = False
+    inherited dxBarLargeButtonSave: TdxBarLargeButton
       ImageIndex = -1
     end
-    object dxBarLargeButtonEdit: TdxBarLargeButton
-      Action = actCetak
-      Category = 0
-      LargeImageIndex = 3
-      AutoGrayScale = False
-      SyncImageIndex = False
+    inherited dxBarLargeButtonEdit: TdxBarLargeButton
       ImageIndex = -1
     end
-    object dxBarLargeButtonDel: TdxBarLargeButton
-      Action = ActionHapus
-      Category = 0
-      LargeImageIndex = 2
-      AutoGrayScale = False
-      SyncImageIndex = False
+    inherited dxBarLargeButtonDel: TdxBarLargeButton
       ImageIndex = -1
     end
-    object dxBarLargeButtonRefresh: TdxBarLargeButton
-      Action = ActionRefresh
-      Category = 0
-      LargeImageIndex = 4
-      AutoGrayScale = False
-      SyncImageIndex = False
+    inherited dxBarLargeButtonRefresh: TdxBarLargeButton
       ImageIndex = -1
-    end
-    object cbbLUCabang: TdxBarLookupCombo
-      Caption = 'New Item'
-      Category = 0
-      Hint = 'New Item'
-      Visible = ivAlways
-      Glyph.Data = {
-        F6000000424DF600000000000000760000002800000010000000100000000100
-        0400000000008000000000000000000000001000000000000000000000000000
-        8000008000000080800080000000800080008080000080808000C0C0C0000000
-        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00DDDDDDDDDDDD
-        DDDD000000000000000D0FFFF0FFFFFFFF0D0F77F0F777777F0D0CCCC0CCCCCC
-        CC0D0C77C0C777777C0D0CCCC0CCCCCCCC0D0F77F0F777777F0D0FFFF0FFFFFF
-        FF0D0F77F0F777777F0D0FFFF0FFFFFFFF0D000000000000000D0FFFCCCCFFF0
-        DDDD0F777777FFF0DDDD0FFFCCCCFFF0DDDD000000000000DDDD}
-      KeyField = 'ID'
-      ListField = 'Nama'
-      ListSource = dsCabang
-      RowCount = 7
-    end
-    object chkKonsolidasi: TcxBarEditItem
-      Caption = 'Konsolidasi'
-      Category = 0
-      Hint = 'Konsolidasi'
-      Visible = ivAlways
-      ShowCaption = True
-      Width = 0
-      PropertiesClassName = 'TcxCheckBoxProperties'
-      Properties.ImmediatePost = True
-      InternalEditValue = 0
-    end
-    object dxbrbtn1: TdxBarButton
-      Caption = #208#194#189#168#176#180#197#165
-      Category = 0
-      Hint = #208#194#189#168#176#180#197#165
-      Visible = ivAlways
-    end
-    object dxbrlrgbtn1: TdxBarLargeButton
-      Action = actExport
-      Category = 0
-      LargeImageIndex = 5
-    end
-    object dxbrstc1: TdxBarStatic
-      Caption = '-'
-      Category = 0
-      Hint = '-'
-      Visible = ivAlways
-    end
-    object dxbrcmb1: TdxBarCombo
-      Caption = #208#194#189#168#207#238
-      Category = 0
-      Hint = #208#194#189#168#207#238
-      Visible = ivAlways
-      ItemIndex = -1
     end
   end
-  object ActionListForm: TActionList
-    Left = 640
-    Top = 8
-    object ActionBaru: TAction
-      Caption = 'Baru'
-    end
-    object ActionSimpan: TAction
-      Caption = 'Simpan'
-    end
-    object actCetak: TAction
-      Caption = 'Cetak'
-    end
-    object ActionHapus: TAction
-      Caption = 'Hapus'
-    end
-    object ActionRefresh: TAction
-      Caption = 'Refresh'
-    end
-    object actExport: TAction
-      Caption = 'Export Excel'
-      OnExecute = actExportExecute
+  inherited ActionListForm: TActionList
+    Left = 40
+    Top = 280
+    inherited ActionBaru: TAction
+      OnExecute = ActionBaruExecute
     end
   end
-  object cxStyleRepTrans: TcxStyleRepository
-    Left = 672
-    Top = 8
+  inherited cxStyleRepTrans: TcxStyleRepository
+    Left = 72
+    Top = 280
     PixelsPerInch = 96
-    object cxstylGridHeader: TcxStyle
-      AssignedValues = [svFont]
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'Tahoma'
-      Font.Style = [fsBold]
-    end
-    object cxstylGridOdd: TcxStyle
-      AssignedValues = [svColor]
-      Color = clGradientInactiveCaption
-    end
-    object cxstylGridEven: TcxStyle
-    end
   end
-  object cxGridRepTransaksi: TcxGridViewRepository
-    Left = 608
-    Top = 8
-    object cxGridDBTableCabang: TcxGridDBTableView
-      Tag = 99
-      Navigator.Buttons.CustomButtons = <>
-      DataController.Summary.DefaultGroupSummaryItems = <>
-      DataController.Summary.FooterSummaryItems = <>
-      DataController.Summary.SummaryGroups = <>
-      object cxGridColCabangKode: TcxGridDBColumn
-        Caption = 'Kode '
-        DataBinding.FieldName = 'Kode'
-      end
-      object cxGridColCabangNama: TcxGridDBColumn
-        Caption = 'Nama '
-        DataBinding.FieldName = 'Nama'
-      end
-    end
-    object cxGridDBTableWarehouse: TcxGridDBTableView
-      Tag = 99
-      Navigator.Buttons.CustomButtons = <>
-      DataController.Summary.DefaultGroupSummaryItems = <>
-      DataController.Summary.FooterSummaryItems = <>
-      DataController.Summary.SummaryGroups = <>
-      object cxGridColWHKode: TcxGridDBColumn
-        Caption = 'Kode '
-        DataBinding.FieldName = 'Kode'
-      end
-      object cxGridColWHNama: TcxGridDBColumn
-        Caption = 'Nama '
-        DataBinding.FieldName = 'Nama'
-      end
-    end
+  inherited cxGridRepTransaksi: TcxGridViewRepository
+    Left = 8
+    Top = 280
   end
-  object dsCabang: TDataSource
-    DataSet = cdsCabang
-    Left = 352
-    Top = 176
+  inherited dsCabang: TDataSource
+    Left = 72
+    Top = 352
   end
-  object DSPCabang: TDataSetProvider
-    Left = 464
-    Top = 144
+  inherited DSPCabang: TDataSetProvider
+    Left = 8
+    Top = 320
   end
-  object cdsCabang: TClientDataSet
-    Aggregates = <>
-    Params = <>
-    ProviderName = 'DSPCabang'
-    Left = 496
-    Top = 144
+  inherited cdsCabang: TClientDataSet
+    Left = 40
+    Top = 320
   end
-  object dlgSaveExportExcel: TSaveDialog
-    DefaultExt = 'xlsx'
-    Left = 280
-    Top = 120
+  inherited dlgSaveExportExcel: TSaveDialog
+    Left = 8
+    Top = 352
   end
-  object ilButton: TImageList
-    ColorDepth = cd32Bit
-    Height = 24
-    Width = 24
-    Left = 216
-    Top = 184
+  inherited ilButton: TImageList
+    Left = 40
+    Top = 352
     Bitmap = {
-      494C0101060008008C0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010106000800900018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

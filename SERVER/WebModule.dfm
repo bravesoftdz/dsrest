@@ -177,4 +177,10 @@ object WebModule2: TWebModule2
     Left = 544
     Top = 160
   end
+  object dsrvrclsPenjualan: TDSServerClass
+    OnGetClass = dsrvrclsPenjualanGetClass
+    Server = DSServer1
+    Left = 608
+    Top = 168
+  end
 end

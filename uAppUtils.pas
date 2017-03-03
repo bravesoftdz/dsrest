@@ -1641,6 +1641,8 @@ begin
     Self.View.OptionsData.Appending         := False;
     Self.View.DataController.Filter.Options := [fcoCaseInsensitive];
 
+    TcxGridDBTableView(Self.View).Tag       := 99;
+
     TcxGridDBTableView(Self.View).FilterRow.InfoText
       := 'Click Here & Press F2 To Define Filter (use "%" for parsial word)';
     TcxGridDBTableView(Self.View).FilterRow.Visible       := True;

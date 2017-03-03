@@ -4,7 +4,7 @@ interface
 
 uses
   SysUtils, Classes, DSServer, uModel, Windows, uDBUtils, Generics.Collections,
-  DBXJSON, DBClient, DB, rtti, uInterface;
+  DBXJSON, DBClient, DB, rtti, uInterface, uPenjualan;
 
 type
   {$METHODINFO ON}
@@ -157,6 +157,22 @@ type
   public
     function Retrieve(AID : String): TGudang;
     function RetrieveKode(AKode : String): TGudang;
+  end;
+
+  TServerPenjualan = class(TServerTransaction, IBisaSimpanStock)
+  strict private
+    function HapusMutasi(ANoBukti : String): Boolean; stdcall;
+    function SimpanMutasiStock(AAppObject : TAppObject): Boolean; stdcall;
+  private
+    function SimpanStockSekarang(AAppObject : TAppObject; AIsMenghapus : Boolean =
+        False): Boolean; stdcall;
+  protected
+    function AfterDelete(AOBject : TAppObject): Boolean; override;
+    function AfterSave(AOBject : TAppObject): Boolean; override;
+    function BeforeSave(AOBject : TAppObject): Boolean; override;
+  public
+    function Retrieve(AID : String): TPenjualan;
+    function RetrieveNoBukti(ANoBukti : String): TPenjualan;
   end;
 
 
@@ -1158,6 +1174,187 @@ begin
       Free;
     end;
   end;
+end;
+
+function TServerPenjualan.AfterDelete(AOBject : TAppObject): Boolean;
+begin
+  Result := False;
+
+  if SimpanStockSekarang(AOBject, True) then
+  begin
+    if HapusMutasi(TPenerimaanBarang(AOBject).NoBukti) then
+      Result := True;
+  end;
+end;
+
+function TServerPenjualan.AfterSave(AOBject : TAppObject): Boolean;
+begin
+  Result := False;
+
+  if SimpanStockSekarang(AOBject) then
+    if SimpanMutasiStock(AOBject) then
+      Result := True;
+
+end;
+
+function TServerPenjualan.BeforeSave(AOBject : TAppObject): Boolean;
+var
+  lPenjualanLama: TPenjualan;
+begin
+  Result := False;
+
+  lPenjualanLama := Retrieve(AOBject.ID);
+  try
+    if AOBject.ObjectState <> 1 then
+    begin
+       if NOT SimpanStockSekarang(lPenjualanLama, True) then
+        Exit;
+    end;
+  finally
+    lPenjualanLama.Free;
+  end;
+
+
+  Result := True;
+
+end;
+
+function TServerPenjualan.HapusMutasi(ANoBukti : String): Boolean;
+begin
+  Result := False;
+
+  with TServerStockSekarang.Create do
+  begin
+    try
+      if not HapusMutasi(ANoBukti) then
+        Exit;
+    finally
+      Free;
+    end;
+  end;
+  Result := True;
+end;
+
+function TServerPenjualan.Retrieve(AID : String): TPenjualan;
+begin
+  Result := TPenjualan.Create;
+  TDBUtils.LoadFromDB(Result, AID);
+end;
+
+function TServerPenjualan.RetrieveNoBukti(ANoBukti : String): TPenjualan;
+var
+  sID: string;
+  sSQL: string;
+begin
+  sSQL := 'select * from ' + GetTableName
+          + ' where nobukti = ' + QuotedStr(ANoBukti);
+
+  with TDBUtils.OpenDataset(sSQL) do
+  begin
+    try
+      sID := FieldByName('ID').AsString;
+      Result := Retrieve(sID);
+    finally
+      Free;
+    end;
+  end;
+
+
+end;
+
+function TServerPenjualan.SimpanMutasiStock(AAppObject : TAppObject): Boolean;
+var
+  i: Integer;
+  lMutasiStock: TMutasiStock;
+  lPenjualan: TPenjualan;
+begin
+  Result := False;
+
+  lPenjualan := TPenjualan(AAppObject);
+  if not HapusMutasi(lPenjualan.NoBukti) then
+    Exit;
+
+  with TServerStockSekarang.Create do
+  begin
+    try
+      for i := 0 to lPenjualan.PenjualanItems.Count - 1 do
+      begin
+        lMutasiStock            := TMutasiStock.Create;
+        lMutasiStock.Barang     := TBarang.CreateID(lPenjualan.PenjualanItems[i].Barang.ID);
+        lMutasiStock.Cabang     := TCabang.CreateID(lPenjualan.Cabang.ID);
+        lMutasiStock.Gudang     := TGudang.CreateID(lPenjualan.Gudang.ID);
+        lMutasiStock.UOM        := TUOM.CreateID(lPenjualan.PenjualanItems[i].UOM.ID);
+        lMutasiStock.Harga      := lPenjualan.PenjualanItems[i].Harga;
+        lMutasiStock.QtyIn      := 0;
+        lMutasiStock.QtyOut     := lPenjualan.PenjualanItems[i].Qty;
+        lMutasiStock.Keterangan := lPenjualan.NoBukti;
+        lMutasiStock.NoBukti    := lPenjualan.NoBukti;
+        lMutasiStock.Transaksi  := 'Penjualan';
+        lMutasiStock.TglBukti   := lPenjualan.TglBukti;
+        lMutasiStock.Konversi   := lPenjualan.PenjualanItems[i].Konversi;
+
+        if not SaveNoCommit(lMutasiStock) then
+          Exit;
+      end;
+    finally
+      Free;
+    end;
+  end;
+
+  Result := True;end;
+
+function TServerPenjualan.SimpanStockSekarang(AAppObject : TAppObject;
+    AIsMenghapus : Boolean = False): Boolean;
+var
+  dKonversi: Double;
+  i: Integer;
+  lRSup: TReturSupplier;
+  lStockSekarang: TStockSekarang;
+begin
+  Result := False;
+
+  lRSup := TReturSupplier(AAppObject);
+  if AIsMenghapus then
+  begin
+    for i := 0 to lRSup.ReturSupplierItems.Count - 1 do
+    begin
+      lRSup.ReturSupplierItems[i].Qty := -1 * lRSup.ReturSupplierItems[i].Qty;
+    end;
+  end;
+
+  with TServerStockSekarang.Create do
+  begin
+    try
+      for i := 0 to lRSup.ReturSupplierItems.Count - 1 do
+      begin
+        lStockSekarang           := Retrieve(lRSup.ReturSupplierItems[i].Barang, lRSup.Gudang);
+        lStockSekarang.Cabang    := TCabang.CreateID(lRSup.Cabang.ID);
+        lStockSekarang.Gudang    := TGudang.CreateID(lRSup.Gudang.ID);
+
+        with TServerBarang.Create do
+        begin
+          try
+            lStockSekarang.Barang    := Retrieve(lRSup.ReturSupplierItems[i].Barang.ID);
+            dKonversi                := lStockSekarang.Barang.KonversiPC(lRSup.ReturSupplierItems[i].UOM);
+
+          finally
+            Free;
+          end;
+        end;
+
+        lStockSekarang.Qty       := lStockSekarang.Qty - (lRSup.ReturSupplierItems[i].Qty * dKonversi);
+        lStockSekarang.Rp        := lStockSekarang.Rp  - (lRSup.ReturSupplierItems[i].Qty *lRSup.ReturSupplierItems[i].HargaSetelahDiskon);
+        lStockSekarang.UOM       := TUOM.Create;
+        lStockSekarang.UOM.ID    := lStockSekarang.Barang.SatuanStock.ID;
+
+        Result := SaveNoCommit(lStockSekarang);
+      end;
+    finally
+      Free;
+    end;
+  end;
+
+
 end;
 
 

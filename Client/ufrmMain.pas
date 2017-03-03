@@ -12,7 +12,7 @@ uses
   FireDAC.Comp.UI, FireDAC.Phys.PG, FireDAC.Stan.Intf, FireDAC.Phys,
   FireDAC.Phys.ODBCBase, FireDAC.Phys.MSSQL, Firedac.Dapt,
   dxRibbonCustomizationForm, FireDAC.Phys.MSSQLDef, FireDAC.Phys.PGDef,
-  System.ImageList, ufrmLapKartuStock;
+  System.ImageList, ufrmLapKartuStock, ufrmPenjualan;
 
 type
 //  RawUTF8 = type AnsiString;
@@ -61,7 +61,7 @@ type
     dxbrlrgbtnAssetCat: TdxBarLargeButton;
     actMasterAssetCat: TAction;
     dxbrmngrAMSBarPenerimaanBarang: TdxBar;
-    dxrbntbPenerimaanBarangMainTab1: TdxRibbonTab;
+    dxrbntbPenerimaanBarangTransaksi: TdxRibbonTab;
     dxbrlrgbtnPenerimaanBarang: TdxBarLargeButton;
     dxbrlrgbtnReturn: TdxBarLargeButton;
     dxbrlrgbtnLaporanPenerimaanBarang: TdxBarLargeButton;
@@ -89,6 +89,14 @@ type
     dxbrsbtm1: TdxBarSubItem;
     dxbrbtn1: TdxBarButton;
     dxbrlrgbtn1: TdxBarLargeButton;
+    dxbrmngrAMSBarPenjualan: TdxBar;
+    dxbrsbtm2: TdxBarSubItem;
+    dxbrsbtm3: TdxBarSubItem;
+    dxbrbtn2: TdxBarButton;
+    dxbrlrgbtn2: TdxBarLargeButton;
+    actPenjualanSales: TAction;
+    dxbrlrgbtnPenjualanPOS: TdxBarLargeButton;
+    actPenjualanPOS: TAction;
     procedure actAlatGantiCabangExecute(Sender: TObject);
     procedure actApplicationExitExecute(Sender: TObject);
     procedure actClosingInventoryExecute(Sender: TObject);
@@ -100,6 +108,7 @@ type
     procedure actLapMutasiBarangExecute(Sender: TObject);
     procedure actLapStockSekarangExecute(Sender: TObject);
     procedure actMasterGudangExecute(Sender: TObject);
+    procedure actPenjualanSalesExecute(Sender: TObject);
     procedure actReturSupplierExecute(Sender: TObject);
     procedure actSettingKoneksiExecute(Sender: TObject);
   private
@@ -184,6 +193,11 @@ end;
 procedure TfrmMain.actPenerimaanBarangExecute(Sender: TObject);
 begin
   frmPenerimaanBarang := TfrmPenerimaanBarang.Create(Self);
+end;
+
+procedure TfrmMain.actPenjualanSalesExecute(Sender: TObject);
+begin
+  frmPenjualan := TfrmPenjualan.Create(Self);
 end;
 
 procedure TfrmMain.actReturSupplierExecute(Sender: TObject);

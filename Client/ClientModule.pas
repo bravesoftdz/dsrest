@@ -24,6 +24,7 @@ type
     FServerUtilsClient: TServerUtilsClient;
     FServerReturSupplierClient: TServerReturSupplierClient;
     FServerGudangClient: TServerGudangClient;
+    FServerPenjualanClient: TServerPenjualanClient;
     function GetCabang: tcabang;
     function GetServerMethods1Client: TServerMethods1Client;
     function GetServerUOMClient: TServerUOMClient;
@@ -36,6 +37,7 @@ type
     function GetServerUtilsClient: TServerUtilsClient;
     function GetServerReturSupplierClient: TServerReturSupplierClient;
     function GetServerGudangClient: TServerGudangClient;
+    function GetServerPenjualanClient: TServerPenjualanClient;
     { Private declarations }
   public
     constructor Create(AOwner: TComponent); override;
@@ -55,6 +57,8 @@ type
         GetServerReturSupplierClient write FServerReturSupplierClient;
     property ServerGudangClient: TServerGudangClient read GetServerGudangClient
         write FServerGudangClient;
+    property ServerPenjualanClient: TServerPenjualanClient read
+        GetServerPenjualanClient write FServerPenjualanClient;
 
 end;
 
@@ -173,6 +177,12 @@ begin
     FServerGudangClient:= TServerGudangClient.Create(DSRestConnection, FInstanceOwner);
 
   Result := FServerGudangClient;
+end;
+
+function TClientDataModule.GetServerPenjualanClient: TServerPenjualanClient;
+begin
+  if FServerPenjualanClient = nil then
+    Result := TServerPenjualanClient.Create(DSRestConnection, FInstanceOwner);
 end;
 
 end.

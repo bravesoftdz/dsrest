@@ -23,7 +23,9 @@ uses
   ufrmGudang in 'form\ufrmGudang.pas' {frmGudang},
   ufrmLapKartuStock in 'form\ufrmLapKartuStock.pas' {frmLapKartuStock},
   ufrmDefault in 'form\ufrmDefault.pas' {frmDefault},
-  ufrmPilihGrid in 'form\ufrmPilihGrid.pas' {frmPilihGrid};
+  ufrmPilihGrid in 'form\ufrmPilihGrid.pas' {frmPilihGrid},
+  ufrmPenjualan in 'form\ufrmPenjualan.pas' {frmPenjualan},
+  uPenjualan in '..\model\uPenjualan.pas';
 
 {$R *.res}
 

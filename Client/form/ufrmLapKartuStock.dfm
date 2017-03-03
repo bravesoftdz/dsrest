@@ -108,6 +108,7 @@ inherited frmLapKartuStock: TfrmLapKartuStock
       DataController.Summary.DefaultGroupSummaryItems = <>
       DataController.Summary.FooterSummaryItems = <>
       DataController.Summary.SummaryGroups = <>
+      OptionsView.GroupByBox = False
     end
     object cxgrdlvlGridLapMutasiLevelLapMutasi: TcxGridLevel
       GridView = cxGridDBTableKartok
@@ -150,7 +151,7 @@ inherited frmLapKartuStock: TfrmLapKartuStock
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010105000800740018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010105000800780018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
