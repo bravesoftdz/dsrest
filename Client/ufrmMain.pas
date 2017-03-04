@@ -12,7 +12,7 @@ uses
   FireDAC.Comp.UI, FireDAC.Phys.PG, FireDAC.Stan.Intf, FireDAC.Phys,
   FireDAC.Phys.ODBCBase, FireDAC.Phys.MSSQL, Firedac.Dapt,
   dxRibbonCustomizationForm, FireDAC.Phys.MSSQLDef, FireDAC.Phys.PGDef,
-  System.ImageList, ufrmLapKartuStock, ufrmPenjualan;
+  System.ImageList, ufrmLapKartuStock, ufrmPenjualan, ufrmPenjualanPOS;
 
 type
 //  RawUTF8 = type AnsiString;
@@ -108,6 +108,7 @@ type
     procedure actLapMutasiBarangExecute(Sender: TObject);
     procedure actLapStockSekarangExecute(Sender: TObject);
     procedure actMasterGudangExecute(Sender: TObject);
+    procedure actPenjualanPOSExecute(Sender: TObject);
     procedure actPenjualanSalesExecute(Sender: TObject);
     procedure actReturSupplierExecute(Sender: TObject);
     procedure actSettingKoneksiExecute(Sender: TObject);
@@ -193,6 +194,11 @@ end;
 procedure TfrmMain.actPenerimaanBarangExecute(Sender: TObject);
 begin
   frmPenerimaanBarang := TfrmPenerimaanBarang.Create(Self);
+end;
+
+procedure TfrmMain.actPenjualanPOSExecute(Sender: TObject);
+begin
+  frmPenjualanPOS := TfrmPenjualanPOS.Create(Self);
 end;
 
 procedure TfrmMain.actPenjualanSalesExecute(Sender: TObject);

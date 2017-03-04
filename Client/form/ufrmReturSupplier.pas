@@ -12,7 +12,8 @@ uses
   cxGridCustomTableView, cxGridTableView, cxGridLevel, cxGrid, cxCurrencyEdit,
   ImgList, uModel, ClientClassesUnit2, DB, cxDBData, cxGridDBTableView,
   cxDBExtLookupComboBox, Provider, DBClient, cxNavigator, dxCore, cxDateUtils,
-  System.Actions, dxBarExtDBItems, cxCheckBox, cxBarEditItem, System.ImageList;
+  System.Actions, dxBarExtDBItems, cxCheckBox, cxBarEditItem, System.ImageList,
+  dxBarExtItems;
 
 type
   TfrmReturSupplier = class(TfrmDefault)

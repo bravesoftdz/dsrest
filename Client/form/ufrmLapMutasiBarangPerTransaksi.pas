@@ -12,7 +12,8 @@ uses
   cxGridLevel, cxGridCustomView, cxCurrencyEdit,uAppUtils, ClientModule, ClientClassesUnit2,
   Datasnap.Provider, Datasnap.DBClient, uDBUtils, Vcl.StdCtrls, cxContainer,
   Vcl.ComCtrls, dxCore, cxDateUtils, cxTextEdit, cxMaskEdit, cxDropDownEdit,
-  cxCalendar, dxBarExtDBItems, cxCheckBox, cxBarEditItem, System.ImageList;
+  cxCalendar, dxBarExtDBItems, cxCheckBox, cxBarEditItem, System.ImageList,
+  dxBarExtItems;
 
 type
   TfrmLapMutasiBarangPerTransaksi = class(TfrmDefault)

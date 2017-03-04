@@ -4,6 +4,7 @@ inherited frmReturSupplier: TfrmReturSupplier
   ClientWidth = 984
   WindowState = wsMaximized
   OnShow = FormShow
+  ExplicitLeft = -103
   ExplicitWidth = 1000
   ExplicitHeight = 473
   PixelsPerInch = 96
@@ -402,6 +403,7 @@ inherited frmReturSupplier: TfrmReturSupplier
   end
   inherited cxGridRepTransaksi: TcxGridViewRepository
     object cxGridDBTableSupplier: TcxGridDBTableView
+      Tag = 99
       Navigator.Buttons.CustomButtons = <>
       DataController.KeyFieldNames = 'ID'
       DataController.Summary.DefaultGroupSummaryItems = <>
@@ -423,6 +425,7 @@ inherited frmReturSupplier: TfrmReturSupplier
       end
     end
     object cxGridDBTableSKU: TcxGridDBTableView
+      Tag = 99
       Navigator.Buttons.CustomButtons = <>
       DataController.KeyFieldNames = 'ID'
       DataController.Summary.DefaultGroupSummaryItems = <>
@@ -444,6 +447,7 @@ inherited frmReturSupplier: TfrmReturSupplier
       end
     end
     object cxGridDBTableUOM: TcxGridDBTableView
+      Tag = 99
       Navigator.Buttons.CustomButtons = <>
       DataController.KeyFieldNames = 'ID'
       DataController.Summary.DefaultGroupSummaryItems = <>
@@ -461,9 +465,17 @@ inherited frmReturSupplier: TfrmReturSupplier
       end
     end
   end
+  inherited DSPCabang: TDataSetProvider
+    Left = 472
+    Top = 224
+  end
+  inherited cdsCabang: TClientDataSet
+    Left = 512
+    Top = 232
+  end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010105000800700018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010105000800740018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1063,14 +1075,6 @@ inherited frmReturSupplier: TfrmReturSupplier
       F0000F000001800003F3FF1FF8001F000003C00003F0003FFE007F800007E000
       07F8007FFFFFFFE0000FFFFFFFFFFFFF00000000000000000000000000000000
       000000000000}
-  end
-  inherited DSPCabang: TDataSetProvider
-    Left = 472
-    Top = 224
-  end
-  inherited cdsCabang: TClientDataSet
-    Left = 512
-    Top = 232
   end
   object dsPB: TDataSource
     Left = 392

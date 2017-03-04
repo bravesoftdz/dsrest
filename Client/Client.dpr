@@ -25,7 +25,8 @@ uses
   ufrmDefault in 'form\ufrmDefault.pas' {frmDefault},
   ufrmPilihGrid in 'form\ufrmPilihGrid.pas' {frmPilihGrid},
   ufrmPenjualan in 'form\ufrmPenjualan.pas' {frmPenjualan},
-  uPenjualan in '..\model\uPenjualan.pas';
+  uPenjualan in '..\model\uPenjualan.pas',
+  ufrmPenjualanPOS in 'form\ufrmPenjualanPOS.pas' {frmPenjualanPOS};
 
 {$R *.res}
 
@@ -34,5 +35,6 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TClientDataModule, ClientDataModule);
   Application.CreateForm(TfrmMain, frmMain);
+  Application.CreateForm(TfrmPenjualanPOS, frmPenjualanPOS);
   Application.Run;
 end.

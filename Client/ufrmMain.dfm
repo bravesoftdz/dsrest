@@ -271,8 +271,8 @@ object frmMain: TfrmMain
           Visible = True
           ItemName = 'dxbrlrgbtnLaporanPenerimaanBarang'
         end>
-      OneOnRow = True
-      Row = 1
+      OneOnRow = False
+      Row = 0
       UseOwnFont = False
       Visible = True
       WholeRow = False
@@ -351,7 +351,7 @@ object frmMain: TfrmMain
           Visible = True
           ItemName = 'dxbrlrgbtnPenjualanPOS'
         end>
-      OneOnRow = True
+      OneOnRow = False
       Row = 0
       UseOwnFont = False
       Visible = True
@@ -576,6 +576,7 @@ object frmMain: TfrmMain
     object actPenjualanPOS: TAction
       Category = 'Penjualan'
       Caption = 'POS'
+      OnExecute = actPenjualanPOSExecute
     end
   end
   object ImgListMainLarge: TImageList
@@ -585,7 +586,7 @@ object frmMain: TfrmMain
     Left = 688
     Top = 128
     Bitmap = {
-      494C01010E001800880020002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C01010E0018008C0020002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000800000008000000001002000000000000000
       0100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

@@ -102,8 +102,6 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
       ActivePage = tsHeader
       Align = alTop
       TabOrder = 0
-      ExplicitLeft = 6
-      ExplicitTop = -5
       object tsHeader: TTabSheet
         Caption = 'Header Penerimaan'
         object lblNoBukti: TLabel
@@ -408,6 +406,7 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
   end
   inherited cxGridRepTransaksi: TcxGridViewRepository
     object cxGridDBTableSupplier: TcxGridDBTableView
+      Tag = 99
       Navigator.Buttons.CustomButtons = <>
       DataController.KeyFieldNames = 'ID'
       DataController.Summary.DefaultGroupSummaryItems = <>
@@ -429,6 +428,7 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
       end
     end
     object cxGridDBTableSKU: TcxGridDBTableView
+      Tag = 99
       Navigator.Buttons.CustomButtons = <>
       DataController.KeyFieldNames = 'ID'
       DataController.Summary.DefaultGroupSummaryItems = <>
@@ -450,6 +450,7 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
       end
     end
     object cxGridDBTableUOM: TcxGridDBTableView
+      Tag = 99
       Navigator.Buttons.CustomButtons = <>
       FilterBox.Visible = fvNever
       DataController.KeyFieldNames = 'ID'
@@ -473,6 +474,7 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
       end
     end
     object cxGridDBTableGudang: TcxGridDBTableView
+      Tag = 99
       Navigator.Buttons.CustomButtons = <>
       DataController.KeyFieldNames = 'ID'
       DataController.Summary.DefaultGroupSummaryItems = <>
@@ -495,16 +497,16 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
     end
   end
   inherited DSPCabang: TDataSetProvider
-    Left = 272
-    Top = 8
+    Left = 192
+    Top = 104
   end
   inherited cdsCabang: TClientDataSet
-    Left = 304
-    Top = 8
+    Left = 224
+    Top = 104
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C0101050008007C0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010105000800800018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

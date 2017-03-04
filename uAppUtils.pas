@@ -178,11 +178,14 @@ type
   TcxExtLookupHelper = class helper for TcxExtLookupComboBoxProperties
   protected
   public
+    function cxDBTableGrid: TcxGridDBTableView;
+    function Dataset: TDataset;
     procedure LoadFromCDS(aCDS: TClientDataSet; IDField, DisplayField: String;
         HideFields: Array Of String; aOwnerForm: TComponent);
     procedure LoadFromSQL(aSQL, IDField, DisplayField: String; HideFields: Array Of
         String; aOwnerForm: TComponent);
-    procedure SetMultiPurposeLookup;
+    procedure SetMultiPurposeLookup(ADropDownAutoSize : Boolean = True);
+
   end;
 
 type
@@ -1571,6 +1574,16 @@ begin
   DataController.Values[ARec,ACol] := AValue;
 end;
 
+function TcxExtLookupHelper.cxDBTableGrid: TcxGridDBTableView;
+begin
+  Result := Self.View as TcxGridDBTableView;
+end;
+
+function TcxExtLookupHelper.Dataset: TDataset;
+begin
+  Result := (Self.View as TcxGridDBTableView).DataController.DataSource.DataSet;
+end;
+
 procedure TcxExtLookupHelper.LoadFromCDS(aCDS: TClientDataSet; IDField,
     DisplayField: String; HideFields: Array Of String; aOwnerForm: TComponent);
 var
@@ -1625,11 +1638,12 @@ begin
   Self.LoadFromCDS(lCDS, IDField, DisplayField, HideFields, aOwnerForm);
 end;
 
-procedure TcxExtLookupHelper.SetMultiPurposeLookup;
+procedure TcxExtLookupHelper.SetMultiPurposeLookup(ADropDownAutoSize : Boolean =
+    True);
 begin
   AutoSearchOnPopup  := True;
   FocusPopup         := True;
-  DropDownAutoSize   := True;
+  DropDownAutoSize   := ADropDownAutoSize;
   DropDownListStyle  := lsEditList;
   FocusPopup         := True;
 

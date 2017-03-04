@@ -20,10 +20,14 @@ type
     FPPN: Double;
     FQty: Double;
     FUOM: TUOM;
+    function GetHargaSetelahDiskon: Double;
   public
+    function GetHeaderField: string; override;
+    procedure SetHeaderProperty(AHeaderProperty : TAppObject); override;
     property Barang: TBarang read FBarang write FBarang;
     property Diskon: Double read FDiskon write FDiskon;
     property Harga: Double read FHarga write FHarga;
+    property HargaSetelahDiskon: Double read GetHargaSetelahDiskon;
     property JenisHarga: string read FJenisHarga write FJenisHarga;
     property Konversi: Double read FKonversi write FKonversi;
     property Penjualan: TPenjualan read FPenjualan write FPenjualan;
@@ -66,7 +70,25 @@ implementation
 
 function TPenjualan.GetPenjualanItems: TObjectList<TPenjualanItem>;
 begin
+  if FPenjualanItems = nil then
+    FPenjualanItems := TObjectList<TPenjualanItem>.Create(False);
+
   Result := FPenjualanItems;
+end;
+
+function TPenjualanItem.GetHargaSetelahDiskon: Double;
+begin
+  Result := Harga * (100 - Diskon) / 100;
+end;
+
+function TPenjualanItem.GetHeaderField: string;
+begin
+  Result := 'Penjualan';
+end;
+
+procedure TPenjualanItem.SetHeaderProperty(AHeaderProperty : TAppObject);
+begin
+  Self.Penjualan := TPenjualan(AHeaderProperty);
 end;
 
 end.

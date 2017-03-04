@@ -1308,42 +1308,42 @@ function TServerPenjualan.SimpanStockSekarang(AAppObject : TAppObject;
 var
   dKonversi: Double;
   i: Integer;
-  lRSup: TReturSupplier;
+  lPenjualan: TPenjualan;
   lStockSekarang: TStockSekarang;
 begin
   Result := False;
 
-  lRSup := TReturSupplier(AAppObject);
+  lPenjualan := TPenjualan(AAppObject);
   if AIsMenghapus then
   begin
-    for i := 0 to lRSup.ReturSupplierItems.Count - 1 do
+    for i := 0 to lPenjualan.PenjualanItems.Count - 1 do
     begin
-      lRSup.ReturSupplierItems[i].Qty := -1 * lRSup.ReturSupplierItems[i].Qty;
+      lPenjualan.PenjualanItems[i].Qty := -1 * lPenjualan.PenjualanItems[i].Qty;
     end;
   end;
 
   with TServerStockSekarang.Create do
   begin
     try
-      for i := 0 to lRSup.ReturSupplierItems.Count - 1 do
+      for i := 0 to lPenjualan.PenjualanItems.Count - 1 do
       begin
-        lStockSekarang           := Retrieve(lRSup.ReturSupplierItems[i].Barang, lRSup.Gudang);
-        lStockSekarang.Cabang    := TCabang.CreateID(lRSup.Cabang.ID);
-        lStockSekarang.Gudang    := TGudang.CreateID(lRSup.Gudang.ID);
+        lStockSekarang           := Retrieve(lPenjualan.PenjualanItems[i].Barang, lPenjualan.Gudang);
+        lStockSekarang.Cabang    := TCabang.CreateID(lPenjualan.Cabang.ID);
+        lStockSekarang.Gudang    := TGudang.CreateID(lPenjualan.Gudang.ID);
 
         with TServerBarang.Create do
         begin
           try
-            lStockSekarang.Barang    := Retrieve(lRSup.ReturSupplierItems[i].Barang.ID);
-            dKonversi                := lStockSekarang.Barang.KonversiPC(lRSup.ReturSupplierItems[i].UOM);
+            lStockSekarang.Barang    := Retrieve(lPenjualan.PenjualanItems[i].Barang.ID);
+            dKonversi                := lStockSekarang.Barang.KonversiPC(lPenjualan.PenjualanItems[i].UOM);
 
           finally
             Free;
           end;
         end;
 
-        lStockSekarang.Qty       := lStockSekarang.Qty - (lRSup.ReturSupplierItems[i].Qty * dKonversi);
-        lStockSekarang.Rp        := lStockSekarang.Rp  - (lRSup.ReturSupplierItems[i].Qty *lRSup.ReturSupplierItems[i].HargaSetelahDiskon);
+        lStockSekarang.Qty       := lStockSekarang.Qty - (lPenjualan.PenjualanItems[i].Qty * dKonversi);
+        lStockSekarang.Rp        := lStockSekarang.Rp  - (lPenjualan.PenjualanItems[i].Qty *lPenjualan.PenjualanItems[i].HargaSetelahDiskon);
         lStockSekarang.UOM       := TUOM.Create;
         lStockSekarang.UOM.ID    := lStockSekarang.Barang.SatuanStock.ID;
 

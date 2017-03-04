@@ -9,10 +9,14 @@ inherited frmPenjualan: TfrmPenjualan
   inherited splTransaksi: TSplitter
     Left = 17
     Height = 359
+    ExplicitLeft = 17
+    ExplicitHeight = 359
   end
   inherited cxSBTransaksi: TdxStatusBar
     Top = 409
     Width = 775
+    ExplicitTop = 409
+    ExplicitWidth = 775
   end
   inherited pnlListTransaksi: TPanel
     Width = 17
@@ -28,10 +32,6 @@ inherited frmPenjualan: TfrmPenjualan
     Height = 359
     Align = alClient
     TabOrder = 6
-    ExplicitLeft = 272
-    ExplicitTop = 176
-    ExplicitWidth = 185
-    ExplicitHeight = 41
     object pgcHeader: TPageControl
       Left = 1
       Top = 1
@@ -40,13 +40,8 @@ inherited frmPenjualan: TfrmPenjualan
       ActivePage = tsHeader
       Align = alTop
       TabOrder = 0
-      ExplicitWidth = 580
       object tsHeader: TTabSheet
         Caption = 'Penjualan'
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object lblNoBukti: TLabel
           Left = 23
           Top = 8
@@ -109,7 +104,7 @@ inherited frmPenjualan: TfrmPenjualan
           Top = 28
           Lines.Strings = (
             'memKeterangan')
-          TabOrder = 4
+          TabOrder = 5
           Height = 43
           Width = 192
         end
@@ -132,7 +127,7 @@ inherited frmPenjualan: TfrmPenjualan
         object edJthTempo: TcxDateEdit
           Left = 376
           Top = 3
-          TabOrder = 5
+          TabOrder = 4
           Width = 121
         end
       end
@@ -145,13 +140,8 @@ inherited frmPenjualan: TfrmPenjualan
       ActivePage = tsDetailPenerimaan
       Align = alClient
       TabOrder = 1
-      ExplicitTop = 113
-      ExplicitWidth = 574
-      ExplicitHeight = 250
       object tsDetailPenerimaan: TTabSheet
         Caption = 'Detail Penerimaan'
-        ExplicitWidth = 514
-        ExplicitHeight = 134
         object cxGridDBPenjualan: TcxGrid
           Left = 0
           Top = 0
@@ -159,9 +149,8 @@ inherited frmPenjualan: TfrmPenjualan
           Height = 193
           Align = alClient
           TabOrder = 0
-          ExplicitWidth = 514
-          ExplicitHeight = 134
           object cxGridTablePenjualan: TcxGridTableView
+            PopupMenu = pmHarga
             Navigator.Buttons.CustomButtons = <>
             DataController.Summary.DefaultGroupSummaryItems = <>
             DataController.Summary.FooterSummaryItems = <
@@ -195,23 +184,26 @@ inherited frmPenjualan: TfrmPenjualan
             Styles.ContentEven = cxstylGridEven
             Styles.ContentOdd = cxstylGridOdd
             Styles.Header = cxstylGridHeader
+            object cxgrdclmnGridTablePenjualanColumnNama: TcxGridColumn
+              Caption = 'Nama'
+              PropertiesClassName = 'TcxExtLookupComboBoxProperties'
+              Properties.DropDownAutoSize = True
+              Properties.OnValidate = cxgrdclmnGridTablePenjualanColumnNamaPropertiesValidate
+              HeaderAlignmentHorz = taCenter
+              Width = 142
+            end
             object cxgrdclmnGridTablePenjualanColumnSKU: TcxGridColumn
               Caption = 'SKU'
               PropertiesClassName = 'TcxExtLookupComboBoxProperties'
               Properties.DropDownAutoSize = True
               Properties.FocusPopup = True
+              Properties.ReadOnly = True
               HeaderAlignmentHorz = taCenter
-            end
-            object cxgrdclmnGridTablePenjualanColumnNama: TcxGridColumn
-              Caption = 'Nama'
-              PropertiesClassName = 'TcxExtLookupComboBoxProperties'
-              Properties.DropDownAutoSize = True
-              HeaderAlignmentHorz = taCenter
-              Width = 142
             end
             object cxgrdclmnGridTablePenjualanColumnSatuan: TcxGridColumn
               Caption = 'Satuan'
               PropertiesClassName = 'TcxExtLookupComboBoxProperties'
+              Properties.ReadOnly = False
               Properties.OnInitPopup = cxgrdclmnGridTablePenjualanColumnSatuanPropertiesInitPopup
               HeaderAlignmentHorz = taCenter
               Width = 92
@@ -230,6 +222,7 @@ inherited frmPenjualan: TfrmPenjualan
               PropertiesClassName = 'TcxCurrencyEditProperties'
               Properties.Alignment.Horz = taRightJustify
               Properties.DisplayFormat = ',0.##;(,0.##)'
+              Properties.OnValidate = cxgrdclmnGridTablePenjualanColumnQtyPropertiesValidate
               HeaderAlignmentHorz = taCenter
             end
             object cxgrdclmnGridTablePenjualanColumnDiskon: TcxGridColumn
@@ -238,6 +231,7 @@ inherited frmPenjualan: TfrmPenjualan
               PropertiesClassName = 'TcxCurrencyEditProperties'
               Properties.Alignment.Horz = taRightJustify
               Properties.DisplayFormat = ',0.##;(,0.##)'
+              Properties.OnValidate = cxgrdclmnGridTablePenjualanColumnDiskonPropertiesValidate
               HeaderAlignmentHorz = taCenter
             end
             object cxgrdclmnGridTablePenjualanColumnPPN: TcxGridColumn
@@ -246,6 +240,7 @@ inherited frmPenjualan: TfrmPenjualan
               PropertiesClassName = 'TcxCurrencyEditProperties'
               Properties.Alignment.Horz = taRightJustify
               Properties.DisplayFormat = ',0.##;(,0.##)'
+              Properties.OnValidate = cxgrdclmnGridTablePenjualanColumnPPNPropertiesValidate
               HeaderAlignmentHorz = taCenter
             end
             object cxgrdclmnGridTablePenjualanColumnSubTotalRp: TcxGridColumn
@@ -296,6 +291,9 @@ inherited frmPenjualan: TfrmPenjualan
               Options.Editing = False
               Width = 78
             end
+            object cxgrdclmnGridTablePenjualanColumnKonversi: TcxGridColumn
+              Caption = 'Konversi'
+            end
           end
           object cxgrdlvlPenerimaanBarang: TcxGridLevel
             GridView = cxGridTablePenjualan
@@ -334,6 +332,9 @@ inherited frmPenjualan: TfrmPenjualan
     inherited ActionBaru: TAction
       OnExecute = ActionBaruExecute
     end
+    inherited ActionSimpan: TAction
+      OnExecute = ActionSimpanExecute
+    end
   end
   inherited cxStyleRepTrans: TcxStyleRepository
     Left = 72
@@ -364,7 +365,7 @@ inherited frmPenjualan: TfrmPenjualan
     Left = 40
     Top = 352
     Bitmap = {
-      494C010106000800900018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010106000800980018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -964,5 +965,29 @@ inherited frmPenjualan: TfrmPenjualan
       F0000F000001800003F3FF1FF8001F000003C00003F0003FFE007F800007E000
       07F8007FFFFFFFE0000FFFFFFFFFFFFF00000000000000000000000000000000
       000000000000}
+  end
+  object pmHarga: TPopupMenu
+    Left = 376
+    Top = 240
+    object Umum1: TMenuItem
+      Caption = 'Umum'
+      ShortCut = 112
+      OnClick = Umum1Click
+    end
+    object Bengkel1: TMenuItem
+      Caption = 'Bengkel'
+      ShortCut = 113
+      OnClick = Bengkel1Click
+    end
+    object Keliling1: TMenuItem
+      Caption = 'Keliling'
+      ShortCut = 114
+      OnClick = Keliling1Click
+    end
+    object Grosir1: TMenuItem
+      Caption = 'Grosir'
+      ShortCut = 115
+      OnClick = Grosir1Click
+    end
   end
 end

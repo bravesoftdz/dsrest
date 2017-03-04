@@ -58,8 +58,9 @@ class function TfrmPilihGrid.ShowPilihGrid(AForm : TForm): TStrings;
 var
   I: Integer;
 begin
-  Result := GridTerpilih;
   frmPilihGrid := TfrmPilihGrid.Create(Application);
+  Result := GridTerpilih;
+
   for I := 0 to AForm.ComponentCount - 1 do
   begin
     if AForm.Components[i] is TcxGridDBTableView then
