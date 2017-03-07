@@ -13,7 +13,7 @@ uses
   ImgList, uModel, ClientClassesUnit2, DB, cxDBData, cxGridDBTableView,
   cxDBExtLookupComboBox, Provider, DBClient, cxNavigator, dxCore, cxDateUtils,
   System.Actions, dxBarExtDBItems, cxCheckBox, cxBarEditItem, System.ImageList,
-  dxBarExtItems;
+  dxBarExtItems, cxCalc;
 
 type
   TfrmPenerimaanBarang = class(TfrmDefault)
@@ -71,6 +71,12 @@ type
     cxGridDBTableGudang: TcxGridDBTableView;
     cxGridColGudangKode: TcxGridDBColumn;
     cxGridColGudangNama: TcxGridDBColumn;
+    lblJenisPembayaran: TLabel;
+    lblTempo: TLabel;
+    edTempo: TcxCalcEdit;
+    cbbJenisPembayaran: TcxComboBox;
+    cxgrdbclmnGridDBTableDaftarTempo: TcxGridDBColumn;
+    cxgrdbclmnGridDBTableDaftarJenisPembayaran: TcxGridDBColumn;
     procedure actCetakExecute(Sender: TObject);
     procedure ActionBaruExecute(Sender: TObject);
     procedure ActionHapusExecute(Sender: TObject);
@@ -128,7 +134,7 @@ var
 
 implementation
 uses
-   ClientModule, uDBUtils, uAppUtils, uBarangUtils, uReport ;
+   ClientModule, uDBUtils, uAppUtils, uBarangUtils, uReport,System.Math ;
 
 {$R *.dfm}
 
@@ -222,14 +228,16 @@ begin
   with TServerPenerimaanBarangClient.Create(ClientDataModule.DSRestConnection, False) do
   begin
     try
-      PenerimaanBarang.ID          := FID;
-      PenerimaanBarang.NoBukti     := edNoBukti.Text;
-      PenerimaanBarang.Keterangan  := memKeterangan.Text;
-      PenerimaanBarang.Supplier    := TSupplier.CreateID(cbbSupplier.EditValue);
-      PenerimaanBarang.Gudang      := TGudang.CreateID(cbbGudang.EditValue);
-      PenerimaanBarang.TglBukti    := edTglBukti.Date;
+      PenerimaanBarang.ID              := FID;
+      PenerimaanBarang.NoBukti         := edNoBukti.Text;
+      PenerimaanBarang.Keterangan      := memKeterangan.Text;
+      PenerimaanBarang.Supplier        := TSupplier.CreateID(cbbSupplier.EditValue);
+      PenerimaanBarang.Gudang          := TGudang.CreateID(cbbGudang.EditValue);
+      PenerimaanBarang.TglBukti        := edTglBukti.Date;
+      PenerimaanBarang.TOP             := Floor(EdTempo.Value);
+      PenerimaanBarang.JenisPembayaran := cbbJenisPembayaran.Text;
 
-      PenerimaanBarang.Cabang      := TCabang.CreateID(ClientDataModule.Cabang.ID);
+      PenerimaanBarang.Cabang          := TCabang.CreateID(ClientDataModule.Cabang.ID);
 
 
       PenerimaanBarang.PenerimaanBarangItems.Clear;
@@ -586,7 +594,9 @@ begin
         if PenerimaanBarang.Gudang.ID <> '' then
           cbbGudang.EditValue := PenerimaanBarang.Gudang.ID;
 
-        memKeterangan.Lines.Text := PenerimaanBarang.Keterangan;
+        memKeterangan.Lines.Text     := PenerimaanBarang.Keterangan;
+        edTempo.Value                := PenerimaanBarang.TOP;
+        cbbJenisPembayaran.ItemIndex := cbbJenisPembayaran.Properties.Items.IndexOf(PenerimaanBarang.JenisPembayaran);
 
         cxGridTablePenerimaanBarang.ClearRows;
         for i := 0 to PenerimaanBarang.PenerimaanBarangItems.Count - 1 do

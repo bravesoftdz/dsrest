@@ -4,6 +4,8 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
   ClientWidth = 984
   WindowState = wsMaximized
   OnShow = FormShow
+  ExplicitLeft = -194
+  ExplicitTop = -78
   ExplicitWidth = 1000
   ExplicitHeight = 473
   PixelsPerInch = 96
@@ -76,6 +78,14 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
           Properties.ListFieldItem = cxgrdbclmnGridDBTableSupplierColumnNama
           HeaderAlignmentHorz = taCenter
         end
+        object cxgrdbclmnGridDBTableDaftarTempo: TcxGridDBColumn
+          Caption = 'Tempo'
+          DataBinding.FieldName = 'TOP'
+        end
+        object cxgrdbclmnGridDBTableDaftarJenisPembayaran: TcxGridDBColumn
+          Caption = 'Jenis Pembayaran'
+          DataBinding.FieldName = 'JenisPembayaran'
+        end
         object cxgrdbclmnGridDBTableDaftarPBKeterangan: TcxGridDBColumn
           Caption = 'Keterangan '
           DataBinding.FieldName = 'Keterangan'
@@ -105,42 +115,56 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
       object tsHeader: TTabSheet
         Caption = 'Header Penerimaan'
         object lblNoBukti: TLabel
-          Left = 23
+          Left = 17
           Top = 8
           Width = 39
           Height = 13
           Caption = 'No Bukti'
         end
         object lblTglBukti: TLabel
-          Left = 22
+          Left = 16
           Top = 32
           Width = 40
           Height = 13
           Caption = 'Tgl Bukti'
         end
         object lblSupplier: TLabel
-          Left = 24
+          Left = 18
           Top = 56
           Width = 38
           Height = 13
           Caption = 'Supplier'
         end
         object lblKeterangan: TLabel
-          Left = 262
-          Top = 32
+          Left = 254
+          Top = 56
           Width = 56
           Height = 13
           Caption = 'Keterangan'
         end
         object lblGudang: TLabel
-          Left = 280
+          Left = 272
           Top = 7
           Width = 37
           Height = 13
           Caption = 'Gudang'
         end
+        object lblJenisPembayaran: TLabel
+          Left = 249
+          Top = 31
+          Width = 60
+          Height = 13
+          Caption = 'Pembayaran'
+        end
+        object lblTempo: TLabel
+          Left = 406
+          Top = 31
+          Width = 32
+          Height = 13
+          Caption = 'Tempo'
+        end
         object edNoBukti: TcxTextEdit
-          Left = 80
+          Left = 62
           Top = 3
           Enabled = False
           Properties.ReadOnly = True
@@ -149,22 +173,22 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
           Width = 121
         end
         object edTglBukti: TcxDateEdit
-          Left = 80
+          Left = 62
           Top = 27
           TabOrder = 1
           Width = 121
         end
         object memKeterangan: TcxMemo
-          Left = 336
-          Top = 27
+          Left = 318
+          Top = 52
           Lines.Strings = (
             'memKeterangan')
-          TabOrder = 4
-          Height = 43
+          TabOrder = 6
+          Height = 21
           Width = 192
         end
         object cbbSupplier: TcxExtLookupComboBox
-          Left = 80
+          Left = 62
           Top = 52
           Properties.DropDownAutoSize = True
           Properties.FocusPopup = True
@@ -175,7 +199,7 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
           Width = 145
         end
         object cbbGudang: TcxExtLookupComboBox
-          Left = 336
+          Left = 318
           Top = 3
           Properties.DropDownAutoSize = True
           Properties.FocusPopup = True
@@ -184,6 +208,24 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
           Properties.ListFieldItem = cxGridColGudangNama
           TabOrder = 3
           Width = 192
+        end
+        object cbbJenisPembayaran: TcxComboBox
+          Left = 318
+          Top = 27
+          Properties.Items.Strings = (
+            'CASH'
+            'KREDIT')
+          TabOrder = 4
+          Text = 'CASH'
+          Width = 65
+        end
+        object edTempo: TcxCalcEdit
+          Left = 444
+          Top = 27
+          EditValue = 0.000000000000000000
+          Properties.Alignment.Horz = taRightJustify
+          TabOrder = 5
+          Width = 66
         end
       end
     end
@@ -506,7 +548,7 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010105000800800018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010105000800840018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

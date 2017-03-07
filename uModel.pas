@@ -135,18 +135,21 @@ type
   private
     FCabang: TCabang;
     FGudang: TGudang;
+    FJenisPembayaran: string;
     FKeterangan: string;
     FNoBukti: string;
     FPenerimaanBarangItems: TObjectList<TPenerimaanBarangItem>;
     FPeriode: Integer;
     FSupplier: TSupplier;
     FTglBukti: TDatetime;
+    FTOP: Integer;
     function GetPenerimaanBarangItems: TObjectList<TPenerimaanBarangItem>;
     procedure SetKeterangan(const Value: string);
     procedure SetTglBukti(const Value: TDatetime);
   public
     property Cabang: TCabang read FCabang write FCabang;
     property Gudang: TGudang read FGudang write FGudang;
+    property JenisPembayaran: string read FJenisPembayaran write FJenisPembayaran;
     property Keterangan: string read FKeterangan write SetKeterangan;
     property NoBukti: string read FNoBukti write FNoBukti;
     property PenerimaanBarangItems: TObjectList<TPenerimaanBarangItem> read
@@ -154,6 +157,7 @@ type
     property Periode: Integer read FPeriode write FPeriode;
     property Supplier: TSupplier read FSupplier write FSupplier;
     property TglBukti: TDatetime read FTglBukti write SetTglBukti;
+    property TOP: Integer read FTOP write FTOP;
   end;
 
 
