@@ -26,7 +26,8 @@ uses
   ufrmPilihGrid in 'form\ufrmPilihGrid.pas' {frmPilihGrid},
   ufrmPenjualan in 'form\ufrmPenjualan.pas' {frmPenjualan},
   uPenjualan in '..\model\uPenjualan.pas',
-  ufrmPenjualanPOS in 'form\ufrmPenjualanPOS.pas' {frmPenjualanPOS};
+  ufrmPenjualanPOS in 'form\ufrmPenjualanPOS.pas' {frmPenjualanPOS},
+  ufrmLookUpTransaksi in 'form\ufrmLookUpTransaksi.pas' {frmLookUpTransaksi};
 
 {$R *.res}
 
@@ -35,6 +36,5 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TClientDataModule, ClientDataModule);
   Application.CreateForm(TfrmMain, frmMain);
-  Application.CreateForm(TfrmPenjualanPOS, frmPenjualanPOS);
   Application.Run;
 end.

@@ -4,7 +4,7 @@ inherited frmReturSupplier: TfrmReturSupplier
   ClientWidth = 984
   WindowState = wsMaximized
   OnShow = FormShow
-  ExplicitLeft = -103
+  ExplicitLeft = -256
   ExplicitWidth = 1000
   ExplicitHeight = 473
   PixelsPerInch = 96
@@ -161,8 +161,8 @@ inherited frmReturSupplier: TfrmReturSupplier
           Lines.Strings = (
             'memKeterangan')
           TabOrder = 4
-          Height = 46
-          Width = 192
+          Height = 21
+          Width = 145
         end
         object cbbSupplier: TcxExtLookupComboBox
           Left = 336
@@ -183,6 +183,15 @@ inherited frmReturSupplier: TfrmReturSupplier
           Text = 'edNoBukti'
           OnKeyDown = edNoPBKeyDown
           Width = 121
+        end
+        object btnCari: TButton
+          Left = 336
+          Top = 51
+          Width = 145
+          Height = 25
+          Caption = 'Cari'
+          TabOrder = 5
+          OnClick = btnCariClick
         end
       end
     end
@@ -475,7 +484,7 @@ inherited frmReturSupplier: TfrmReturSupplier
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010105000800740018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010105000800780018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

@@ -4,8 +4,7 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
   ClientWidth = 984
   WindowState = wsMaximized
   OnShow = FormShow
-  ExplicitLeft = -194
-  ExplicitTop = -78
+  ExplicitLeft = -160
   ExplicitWidth = 1000
   ExplicitHeight = 473
   PixelsPerInch = 96
@@ -212,11 +211,14 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
         object cbbJenisPembayaran: TcxComboBox
           Left = 318
           Top = 27
+          Properties.DropDownListStyle = lsFixedList
           Properties.Items.Strings = (
             'CASH'
             'KREDIT')
+          Properties.OnChange = cbbJenisPembayaranPropertiesChange
           TabOrder = 4
           Text = 'CASH'
+          OnExit = cbbJenisPembayaranExit
           Width = 65
         end
         object edTempo: TcxCalcEdit
@@ -454,12 +456,16 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
       DataController.Summary.DefaultGroupSummaryItems = <>
       DataController.Summary.FooterSummaryItems = <>
       DataController.Summary.SummaryGroups = <>
+      FilterRow.Visible = True
       OptionsData.CancelOnExit = False
       OptionsData.Deleting = False
       OptionsData.DeletingConfirmation = False
       OptionsData.Editing = False
       OptionsData.Inserting = False
       OptionsView.GroupByBox = False
+      Styles.ContentEven = cxstylGridEven
+      Styles.ContentOdd = cxstylGridOdd
+      Styles.Header = cxstylGridHeader
       object cxgrdbclmnGridDBTableSupplierColumnNama: TcxGridDBColumn
         Caption = ' Nama '
         DataBinding.FieldName = 'Nama'
@@ -476,12 +482,16 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
       DataController.Summary.DefaultGroupSummaryItems = <>
       DataController.Summary.FooterSummaryItems = <>
       DataController.Summary.SummaryGroups = <>
+      FilterRow.Visible = True
       OptionsData.CancelOnExit = False
       OptionsData.Deleting = False
       OptionsData.DeletingConfirmation = False
       OptionsData.Editing = False
       OptionsData.Inserting = False
       OptionsView.GroupByBox = False
+      Styles.ContentEven = cxstylGridEven
+      Styles.ContentOdd = cxstylGridOdd
+      Styles.Header = cxstylGridHeader
       object cxgrdbclmnGridDBTableSKUColumnSKU: TcxGridDBColumn
         Caption = ' SKU '
         DataBinding.FieldName = 'SKU'
@@ -548,7 +558,7 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010105000800840018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010105000800880018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

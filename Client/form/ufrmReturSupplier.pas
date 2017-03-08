@@ -13,7 +13,7 @@ uses
   ImgList, uModel, ClientClassesUnit2, DB, cxDBData, cxGridDBTableView,
   cxDBExtLookupComboBox, Provider, DBClient, cxNavigator, dxCore, cxDateUtils,
   System.Actions, dxBarExtDBItems, cxCheckBox, cxBarEditItem, System.ImageList,
-  dxBarExtItems;
+  dxBarExtItems, ufrmLookUpTransaksi;
 
 type
   TfrmReturSupplier = class(TfrmDefault)
@@ -65,11 +65,13 @@ type
     cxgrdbclmnGridDBTableDaftarPBKeterangan: TcxGridDBColumn;
     lblNoPB: TLabel;
     edNoPB: TcxTextEdit;
+    btnCari: TButton;
     procedure actCetakExecute(Sender: TObject);
     procedure ActionBaruExecute(Sender: TObject);
     procedure ActionHapusExecute(Sender: TObject);
     procedure ActionRefreshExecute(Sender: TObject);
     procedure ActionSimpanExecute(Sender: TObject);
+    procedure btnCariClick(Sender: TObject);
     procedure cxGridDBTableDaftarPBCellDblClick(Sender: TcxCustomGridTableView;
         ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton; AShift:
         TShiftState; var AHandled: Boolean);
@@ -235,6 +237,12 @@ begin
   end;
 end;
 
+procedure TfrmReturSupplier.btnCariClick(Sender: TObject);
+begin
+  inherited;
+  TfrmLookUpTransaksi.LookUp;
+end;
+
 procedure TfrmReturSupplier.cxGridDBTableDaftarPBCellDblClick(Sender:
     TcxCustomGridTableView; ACellViewInfo: TcxGridTableDataCellViewInfo;
     AButton: TMouseButton; AShift: TShiftState; var AHandled: Boolean);
@@ -334,7 +342,7 @@ begin
   begin
     with ClientDataModule.ServerPenerimaanBarangClient do
     begin
-      ReturSupplier.PenerimaanBarang := RetrieveNoBukti(edNoPB.Text);
+      ReturSupplier.PenerimaanBarang   := RetrieveNoBukti(edNoPB.Text);
       cbbSupplier.EditValue            := ReturSupplier.PenerimaanBarang.Supplier.ID;
 
       cxGridTableReturSupplier.ClearRows;

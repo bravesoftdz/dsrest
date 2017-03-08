@@ -14,6 +14,7 @@ type
     function LaporanKartok(ATglAwal , ATglAkhir : TDateTime; ABarang : TBarang;
         AGudang : TGudang; ACabang : TCabang): TDataset;
     function LaporanStockSekarang(ACabang : TCabang): TDataset;
+    function LookUpPenerimaan(ABulan, ATahun : Integer): TDataset;
     function RetriveMutasiBarang(ATglAwal , ATglAtglAkhir : TDateTime) : TDataset;
 
   end;
@@ -845,6 +846,17 @@ begin
     sSQL := sSQL + ' where a.cabang = ' + QuotedStr(ACabang.Id);
 
   sSQL := sSQL + ' order by e.nama,  b.sku';
+
+  Result := TDBUtils.OpenDataset(sSQL);
+end;
+
+function TServerLaporan.LookUpPenerimaan(ABulan, ATahun : Integer): TDataset;
+var
+  sSQL: string;
+begin
+  sSQL   := 'SELECT * FROM VLOOKUP_PENERIMAAN_BARANG' +
+            ' WHERE extract(month from TGLBUKTI) = ' + IntToStr(ABulan) +
+            ' AND extract(YEAR from TGLBUKTI) = ' + IntToStr(ATahun);
 
   Result := TDBUtils.OpenDataset(sSQL);
 end;
