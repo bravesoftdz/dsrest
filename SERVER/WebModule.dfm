@@ -180,7 +180,13 @@ object WebModule2: TWebModule2
   object dsrvrclsPenjualan: TDSServerClass
     OnGetClass = dsrvrclsPenjualanGetClass
     Server = DSServer1
-    Left = 608
-    Top = 168
+    Left = 584
+    Top = 160
+  end
+  object dsrvrclsCustomerInvoice: TDSServerClass
+    OnGetClass = dsrvrclsCustomerInvoiceGetClass
+    Server = DSServer1
+    Left = 664
+    Top = 160
   end
 end

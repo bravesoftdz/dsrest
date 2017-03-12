@@ -179,26 +179,32 @@ begin
         AObject.ID := TDBUtils.GetNextIDGUIDToString();
 
       Result := 'insert into ' + AObject.ClassName + '(';
-      for prop in rt.GetProperties() do begin
-          meth := prop.PropertyType.GetMethod('ToArray');
-          if Assigned(meth) then
-            Continue;
+      for prop in rt.GetProperties() do
+      begin
+        If prop.Visibility <> mvPublished then continue;
 
-          if prop.Name = 'ObjectState' then
-            Continue;
+        meth := prop.PropertyType.GetMethod('ToArray');
+        if Assigned(meth) then
+          Continue;
 
-          if not prop.IsWritable then continue;
+        if prop.Name = 'ObjectState' then
+          Continue;
 
-          if Result = 'insert into ' + AObject.ClassName + '(' then
-            Result := Result + prop.Name
-          else
-            Result := Result + ',' + prop.Name;
+        if not prop.IsWritable then continue;
+
+        if Result = 'insert into ' + AObject.ClassName + '(' then
+          Result := Result + prop.Name
+        else
+          Result := Result + ',' + prop.Name;
       end;
 
       Result := Result + ') values(';
 
 
-      for prop in rt.GetProperties() do begin
+      for prop in rt.GetProperties() do
+      begin
+        If prop.Visibility <> mvPublished then continue;
+
         if not prop.IsWritable then continue;
         if prop.Name = 'ObjectState' then Continue;
 
@@ -266,7 +272,10 @@ begin
       rt := ctx.GetType(AObject.ClassType);
       Result := 'update ' + AObject.ClassName + ' set ';
 
-      for prop in rt.GetProperties() do begin
+      for prop in rt.GetProperties() do
+      begin
+        If prop.Visibility <> mvPublished then continue;
+
         meth := prop.PropertyType.GetMethod('ToArray');
         if (not prop.IsWritable) or
            (UpperCase(prop.Name) = 'ID')  or

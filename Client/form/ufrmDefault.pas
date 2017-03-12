@@ -35,10 +35,6 @@ type
     ActionRefresh: TAction;
     pnlListTransaksi: TPanel;
     splTransaksi: TSplitter;
-    cxStyleRepTrans: TcxStyleRepository;
-    cxstylGridHeader: TcxStyle;
-    cxstylGridOdd: TcxStyle;
-    cxstylGridEven: TcxStyle;
     cxGridRepTransaksi: TcxGridViewRepository;
     cbbLUCabang: TdxBarLookupCombo;
     cxGridDBTableCabang: TcxGridDBTableView;

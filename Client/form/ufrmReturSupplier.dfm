@@ -4,7 +4,8 @@ inherited frmReturSupplier: TfrmReturSupplier
   ClientWidth = 984
   WindowState = wsMaximized
   OnShow = FormShow
-  ExplicitLeft = -256
+  ExplicitLeft = -234
+  ExplicitTop = -69
   ExplicitWidth = 1000
   ExplicitHeight = 473
   PixelsPerInch = 96
@@ -55,9 +56,9 @@ inherited frmReturSupplier: TfrmReturSupplier
         OptionsData.Editing = False
         OptionsData.Inserting = False
         OptionsView.GroupByBox = False
-        Styles.ContentEven = cxstylGridEven
-        Styles.ContentOdd = cxstylGridOdd
-        Styles.Header = cxstylGridHeader
+        Styles.ContentEven = ClientDataModule.cxstylGridEven
+        Styles.ContentOdd = ClientDataModule.cxstylGridOdd
+        Styles.Header = ClientDataModule.cxstylGridHeader
         object cxgrdbclmnGridDBTableDaftarPBNoBukti: TcxGridDBColumn
           Caption = 'No Bukti '
           DataBinding.FieldName = 'NoBukti'
@@ -243,9 +244,9 @@ inherited frmReturSupplier: TfrmReturSupplier
             OptionsData.Appending = True
             OptionsView.Footer = True
             OptionsView.GroupByBox = False
-            Styles.ContentEven = cxstylGridEven
-            Styles.ContentOdd = cxstylGridOdd
-            Styles.Header = cxstylGridHeader
+            Styles.ContentEven = ClientDataModule.cxstylGridEven
+            Styles.ContentOdd = ClientDataModule.cxstylGridOdd
+            Styles.Header = ClientDataModule.cxstylGridHeader
             object cxgrdclmnGridTableReturSupplierColumnSKU: TcxGridColumn
               Caption = 'SKU'
               PropertiesClassName = 'TcxExtLookupComboBoxProperties'
@@ -407,9 +408,6 @@ inherited frmReturSupplier: TfrmReturSupplier
       OnExecute = ActionRefreshExecute
     end
   end
-  inherited cxStyleRepTrans: TcxStyleRepository
-    PixelsPerInch = 96
-  end
   inherited cxGridRepTransaksi: TcxGridViewRepository
     object cxGridDBTableSupplier: TcxGridDBTableView
       Tag = 99
@@ -484,7 +482,7 @@ inherited frmReturSupplier: TfrmReturSupplier
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010105000800780018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C0101050008007C0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

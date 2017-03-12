@@ -176,6 +176,13 @@ type
     function RetrieveNoBukti(ANoBukti : String): TPenjualan;
   end;
 
+  TCustomerInvoice = class(TServerTransaction)
+  public
+    function Retrieve(AID : String): TCustomerInvoice;
+    function RetrieveCDSlip(AID : String): TDataset;
+    function RetrieveNoBukti(ANoBukti : String): TCustomerInvoice;
+  end;
+
 
 
 
@@ -1361,6 +1368,43 @@ begin
 
         Result := SaveNoCommit(lStockSekarang);
       end;
+    finally
+      Free;
+    end;
+  end;
+
+
+end;
+
+function TCustomerInvoice.Retrieve(AID : String): TCustomerInvoice;
+begin
+  Result := TCustomerInvoice.Create;
+  TDBUtils.LoadFromDB(Result, AID);
+end;
+
+function TCustomerInvoice.RetrieveCDSlip(AID : String): TDataset;
+var
+  sSQL: string;
+begin
+  sSQL   := 'select * from TCUSTOMERINVOICE a ' +
+            ' where a.id = ' + QuotedStr(AID);
+
+  Result := TDBUtils.OpenDataset(sSQL);
+end;
+
+function TCustomerInvoice.RetrieveNoBukti(ANoBukti : String): TCustomerInvoice;
+var
+  sID: string;
+  sSQL: string;
+begin
+  sSQL := 'select * from ' + GetTableName
+          + ' where nobukti = ' + QuotedStr(ANoBukti);
+
+  with TDBUtils.OpenDataset(sSQL) do
+  begin
+    try
+      sID := FieldByName('ID').AsString;
+      Result := Retrieve(sID);
     finally
       Free;
     end;

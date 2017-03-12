@@ -64,8 +64,8 @@ inherited frmPenjualan: TfrmPenjualan
           Caption = 'Salesman'
         end
         object lblKeterangan: TLabel
-          Left = 310
-          Top = 32
+          Left = 314
+          Top = 57
           Width = 56
           Height = 13
           Caption = 'Keterangan'
@@ -78,11 +78,25 @@ inherited frmPenjualan: TfrmPenjualan
           Caption = 'Gudang'
         end
         object lblJthTempo: TLabel
-          Left = 316
-          Top = 6
+          Left = 446
+          Top = 34
           Width = 50
           Height = 13
           Caption = 'Jth Tempo'
+        end
+        object lblJenisPembayaran: TLabel
+          Left = 307
+          Top = 7
+          Width = 60
+          Height = 13
+          Caption = 'Pembayaran'
+        end
+        object lblTempo: TLabel
+          Left = 338
+          Top = 34
+          Width = 32
+          Height = 13
+          Caption = 'Tempo'
         end
         object edNoBukti: TcxTextEdit
           Left = 72
@@ -96,17 +110,18 @@ inherited frmPenjualan: TfrmPenjualan
         object edTglBukti: TcxDateEdit
           Left = 72
           Top = 28
+          Properties.OnChange = edTglBuktiPropertiesChange
           TabOrder = 1
           Width = 121
         end
         object memKeterangan: TcxMemo
           Left = 376
-          Top = 28
+          Top = 56
           Lines.Strings = (
             'memKeterangan')
-          TabOrder = 5
+          TabOrder = 7
           Height = 43
-          Width = 192
+          Width = 217
         end
         object cbbSalesman: TcxExtLookupComboBox
           Left = 72
@@ -125,10 +140,30 @@ inherited frmPenjualan: TfrmPenjualan
           Width = 192
         end
         object edJthTempo: TcxDateEdit
+          Left = 506
+          Top = 30
+          TabOrder = 6
+          Width = 87
+        end
+        object cbbJenisPembayaran: TcxComboBox
           Left = 376
           Top = 3
+          Properties.DropDownListStyle = lsFixedList
+          Properties.Items.Strings = (
+            'CASH'
+            'KREDIT')
           TabOrder = 4
-          Width = 121
+          Text = 'CASH'
+          Width = 217
+        end
+        object edTempo: TcxCalcEdit
+          Left = 376
+          Top = 30
+          EditValue = 0.000000000000000000
+          Properties.Alignment.Horz = taRightJustify
+          Properties.OnChange = edTempoPropertiesChange
+          TabOrder = 5
+          Width = 64
         end
       end
     end
@@ -181,9 +216,6 @@ inherited frmPenjualan: TfrmPenjualan
             OptionsData.Appending = True
             OptionsView.Footer = True
             OptionsView.GroupByBox = False
-            Styles.ContentEven = cxstylGridEven
-            Styles.ContentOdd = cxstylGridOdd
-            Styles.Header = cxstylGridHeader
             object cxgrdclmnGridTablePenjualanColumnNama: TcxGridColumn
               Caption = 'Nama'
               PropertiesClassName = 'TcxExtLookupComboBoxProperties'
@@ -336,11 +368,6 @@ inherited frmPenjualan: TfrmPenjualan
       OnExecute = ActionSimpanExecute
     end
   end
-  inherited cxStyleRepTrans: TcxStyleRepository
-    Left = 72
-    Top = 280
-    PixelsPerInch = 96
-  end
   inherited cxGridRepTransaksi: TcxGridViewRepository
     Left = 8
     Top = 280
@@ -365,7 +392,7 @@ inherited frmPenjualan: TfrmPenjualan
     Left = 40
     Top = 352
     Bitmap = {
-      494C010106000800980018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C0101060008009C0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

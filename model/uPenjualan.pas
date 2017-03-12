@@ -41,6 +41,7 @@ type
     FCabang: TCabang;
     FGudang: TGudang;
     FJatuhTempo: TDatetime;
+    FJenisPembayaran: string;
     FJenisPenjualan: string;
     FKasir: string;
     FKeterangan: string;
@@ -54,6 +55,7 @@ type
     property Cabang: TCabang read FCabang write FCabang;
     property Gudang: TGudang read FGudang write FGudang;
     property JatuhTempo: TDatetime read FJatuhTempo write FJatuhTempo;
+    property JenisPembayaran: string read FJenisPembayaran write FJenisPembayaran;
     property JenisPenjualan: string read FJenisPenjualan write FJenisPenjualan;
     property Kasir: string read FKasir write FKasir;
     property Keterangan: string read FKeterangan write FKeterangan;

@@ -45,7 +45,6 @@ type
     EditPort: TEdit;
     ButtonOpenBrowser: TButton;
     mmoLogs: TMemo;
-    btnTest: TButton;
     FDPhysMSSQLDriverLink1: TFDPhysMSSQLDriverLink;
     FDPhysPgDriverLink1: TFDPhysPgDriverLink;
     FDGUIxWaitCursor1: TFDGUIxWaitCursor;

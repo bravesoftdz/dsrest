@@ -6,7 +6,8 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, cxGraphics, cxControls, cxLookAndFeels, cxLookAndFeelPainters,
   cxContainer, cxEdit, StdCtrls, cxTextEdit,uDBUtils, uAppUtils, ClientModule,
-  FireDAC.Stan.Intf, FireDAC.Phys, FireDAC.Phys.SQLite;
+  FireDAC.Stan.Intf, FireDAC.Phys, FireDAC.Phys.SQLite, FireDAC.Stan.ExprFuncs,
+  FireDAC.Phys.SQLiteDef;
 
 type
   TfrmKoneksi = class(TForm)

@@ -9,8 +9,10 @@ type
   TBarangSatuanItem = class;
   TPenerimaanBarang = class;
   TReturSupplier = class;
-  
+
+  {$TYPEINFO ON}
   TAppObject = class(TObject)
+  {$TYPEINFO OFF}
   private
     FID: string;
     FObjectState: Integer;
@@ -29,6 +31,7 @@ type
     FKode: string;
     FNama: string;
   public
+  published
     property IsHO: Integer read FIsHO write FIsHO;
     property Kode: string read FKode write FKode;
     property Nama: string read FNama write FNama;
@@ -40,12 +43,15 @@ type
     FKode: string;
     FNama: string;
   public
+  published
     property Cabang: TCabang read FCabang write FCabang;
     property Kode: string read FKode write FKode;
     property Nama: string read FNama write FNama;
   end;
 
+  {$TYPEINFO ON}
   TAppObjectItem = class(TAppObject)
+  {$TYPEINFO OFF}
   public
     function GetHeaderField: string; virtual; abstract;
     procedure SetHeaderProperty(AHeaderProperty : TAppObject); virtual; abstract;
@@ -56,6 +62,7 @@ type
     FKode: string;
     FNama: string;
   public
+  published
     property Kode: string read FKode write FKode;
     property Nama: string read FNama write FNama;
   end;
@@ -69,6 +76,7 @@ type
     FKode: string;
     FNama: string;
   public
+  published
     property Alamat: string read FAlamat write FAlamat;
     property IsPembeli: Integer read FIsPembeli write FIsPembeli;
     property IsSalesman: Integer read FIsSalesman write FIsSalesman;
@@ -81,10 +89,13 @@ type
   private
     FKode: string;
   public
+  published
     property Kode: string read FKode write FKode;
   end;
 
+  {$TYPEINFO ON}
   TBarang = class(TAppObject)
+  {$TYPEINFO OFF}
   private
     FBarangSatuanItems: TObjectList<TBarangSatuanItem>;
     FGroupBarang: TGroupBarang;
@@ -95,6 +106,7 @@ type
     function GetBarangSatuanItems: TObjectList<TBarangSatuanItem>;
 //    function GetSatuanStock: TUOM;
   public
+  published
     function KonversiPC(AUOM : TUOM): Double;
     property BarangSatuanItems: TObjectList<TBarangSatuanItem> read
         GetBarangSatuanItems write FBarangSatuanItems;
@@ -105,7 +117,9 @@ type
     property SKU: string read FSKU write FSKU;
   end;
 
+  {$TYPEINFO ON}
   TPenerimaanBarangItem = class(TAppObjectItem)
+  {$TYPEINFO OFF}
   private
     FBarang: TBarang;
     FDiskon: Double;
@@ -119,6 +133,7 @@ type
   public
     function GetHeaderField: string; override;
     procedure SetHeaderProperty(AHeaderProperty : TAppObject); override;
+  published
     property Barang: TBarang read FBarang write FBarang;
     property Diskon: Double read FDiskon write FDiskon;
     property HargaBeli: Double read FHargaBeli write FHargaBeli;
@@ -147,6 +162,7 @@ type
     procedure SetKeterangan(const Value: string);
     procedure SetTglBukti(const Value: TDatetime);
   public
+  published
     property Cabang: TCabang read FCabang write FCabang;
     property Gudang: TGudang read FGudang write FGudang;
     property JenisPembayaran: string read FJenisPembayaran write FJenisPembayaran;
@@ -161,7 +177,9 @@ type
   end;
 
 
+  {$TYPEINFO ON}
   TBarangSatuanItem = class(TAppObjectItem)
+  {$TYPEINFO OFF}
   private
     FBarang: TBarang;
     FHargaJual: Double;
@@ -175,6 +193,7 @@ type
   public
     function GetHeaderField: string; override;
     procedure SetHeaderProperty(AHeaderProperty : TAppObject); override;
+  published
     property Barang: TBarang read FBarang write FBarang;
     property HargaJual: Double read FHargaJual write FHargaJual;
     property HargaJualBengkel: Double read FHargaJualBengkel write
@@ -196,6 +215,7 @@ type
     FOperasi: string;
     FTanggal: TDatetime;
   public
+  published
     property Cabang: TCabang read FCabang write FCabang;
     property IDTrans: string read FIDTrans write FIDTrans;
     property NamaKelas: string read FNamaKelas write FNamaKelas;
@@ -212,6 +232,7 @@ type
     FRp: Double;
     FUOM: TUOM;
   public
+  published
     property Barang: TBarang read FBarang write FBarang;
     property Cabang: TCabang read FCabang write FCabang;
     property Gudang: TGudang read FGudang write FGudang;
@@ -220,7 +241,9 @@ type
     property UOM: TUOM read FUOM write FUOM;
   end;
 
+  {$TYPEINFO ON}
   TReturSupplierItem = class(TAppObjectItem)
+  {$TYPEINFO OFF}
   private
     FBarang: TBarang;
     FDiskon: Double;
@@ -234,6 +257,7 @@ type
   public
     function GetHeaderField: string; override;
     procedure SetHeaderProperty(AHeaderProperty : TAppObject); override;
+  published
     property Barang: TBarang read FBarang write FBarang;
     property Diskon: Double read FDiskon write FDiskon;
     property HargaBeli: Double read FHargaBeli write FHargaBeli;
@@ -260,6 +284,7 @@ type
     procedure SetKeterangan(const Value: string);
     procedure SetTglBukti(const Value: TDatetime);
   public
+  published
     property Cabang: TCabang read FCabang write FCabang;
     property Gudang: TGudang read FGudang write FGudang;
     property Keterangan: string read FKeterangan write SetKeterangan;
@@ -283,6 +308,7 @@ type
     FRp: Double;
     FUOM: TUOM;
   public
+  published
     property Barang: TBarang read FBarang write FBarang;
     property Cabang: TCabang read FCabang write FCabang;
     property Periode: Integer read FPeriode write FPeriode;
@@ -305,6 +331,7 @@ type
     FTglBukti: TDatetime;
     FTglGiro: Integer;
   public
+  published
     property Bank: string read FBank write FBank;
     property Biaya: Double read FBiaya write FBiaya;
     property JenisBayar: string read FJenisBayar write FJenisBayar;
@@ -336,6 +363,7 @@ type
     FUOM: TUOM;
     function GetPeriode: Integer;
   public
+  published
     property Barang: TBarang read FBarang write FBarang;
     property Cabang: TCabang read FCabang write FCabang;
     property Gudang: TGudang read FGudang write FGudang;
@@ -352,7 +380,9 @@ type
   end;
 
 type
+  {$TYPEINFO ON}
   TInvoiceSupplierItem = class(TAppObjectItem)
+  {$TYPEINFO OFF}
   private
     FBarang: TBarang;
     FDiskon: Double;
@@ -366,6 +396,7 @@ type
   public
     function GetHeaderField: string; override;
     procedure SetHeaderProperty(AHeaderProperty : TAppObject); override;
+  published
     property Barang: TBarang read FBarang write FBarang;
     property Diskon: Double read FDiskon write FDiskon;
     property HargaBeli: Double read FHargaBeli write FHargaBeli;

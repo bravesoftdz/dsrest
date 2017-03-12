@@ -8,7 +8,7 @@ uses
   cxLookAndFeelPainters, cxStyles, cxCustomData, cxFilter, cxData,
   cxDataStorage, cxEdit, cxNavigator, Data.DB, cxDBData, cxGridLevel, cxClasses,
   cxGridCustomView, cxGridCustomTableView, cxGridTableView, cxGridDBTableView,
-  cxGrid, Vcl.ExtCtrls, Vcl.StdCtrls;
+  cxGrid, Vcl.ExtCtrls, Vcl.StdCtrls, Datasnap.Provider, Datasnap.DBClient, ClientModule;
 
 type
   TfrmLookUpTransaksi = class(TForm)
@@ -25,11 +25,17 @@ type
     btnCari: TButton;
     btnOK: TButton;
     btnCancel: TButton;
+    cdsLookUp: TClientDataSet;
+    dtstprvdrLookUp: TDataSetProvider;
+    procedure btnCariClick(Sender: TObject);
+    procedure btnOKClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
   private
+
     { Private declarations }
   public
-    class function LookUp: string;
+    FJenisTransaksi: string;
+    class function LookUp(ACaption : String; AJenisTransaksi : String): string;
     { Public declarations }
   end;
 
@@ -39,9 +45,42 @@ var
 
 implementation
 uses
-  System.DateUtils, uDBUtils;
+  System.DateUtils, uDBUtils, uAppUtils, uModel;
 
 {$R *.dfm}
+
+procedure TfrmLookUpTransaksi.btnCariClick(Sender: TObject);
+var
+  iBulan: Integer;
+  iTahun: Integer;
+begin
+  iBulan := cbbBulan.ItemIndex + 1;
+  iTahun := StrToIntDef(cbbTahun.Text, 1900);
+
+  try
+    cdsLookUp.Close;
+
+    if FJenisTransaksi = TPenerimaanBarang.ClassName then
+      dtstprvdrLookUp.DataSet := ClientDataModule.ServerLaporanClient.LookUpPenerimaan(iBulan,iTahun);
+
+    cdsLookUp.Open;
+  except
+    on E : Exception do
+    begin
+      TAppUtils.Error(E.Message);
+    end;
+  end;
+
+  cxGridDBTableGrdBrowse.SetDataset(cdsLookUp, True);
+  cxGridDBTableGrdBrowse.SetVisibleColumns(['ID'], False);
+  cxGridDBTableGrdBrowse.ApplyBestFit();
+
+end;
+
+procedure TfrmLookUpTransaksi.btnOKClick(Sender: TObject);
+begin
+  StringResult := cxGridDBTableGrdBrowse.DataController.DataSet.FieldByName('ID').AsString;
+end;
 
 procedure TfrmLookUpTransaksi.FormCreate(Sender: TObject);
 var
@@ -58,10 +97,14 @@ begin
   cbbTahun.ItemIndex := cbbTahun.Items.IndexOf(IntToStr(CurrentYear));
 end;
 
-class function TfrmLookUpTransaksi.LookUp: string;
+class function TfrmLookUpTransaksi.LookUp(ACaption : String; AJenisTransaksi :
+    String): string;
 begin
   frmLookUpTransaksi := TfrmLookUpTransaksi.Create(nil);
   try
+    frmLookUpTransaksi.Caption         := ACaption;
+    frmLookUpTransaksi.FJenisTransaksi := AJenisTransaksi;
+
     frmLookUpTransaksi.ShowModal;
     if frmLookUpTransaksi.ModalResult = mrOk then
       Result := StringResult

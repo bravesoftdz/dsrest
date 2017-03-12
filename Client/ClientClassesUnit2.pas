@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 3/4/2017 5:45:12 AM
+// 3/10/2017 3:42:29 AM
 //
 
 unit ClientClassesUnit2;
@@ -232,6 +232,8 @@ type
     FLaporanKartokCommand_Cache: TDSRestCommand;
     FLaporanStockSekarangCommand: TDSRestCommand;
     FLaporanStockSekarangCommand_Cache: TDSRestCommand;
+    FLookUpPenerimaanCommand: TDSRestCommand;
+    FLookUpPenerimaanCommand_Cache: TDSRestCommand;
     FRetriveMutasiBarangCommand: TDSRestCommand;
     FRetriveMutasiBarangCommand_Cache: TDSRestCommand;
   public
@@ -242,6 +244,8 @@ type
     function LaporanKartok_Cache(ATglAwal: TDateTime; ATglAkhir: TDateTime; ABarang: TBarang; AGudang: TGudang; ACabang: TCabang; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function LaporanStockSekarang(ACabang: TCabang; const ARequestFilter: string = ''): TDataSet;
     function LaporanStockSekarang_Cache(ACabang: TCabang; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function LookUpPenerimaan(ABulan: Integer; ATahun: Integer; const ARequestFilter: string = ''): TDataSet;
+    function LookUpPenerimaan_Cache(ABulan: Integer; ATahun: Integer; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function RetriveMutasiBarang(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; const ARequestFilter: string = ''): TDataSet;
     function RetriveMutasiBarang_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; const ARequestFilter: string = ''): IDSRestCachedDataSet;
   end;
@@ -820,6 +824,20 @@ const
   TServerLaporan_LaporanStockSekarang_Cache: array [0..1] of TDSRestParameterMetaData =
   (
     (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerLaporan_LookUpPenerimaan: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'ABulan'; Direction: 1; DBXType: 6; TypeName: 'Integer'),
+    (Name: 'ATahun'; Direction: 1; DBXType: 6; TypeName: 'Integer'),
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TServerLaporan_LookUpPenerimaan_Cache: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'ABulan'; Direction: 1; DBXType: 6; TypeName: 'Integer'),
+    (Name: 'ATahun'; Direction: 1; DBXType: 6; TypeName: 'Integer'),
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
@@ -2868,6 +2886,39 @@ begin
   Result := TDSRestCachedDataSet.Create(FLaporanStockSekarangCommand_Cache.Parameters[1].Value.GetString);
 end;
 
+function TServerLaporanClient.LookUpPenerimaan(ABulan: Integer; ATahun: Integer; const ARequestFilter: string): TDataSet;
+begin
+  if FLookUpPenerimaanCommand = nil then
+  begin
+    FLookUpPenerimaanCommand := FConnection.CreateCommand;
+    FLookUpPenerimaanCommand.RequestType := 'GET';
+    FLookUpPenerimaanCommand.Text := 'TServerLaporan.LookUpPenerimaan';
+    FLookUpPenerimaanCommand.Prepare(TServerLaporan_LookUpPenerimaan);
+  end;
+  FLookUpPenerimaanCommand.Parameters[0].Value.SetInt32(ABulan);
+  FLookUpPenerimaanCommand.Parameters[1].Value.SetInt32(ATahun);
+  FLookUpPenerimaanCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FLookUpPenerimaanCommand.Parameters[2].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FLookUpPenerimaanCommand.FreeOnExecute(Result);
+end;
+
+function TServerLaporanClient.LookUpPenerimaan_Cache(ABulan: Integer; ATahun: Integer; const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FLookUpPenerimaanCommand_Cache = nil then
+  begin
+    FLookUpPenerimaanCommand_Cache := FConnection.CreateCommand;
+    FLookUpPenerimaanCommand_Cache.RequestType := 'GET';
+    FLookUpPenerimaanCommand_Cache.Text := 'TServerLaporan.LookUpPenerimaan';
+    FLookUpPenerimaanCommand_Cache.Prepare(TServerLaporan_LookUpPenerimaan_Cache);
+  end;
+  FLookUpPenerimaanCommand_Cache.Parameters[0].Value.SetInt32(ABulan);
+  FLookUpPenerimaanCommand_Cache.Parameters[1].Value.SetInt32(ATahun);
+  FLookUpPenerimaanCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FLookUpPenerimaanCommand_Cache.Parameters[2].Value.GetString);
+end;
+
 function TServerLaporanClient.RetriveMutasiBarang(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; const ARequestFilter: string): TDataSet;
 begin
   if FRetriveMutasiBarangCommand = nil then
@@ -2917,6 +2968,8 @@ begin
   FLaporanKartokCommand_Cache.DisposeOf;
   FLaporanStockSekarangCommand.DisposeOf;
   FLaporanStockSekarangCommand_Cache.DisposeOf;
+  FLookUpPenerimaanCommand.DisposeOf;
+  FLookUpPenerimaanCommand_Cache.DisposeOf;
   FRetriveMutasiBarangCommand.DisposeOf;
   FRetriveMutasiBarangCommand_Cache.DisposeOf;
   inherited;

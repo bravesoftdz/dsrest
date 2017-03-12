@@ -4,11 +4,15 @@ interface
 
 uses
   System.SysUtils, System.Classes,  ClientClassesUnit2, IPPeerClient,
-  Datasnap.DSClientRest, uModel;
+  Datasnap.DSClientRest, uModel, cxStyles, cxClasses;
 
 type
   TClientDataModule = class(TDataModule)
     DSRestConnection: TDSRestConnection;
+    cxStyleRepTrans: TcxStyleRepository;
+    cxstylGridHeader: TcxStyle;
+    cxstylGridOdd: TcxStyle;
+    cxstylGridEven: TcxStyle;
     procedure DataModuleCreate(Sender: TObject);
   private
     FCabang: tcabang;
@@ -24,6 +28,7 @@ type
     FServerUtilsClient: TServerUtilsClient;
     FServerReturSupplierClient: TServerReturSupplierClient;
     FServerGudangClient: TServerGudangClient;
+    FServerLaporanClient: TServerLaporanClient;
     FServerPenjualanClient: TServerPenjualanClient;
     function GetCabang: tcabang;
     function GetServerMethods1Client: TServerMethods1Client;
@@ -37,6 +42,7 @@ type
     function GetServerUtilsClient: TServerUtilsClient;
     function GetServerReturSupplierClient: TServerReturSupplierClient;
     function GetServerGudangClient: TServerGudangClient;
+    function GetServerLaporanClient: TServerLaporanClient;
     function GetServerPenjualanClient: TServerPenjualanClient;
     { Private declarations }
   public
@@ -57,6 +63,8 @@ type
         GetServerReturSupplierClient write FServerReturSupplierClient;
     property ServerGudangClient: TServerGudangClient read GetServerGudangClient
         write FServerGudangClient;
+    property ServerLaporanClient: TServerLaporanClient read GetServerLaporanClient
+        write FServerLaporanClient;
     property ServerPenjualanClient: TServerPenjualanClient read
         GetServerPenjualanClient write FServerPenjualanClient;
 
@@ -94,6 +102,9 @@ begin
   FServerLogAppObjectClient.Free;
   FServerUtilsClient.Free;
   FServerReturSupplierClient.Free;
+  FServerLaporanClient.Free;
+  FServerPenjualanClient.Free;
+  FServerGudangClient.Free;
 
   inherited;
 end;
@@ -110,79 +121,112 @@ end;
 
 function TClientDataModule.GetServerMethods1Client: TServerMethods1Client;
 begin
-  if FServerMethods1Client = nil then
-    FServerMethods1Client:= TServerMethods1Client.Create(DSRestConnection, FInstanceOwner);
+  if FServerMethods1Client <> nil then
+    FreeAndNil(FServerMethods1Client);
+
+  FServerMethods1Client:= TServerMethods1Client.Create(DSRestConnection, FInstanceOwner);
   Result := FServerMethods1Client;
 end;
 function TClientDataModule.GetServerUOMClient: TServerUOMClient;
 begin
-  if FServerUOMClient = nil then
-    FServerUOMClient:= TServerUOMClient.Create(DSRestConnection, FInstanceOwner);
+  if FServerUOMClient <> nil then
+    FreeAndNil(FServerUOMClient);
+
+  FServerUOMClient:= TServerUOMClient.Create(DSRestConnection, FInstanceOwner);
   Result := FServerUOMClient;
 end;
 function TClientDataModule.GetServerSupplierClient: TServerSupplierClient;
 begin
-  if FServerSupplierClient = nil then
-    FServerSupplierClient:= TServerSupplierClient.Create(DSRestConnection, FInstanceOwner);
+  if FServerSupplierClient <> nil then
+    FreeAndNil(FServerSupplierClient);
+
+  FServerSupplierClient:= TServerSupplierClient.Create(DSRestConnection, FInstanceOwner);
   Result := FServerSupplierClient;
 end;
 function TClientDataModule.GetServerBarangClient: TServerBarangClient;
 begin
-  if FServerBarangClient = nil then
-    FServerBarangClient:= TServerBarangClient.Create(DSRestConnection, FInstanceOwner);
+  if FServerBarangClient <> nil then
+    FreeAndNil(FServerBarangClient);
+
+  FServerBarangClient:= TServerBarangClient.Create(DSRestConnection, FInstanceOwner);
   Result := FServerBarangClient;
 end;
 function TClientDataModule.GetServerGroupBarangClient: TServerGroupBarangClient;
 begin
-  if FServerGroupBarangClient = nil then
-    FServerGroupBarangClient:= TServerGroupBarangClient.Create(DSRestConnection, FInstanceOwner);
+  if FServerGroupBarangClient <> nil then
+    FreeAndNil(FServerGroupBarangClient);
+
+  FServerGroupBarangClient:= TServerGroupBarangClient.Create(DSRestConnection, FInstanceOwner);
   Result := FServerGroupBarangClient;
 end;
 function TClientDataModule.GetServerPenerimaanBarangClient: TServerPenerimaanBarangClient;
 begin
-  if FServerPenerimaanBarangClient = nil then
-    FServerPenerimaanBarangClient:= TServerPenerimaanBarangClient.Create(DSRestConnection, FInstanceOwner);
+  if FServerPenerimaanBarangClient <> nil then
+    FreeAndNil(FServerPenerimaanBarangClient);
+
+  FServerPenerimaanBarangClient:= TServerPenerimaanBarangClient.Create(DSRestConnection, FInstanceOwner);
   Result := FServerPenerimaanBarangClient;
 end;
 function TClientDataModule.GetServerCabangClient: TServerCabangClient;
 begin
-  if FServerCabangClient = nil then
-    FServerCabangClient:= TServerCabangClient.Create(DSRestConnection, FInstanceOwner);
+  if FServerCabangClient <> nil then
+    FreeAndNil(FServerCabangClient);
+
+  FServerCabangClient:= TServerCabangClient.Create(DSRestConnection, FInstanceOwner);
   Result := FServerCabangClient;
 end;
 function TClientDataModule.GetServerLogAppObjectClient: TServerLogAppObjectClient;
 begin
-  if FServerLogAppObjectClient = nil then
-    FServerLogAppObjectClient:= TServerLogAppObjectClient.Create(DSRestConnection, FInstanceOwner);
+  if FServerLogAppObjectClient <> nil then
+    FreeAndNil(FServerLogAppObjectClient);
+
+  FServerLogAppObjectClient:= TServerLogAppObjectClient.Create(DSRestConnection, FInstanceOwner);
   Result := FServerLogAppObjectClient;
 end;
 function TClientDataModule.GetServerUtilsClient: TServerUtilsClient;
 begin
-  if FServerUtilsClient = nil then
-    FServerUtilsClient:= TServerUtilsClient.Create(DSRestConnection, FInstanceOwner);
+  if FServerUtilsClient <> nil then
+    FreeAndNil(FServerUtilsClient);
+
+  FServerUtilsClient:= TServerUtilsClient.Create(DSRestConnection, FInstanceOwner);
   Result := FServerUtilsClient;
 end;
 
 function TClientDataModule.GetServerReturSupplierClient:
     TServerReturSupplierClient;
 begin
-  if FServerReturSupplierClient = nil then
-    FServerReturSupplierClient:= TServerReturSupplierClient.Create(DSRestConnection, FInstanceOwner);
+  if FServerReturSupplierClient <> nil then
+    FreeAndNil(FServerReturSupplierClient);
+
+  FServerReturSupplierClient:= TServerReturSupplierClient.Create(DSRestConnection, FInstanceOwner);
   Result := FServerReturSupplierClient;
 end;
 
 function TClientDataModule.GetServerGudangClient: TServerGudangClient;
 begin
-  if FServerGudangClient = nil then
-    FServerGudangClient:= TServerGudangClient.Create(DSRestConnection, FInstanceOwner);
+  if FServerGudangClient <> nil then
+    FreeAndNil(FServerGudangClient);
 
+  FServerGudangClient:= TServerGudangClient.Create(DSRestConnection, FInstanceOwner);
   Result := FServerGudangClient;
+end;
+
+function TClientDataModule.GetServerLaporanClient: TServerLaporanClient;
+begin
+  if FServerLaporanClient <> nil then
+    FreeAndNil(FServerLaporanClient);
+
+  FServerLaporanClient := TServerLaporanClient.Create(DSRestConnection, InstanceOwner);
+  Result := FServerLaporanClient;
 end;
 
 function TClientDataModule.GetServerPenjualanClient: TServerPenjualanClient;
 begin
-  if FServerPenjualanClient = nil then
-    Result := TServerPenjualanClient.Create(DSRestConnection, FInstanceOwner);
+  if FServerPenjualanClient <> nil then
+    FreeAndNil(FServerPenjualanClient);
+
+  FServerPenjualanClient := TServerPenjualanClient.Create(DSRestConnection, FInstanceOwner);
+  Result := FServerPenjualanClient;
 end;
 
 end.

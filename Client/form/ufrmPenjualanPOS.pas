@@ -13,7 +13,7 @@ uses
   Vcl.ActnList, dxBar, dxBarExtItems, cxBarEditItem, dxBarExtDBItems,
   cxGridLevel, cxGridCustomTableView, cxGridTableView, cxGridCustomView,
   cxDropDownEdit, cxLookupEdit, cxDBLookupEdit, cxMemo, cxMaskEdit, cxCalendar,
-  cxTextEdit, Vcl.StdCtrls, Vcl.ExtCtrls, dxStatusBar;
+  cxTextEdit, Vcl.StdCtrls, Vcl.ExtCtrls, dxStatusBar, cxCalc;
 
 type
   TfrmPenjualanPOS = class(TfrmPenjualan)

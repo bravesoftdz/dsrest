@@ -14,7 +14,7 @@ uses
   cxDBExtLookupComboBox, cxCurrencyEdit, cxContainer, Vcl.ComCtrls, dxCore,
   cxDateUtils, cxGridLevel, cxDropDownEdit, cxLookupEdit, cxDBLookupEdit,
   cxMemo, cxMaskEdit, cxCalendar, cxTextEdit, Vcl.StdCtrls, ClientModule,
-  uPenjualan, uDBUtils, uAppUtils, Vcl.Menus;
+  uPenjualan, uDBUtils, uAppUtils, Vcl.Menus, cxCalc;
 
 type
   TfrmPenjualan = class(TfrmDefault)
@@ -55,6 +55,10 @@ type
     Bengkel1: TMenuItem;
     Keliling1: TMenuItem;
     Grosir1: TMenuItem;
+    lblJenisPembayaran: TLabel;
+    cbbJenisPembayaran: TcxComboBox;
+    lblTempo: TLabel;
+    edTempo: TcxCalcEdit;
     procedure FormCreate(Sender: TObject);
     procedure ActionBaruExecute(Sender: TObject);
     procedure ActionSimpanExecute(Sender: TObject);
@@ -76,6 +80,8 @@ type
     procedure Grosir1Click(Sender: TObject);
     procedure Keliling1Click(Sender: TObject);
     procedure Umum1Click(Sender: TObject);
+    procedure edTempoPropertiesChange(Sender: TObject);
+    procedure edTglBuktiPropertiesChange(Sender: TObject);
   private
     FPenjualan: TPenjualan;
     function GetPenjualan: TPenjualan;
@@ -190,6 +196,18 @@ begin
       lBrg.Free;
     end;
   end;
+end;
+
+procedure TfrmPenjualan.edTempoPropertiesChange(Sender: TObject);
+begin
+  inherited;
+  edJthTempo.Date := edTglBukti.Date + edTempo.Value;
+end;
+
+procedure TfrmPenjualan.edTglBuktiPropertiesChange(Sender: TObject);
+begin
+  inherited;
+  edJthTempo.Date := edTglBukti.Date + edTempo.Value;
 end;
 
 procedure TfrmPenjualan.FormCreate(Sender: TObject);

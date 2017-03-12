@@ -11,6 +11,7 @@ object frmLookUpTransaksi: TfrmLookUpTransaksi
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  Position = poMainFormCenter
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
@@ -73,6 +74,7 @@ object frmLookUpTransaksi: TfrmLookUpTransaksi
       Height = 25
       Caption = 'Cari'
       TabOrder = 2
+      OnClick = btnCariClick
     end
   end
   object pnlBottom: TPanel
@@ -82,26 +84,34 @@ object frmLookUpTransaksi: TfrmLookUpTransaksi
     Height = 41
     Align = alBottom
     TabOrder = 1
-    ExplicitLeft = 136
-    ExplicitTop = 152
-    ExplicitWidth = 185
     object btnOK: TButton
-      Left = 291
-      Top = 8
+      Left = 296
+      Top = 1
       Width = 75
-      Height = 25
+      Height = 39
+      Margins.Top = 5
+      Align = alRight
       Caption = 'OK'
       ModalResult = 1
       TabOrder = 0
+      OnClick = btnOKClick
+      ExplicitLeft = 291
+      ExplicitTop = 8
+      ExplicitHeight = 25
     end
     object btnCancel: TButton
-      Left = 372
-      Top = 8
+      Left = 371
+      Top = 1
       Width = 75
-      Height = 25
+      Height = 39
+      Margins.Top = 5
+      Align = alRight
       Caption = 'Cancel'
       ModalResult = 2
       TabOrder = 1
+      ExplicitLeft = 372
+      ExplicitTop = 8
+      ExplicitHeight = 25
     end
   end
   object cxGrid: TcxGrid
@@ -119,10 +129,6 @@ object frmLookUpTransaksi: TfrmLookUpTransaksi
     TabOrder = 2
     LookAndFeel.Kind = lfUltraFlat
     LookAndFeel.NativeStyle = False
-    ExplicitLeft = -154
-    ExplicitTop = -29
-    ExplicitWidth = 601
-    ExplicitHeight = 348
     object cxGridDBTableGrdBrowse: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       DataController.Filter.Options = [fcoCaseInsensitive]
@@ -141,6 +147,9 @@ object frmLookUpTransaksi: TfrmLookUpTransaksi
       OptionsData.Editing = False
       OptionsData.Inserting = False
       OptionsView.GroupByBox = False
+      Styles.ContentEven = ClientDataModule.cxstylGridEven
+      Styles.ContentOdd = ClientDataModule.cxstylGridOdd
+      Styles.Header = ClientDataModule.cxstylGridHeader
     end
     object cxGridDBTableGrdDetail: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
@@ -158,5 +167,16 @@ object frmLookUpTransaksi: TfrmLookUpTransaksi
       Caption = 'Master Data'
       GridView = cxGridDBTableGrdBrowse
     end
+  end
+  object cdsLookUp: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dtstprvdrLookUp'
+    Left = 280
+    Top = 88
+  end
+  object dtstprvdrLookUp: TDataSetProvider
+    Left = 312
+    Top = 88
   end
 end

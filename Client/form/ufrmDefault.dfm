@@ -248,25 +248,6 @@ object frmDefault: TfrmDefault
       OnExecute = actExportExecute
     end
   end
-  object cxStyleRepTrans: TcxStyleRepository
-    Left = 672
-    Top = 8
-    PixelsPerInch = 96
-    object cxstylGridHeader: TcxStyle
-      AssignedValues = [svFont]
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'Tahoma'
-      Font.Style = [fsBold]
-    end
-    object cxstylGridOdd: TcxStyle
-      AssignedValues = [svColor]
-      Color = clGradientInactiveCaption
-    end
-    object cxstylGridEven: TcxStyle
-    end
-  end
   object cxGridRepTransaksi: TcxGridViewRepository
     Left = 608
     Top = 8
@@ -329,7 +310,7 @@ object frmDefault: TfrmDefault
     Left = 216
     Top = 184
     Bitmap = {
-      494C0101060008008C0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010106000800900018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

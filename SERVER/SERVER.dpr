@@ -15,7 +15,8 @@ uses
   uAppUtils in '..\uAppUtils.pas',
   uInterface in 'uInterface.pas',
   uBarangUtils in '..\uBarangUtils.pas',
-  uPenjualan in '..\model\uPenjualan.pas';
+  uPenjualan in '..\model\uPenjualan.pas',
+  uCustomerInvoice in '..\model\uCustomerInvoice.pas';
 
 {$R *.res}
 

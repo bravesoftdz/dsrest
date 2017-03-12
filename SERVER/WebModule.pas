@@ -32,11 +32,14 @@ type
     dsrvrclsPembayaranSupplier: TDSServerClass;
     dsrvrclsGudang: TDSServerClass;
     dsrvrclsPenjualan: TDSServerClass;
+    dsrvrclsCustomerInvoice: TDSServerClass;
     procedure dsrvrclsBarangGetClass(DSServerClass: TDSServerClass; var
         PersistentClass: TPersistentClass);
     procedure dsrvrclsCabangGetClass(DSServerClass: TDSServerClass; var
         PersistentClass: TPersistentClass);
     procedure dsrvrclsClosingInventoryGetClass(DSServerClass: TDSServerClass; var
+        PersistentClass: TPersistentClass);
+    procedure dsrvrclsCustomerInvoiceGetClass(DSServerClass: TDSServerClass; var
         PersistentClass: TPersistentClass);
     procedure dsrvrclsGroupBarangGetClass(DSServerClass: TDSServerClass; var
         PersistentClass: TPersistentClass);
@@ -190,6 +193,12 @@ procedure TWebModule2.dsrvrclsClosingInventoryGetClass(DSServerClass:
     TDSServerClass; var PersistentClass: TPersistentClass);
 begin
   PersistentClass := ServerMethodsUnit.TServerClosingInventory;
+end;
+
+procedure TWebModule2.dsrvrclsCustomerInvoiceGetClass(DSServerClass:
+    TDSServerClass; var PersistentClass: TPersistentClass);
+begin
+  //
 end;
 
 procedure TWebModule2.dsrvrclsGroupBarangGetClass(DSServerClass:

@@ -1,5 +1,7 @@
 inherited frmPenjualanPOS: TfrmPenjualanPOS
   Caption = 'Penjualan Melalui POS (Point Of Sales)'
+  ExplicitWidth = 320
+  ExplicitHeight = 240
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnlListTransaksi: TPanel
@@ -23,11 +25,21 @@ inherited frmPenjualanPOS: TfrmPenjualanPOS
         inherited lblJthTempo: TLabel
           Visible = False
         end
+        inherited edTglBukti: TcxDateEdit
+          Properties.OnChange = nil
+        end
         inherited memKeterangan: TcxMemo
           Visible = False
         end
         inherited edJthTempo: TcxDateEdit
           Visible = False
+        end
+        inherited cbbJenisPembayaran: TcxComboBox
+          Properties.OnChange = nil
+          OnExit = nil
+        end
+        inherited edTempo: TcxCalcEdit
+          Properties.OnChange = nil
         end
       end
     end
@@ -54,12 +66,9 @@ inherited frmPenjualanPOS: TfrmPenjualanPOS
       ImageIndex = -1
     end
   end
-  inherited cxStyleRepTrans: TcxStyleRepository
-    PixelsPerInch = 96
-  end
   inherited ilButton: TImageList
     Bitmap = {
-      494C0101060008009C0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010106000800A00018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
