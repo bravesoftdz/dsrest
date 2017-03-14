@@ -18,7 +18,7 @@ uses
   cxDrawTextUtils, dxPSPrVwStd, dxPSPrVwAdv, dxPSPrVwRibbon,
   dxPScxPageControlProducer, dxPScxEditorProducers, dxPScxExtEditorProducers,
   dxPrnDlg, dxPgsDlg, dxPSCore, dxPScxGridLnk, dxPScxGridLayoutViewLnk, frxClass,
-  System.ImageList;
+  System.ImageList, dxBarExtItems;
 
 type
   TfrmLapStockSekarang = class(TfrmDefault)

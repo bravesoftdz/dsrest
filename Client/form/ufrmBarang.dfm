@@ -2,6 +2,8 @@ inherited frmBarang: TfrmBarang
   Caption = 'Barang'
   ClientHeight = 394
   ClientWidth = 919
+  ExplicitLeft = -168
+  ExplicitTop = -38
   ExplicitWidth = 935
   ExplicitHeight = 433
   PixelsPerInch = 96
@@ -50,9 +52,9 @@ inherited frmBarang: TfrmBarang
         OptionsData.Editing = False
         OptionsData.Inserting = False
         OptionsView.GroupByBox = False
-        Styles.ContentEven = cxstylGridEven
-        Styles.ContentOdd = cxstylGridOdd
-        Styles.Header = cxstylGridHeader
+        Styles.ContentEven = ClientDataModule.cxstylGridEven
+        Styles.ContentOdd = ClientDataModule.cxstylGridOdd
+        Styles.Header = ClientDataModule.cxstylGridHeader
         object cxgrdbclmnGridDBTableBarangColumnKode: TcxGridDBColumn
           Caption = 'SKU '
           DataBinding.FieldName = 'SKU'
@@ -102,10 +104,6 @@ inherited frmBarang: TfrmBarang
     object cxTSHeader: TcxTabSheet
       Caption = 'Barang'
       ImageIndex = 0
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object lblKode: TLabel
         Left = 31
         Top = 18
@@ -208,9 +206,9 @@ inherited frmBarang: TfrmBarang
           OptionsBehavior.FocusCellOnCycle = True
           OptionsData.Appending = True
           OptionsView.GroupByBox = False
-          Styles.ContentEven = cxstylGridEven
-          Styles.ContentOdd = cxstylGridOdd
-          Styles.Header = cxstylGridHeader
+          Styles.ContentEven = ClientDataModule.cxstylGridEven
+          Styles.ContentOdd = ClientDataModule.cxstylGridOdd
+          Styles.Header = ClientDataModule.cxstylGridHeader
           object cxGridTableSatuanColumnUOM: TcxGridColumn
             Caption = 'UOM'
             PropertiesClassName = 'TcxExtLookupComboBoxProperties'
@@ -307,11 +305,6 @@ inherited frmBarang: TfrmBarang
       OnExecute = ActionRefreshExecute
     end
   end
-  inherited cxStyleRepTrans: TcxStyleRepository
-    Left = 576
-    Top = 88
-    PixelsPerInch = 96
-  end
   inherited cxGridRepTransaksi: TcxGridViewRepository
     object cxGridDBTableGroupBarang: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
@@ -325,9 +318,6 @@ inherited frmBarang: TfrmBarang
       OptionsData.Editing = False
       OptionsData.Inserting = False
       OptionsView.GroupByBox = False
-      Styles.ContentEven = cxstylGridEven
-      Styles.ContentOdd = cxstylGridOdd
-      Styles.Header = cxstylGridHeader
       object cxgrdbclmnGridDBTableGroupBarangColumnNama: TcxGridDBColumn
         Caption = 'Nama '
         DataBinding.FieldName = 'Nama'
@@ -352,9 +342,6 @@ inherited frmBarang: TfrmBarang
       DataController.Summary.FooterSummaryItems = <>
       DataController.Summary.SummaryGroups = <>
       OptionsView.GroupByBox = False
-      Styles.ContentEven = cxstylGridEven
-      Styles.ContentOdd = cxstylGridOdd
-      Styles.Header = cxstylGridHeader
       object cxgrdbclmnGridDBTableUOMColumnUOM: TcxGridDBColumn
         Caption = '  UOM '
         DataBinding.FieldName = 'UOM'
@@ -363,7 +350,7 @@ inherited frmBarang: TfrmBarang
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010106000800900018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C0101060008009C0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

@@ -24,9 +24,6 @@ inherited frmGudang: TfrmGudang
         OptionsData.Editing = False
         OptionsData.Inserting = False
         OptionsView.GroupByBox = False
-        Styles.ContentEven = cxstylGridEven
-        Styles.ContentOdd = cxstylGridOdd
-        Styles.Header = cxstylGridHeader
         object cxgrdbclmnGridDBTableGudangColumnKode: TcxGridDBColumn
           Caption = 'Kode '
           DataBinding.FieldName = 'Kode'
@@ -127,14 +124,23 @@ inherited frmGudang: TfrmGudang
       OnExecute = ActionRefreshExecute
     end
   end
-  inherited cxStyleRepTrans: TcxStyleRepository
-    PixelsPerInch = 96
+  inherited dsCabang: TDataSource
+    Left = 544
+    Top = 88
+  end
+  inherited DSPCabang: TDataSetProvider
+    Left = 584
+    Top = 88
+  end
+  inherited cdsCabang: TClientDataSet
+    Left = 616
+    Top = 88
   end
   inherited ilButton: TImageList
     Left = 512
     Top = 88
     Bitmap = {
-      494C010105000800680018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C0101050008006C0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -734,17 +740,5 @@ inherited frmGudang: TfrmGudang
       F0000F000001800003F3FF1FF8001F000003C00003F0003FFE007F800007E000
       07F8007FFFFFFFE0000FFFFFFFFFFFFF00000000000000000000000000000000
       000000000000}
-  end
-  inherited dsCabang: TDataSource
-    Left = 544
-    Top = 88
-  end
-  inherited DSPCabang: TDataSetProvider
-    Left = 584
-    Top = 88
-  end
-  inherited cdsCabang: TClientDataSet
-    Left = 616
-    Top = 88
   end
 end

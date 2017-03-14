@@ -17,7 +17,6 @@ type
   private
     FCabang: tcabang;
     FInstanceOwner: Boolean;
-    FServerMethods1Client: TServerMethods1Client;
     FServerUOMClient: TServerUOMClient;
     FServerSupplierClient: TServerSupplierClient;
     FServerBarangClient: TServerBarangClient;
@@ -29,9 +28,9 @@ type
     FServerReturSupplierClient: TServerReturSupplierClient;
     FServerGudangClient: TServerGudangClient;
     FServerLaporanClient: TServerLaporanClient;
+    FServerCustomerInvoiceClient: TServerCustomerInvoiceClient;
     FServerPenjualanClient: TServerPenjualanClient;
     function GetCabang: tcabang;
-    function GetServerMethods1Client: TServerMethods1Client;
     function GetServerUOMClient: TServerUOMClient;
     function GetServerSupplierClient: TServerSupplierClient;
     function GetServerBarangClient: TServerBarangClient;
@@ -43,6 +42,7 @@ type
     function GetServerReturSupplierClient: TServerReturSupplierClient;
     function GetServerGudangClient: TServerGudangClient;
     function GetServerLaporanClient: TServerLaporanClient;
+    function GetServerCustomerInvoiceClient: TServerCustomerInvoiceClient;
     function GetServerPenjualanClient: TServerPenjualanClient;
     { Private declarations }
   public
@@ -50,7 +50,6 @@ type
     destructor Destroy; override;
     property Cabang: tcabang read GetCabang write FCabang;
     property InstanceOwner: Boolean read FInstanceOwner write FInstanceOwner;
-    property ServerMethods1Client: TServerMethods1Client read GetServerMethods1Client write FServerMethods1Client;
     property ServerUOMClient: TServerUOMClient read GetServerUOMClient write FServerUOMClient;
     property ServerSupplierClient: TServerSupplierClient read GetServerSupplierClient write FServerSupplierClient;
     property ServerBarangClient: TServerBarangClient read GetServerBarangClient write FServerBarangClient;
@@ -65,6 +64,8 @@ type
         write FServerGudangClient;
     property ServerLaporanClient: TServerLaporanClient read GetServerLaporanClient
         write FServerLaporanClient;
+    property ServerCustomerInvoiceClient: TServerCustomerInvoiceClient read
+        GetServerCustomerInvoiceClient write FServerCustomerInvoiceClient;
     property ServerPenjualanClient: TServerPenjualanClient read
         GetServerPenjualanClient write FServerPenjualanClient;
 
@@ -92,7 +93,6 @@ end;
 
 destructor TClientDataModule.Destroy;
 begin
-  FServerMethods1Client.Free;
   FServerUOMClient.Free;
   FServerSupplierClient.Free;
   FServerBarangClient.Free;
@@ -119,14 +119,6 @@ begin
   Result := FCabang;
 end;
 
-function TClientDataModule.GetServerMethods1Client: TServerMethods1Client;
-begin
-  if FServerMethods1Client <> nil then
-    FreeAndNil(FServerMethods1Client);
-
-  FServerMethods1Client:= TServerMethods1Client.Create(DSRestConnection, FInstanceOwner);
-  Result := FServerMethods1Client;
-end;
 function TClientDataModule.GetServerUOMClient: TServerUOMClient;
 begin
   if FServerUOMClient <> nil then
@@ -218,6 +210,16 @@ begin
 
   FServerLaporanClient := TServerLaporanClient.Create(DSRestConnection, InstanceOwner);
   Result := FServerLaporanClient;
+end;
+
+function TClientDataModule.GetServerCustomerInvoiceClient:
+    TServerCustomerInvoiceClient;
+begin
+  if FServerCustomerInvoiceClient <> nil then
+    FreeAndNil(FServerCustomerInvoiceClient);
+
+  FServerCustomerInvoiceClient:= TServerCustomerInvoiceClient.Create(DSRestConnection, FInstanceOwner);
+  Result := FServerCustomerInvoiceClient;
 end;
 
 function TClientDataModule.GetServerPenjualanClient: TServerPenjualanClient;

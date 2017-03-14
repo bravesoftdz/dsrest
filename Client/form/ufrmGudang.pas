@@ -11,7 +11,8 @@ uses
   cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGridCustomView,
   cxGrid, cxClasses, System.Actions, Vcl.ActnList, cxBarEditItem, dxBar,
   dxBarExtDBItems, Vcl.ExtCtrls, dxStatusBar, dxBarBuiltInMenu, cxContainer,
-  cxTextEdit, Vcl.StdCtrls, cxPC, cxGridLevel, ClientModule, uModel;
+  cxTextEdit, Vcl.StdCtrls, cxPC, cxGridLevel, ClientModule, uModel,
+  dxBarExtItems;
 
 type
   TfrmGudang = class(TfrmDefault)

@@ -4,11 +4,13 @@ interface
 
 uses
   SysUtils, Classes, DSServer, uModel, Windows, uDBUtils, Generics.Collections,
-  DBXJSON, DBClient, DB, rtti, uInterface, uPenjualan;
+  DBXJSON, DBClient, DB, rtti, uInterface, uPenjualan,
+  uCustomerInvoice, uAR;
 
 type
   {$METHODINFO ON}
 
+//  TServerAR = class;
   TServerLaporan = class(TInterfacedPersistent)
   public
     function LaporanKartok(ATglAwal , ATglAkhir : TDateTime; ABarang : TBarang;
@@ -176,12 +178,27 @@ type
     function RetrieveNoBukti(ANoBukti : String): TPenjualan;
   end;
 
-  TCustomerInvoice = class(TServerTransaction)
+  TServerAR = class(TServerTransaction)
   public
+    function Retrieve(AID : String): TAR;
+    function RetrieveCDSlip(AID : String): TDataset;
+    function RetrieveNoBukti(ANoBukti : String): TAR;
+  end;
+
+  TServerCustomerInvoice = class(TServerTransaction)
+  private
+    FServerAR: TServerAR;
+    function GetServerAR: TServerAR;
+    property ServerAR: TServerAR read GetServerAR write FServerAR;
+  public
+    destructor Destroy; override;
+    function AfterSave(AAppObject : TAppObject): Boolean; override;
     function Retrieve(AID : String): TCustomerInvoice;
     function RetrieveCDSlip(AID : String): TDataset;
     function RetrieveNoBukti(ANoBukti : String): TCustomerInvoice;
   end;
+
+
 
 
 
@@ -1372,27 +1389,95 @@ begin
       Free;
     end;
   end;
+end;
+
+destructor TServerCustomerInvoice.Destroy;
+begin
+  inherited;
+  FreeAndNil(FServerAR);
+end;
+
+function TServerCustomerInvoice.AfterSave(AAppObject : TAppObject): Boolean;
+var
+  lCI: TCustomerInvoice;
+begin
+  Result := False;
+
+  lCI    := TCustomerInvoice(AAppObject);
+  lCI.AR := ServerAR.Retrieve(lCI.AR.ID);
+  lCI.AR.Nominal := lCI.Nominal;
+
+  if lCI.AR.Cabang = nil then
+    lCI.AR.Cabang := TCabang.CreateID(lCI.Cabang.ID)
+  else
+    lCI.AR.Cabang.ID := lCI.ID;
 
 
 end;
 
-function TCustomerInvoice.Retrieve(AID : String): TCustomerInvoice;
+function TServerCustomerInvoice.GetServerAR: TServerAR;
+begin
+  if FServerAR = nil then
+    FServerAR := TServerAR.Create;
+
+  Result := FServerAR;
+end;
+
+function TServerCustomerInvoice.Retrieve(AID : String): TCustomerInvoice;
 begin
   Result := TCustomerInvoice.Create;
   TDBUtils.LoadFromDB(Result, AID);
 end;
 
-function TCustomerInvoice.RetrieveCDSlip(AID : String): TDataset;
+function TServerCustomerInvoice.RetrieveCDSlip(AID : String): TDataset;
 var
   sSQL: string;
 begin
-  sSQL   := 'select * from TCUSTOMERINVOICE a ' +
+  sSQL   := 'select * from TServerCustomerInvoice a ' +
             ' where a.id = ' + QuotedStr(AID);
 
   Result := TDBUtils.OpenDataset(sSQL);
 end;
 
-function TCustomerInvoice.RetrieveNoBukti(ANoBukti : String): TCustomerInvoice;
+function TServerCustomerInvoice.RetrieveNoBukti(ANoBukti : String):
+    TCustomerInvoice;
+var
+  sID: string;
+  sSQL: string;
+begin
+  sSQL := 'select * from ' + GetTableName
+          + ' where nobukti = ' + QuotedStr(ANoBukti);
+
+  with TDBUtils.OpenDataset(sSQL) do
+  begin
+    try
+      sID := FieldByName('ID').AsString;
+      Result := Retrieve(sID);
+    finally
+      Free;
+    end;
+  end;
+
+
+end;
+
+function TServerAR.Retrieve(AID : String): TAR;
+begin
+  Result := TAR.Create;
+  TDBUtils.LoadFromDB(Result, AID);
+end;
+
+function TServerAR.RetrieveCDSlip(AID : String): TDataset;
+var
+  sSQL: string;
+begin
+  sSQL   := 'select * from TAR a ' +
+            ' where a.id = ' + QuotedStr(AID);
+
+  Result := TDBUtils.OpenDataset(sSQL);
+end;
+
+function TServerAR.RetrieveNoBukti(ANoBukti : String): TAR;
 var
   sID: string;
   sSQL: string;

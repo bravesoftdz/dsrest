@@ -30,7 +30,6 @@ object frmServer: TfrmServer
       Align = alLeft
       Caption = 'Koneksi Database'
       TabOrder = 0
-      ExplicitHeight = 271
       object lblServer: TLabel
         Left = 29
         Top = 51
@@ -151,9 +150,6 @@ object frmServer: TfrmServer
       Caption = 'Rest Server'
       Enabled = False
       TabOrder = 1
-      ExplicitLeft = 279
-      ExplicitWidth = 275
-      ExplicitHeight = 271
       object Label1: TLabel
         Left = 18
         Top = 56
@@ -214,8 +210,6 @@ object frmServer: TfrmServer
     ReadOnly = True
     TabOrder = 1
     OnChange = mmoLogsChange
-    ExplicitTop = 345
-    ExplicitHeight = 28
   end
   object ApplicationEvents1: TApplicationEvents
     OnIdle = ApplicationEvents1Idle

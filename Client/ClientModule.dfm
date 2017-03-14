@@ -12,8 +12,8 @@ object ClientDataModule: TClientDataModule
     UniqueId = '{6D25B838-E6CA-4EB1-9BE6-44F1AC2252B4}'
   end
   object cxStyleRepTrans: TcxStyleRepository
-    Left = 111
-    Top = 40
+    Left = 159
+    Top = 24
     PixelsPerInch = 96
     object cxstylGridHeader: TcxStyle
       AssignedValues = [svFont]

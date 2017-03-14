@@ -55,9 +55,6 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
         OptionsData.Editing = False
         OptionsData.Inserting = False
         OptionsView.GroupByBox = False
-        Styles.ContentEven = cxstylGridEven
-        Styles.ContentOdd = cxstylGridOdd
-        Styles.Header = cxstylGridHeader
         object cxgrdbclmnGridDBTableDaftarPBNoBukti: TcxGridDBColumn
           Caption = 'No Bukti '
           DataBinding.FieldName = 'NoBukti'
@@ -113,6 +110,10 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
       TabOrder = 0
       object tsHeader: TTabSheet
         Caption = 'Header Penerimaan'
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object lblNoBukti: TLabel
           Left = 17
           Top = 8
@@ -241,6 +242,10 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
       TabOrder = 1
       object tsDetailPenerimaan: TTabSheet
         Caption = 'Detail Penerimaan'
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object cxGridDBPenerimaanBarang: TcxGrid
           Left = 0
           Top = 0
@@ -279,9 +284,6 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
             OptionsData.Appending = True
             OptionsView.Footer = True
             OptionsView.GroupByBox = False
-            Styles.ContentEven = cxstylGridEven
-            Styles.ContentOdd = cxstylGridOdd
-            Styles.Header = cxstylGridHeader
             object cxGridTablePenerimaanBarangColumnSKU: TcxGridColumn
               Caption = 'SKU'
               PropertiesClassName = 'TcxExtLookupComboBoxProperties'
@@ -445,9 +447,6 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
       OnExecute = ActionRefreshExecute
     end
   end
-  inherited cxStyleRepTrans: TcxStyleRepository
-    PixelsPerInch = 96
-  end
   inherited cxGridRepTransaksi: TcxGridViewRepository
     object cxGridDBTableSupplier: TcxGridDBTableView
       Tag = 99
@@ -463,9 +462,6 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
       OptionsData.Editing = False
       OptionsData.Inserting = False
       OptionsView.GroupByBox = False
-      Styles.ContentEven = cxstylGridEven
-      Styles.ContentOdd = cxstylGridOdd
-      Styles.Header = cxstylGridHeader
       object cxgrdbclmnGridDBTableSupplierColumnNama: TcxGridDBColumn
         Caption = ' Nama '
         DataBinding.FieldName = 'Nama'
@@ -489,9 +485,6 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
       OptionsData.Editing = False
       OptionsData.Inserting = False
       OptionsView.GroupByBox = False
-      Styles.ContentEven = cxstylGridEven
-      Styles.ContentOdd = cxstylGridOdd
-      Styles.Header = cxstylGridHeader
       object cxgrdbclmnGridDBTableSKUColumnSKU: TcxGridDBColumn
         Caption = ' SKU '
         DataBinding.FieldName = 'SKU'
@@ -558,7 +551,7 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010105000800880018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C0101050008008C0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

@@ -24,6 +24,7 @@ type
   public
     function GetHeaderField: string; override;
     procedure SetHeaderProperty(AHeaderProperty : TAppObject); override;
+  published
     property Barang: TBarang read FBarang write FBarang;
     property Diskon: Double read FDiskon write FDiskon;
     property Harga: Double read FHarga write FHarga;
@@ -52,6 +53,7 @@ type
     FTOP: Integer;
     function GetPenjualanItems: TObjectList<TPenjualanItem>;
   public
+  published
     property Cabang: TCabang read FCabang write FCabang;
     property Gudang: TGudang read FGudang write FGudang;
     property JatuhTempo: TDatetime read FJatuhTempo write FJatuhTempo;

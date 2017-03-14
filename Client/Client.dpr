@@ -30,7 +30,9 @@ uses
   ufrmLookUpTransaksi in 'form\ufrmLookUpTransaksi.pas' {frmLookUpTransaksi},
   ufrmPembayaranPenjualan in 'form\ufrmPembayaranPenjualan.pas' {frmPembayaranPenjualan},
   uPembayaranPenjualan in '..\model\uPembayaranPenjualan.pas',
-  uAR in '..\model\uAR.pas';
+  uAR in '..\model\uAR.pas',
+  uCustomerInvoice in '..\model\uCustomerInvoice.pas',
+  ufrmCustomerInvoice in 'form\ufrmCustomerInvoice.pas' {frmCustomerInvoice};
 
 {$R *.res}
 
@@ -39,6 +41,5 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TClientDataModule, ClientDataModule);
   Application.CreateForm(TfrmMain, frmMain);
-  Application.CreateForm(TfrmPembayaranPenjualan, frmPembayaranPenjualan);
   Application.Run;
 end.

@@ -11,7 +11,8 @@ uses
   cxGridTableView, cxGridDBTableView, cxGridCustomView, cxGrid, cxClasses,
   System.Actions, Vcl.ActnList, cxBarEditItem, dxBar, dxBarExtDBItems,
   Vcl.ExtCtrls, dxStatusBar, ClientModule, ClientClassesUnit2, uModel,
-  cxContainer, cxTextEdit, Vcl.ComCtrls, Vcl.StdCtrls;
+  cxContainer, cxTextEdit, Vcl.ComCtrls, Vcl.StdCtrls, System.ImageList,
+  dxBarExtItems;
 
 type
   TfrmPembayaranSupplier = class(TfrmDefault)

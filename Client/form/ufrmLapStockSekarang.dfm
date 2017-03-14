@@ -36,9 +36,6 @@ inherited frmLapStockSekarang: TfrmLapStockSekarang
       DataController.Summary.FooterSummaryItems = <>
       DataController.Summary.SummaryGroups = <>
       OptionsView.GroupByBox = False
-      Styles.ContentEven = cxstylGridEven
-      Styles.ContentOdd = cxstylGridOdd
-      Styles.Header = cxstylGridHeader
       object cxGridColGridDBTableStockSekarangColumnGudang: TcxGridDBColumn
         Caption = 'Gudang '
         DataBinding.FieldName = 'Gudang'
@@ -147,10 +144,6 @@ inherited frmLapStockSekarang: TfrmLapStockSekarang
       OnExecute = ActionRefreshExecute
     end
   end
-  inherited cxStyleRepTrans: TcxStyleRepository
-    Left = 640
-    PixelsPerInch = 96
-  end
   inherited cxGridRepTransaksi: TcxGridViewRepository
     Left = 672
     object cxGridDBTableBarang: TcxGridDBTableView
@@ -182,7 +175,7 @@ inherited frmLapStockSekarang: TfrmLapStockSekarang
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010105000800740018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010105000800780018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

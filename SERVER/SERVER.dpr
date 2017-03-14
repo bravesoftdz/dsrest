@@ -16,7 +16,9 @@ uses
   uInterface in 'uInterface.pas',
   uBarangUtils in '..\uBarangUtils.pas',
   uPenjualan in '..\model\uPenjualan.pas',
-  uCustomerInvoice in '..\model\uCustomerInvoice.pas';
+  uCustomerInvoice in '..\model\uCustomerInvoice.pas',
+  uAR in '..\model\uAR.pas',
+  uDSUtils in 'lib\uDSUtils.pas';
 
 {$R *.res}
 
@@ -25,5 +27,6 @@ begin
     WebRequestHandler.WebModuleClass := WebModuleClass;
   Application.Initialize;
   Application.CreateForm(TfrmServer, frmServer);
+  Application.CreateForm(TWebModule2, WebModule2);
   Application.Run;
 end.

@@ -5,34 +5,18 @@ interface
 uses
   SysUtils, Classes, HTTPApp, DSHTTPCommon, DSHTTPWebBroker, DSServer, WebFileDispatcher, HTTPProd,
   DSProxyJavaScript, DSAuth, DSClientMetadata, DSCommonServer, StdCtrls,
-  IPPeerServer, Datasnap.DSMetadata, Datasnap.DSServerMetadata, Datasnap.DSHTTP;
+  IPPeerServer, Datasnap.DSMetadata, Datasnap.DSServerMetadata, Datasnap.DSHTTP, uDSUtils;
 
 type
   TWebModule2 = class(TWebModule)
     DSServer1: TDSServer;
     DSHTTPWebDispatcher1: TDSHTTPWebDispatcher;
-    DSServerClass1: TDSServerClass;
     ServerFunctionInvoker: TPageProducer;
     ReverseString: TPageProducer;
     WebFileDispatcher1: TWebFileDispatcher;
     DSProxyGenerator1: TDSProxyGenerator;
     DSServerMetaDataProvider1: TDSServerMetaDataProvider;
-    dsrvrclsUOM: TDSServerClass;
-    dsrvrclsSupplier: TDSServerClass;
-    dsrvrclsBarang: TDSServerClass;
-    dsrvrclsGroupBarang: TDSServerClass;
-    dsrvrclsPenerimaanBarang: TDSServerClass;
-    dsrvrclsCabang: TDSServerClass;
-    dsrvrclsLogAppObject: TDSServerClass;
-    dsrvrclsServerUtils: TDSServerClass;
-    dsrvrclsStockSekarang: TDSServerClass;
-    dsrvrclsLaporan: TDSServerClass;
-    dsrvrclsReturSupplier: TDSServerClass;
-    dsrvrclsClosingInventory: TDSServerClass;
-    dsrvrclsPembayaranSupplier: TDSServerClass;
-    dsrvrclsGudang: TDSServerClass;
-    dsrvrclsPenjualan: TDSServerClass;
-    dsrvrclsCustomerInvoice: TDSServerClass;
+    DSServerClass1: TDSServerClass;
     procedure dsrvrclsBarangGetClass(DSServerClass: TDSServerClass; var
         PersistentClass: TPersistentClass);
     procedure dsrvrclsCabangGetClass(DSServerClass: TDSServerClass; var
@@ -89,11 +73,13 @@ type
   protected
     property IP: string read FIP write SetIP;
   public
+    procedure RegisterServerClasses;
     { Public declarations }
   end;
 
 var
   WebModuleClass: TComponentClass = TWebModule2;
+  WebModule2 : TWebModule2;
   mmoLogs : TMemo;
 
 implementation
@@ -198,7 +184,7 @@ end;
 procedure TWebModule2.dsrvrclsCustomerInvoiceGetClass(DSServerClass:
     TDSServerClass; var PersistentClass: TPersistentClass);
 begin
-  //
+  PersistentClass := ServerMethodsUnit.TServerCustomerInvoice;
 end;
 
 procedure TWebModule2.dsrvrclsGroupBarangGetClass(DSServerClass:
@@ -291,8 +277,30 @@ end;
 
 procedure TWebModule2.DSServer1Error(DSErrorEventObject: TDSErrorEventObject);
 begin
-  if mmoLogs <> nil then
-    mmoLogs.Lines.Add(DSErrorEventObject.Error.Message);
+//  if mmoLogs <> nil then
+//    mmoLogs.Lines.Add(DSErrorEventObject.Error.Message);
+end;
+
+procedure TWebModule2.RegisterServerClasses;
+begin
+  Assert(DSServer1.Started = false, 'Server Active.' + #13 + 'Can''t add class to Active Server.');
+  TCustServerClass.Create(Self, DSServer1, TServerLaporan, DSServerClass1.LifeCycle);
+  TCustServerClass.Create(Self, DSServer1, TServerBarang, DSServerClass1.LifeCycle);
+  TCustServerClass.Create(Self, DSServer1, TServerCustomerInvoice, DSServerClass1.LifeCycle);
+  TCustServerClass.Create(Self, DSServer1, TServerUOM, DSServerClass1.LifeCycle);
+  TCustServerClass.Create(Self, DSServer1, TServerSupplier, DSServerClass1.LifeCycle);
+  TCustServerClass.Create(Self, DSServer1, TServerGroupBarang, DSServerClass1.LifeCycle);
+  TCustServerClass.Create(Self, DSServer1, TServerPenerimaanBarang, DSServerClass1.LifeCycle);
+  TCustServerClass.Create(Self, DSServer1, TServerCabang, DSServerClass1.LifeCycle);
+  TCustServerClass.Create(Self, DSServer1, TServerLogAppObject, DSServerClass1.LifeCycle);
+  TCustServerClass.Create(Self, DSServer1, TServerUtils, DSServerClass1.LifeCycle);
+  TCustServerClass.Create(Self, DSServer1, TServerStockSekarang, DSServerClass1.LifeCycle);
+  TCustServerClass.Create(Self, DSServer1, TServerReturSupplier, DSServerClass1.LifeCycle);
+  TCustServerClass.Create(Self, DSServer1, TServerClosingInventory, DSServerClass1.LifeCycle);
+  TCustServerClass.Create(Self, DSServer1, TServerPembayaranSupplier, DSServerClass1.LifeCycle);
+  TCustServerClass.Create(Self, DSServer1, TServerGudang, DSServerClass1.LifeCycle);
+  TCustServerClass.Create(Self, DSServer1, TServerPenjualan, DSServerClass1.LifeCycle);
+  TCustServerClass.Create(Self, DSServer1, TServerAR, DSServerClass1.LifeCycle);
 end;
 
 procedure TWebModule2.SetIP(const Value: string);
@@ -303,6 +311,7 @@ end;
 procedure TWebModule2.WebModuleCreate(Sender: TObject);
 begin
   FServerFunctionInvokerAction := ActionByName('ServerFunctionInvokerAction');
+  RegisterServerClasses;
 end;
 
 initialization

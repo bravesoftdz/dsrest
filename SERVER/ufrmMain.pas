@@ -200,6 +200,7 @@ begin
     FServer.Bindings.Clear;
     FServer.DefaultPort := StrToInt(EditPort.Text);
     FServer.Active := True;
+    WebModule2.DSServer1.Start;
 
     mmoLogs.Lines.Add('Rest server dijalankan');
   end;

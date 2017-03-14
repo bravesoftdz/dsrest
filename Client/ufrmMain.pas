@@ -12,7 +12,8 @@ uses
   FireDAC.Comp.UI, FireDAC.Phys.PG, FireDAC.Stan.Intf, FireDAC.Phys,
   FireDAC.Phys.ODBCBase, FireDAC.Phys.MSSQL, Firedac.Dapt,
   dxRibbonCustomizationForm, FireDAC.Phys.MSSQLDef, FireDAC.Phys.PGDef,
-  System.ImageList, ufrmLapKartuStock, ufrmPenjualan, ufrmPenjualanPOS;
+  System.ImageList, ufrmLapKartuStock, ufrmPenjualan, ufrmPenjualanPOS,
+  ufrmCustomerInvoice;
 
 type
 //  RawUTF8 = type AnsiString;
@@ -97,9 +98,14 @@ type
     actPenjualanSales: TAction;
     dxbrlrgbtnPenjualanPOS: TdxBarLargeButton;
     actPenjualanPOS: TAction;
+    actCustomerInvoice: TAction;
+    dxbrmngrAMSBarKeuangan: TdxBar;
+    dxbrbtnCustomerInvoice: TdxBarButton;
+    dxbrlrgbtn3: TdxBarLargeButton;
     procedure actAlatGantiCabangExecute(Sender: TObject);
     procedure actApplicationExitExecute(Sender: TObject);
     procedure actClosingInventoryExecute(Sender: TObject);
+    procedure actCustomerInvoiceExecute(Sender: TObject);
     procedure actLapKartokExecute(Sender: TObject);
     procedure actMasSupplierExecute(Sender: TObject);
     procedure actMasterBarangExecute(Sender: TObject);
@@ -159,6 +165,11 @@ end;
 procedure TfrmMain.actClosingInventoryExecute(Sender: TObject);
 begin
   frmClosingInventory := TfrmClosingInventory.Create(Self);
+end;
+
+procedure TfrmMain.actCustomerInvoiceExecute(Sender: TObject);
+begin
+  frmCustomerInvoice := TfrmCustomerInvoice.Create(Self);
 end;
 
 procedure TfrmMain.actLapKartokExecute(Sender: TObject);

@@ -75,9 +75,6 @@ inherited frmLapMutasiBarangPerTransaksi: TfrmLapMutasiBarangPerTransaksi
       DataController.Summary.SummaryGroups = <>
       OptionsView.NoDataToDisplayInfoText = 'Tidak Ada Data'
       OptionsView.GroupByBox = False
-      Styles.ContentEven = cxstylGridEven
-      Styles.ContentOdd = cxstylGridOdd
-      Styles.Header = cxstylGridHeader
       object cxGridColsku: TcxGridDBColumn
         Caption = 'SKU '
         DataBinding.FieldName = 'Barang'
@@ -180,12 +177,9 @@ inherited frmLapMutasiBarangPerTransaksi: TfrmLapMutasiBarangPerTransaksi
       OnExecute = ActionRefreshExecute
     end
   end
-  inherited cxStyleRepTrans: TcxStyleRepository
-    PixelsPerInch = 96
-  end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010105000800540018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010105000800580018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

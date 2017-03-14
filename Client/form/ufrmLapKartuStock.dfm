@@ -141,9 +141,6 @@ inherited frmLapKartuStock: TfrmLapKartuStock
       OnExecute = ActionRefreshExecute
     end
   end
-  inherited cxStyleRepTrans: TcxStyleRepository
-    PixelsPerInch = 96
-  end
   inherited cxGridRepTransaksi: TcxGridViewRepository
     inherited cxGridDBTableWarehouse: TcxGridDBTableView
       DataController.KeyFieldNames = 'ID'
@@ -151,7 +148,7 @@ inherited frmLapKartuStock: TfrmLapKartuStock
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010105000800780018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C0101050008007C0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
