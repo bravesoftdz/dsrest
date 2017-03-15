@@ -23,7 +23,9 @@ type
         APort : String): Boolean;
     class procedure DataSetToCxDBGrid(ADataset : TDataset; ACxDBGrid :
         TcxGridDBTableView; AutoCreateFields : Boolean = False);
-    class procedure DSToCDS(ADataset : TDataset; ACDS : TClientDataset);
+    class procedure DSToCDS(ADataset : TDataset; ACDS : TClientDataset); overload;
+    class function DSToCDS(aDataset: TDataSet; aOwner: TComponent): TClientDataset;
+        overload;
     class function ExecuteSQL(ASQL : String): LongInt;
     class function OpenDataset(ASQL : String): TClientDataSet; overload;
     class function GenerateSQL(AObject : TAppObject): string;
@@ -127,6 +129,24 @@ begin
       ACDS.Append;
       ACDS.Fields[i] := ADataset.FieldByName(ACDS.FieldDefs[i].Name);
     end;
+  end;
+end;
+
+class function TDBUtils.DSToCDS(aDataset: TDataSet; aOwner: TComponent):
+    TClientDataset;
+var
+  ADSP: TDataSetProvider;
+begin
+  Result := nil;
+  if ADataSet.FieldCount <> 0 then
+  begin
+    Result:= TClientDataSet.Create(aOwner);
+    ADSP := TDataSetProvider.Create(Result);
+    ADSP.DataSet:= aDataset;
+    Result.SetProvider(ADSP);
+    Result.Open;
+
+    aDataset.Free;
   end;
 end;
 
@@ -512,6 +532,9 @@ begin
     if not Q.IsEmpty then
     begin
       for prop in rt.GetProperties() do begin
+        if prop.Visibility <> mvPublished then
+          Continue;
+
         if prop.Name = 'ObjectState' then
           Continue;
 

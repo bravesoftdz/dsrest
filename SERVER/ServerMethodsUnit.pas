@@ -1272,9 +1272,40 @@ begin
 end;
 
 function TServerPenjualan.Retrieve(AID : String): TPenjualan;
+var
+  sSQL: string;
+  I: Integer;
 begin
   Result := TPenjualan.Create;
   TDBUtils.LoadFromDB(Result, AID);
+
+  sSQL := 'select c.* from tpenjualan a' +
+          ' inner join tpenjualanitem b on a.id = b.penjualan' +
+          ' inner join tbarangsatuanitem c on b.barang = c.barang and b.uom=c.uom' +
+          ' where a.id = ' + QuotedStr(AID);
+
+  with TDBUtils.OpenDataset(sSQL) do
+  begin
+    try
+      for I := 0 to Result.PenjualanItems.Count - 1 do
+      begin
+        First;
+        while not Eof do
+        begin
+          if FieldByName('barang').AsString = Result.PenjualanItems[i].Barang.ID then
+            if FieldByName('uom').AsString = Result.PenjualanItems[i].UOM.ID then
+            begin
+              Result.PenjualanItems[i].BarangSatuangItemID := FieldByName('ID').AsString;
+              Break;
+            end;
+
+          Next;
+        end;
+      end;
+    finally
+      Free;
+    end;
+  end;
 end;
 
 function TServerPenjualan.RetrieveNoBukti(ANoBukti : String): TPenjualan;

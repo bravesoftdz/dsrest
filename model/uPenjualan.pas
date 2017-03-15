@@ -12,6 +12,7 @@ type
   TPenjualanItem = class(TAppObjectItem)
   private
     FBarang: TBarang;
+    FBarangSatuangItemID: string;
     FDiskon: Double;
     FHarga: Double;
     FJenisHarga: string;
@@ -24,6 +25,8 @@ type
   public
     function GetHeaderField: string; override;
     procedure SetHeaderProperty(AHeaderProperty : TAppObject); override;
+    property BarangSatuangItemID: string read FBarangSatuangItemID write
+        FBarangSatuangItemID;
   published
     property Barang: TBarang read FBarang write FBarang;
     property Diskon: Double read FDiskon write FDiskon;

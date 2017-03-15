@@ -1,14 +1,13 @@
 //
 // Created by the DataSnap proxy generator.
-// 3/15/2017 4:13:08 AM
+// 3/16/2017 3:12:32 AM
 //
 
 unit ClientClassesUnit2;
 
 interface
 
-uses System.JSON, Datasnap.DSProxyRest, Datasnap.DSClientRest, Data.DBXCommon, Data.DBXClient, Data.DBXDataSnap, Data.DBXJSON, Datasnap.DSProxy, System.Classes, System.SysUtils, Data.DB, Data.SqlExpr, Data.DBXDBReaders, Data.DBXCDSReaders, uModel,
-uCustomerInvoice, uPenjualan, uAR, Data.DBXJSONReflect;
+uses System.JSON, Datasnap.DSProxyRest, Datasnap.DSClientRest, Data.DBXCommon, Data.DBXClient, Data.DBXDataSnap, Data.DBXJSON, Datasnap.DSProxy, System.Classes, System.SysUtils, Data.DB, Data.SqlExpr, Data.DBXDBReaders, Data.DBXCDSReaders, uModel, uCustomerInvoice, uPenjualan, uAR, Data.DBXJSONReflect;
 
 type
 
