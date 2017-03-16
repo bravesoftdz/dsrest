@@ -14,7 +14,7 @@ uses
   cxContainer, Vcl.ComCtrls, dxCore, cxDateUtils, cxMemo, cxDropDownEdit,
   cxCalendar, cxMaskEdit, cxLookupEdit, cxDBLookupEdit, cxDBExtLookupComboBox,
   cxTextEdit, uCustomerInvoice,uModel, uAR, uPenjualan,
-  cxCurrencyEdit, cxGridLevel;
+  cxCurrencyEdit, cxGridLevel, ClientModule;
 
 type
   TfrmCustomerInvoice = class(TfrmDefault)
@@ -53,6 +53,19 @@ type
         TShiftState);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
+    procedure cxgrdclmnGridTablePenjualanColumnHargaPropertiesValidate(
+      Sender: TObject; var DisplayValue: Variant; var ErrorText: TCaption;
+      var Error: Boolean);
+    procedure cxgrdclmnGridTablePenjualanColumnQtyPropertiesValidate(
+      Sender: TObject; var DisplayValue: Variant; var ErrorText: TCaption;
+      var Error: Boolean);
+    procedure cxgrdclmnGridTablePenjualanColumnDiskonPropertiesValidate(
+      Sender: TObject; var DisplayValue: Variant; var ErrorText: TCaption;
+      var Error: Boolean);
+    procedure cxgrdclmnGridTablePenjualanColumnPPNPropertiesValidate(
+      Sender: TObject; var DisplayValue: Variant; var ErrorText: TCaption;
+      var Error: Boolean);
+    procedure edTglBuktiExit(Sender: TObject);
   private
     FCustomerInvoice: TCustomerInvoice;
     function GetCustomerInvoice: TCustomerInvoice;
@@ -74,7 +87,7 @@ var
 
 implementation
 uses
-  uDBUtils, uAppUtils, ClientModule;
+  uDBUtils, uAppUtils;
 
 {$R *.dfm}
 
@@ -82,12 +95,13 @@ procedure TfrmCustomerInvoice.ActionBaruExecute(Sender: TObject);
 begin
   inherited;
   FreeAndNil(FCustomerInvoice);
-  edNoBukti.Text  := '';
+
   edTglBukti.Date := Now;
   edJthTempo.Date := Now + 7;
   edNoPenjualan.Clear;
 
-
+  edNoBukti.Text  := ClientDataModule.ServerCustomerInvoiceClient.GenerateNoBukti(edTglBukti.Date,
+                                                                                  ClientDataModule.Cabang.Kode + '/CI');
   memKeterangan.Clear;
 end;
 
@@ -110,6 +124,50 @@ begin
   end;
 end;
 
+procedure TfrmCustomerInvoice.cxgrdclmnGridTablePenjualanColumnDiskonPropertiesValidate(
+  Sender: TObject; var DisplayValue: Variant; var ErrorText: TCaption;
+  var Error: Boolean);
+var
+  dNilai: Double;
+begin
+  inherited;
+  dNilai := DisplayValue;
+  HitungNilaiNilaiPerBaris(dNilai, cxgrdclmnGridTablePenjualanColumnDiskon.Index);
+end;
+
+procedure TfrmCustomerInvoice.cxgrdclmnGridTablePenjualanColumnHargaPropertiesValidate(
+  Sender: TObject; var DisplayValue: Variant; var ErrorText: TCaption;
+  var Error: Boolean);
+var
+  dNilai: Double;
+begin
+  inherited;
+  dNilai := DisplayValue;
+  HitungNilaiNilaiPerBaris(dNilai, cxgrdclmnGridTablePenjualanColumnHarga.Index);
+end;
+
+procedure TfrmCustomerInvoice.cxgrdclmnGridTablePenjualanColumnPPNPropertiesValidate(
+  Sender: TObject; var DisplayValue: Variant; var ErrorText: TCaption;
+  var Error: Boolean);
+var
+  dNilai: Double;
+begin
+  inherited;
+  dNilai := DisplayValue;
+  HitungNilaiNilaiPerBaris(dNilai, cxgrdclmnGridTablePenjualanColumnPPN.Index);
+end;
+
+procedure TfrmCustomerInvoice.cxgrdclmnGridTablePenjualanColumnQtyPropertiesValidate(
+  Sender: TObject; var DisplayValue: Variant; var ErrorText: TCaption;
+  var Error: Boolean);
+var
+  dNilai: Double;
+begin
+  inherited;
+  dNilai := DisplayValue;
+  HitungNilaiNilaiPerBaris(dNilai, cxgrdclmnGridTablePenjualanColumnQty.Index);
+end;
+
 procedure TfrmCustomerInvoice.edNoPenjualanKeyDown(Sender: TObject; var Key:
     Word; Shift: TShiftState);
 begin
@@ -118,6 +176,15 @@ begin
   begin
     LoadDataPenjualan(edNoPenjualan.Text);
   end;
+end;
+
+procedure TfrmCustomerInvoice.edTglBuktiExit(Sender: TObject);
+begin
+  inherited;
+  if FID ='' then
+    edNoBukti.Text  := ClientDataModule.ServerCustomerInvoiceClient.GenerateNoBukti(edTglBukti.Date,
+                                                                                  ClientDataModule.Cabang.Kode + '/CI');
+
 end;
 
 procedure TfrmCustomerInvoice.FormClose(Sender: TObject; var Action: TCloseAction);

@@ -6,27 +6,36 @@ inherited frmCustomerInvoice: TfrmCustomerInvoice
   ExplicitHeight = 385
   PixelsPerInch = 96
   TextHeight = 13
+  inherited splTransaksi: TSplitter
+    Left = 9
+  end
   inherited cxSBTransaksi: TdxStatusBar
     Width = 751
     ExplicitWidth = 751
   end
+  inherited pnlListTransaksi: TPanel
+    Width = 9
+    Visible = False
+    ExplicitWidth = 9
+  end
   object pnlTransaksi: TPanel [3]
-    Left = 193
+    Left = 17
     Top = 50
-    Width = 558
+    Width = 734
     Height = 276
     Align = alClient
     Caption = 'pnlTransaksi'
     TabOrder = 6
+    ExplicitLeft = 193
+    ExplicitWidth = 558
     object pnlHeader: TPanel
       Left = 1
       Top = 1
-      Width = 556
+      Width = 732
       Height = 104
       Align = alTop
       TabOrder = 0
-      ExplicitLeft = -2
-      ExplicitTop = 0
+      ExplicitWidth = 556
       object lblNoBukti: TLabel
         Left = 66
         Top = 8
@@ -79,13 +88,13 @@ inherited frmCustomerInvoice: TfrmCustomerInvoice
       object cbbCustomer: TcxExtLookupComboBox
         Left = 111
         Top = 79
-        TabOrder = 2
+        TabOrder = 3
         Width = 145
       end
       object edJthTempo: TcxDateEdit
         Left = 369
         Top = 4
-        TabOrder = 3
+        TabOrder = 4
         Width = 145
       end
       object memKeterangan: TcxMemo
@@ -93,7 +102,7 @@ inherited frmCustomerInvoice: TfrmCustomerInvoice
         Top = 29
         Lines.Strings = (
           'memKeterangan')
-        TabOrder = 4
+        TabOrder = 5
         Height = 71
         Width = 145
       end
@@ -101,13 +110,15 @@ inherited frmCustomerInvoice: TfrmCustomerInvoice
         Left = 111
         Top = 29
         TabOrder = 1
+        OnExit = edTglBuktiExit
         Width = 145
       end
       object edNoPenjualan: TcxTextEdit
         Left = 111
         Top = 54
-        TabOrder = 5
-        Text = 'edNoBukti'
+        Properties.CharCase = ecUpperCase
+        TabOrder = 2
+        Text = 'EDNOBUKTI'
         OnKeyDown = edNoPenjualanKeyDown
         Width = 145
       end
@@ -115,14 +126,11 @@ inherited frmCustomerInvoice: TfrmCustomerInvoice
     object cxGridDBPenjualan: TcxGrid
       Left = 1
       Top = 105
-      Width = 556
+      Width = 732
       Height = 170
       Align = alClient
       TabOrder = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 740
-      ExplicitHeight = 193
+      ExplicitWidth = 556
       object cxGridTablePenjualan: TcxGridTableView
         Navigator.Buttons.CustomButtons = <>
         DataController.Summary.DefaultGroupSummaryItems = <>
@@ -182,6 +190,7 @@ inherited frmCustomerInvoice: TfrmCustomerInvoice
           PropertiesClassName = 'TcxCurrencyEditProperties'
           Properties.Alignment.Horz = taRightJustify
           Properties.DisplayFormat = ',0.##;(,0.##)'
+          Properties.OnValidate = cxgrdclmnGridTablePenjualanColumnHargaPropertiesValidate
           HeaderAlignmentHorz = taCenter
         end
         object cxgrdclmnGridTablePenjualanColumnQty: TcxGridColumn
@@ -190,6 +199,7 @@ inherited frmCustomerInvoice: TfrmCustomerInvoice
           PropertiesClassName = 'TcxCurrencyEditProperties'
           Properties.Alignment.Horz = taRightJustify
           Properties.DisplayFormat = ',0.##;(,0.##)'
+          Properties.OnValidate = cxgrdclmnGridTablePenjualanColumnQtyPropertiesValidate
           HeaderAlignmentHorz = taCenter
         end
         object cxgrdclmnGridTablePenjualanColumnDiskon: TcxGridColumn
@@ -198,6 +208,7 @@ inherited frmCustomerInvoice: TfrmCustomerInvoice
           PropertiesClassName = 'TcxCurrencyEditProperties'
           Properties.Alignment.Horz = taRightJustify
           Properties.DisplayFormat = ',0.##;(,0.##)'
+          Properties.OnValidate = cxgrdclmnGridTablePenjualanColumnDiskonPropertiesValidate
           HeaderAlignmentHorz = taCenter
         end
         object cxgrdclmnGridTablePenjualanColumnPPN: TcxGridColumn
@@ -206,6 +217,7 @@ inherited frmCustomerInvoice: TfrmCustomerInvoice
           PropertiesClassName = 'TcxCurrencyEditProperties'
           Properties.Alignment.Horz = taRightJustify
           Properties.DisplayFormat = ',0.##;(,0.##)'
+          Properties.OnValidate = cxgrdclmnGridTablePenjualanColumnPPNPropertiesValidate
           HeaderAlignmentHorz = taCenter
         end
         object cxgrdclmnGridTablePenjualanColumnSubTotalRp: TcxGridColumn
@@ -315,7 +327,7 @@ inherited frmCustomerInvoice: TfrmCustomerInvoice
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C0101060008009C0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010106000800A00018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
