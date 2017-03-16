@@ -1435,8 +1435,13 @@ begin
   Result := False;
 
   lCI    := TCustomerInvoice(AAppObject);
-  lCI.AR := ServerAR.Retrieve(lCI.AR.ID);
-  lCI.AR.Nominal := lCI.Nominal;
+
+//  if lCI.AR = nil then
+//  begin
+//    lCI.AR := TAR.Create;
+//
+//  lCI.AR.Nominal := lCI.Nominal;
+//  lCI.AR.Customer := TSupplier.CreateID(lCI.CustomerInvoicePenjualans[i].Penjualan.);
 
   if lCI.AR.Cabang = nil then
     lCI.AR.Cabang := TCabang.CreateID(lCI.Cabang.ID)

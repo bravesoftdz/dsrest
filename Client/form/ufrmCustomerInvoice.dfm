@@ -8,6 +8,7 @@ inherited frmCustomerInvoice: TfrmCustomerInvoice
   TextHeight = 13
   inherited splTransaksi: TSplitter
     Left = 9
+    ExplicitLeft = 9
   end
   inherited cxSBTransaksi: TdxStatusBar
     Width = 751
@@ -26,8 +27,6 @@ inherited frmCustomerInvoice: TfrmCustomerInvoice
     Align = alClient
     Caption = 'pnlTransaksi'
     TabOrder = 6
-    ExplicitLeft = 193
-    ExplicitWidth = 558
     object pnlHeader: TPanel
       Left = 1
       Top = 1
@@ -35,7 +34,6 @@ inherited frmCustomerInvoice: TfrmCustomerInvoice
       Height = 104
       Align = alTop
       TabOrder = 0
-      ExplicitWidth = 556
       object lblNoBukti: TLabel
         Left = 66
         Top = 8
@@ -130,7 +128,6 @@ inherited frmCustomerInvoice: TfrmCustomerInvoice
       Height = 170
       Align = alClient
       TabOrder = 1
-      ExplicitWidth = 556
       object cxGridTablePenjualan: TcxGridTableView
         Navigator.Buttons.CustomButtons = <>
         DataController.Summary.DefaultGroupSummaryItems = <>
@@ -327,7 +324,7 @@ inherited frmCustomerInvoice: TfrmCustomerInvoice
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010106000800A00018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010106000800A40018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

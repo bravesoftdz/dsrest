@@ -68,6 +68,7 @@ type
     procedure edTglBuktiExit(Sender: TObject);
   private
     FCustomerInvoice: TCustomerInvoice;
+    FPenjualan: TPenjualan;
     function GetCustomerInvoice: TCustomerInvoice;
     procedure HitungNilaiNilaiPerBaris(dNilai: Double; Acolumn : Integer);
     procedure InisialisasiCBBSalesman;
@@ -95,6 +96,7 @@ procedure TfrmCustomerInvoice.ActionBaruExecute(Sender: TObject);
 begin
   inherited;
   FreeAndNil(FCustomerInvoice);
+  FreeAndNil(FPenjualan);
 
   edTglBukti.Date := Now;
   edJthTempo.Date := Now + 7;
@@ -106,8 +108,19 @@ begin
 end;
 
 procedure TfrmCustomerInvoice.ActionSimpanExecute(Sender: TObject);
+var
+  lCIPjl: TCustomerInvoicePenjualan;
+  I: Integer;
+  lCIPjlItem: TCustomerInvoicePenjualanItem;
 begin
   inherited;
+
+  if FPenjualan = nil then
+  begin
+    TAppUtils.Warning('Data Penjualan Belum Dipilih');
+    edNoPenjualan.SetFocus;
+    Exit;
+  end;
 
   CustomerInvoice.NoBukti    := edNoBukti.Text;
   CustomerInvoice.TglBukti   := edTglBukti.Date;
@@ -116,6 +129,27 @@ begin
   CustomerInvoice.Customer   := TSupplier.CreateID(cbbCustomer.EditValue);
   CustomerInvoice.AR         := TAR.CreateID(cbbCustomer.EditValue);
   CustomerInvoice.Cabang     := TCabang.CreateID(cbbLUCabang.KeyValue);
+
+  lCIPjl := TCustomerInvoicePenjualan.Create;
+  lCIPjl.CustomerInvoice := FCustomerInvoice;
+  lCIPjl.Penjualan       := TPenjualan.CreateID(FPenjualan.ID);
+
+  for I := 0 to cxGridTablePenjualan.DataController.RecordCount- 1 do
+  begin
+    lCIPjlItem            := TCustomerInvoicePenjualanItem.Create;
+    lCIPjlItem.Barang     := TBarang.CreateID(cxGridTablePenjualan.GetString(i, cxgrdclmnGridTablePenjualanColumnSKU.Index));
+    lCIPjlItem.Diskon     := cxGridTablePenjualan.GetDouble(i, cxgrdclmnGridTablePenjualanColumnDiskon.Index);
+    lCIPjlItem.Harga      := cxGridTablePenjualan.GetDouble(i, cxgrdclmnGridTablePenjualanColumnHarga.Index);
+    lCIPjlItem.JenisHarga := '';
+    lCIPjlItem.Konversi   := cxGridTablePenjualan.GetDouble(i, cxgrdclmnGridTablePenjualanColumnKonversi.Index);
+    lCIPjlItem.PPN        := cxGridTablePenjualan.GetDouble(i, cxgrdclmnGridTablePenjualanColumnPPN.Index);
+    lCIPjlItem.Qty        := cxGridTablePenjualan.GetDouble(i, cxgrdclmnGridTablePenjualanColumnQty.Index);
+    lCIPjlItem.UOM        := TUOM.CreateID(cxGridTablePenjualan.GetString(i, cxgrdclmnGridTablePenjualanColumnSatuan.Index));
+  end;
+
+  CustomerInvoice.CustomerInvoicePenjualans.Add(lCIPjl);
+
+
 
   if ClientDataModule.ServerCustomerInvoiceClient.Save(CustomerInvoice) then
   begin
@@ -191,6 +225,7 @@ procedure TfrmCustomerInvoice.FormClose(Sender: TObject; var Action: TCloseActio
 begin
   inherited;
   FreeAndNil(FCustomerInvoice);
+  FreeAndNil(FPenjualan);
 end;
 
 procedure TfrmCustomerInvoice.FormShow(Sender: TObject);
@@ -316,24 +351,22 @@ begin
 end;
 
 procedure TfrmCustomerInvoice.LoadDataPenjualan(ANoBuktiPenjualan : String);
-var
-  lPjl: TPenjualan;
 begin
-  lPjl := ClientDataModule.ServerPenjualanClient.RetrieveNoBukti(ANoBuktiPenjualan);
+  FPenjualan := ClientDataModule.ServerPenjualanClient.RetrieveNoBukti(ANoBuktiPenjualan);
   try
-    if lPjl = NIL then
+    if FPenjualan = NIL then
       eXIT;
 
-    if lPjl.ID = '' then
+    if FPenjualan.ID = '' then
       eXIT;
 
-    cbbCustomer.EditValue := lPjl.Pembeli.ID;
-    edJthTempo.Date       := lPjl.JatuhTempo;
+    cbbCustomer.EditValue := FPenjualan.Pembeli.ID;
+    edJthTempo.Date       := FPenjualan.JatuhTempo;
 
-    LoadDataPenjualanItem(lPjl);
+    LoadDataPenjualanItem(FPenjualan);
   finally
-    if lPjl <> nil then
-      lPjl.Free;
+    if FPenjualan <> nil then
+      FPenjualan.Free;
   end;
 end;
 
