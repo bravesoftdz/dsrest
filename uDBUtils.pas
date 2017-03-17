@@ -23,7 +23,9 @@ type
         APort : String): Boolean;
     class procedure DataSetToCxDBGrid(ADataset : TDataset; ACxDBGrid :
         TcxGridDBTableView; AutoCreateFields : Boolean = False);
-    class procedure DSToCDS(ADataset : TDataset; ACDS : TClientDataset);
+    class procedure DSToCDS(ADataset : TDataset; ACDS : TClientDataset); overload;
+    class function DSToCDS(aDataset: TDataSet; aOwner: TComponent): TClientDataset;
+        overload;
     class function ExecuteSQL(ASQL : String): LongInt;
     class function OpenDataset(ASQL : String): TClientDataSet; overload;
     class function GenerateSQL(AObject : TAppObject): string;
@@ -130,6 +132,24 @@ begin
   end;
 end;
 
+class function TDBUtils.DSToCDS(aDataset: TDataSet; aOwner: TComponent):
+    TClientDataset;
+var
+  ADSP: TDataSetProvider;
+begin
+  Result := nil;
+  if ADataSet.FieldCount <> 0 then
+  begin
+    Result:= TClientDataSet.Create(aOwner);
+    ADSP := TDataSetProvider.Create(Result);
+    ADSP.DataSet:= aDataset;
+    Result.SetProvider(ADSP);
+    Result.Open;
+
+    aDataset.Free;
+  end;
+end;
+
 class function TDBUtils.ExecuteSQL(ASQL : String): LongInt;
 begin
   if mmoLogs <> nil then
@@ -179,26 +199,32 @@ begin
         AObject.ID := TDBUtils.GetNextIDGUIDToString();
 
       Result := 'insert into ' + AObject.ClassName + '(';
-      for prop in rt.GetProperties() do begin
-          meth := prop.PropertyType.GetMethod('ToArray');
-          if Assigned(meth) then
-            Continue;
+      for prop in rt.GetProperties() do
+      begin
+        If prop.Visibility <> mvPublished then continue;
 
-          if prop.Name = 'ObjectState' then
-            Continue;
+        meth := prop.PropertyType.GetMethod('ToArray');
+        if Assigned(meth) then
+          Continue;
 
-          if not prop.IsWritable then continue;
+        if prop.Name = 'ObjectState' then
+          Continue;
 
-          if Result = 'insert into ' + AObject.ClassName + '(' then
-            Result := Result + prop.Name
-          else
-            Result := Result + ',' + prop.Name;
+        if not prop.IsWritable then continue;
+
+        if Result = 'insert into ' + AObject.ClassName + '(' then
+          Result := Result + prop.Name
+        else
+          Result := Result + ',' + prop.Name;
       end;
 
       Result := Result + ') values(';
 
 
-      for prop in rt.GetProperties() do begin
+      for prop in rt.GetProperties() do
+      begin
+        If prop.Visibility <> mvPublished then continue;
+
         if not prop.IsWritable then continue;
         if prop.Name = 'ObjectState' then Continue;
 
@@ -266,7 +292,10 @@ begin
       rt := ctx.GetType(AObject.ClassType);
       Result := 'update ' + AObject.ClassName + ' set ';
 
-      for prop in rt.GetProperties() do begin
+      for prop in rt.GetProperties() do
+      begin
+        If prop.Visibility <> mvPublished then continue;
+
         meth := prop.PropertyType.GetMethod('ToArray');
         if (not prop.IsWritable) or
            (UpperCase(prop.Name) = 'ID')  or
@@ -491,6 +520,7 @@ var
   sGenericItemClassName: string;
 //  sX: string;
 begin
+
   sSQL := 'select * from ' + AOBject.ClassName
           + ' where id = ' + QuotedStr(AID);
 
@@ -502,6 +532,9 @@ begin
     if not Q.IsEmpty then
     begin
       for prop in rt.GetProperties() do begin
+        if prop.Visibility <> mvPublished then
+          Continue;
+
         if prop.Name = 'ObjectState' then
           Continue;
 

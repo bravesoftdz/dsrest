@@ -9,7 +9,8 @@ uses
   cxClasses, System.Actions, Vcl.ActnList, dxBar, Vcl.ExtCtrls, dxStatusBar, ClientModule, ClientClassesUnit2, uModel,
   cxCustomData, cxFilter, cxData, cxDataStorage, cxEdit, cxNavigator, Data.DB,
   cxDBData, Datasnap.DBClient, Datasnap.Provider, cxGridCustomTableView,
-  cxGridTableView, cxGridDBTableView, cxGridCustomView, dxBarExtDBItems;
+  cxGridTableView, cxGridDBTableView, cxGridCustomView, dxBarExtDBItems,
+  cxCheckBox, System.ImageList, dxBarExtItems, cxBarEditItem;
 
 type
   TfrmClosingInventory = class(TfrmDefault)

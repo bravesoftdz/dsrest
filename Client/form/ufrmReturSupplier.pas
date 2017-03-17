@@ -12,7 +12,8 @@ uses
   cxGridCustomTableView, cxGridTableView, cxGridLevel, cxGrid, cxCurrencyEdit,
   ImgList, uModel, ClientClassesUnit2, DB, cxDBData, cxGridDBTableView,
   cxDBExtLookupComboBox, Provider, DBClient, cxNavigator, dxCore, cxDateUtils,
-  System.Actions, dxBarExtDBItems, cxCheckBox, cxBarEditItem;
+  System.Actions, dxBarExtDBItems, cxCheckBox, cxBarEditItem, System.ImageList,
+  dxBarExtItems, ufrmLookUpTransaksi;
 
 type
   TfrmReturSupplier = class(TfrmDefault)
@@ -64,11 +65,13 @@ type
     cxgrdbclmnGridDBTableDaftarPBKeterangan: TcxGridDBColumn;
     lblNoPB: TLabel;
     edNoPB: TcxTextEdit;
+    btnCari: TButton;
     procedure actCetakExecute(Sender: TObject);
     procedure ActionBaruExecute(Sender: TObject);
     procedure ActionHapusExecute(Sender: TObject);
     procedure ActionRefreshExecute(Sender: TObject);
     procedure ActionSimpanExecute(Sender: TObject);
+    procedure btnCariClick(Sender: TObject);
     procedure cxGridDBTableDaftarPBCellDblClick(Sender: TcxCustomGridTableView;
         ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton; AShift:
         TShiftState; var AHandled: Boolean);
@@ -94,6 +97,7 @@ type
     procedure cxGridDBTableDaftarPBEditing(Sender: TcxCustomGridTableView;
       AItem: TcxCustomGridTableItem; var AAllow: Boolean);
     procedure edNoPBKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     FReturSupplier: TReturSupplier;
     function GetReturSupplier: TReturSupplier;
@@ -104,6 +108,7 @@ type
     function IsBisaHapus : Boolean;
     function IsBisaSimpan: Boolean;
     function IsDetailValid: Boolean;
+    procedure LoadDataPenerimaanBarang(ANoPB : String);
     { Private declarations }
   protected
     property ReturSupplier: TReturSupplier read GetReturSupplier write
@@ -167,8 +172,8 @@ begin
   inherited;
     with TServerReturSupplierClient.Create(ClientDataModule.DSRestConnection, False) do
     begin
-      ProvPB.DataSet := RetrieveCDS(ReturSupplier);
       cdsPB.Close;
+      ProvPB.DataSet := RetrieveCDS(ReturSupplier);
       cdsPB.Open;
 
       try
@@ -196,11 +201,10 @@ begin
       ReturSupplier.ID          := FID;
       ReturSupplier.NoBukti     := edNoBukti.Text;
       ReturSupplier.Keterangan  := memKeterangan.Text;
-      ReturSupplier.Supplier    := TSupplier.Create;
-      ReturSupplier.Supplier.ID := cbbSupplier.EditValue;
+      ReturSupplier.Supplier    := TSupplier.CreateID(cbbSupplier.EditValue);
       ReturSupplier.TglBukti    := edTglBukti.Date;
-      ReturSupplier.Cabang      := TCabang.Create;
-      ReturSupplier.Cabang.ID   := ClientDataModule.Cabang.ID;
+      ReturSupplier.Cabang      := TCabang.CreateID(ClientDataModule.Cabang.ID);
+      ReturSupplier.Gudang      := TGudang.CreateID(ReturSupplier.PenerimaanBarang.Gudang.ID);
 
       ReturSupplier.ReturSupplierItems.Clear;
       for i := 0 to cxGridTableReturSupplier.DataController.RecordCount - 1 do
@@ -231,6 +235,25 @@ begin
     finally
       FreeAndNil(FReturSupplier);
       Free;
+    end;
+  end;
+end;
+
+procedure TfrmReturSupplier.btnCariClick(Sender: TObject);
+var
+  lPB: TPenerimaanBarang;
+  sIDPB: string;
+begin
+  inherited;
+  sIDPB := TfrmLookUpTransaksi.LookUp('Daftar Penerimaan Barang', TPenerimaanBarang.ClassName);
+
+  if sIDPB <> '' then
+  begin
+    lPB   := ClientDataModule.ServerPenerimaanBarangClient.Retrieve(sIDPB);
+    try
+      LoadDataPenerimaanBarang(lPB.NoBukti);
+    finally
+      FreeAndNil(lPB);
     end;
   end;
 end;
@@ -326,36 +349,19 @@ end;
 
 procedure TfrmReturSupplier.edNoPBKeyDown(Sender: TObject; var Key: Word;
     Shift: TShiftState);
-var
-  i: Integer;
 begin
   inherited;
   if Key = VK_RETURN then
   begin
-    with ClientDataModule.ServerPenerimaanBarangClient do
-    begin
-      ReturSupplier.PenerimaanBarang := RetrieveNoBukti(edNoPB.Text);
-      cbbSupplier.EditValue            := ReturSupplier.PenerimaanBarang.Supplier.ID;
-
-      cxGridTableReturSupplier.ClearRows;
-      for i := 0 to ReturSupplier.PenerimaanBarang.PenerimaanBarangItems.Count - 1 do
-      begin
-        cxGridTableReturSupplier.DataController.RecordCount := i + 1;
-        cxGridTableReturSupplier.SetValue(i, cxgrdclmnGridTableReturSupplierColumnSKU.Index, FReturSupplier.PenerimaanBarang.PenerimaanBarangItems[i].Barang.ID);
-        cxGridTableReturSupplier.SetValue(i, cxgrdclmnGridTableReturSupplierColumnNama.Index, FReturSupplier.PenerimaanBarang.PenerimaanBarangItems[i].Barang.ID);
-        cxGridTableReturSupplier.SetValue(i, cxgrdclmnGridTableReturSupplierColumnSatuan.Index, FReturSupplier.PenerimaanBarang.PenerimaanBarangItems[i].UOM.ID);
-        cxGridTableReturSupplier.SetDouble(i, cxgrdclmnGridTableReturSupplierColumnHarga.Index, FReturSupplier.PenerimaanBarang.PenerimaanBarangItems[i].HargaBeli);
-        cxGridTableReturSupplier.SetDouble(i, cxgrdclmnGridTableReturSupplierColumnQty.Index, FReturSupplier.PenerimaanBarang.PenerimaanBarangItems[i].Qty);
-        cxGridTableReturSupplier.SetDouble(i, cxgrdclmnGridTableReturSupplierColumnDiskon.Index,FReturSupplier.PenerimaanBarang.PenerimaanBarangItems[i].Diskon);
-        cxGridTableReturSupplier.SetDouble(i, cxgrdclmnGridTableReturSupplierColumnPPN.Index, FReturSupplier.PenerimaanBarang.PenerimaanBarangItems[i].PPN);
-
-        cxGridTableReturSupplier.DataController.FocusedRecordIndex := i;
-        HitungNilaiNilaiPerBaris(FReturSupplier.PenerimaanBarang.PenerimaanBarangItems[i].PPN, cxgrdclmnGridTableReturSupplierColumnPPN.Index);
-
-
-      end;
-    end;
+    LoadDataPenerimaanBarang(edNoPB.Text);
   end;
+end;
+
+procedure TfrmReturSupplier.FormClose(Sender: TObject; var Action:
+    TCloseAction);
+begin
+  inherited;
+  ReturSupplier.Free;
 end;
 
 procedure TfrmReturSupplier.FormShow(Sender: TObject);
@@ -532,12 +538,15 @@ begin
     try
       FreeAndNil(FReturSupplier);
       FReturSupplier := RetrieveNoBukti(ANoBukti);
-      FID               := ReturSupplier.ID;
+      FID            := ReturSupplier.ID;
 
       if ReturSupplier <> nil then
       begin
         edNoBukti.Text := ReturSupplier.NoBukti;
         edTglBukti.Date:= ReturSupplier.TglBukti;
+
+        ReturSupplier.PenerimaanBarang := ClientDataModule.ServerPenerimaanBarangClient.Retrieve(ReturSupplier.PenerimaanBarang.ID);
+        edNoPB.Text    := ReturSupplier.PenerimaanBarang.NoBukti;
 
         if ReturSupplier.Supplier.ID <> '' then
           cbbSupplier.EditValue := ReturSupplier.Supplier.ID;
@@ -565,6 +574,31 @@ begin
       end;
     finally
       Free;
+    end;
+  end;
+end;
+
+procedure TfrmReturSupplier.LoadDataPenerimaanBarang(ANoPB : String);
+var
+  i: Integer;
+begin
+  with ClientDataModule.ServerPenerimaanBarangClient do
+  begin
+    ReturSupplier.PenerimaanBarang := RetrieveNoBukti(ANoPB);
+    cbbSupplier.EditValue := ReturSupplier.PenerimaanBarang.Supplier.ID;
+    cxGridTableReturSupplier.ClearRows;
+    for i := 0 to ReturSupplier.PenerimaanBarang.PenerimaanBarangItems.Count - 1 do
+    begin
+      cxGridTableReturSupplier.DataController.RecordCount := i + 1;
+      cxGridTableReturSupplier.SetValue(i, cxgrdclmnGridTableReturSupplierColumnSKU.Index, FReturSupplier.PenerimaanBarang.PenerimaanBarangItems[i].Barang.ID);
+      cxGridTableReturSupplier.SetValue(i, cxgrdclmnGridTableReturSupplierColumnNama.Index, FReturSupplier.PenerimaanBarang.PenerimaanBarangItems[i].Barang.ID);
+      cxGridTableReturSupplier.SetValue(i, cxgrdclmnGridTableReturSupplierColumnSatuan.Index, FReturSupplier.PenerimaanBarang.PenerimaanBarangItems[i].UOM.ID);
+      cxGridTableReturSupplier.SetDouble(i, cxgrdclmnGridTableReturSupplierColumnHarga.Index, FReturSupplier.PenerimaanBarang.PenerimaanBarangItems[i].HargaBeli);
+      cxGridTableReturSupplier.SetDouble(i, cxgrdclmnGridTableReturSupplierColumnQty.Index, FReturSupplier.PenerimaanBarang.PenerimaanBarangItems[i].Qty);
+      cxGridTableReturSupplier.SetDouble(i, cxgrdclmnGridTableReturSupplierColumnDiskon.Index, FReturSupplier.PenerimaanBarang.PenerimaanBarangItems[i].Diskon);
+      cxGridTableReturSupplier.SetDouble(i, cxgrdclmnGridTableReturSupplierColumnPPN.Index, FReturSupplier.PenerimaanBarang.PenerimaanBarangItems[i].PPN);
+      cxGridTableReturSupplier.DataController.FocusedRecordIndex := i;
+      HitungNilaiNilaiPerBaris(FReturSupplier.PenerimaanBarang.PenerimaanBarangItems[i].PPN, cxgrdclmnGridTableReturSupplierColumnPPN.Index);
     end;
   end;
 end;

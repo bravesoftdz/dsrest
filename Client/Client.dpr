@@ -3,7 +3,6 @@ program Client;
 uses
   Forms,
   ufrmMain in 'ufrmMain.pas' {frmMain},
-  ufrmDefault in 'form\ufrmDefault.pas' {frmDefault},
   ufrmReturSupplier in 'form\ufrmReturSupplier.pas' {frmReturSupplier},
   uModel in '..\uModel.pas',
   ufrmSupplier in 'form\ufrmSupplier.pas' {frmSupplier},
@@ -20,7 +19,20 @@ uses
   ufrmClosingInventory in 'form\ufrmClosingInventory.pas' {frmClosingInventory},
   ufrmLapStockSekarang in 'form\ufrmLapStockSekarang.pas' {frmLapStockSekarang},
   ufrmPembayaranSupplier in 'form\ufrmPembayaranSupplier.pas' {frmPembayaranSupplier},
-  uReport in '..\uReport.pas';
+  uReport in '..\uReport.pas',
+  ufrmGudang in 'form\ufrmGudang.pas' {frmGudang},
+  ufrmLapKartuStock in 'form\ufrmLapKartuStock.pas' {frmLapKartuStock},
+  ufrmDefault in 'form\ufrmDefault.pas' {frmDefault},
+  ufrmPilihGrid in 'form\ufrmPilihGrid.pas' {frmPilihGrid},
+  ufrmPenjualan in 'form\ufrmPenjualan.pas' {frmPenjualan},
+  uPenjualan in '..\model\uPenjualan.pas',
+  ufrmPenjualanPOS in 'form\ufrmPenjualanPOS.pas' {frmPenjualanPOS},
+  ufrmLookUpTransaksi in 'form\ufrmLookUpTransaksi.pas' {frmLookUpTransaksi},
+  ufrmPembayaranPenjualan in 'form\ufrmPembayaranPenjualan.pas' {frmPembayaranPenjualan},
+  uPembayaranPenjualan in '..\model\uPembayaranPenjualan.pas',
+  uAR in '..\model\uAR.pas',
+  uCustomerInvoice in '..\model\uCustomerInvoice.pas',
+  ufrmCustomerInvoice in 'form\ufrmCustomerInvoice.pas' {frmCustomerInvoice};
 
 {$R *.res}
 

@@ -34,9 +34,7 @@ inherited frmSupplier: TfrmSupplier
         DataController.Summary.DefaultGroupSummaryItems = <>
         DataController.Summary.FooterSummaryItems = <>
         DataController.Summary.SummaryGroups = <>
-        Styles.ContentEven = cxstylGridEven
-        Styles.ContentOdd = cxstylGridOdd
-        Styles.Header = cxstylGridHeader
+        OptionsView.GroupByBox = False
         object cxgrdbclmnGridDBTableSupplierColumnKode: TcxGridDBColumn
           DataBinding.FieldName = 'Kode'
           HeaderAlignmentHorz = taCenter
@@ -74,6 +72,10 @@ inherited frmSupplier: TfrmSupplier
     object Input: TcxTabSheet
       Caption = 'Input'
       ImageIndex = 0
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object lblKode: TLabel
         Left = 19
         Top = 17
@@ -156,14 +158,9 @@ inherited frmSupplier: TfrmSupplier
       OnExecute = ActionRefreshExecute
     end
   end
-  inherited cxStyleRepTrans: TcxStyleRepository
-    Left = 456
-    Top = 16
-    PixelsPerInch = 96
-  end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010105000800400018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C0101050008004C0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

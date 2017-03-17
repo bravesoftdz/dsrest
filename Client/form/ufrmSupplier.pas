@@ -11,7 +11,8 @@ uses
   cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGridLevel,
   cxGridCustomView, cxGrid, Grids, DBGrids, DBClient, Provider,
   cxPCdxBarPopupMenu, cxPC, cxMemo, ImgList, uModel, cxNavigator, System.Actions,
-  dxBarExtDBItems;
+  dxBarExtDBItems, cxCheckBox, dxBarBuiltInMenu, System.ImageList, cxBarEditItem,
+  dxBarExtItems;
 
 type
   TfrmSupplier = class(TfrmDefault)

@@ -18,16 +18,16 @@ object frmServer: TfrmServer
   object pnlKoneksi: TPanel
     Left = 0
     Top = 0
-    Width = 273
-    Height = 373
-    Align = alLeft
+    Width = 555
+    Height = 177
+    Align = alTop
     TabOrder = 0
     object grpDB: TGroupBox
       Left = 1
       Top = 1
-      Width = 271
-      Height = 185
-      Align = alTop
+      Width = 272
+      Height = 175
+      Align = alLeft
       Caption = 'Koneksi Database'
       TabOrder = 0
       object lblServer: TLabel
@@ -142,10 +142,10 @@ object frmServer: TfrmServer
       end
     end
     object grpRestServer: TGroupBox
-      Left = 1
-      Top = 186
-      Width = 271
-      Height = 186
+      Left = 273
+      Top = 1
+      Width = 281
+      Height = 175
       Align = alClient
       Caption = 'Rest Server'
       Enabled = False
@@ -192,26 +192,17 @@ object frmServer: TfrmServer
         TabOrder = 3
         OnClick = ButtonOpenBrowserClick
       end
-      object btnTest: TButton
-        Left = 2
-        Top = 159
-        Width = 267
-        Height = 25
-        Align = alBottom
-        TabOrder = 4
-        OnClick = btnTestClick
-      end
     end
   end
   object mmoLogs: TMemo
-    Left = 273
-    Top = 0
-    Width = 282
-    Height = 373
+    Left = 0
+    Top = 177
+    Width = 555
+    Height = 196
     Align = alClient
     Color = clNone
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWhite
+    Font.Color = clBlue
     Font.Height = -11
     Font.Name = 'Tahoma'
     Font.Style = []
@@ -265,9 +256,5 @@ object frmServer: TfrmServer
     Connection = FDConnection1
     Left = 384
     Top = 144
-  end
-  object Session1: TSession
-    Left = 200
-    Top = 272
   end
 end

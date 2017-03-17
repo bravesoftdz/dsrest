@@ -1,9 +1,119 @@
-inherited frmClosingInventory: TfrmClosingInventory
-  Caption = 'Closing Inventory'
-  ExplicitWidth = 733
-  ExplicitHeight = 385
+inherited frmLapKartuStock: TfrmLapKartuStock
+  Caption = 'Kartu Stock'
+  ClientHeight = 417
+  ClientWidth = 721
+  OnShow = FormShow
+  ExplicitWidth = 737
+  ExplicitHeight = 456
   PixelsPerInch = 96
   TextHeight = 13
+  inherited splTransaksi: TSplitter
+    Left = 0
+    Top = 145
+    Width = 721
+    Height = 8
+    Cursor = crVSplit
+    Align = alTop
+    ExplicitLeft = 0
+    ExplicitTop = 235
+    ExplicitWidth = 91
+    ExplicitHeight = 8
+  end
+  inherited cxSBTransaksi: TdxStatusBar
+    Top = 397
+    Width = 721
+    ExplicitTop = 397
+    ExplicitWidth = 721
+  end
+  inherited pnlListTransaksi: TPanel
+    Width = 721
+    Height = 95
+    Align = alTop
+    ExplicitWidth = 721
+    ExplicitHeight = 95
+    object lblAwal: TLabel
+      Left = 15
+      Top = 17
+      Width = 36
+      Height = 13
+      Caption = 'Periode'
+    end
+    object lblSD: TLabel
+      Left = 181
+      Top = 17
+      Width = 19
+      Height = 13
+      Caption = 's.d.'
+    end
+    object lblGudang: TLabel
+      Left = 14
+      Top = 44
+      Width = 37
+      Height = 13
+      Caption = 'Gudang'
+    end
+    object lblBarang: TLabel
+      Left = 14
+      Top = 71
+      Width = 37
+      Height = 13
+      Caption = 'Gudang'
+    end
+    object edAwal: TcxDateEdit
+      Left = 56
+      Top = 13
+      Properties.DisplayFormat = 'dd/MMM/yyyy'
+      TabOrder = 0
+      Width = 121
+    end
+    object edAkhir: TcxDateEdit
+      Left = 204
+      Top = 13
+      Properties.DisplayFormat = 'dd/MMM/yyyy'
+      TabOrder = 1
+      Width = 121
+    end
+    object cbbGudang: TcxExtLookupComboBox
+      Left = 56
+      Top = 40
+      Properties.DropDownAutoSize = True
+      Properties.FocusPopup = True
+      Properties.View = cxGridDBTableWarehouse
+      Properties.KeyFieldNames = 'ID'
+      Properties.ListFieldItem = cxGridColWHNama
+      TabOrder = 2
+      Width = 269
+    end
+    object cbbBarang: TcxExtLookupComboBox
+      Left = 56
+      Top = 67
+      Properties.DropDownAutoSize = True
+      Properties.FocusPopup = True
+      Properties.View = cxGridDBTableWarehouse
+      Properties.KeyFieldNames = 'ID'
+      Properties.ListFieldItem = cxGridColWHNama
+      TabOrder = 3
+      Width = 269
+    end
+  end
+  object cxGridDBLapMutasi: TcxGrid [3]
+    Left = 0
+    Top = 153
+    Width = 721
+    Height = 244
+    Align = alClient
+    TabOrder = 6
+    object cxGridDBTableKartok: TcxGridDBTableView
+      Navigator.Buttons.CustomButtons = <>
+      DataController.Summary.DefaultGroupSummaryItems = <>
+      DataController.Summary.FooterSummaryItems = <>
+      DataController.Summary.SummaryGroups = <>
+      OptionsView.GroupByBox = False
+    end
+    object cxgrdlvlGridLapMutasiLevelLapMutasi: TcxGridLevel
+      GridView = cxGridDBTableKartok
+    end
+  end
   inherited dxBarManagerForm: TdxBarManager
     DockControlHeights = (
       0
@@ -27,13 +137,18 @@ inherited frmClosingInventory: TfrmClosingInventory
     end
   end
   inherited ActionListForm: TActionList
-    inherited ActionSimpan: TAction
-      OnExecute = ActionSimpanExecute
+    inherited ActionRefresh: TAction
+      OnExecute = ActionRefreshExecute
+    end
+  end
+  inherited cxGridRepTransaksi: TcxGridViewRepository
+    inherited cxGridDBTableWarehouse: TcxGridDBTableView
+      DataController.KeyFieldNames = 'ID'
     end
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010105000800440018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C0101050008007C0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

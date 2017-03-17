@@ -73,69 +73,72 @@ inherited frmLapMutasiBarangPerTransaksi: TfrmLapMutasiBarangPerTransaksi
       DataController.Summary.DefaultGroupSummaryItems = <>
       DataController.Summary.FooterSummaryItems = <>
       DataController.Summary.SummaryGroups = <>
-      Styles.ContentEven = cxstylGridEven
-      Styles.ContentOdd = cxstylGridOdd
-      Styles.Header = cxstylGridHeader
-      object cxGridDBTableMutasiBarangColumn1: TcxGridDBColumn
+      OptionsView.NoDataToDisplayInfoText = 'Tidak Ada Data'
+      OptionsView.GroupByBox = False
+      object cxGridColsku: TcxGridDBColumn
         Caption = 'SKU '
         DataBinding.FieldName = 'Barang'
         HeaderAlignmentHorz = taCenter
       end
-      object cxGridDBTableMutasiBarangColumn2: TcxGridDBColumn
+      object cxGridColNama: TcxGridDBColumn
         Caption = 'Nama '
         DataBinding.FieldName = 'Nama'
         HeaderAlignmentHorz = taCenter
       end
-      object cxGridDBTableMutasiBarangColumn3: TcxGridDBColumn
+      object cxGridColGudang: TcxGridDBColumn
+        Caption = 'Gudang '
+        DataBinding.FieldName = 'Gudang'
+      end
+      object cxGridColSaldoAwal: TcxGridDBColumn
         Caption = 'Saldo Awal'
         DataBinding.FieldName = 'SaldoAwal'
         PropertiesClassName = 'TcxCurrencyEditProperties'
         Properties.DisplayFormat = ',0.##;(,0.##)'
         HeaderAlignmentHorz = taCenter
       end
-      object cxGridDBTableMutasiBarangColumn4: TcxGridDBColumn
+      object cxGridColPenerimaan: TcxGridDBColumn
         Caption = 'Penerimaan '
         DataBinding.FieldName = 'Penerimaan'
         PropertiesClassName = 'TcxCurrencyEditProperties'
         Properties.DisplayFormat = ',0.##;(,0.##)'
         HeaderAlignmentHorz = taCenter
       end
-      object cxGridDBTableMutasiBarangColumn5: TcxGridDBColumn
+      object cxGridColReturSupplier: TcxGridDBColumn
         Caption = 'Retur Supplier'
         DataBinding.FieldName = 'ReturSupplier'
         PropertiesClassName = 'TcxCurrencyEditProperties'
         Properties.DisplayFormat = ',0.##;(,0.##)'
         HeaderAlignmentHorz = taCenter
       end
-      object cxGridDBTableMutasiBarangColumn6: TcxGridDBColumn
+      object cxGridColPenjualan: TcxGridDBColumn
         Caption = 'Penjualan '
         DataBinding.FieldName = 'Penjualan'
         PropertiesClassName = 'TcxCurrencyEditProperties'
         Properties.DisplayFormat = ',0.##;(,0.##)'
         HeaderAlignmentHorz = taCenter
       end
-      object cxGridDBTableMutasiBarangColumn7: TcxGridDBColumn
+      object cxGridColReturCustomer: TcxGridDBColumn
         Caption = 'Retur Customer'
         DataBinding.FieldName = 'ReturCustomer'
         PropertiesClassName = 'TcxCurrencyEditProperties'
         Properties.DisplayFormat = ',0.##;(,0.##)'
         HeaderAlignmentHorz = taCenter
       end
-      object cxGridDBTableMutasiBarangColumn8: TcxGridDBColumn
+      object cxGridColKoreksiPlus: TcxGridDBColumn
         Caption = 'Koreksi (+)'
         DataBinding.FieldName = 'KoreksiPlus'
         PropertiesClassName = 'TcxCurrencyEditProperties'
         Properties.DisplayFormat = ',0.##;(,0.##)'
         HeaderAlignmentHorz = taCenter
       end
-      object cxGridDBTableMutasiBarangColumn9: TcxGridDBColumn
+      object cxGridColKoreksiMinus: TcxGridDBColumn
         Caption = 'Koreksi (-)'
         DataBinding.FieldName = 'KoreksiMinus'
         PropertiesClassName = 'TcxCurrencyEditProperties'
         Properties.DisplayFormat = ',0.##;(,0.##)'
         HeaderAlignmentHorz = taCenter
       end
-      object cxGridDBTableMutasiBarangColumn10: TcxGridDBColumn
+      object cxGridColSaldoAkhir: TcxGridDBColumn
         Caption = 'Saldo Akhir'
         DataBinding.FieldName = 'SaldoAkhir'
         PropertiesClassName = 'TcxCurrencyEditProperties'
@@ -174,12 +177,9 @@ inherited frmLapMutasiBarangPerTransaksi: TfrmLapMutasiBarangPerTransaksi
       OnExecute = ActionRefreshExecute
     end
   end
-  inherited cxStyleRepTrans: TcxStyleRepository
-    PixelsPerInch = 96
-  end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010105000800480018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010105000800580018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

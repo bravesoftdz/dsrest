@@ -1,49 +1,20 @@
-inherited frmBarang: TfrmBarang
-  Caption = 'Barang'
-  ClientHeight = 394
-  ClientWidth = 919
-  OnCreate = FormCreate
-  ExplicitWidth = 935
-  ExplicitHeight = 433
+inherited frmGudang: TfrmGudang
+  Caption = 'Gudang'
+  ExplicitWidth = 733
+  ExplicitHeight = 385
   PixelsPerInch = 96
   TextHeight = 13
-  inherited splTransaksi: TSplitter
-    Left = 369
-    Height = 324
-    ExplicitLeft = 369
-    ExplicitHeight = 324
-  end
-  inherited cxSBTransaksi: TdxStatusBar
-    Top = 374
-    Width = 919
-    ExplicitTop = 374
-    ExplicitWidth = 919
-  end
   inherited pnlListTransaksi: TPanel
-    Width = 369
-    Height = 324
-    ExplicitWidth = 369
-    ExplicitHeight = 324
-    object pnlFilterBarang: TPanel
+    object cxGridDBGudang: TcxGrid
       Left = 1
       Top = 1
-      Width = 367
-      Height = 40
-      Align = alTop
-      TabOrder = 0
-    end
-    object cxGridDBDaftarBarang: TcxGrid
-      Left = 1
-      Top = 41
-      Width = 367
-      Height = 282
+      Width = 183
+      Height = 274
       Align = alClient
-      TabOrder = 1
-      ExplicitTop = 5
-      ExplicitHeight = 318
-      object cxGridDBTableBarang: TcxGridDBTableView
+      TabOrder = 0
+      object cxGridDBTableGudang: TcxGridDBTableView
         Navigator.Buttons.CustomButtons = <>
-        OnCellDblClick = cxGridDBTableBarangCellDblClick
+        OnCellDblClick = cxGridDBTableGudangCellDblClick
         DataController.Summary.DefaultGroupSummaryItems = <>
         DataController.Summary.FooterSummaryItems = <>
         DataController.Summary.SummaryGroups = <>
@@ -53,219 +24,67 @@ inherited frmBarang: TfrmBarang
         OptionsData.Editing = False
         OptionsData.Inserting = False
         OptionsView.GroupByBox = False
-        Styles.ContentEven = cxstylGridEven
-        Styles.ContentOdd = cxstylGridOdd
-        Styles.Header = cxstylGridHeader
-        object cxgrdbclmnGridDBTableBarangColumnKode: TcxGridDBColumn
-          Caption = 'SKU '
-          DataBinding.FieldName = 'SKU'
+        object cxgrdbclmnGridDBTableGudangColumnKode: TcxGridDBColumn
+          Caption = 'Kode '
+          DataBinding.FieldName = 'Kode'
           HeaderAlignmentHorz = taCenter
-          Width = 88
+          Width = 87
         end
-        object cxgrdbclmnGridDBTableBarangColumnNama: TcxGridDBColumn
+        object cxgrdbclmnGridDBTableGudangColumnNama: TcxGridDBColumn
           Caption = 'Nama '
           DataBinding.FieldName = 'Nama'
           HeaderAlignmentHorz = taCenter
-          Width = 121
-        end
-        object cxgrdbclmnGridDBTableBarangColumnGroup: TcxGridDBColumn
-          Caption = 'Group Barang'
-          DataBinding.FieldName = 'GroupBarang'
-          PropertiesClassName = 'TcxExtLookupComboBoxProperties'
-          Properties.View = cxGridDBTableGroupBarang
-          Properties.KeyFieldNames = 'ID'
-          Properties.ListFieldItem = cxgrdbclmnGridDBTableGroupBarangColumnNama
-          HeaderAlignmentHorz = taCenter
-          Width = 84
-        end
-        object cxgrdbclmnGridDBTableBarangColumnPPN: TcxGridDBColumn
-          Caption = 'PPN '
-          DataBinding.FieldName = 'PPN'
-          HeaderAlignmentHorz = taCenter
+          Width = 138
         end
       end
-      object cxgrdlvlDaftarBarang: TcxGridLevel
-        GridView = cxGridDBTableBarang
+      object cxgrdlvlGudang: TcxGridLevel
+        GridView = cxGridDBTableGudang
       end
     end
   end
-  object cxPCHeader: TcxPageControl [3]
-    Left = 377
+  object cxPCInput: TcxPageControl [3]
+    Left = 193
     Top = 50
-    Width = 542
-    Height = 324
+    Width = 524
+    Height = 276
     Align = alClient
     TabOrder = 6
-    Properties.ActivePage = cxTSHeader
+    Properties.ActivePage = Input
     Properties.CustomButtons.Buttons = <>
-    ClientRectBottom = 320
+    ClientRectBottom = 272
     ClientRectLeft = 4
-    ClientRectRight = 538
+    ClientRectRight = 520
     ClientRectTop = 24
-    object cxTSHeader: TcxTabSheet
-      Caption = 'Barang'
+    object Input: TcxTabSheet
+      Caption = 'Input'
       ImageIndex = 0
       object lblKode: TLabel
-        Left = 31
-        Top = 18
-        Width = 19
+        Left = 19
+        Top = 17
+        Width = 24
         Height = 13
-        Caption = 'SKU'
+        Caption = 'Kode'
       end
       object lblNama: TLabel
-        Left = 23
+        Left = 16
         Top = 42
         Width = 27
         Height = 13
         Caption = 'Nama'
       end
-      object lblGroup: TLabel
-        Left = 21
-        Top = 66
-        Width = 29
-        Height = 13
-        Caption = 'Group'
-      end
-      object lblPPN: TLabel
-        Left = 292
-        Top = 43
-        Width = 19
-        Height = 13
-        Caption = 'PPN'
-      end
-      object lblSatuanStock: TLabel
-        Left = 248
-        Top = 19
-        Width = 63
-        Height = 13
-        Caption = 'Satuan Stock'
-      end
       object edKode: TcxTextEdit
-        Left = 61
-        Top = 15
+        Left = 49
+        Top = 13
         TabOrder = 0
         Text = 'edKode'
         Width = 121
       end
       object edNama: TcxTextEdit
-        Left = 61
-        Top = 39
+        Left = 49
+        Top = 38
         TabOrder = 1
         Text = 'edNama'
-        Width = 121
-      end
-      object cbbGroup: TcxExtLookupComboBox
-        Left = 61
-        Top = 63
-        Properties.DropDownAutoSize = True
-        Properties.FocusPopup = True
-        Properties.View = cxGridDBTableGroupBarang
-        Properties.KeyFieldNames = 'ID'
-        Properties.ListFieldItem = cxgrdbclmnGridDBTableGroupBarangColumnNama
-        TabOrder = 2
-        Width = 145
-      end
-      object cbbPPN: TcxComboBox
-        Left = 320
-        Top = 39
-        Properties.DropDownListStyle = lsFixedList
-        Properties.Items.Strings = (
-          'PPN'
-          'NON PPN')
-        TabOrder = 4
-        Text = 'NON PPN'
-        Width = 121
-      end
-      object cbbSatuanStock: TcxExtLookupComboBox
-        Left = 320
-        Top = 15
-        Properties.View = cxGridDBTableUOM
-        Properties.KeyFieldNames = 'ID'
-        Properties.ListFieldItem = cxgrdbclmnGridDBTableUOMColumnUOM
-        TabOrder = 3
-        Width = 121
-      end
-    end
-    object cxTSSatuan: TcxTabSheet
-      Caption = 'Satuan'
-      ImageIndex = 2
-      object cxGridDBSatuan: TcxGrid
-        Left = 0
-        Top = 0
-        Width = 534
-        Height = 296
-        Align = alClient
-        TabOrder = 0
-        object cxGridTableSatuan: TcxGridTableView
-          Navigator.Buttons.CustomButtons = <>
-          DataController.Summary.DefaultGroupSummaryItems = <>
-          DataController.Summary.FooterSummaryItems = <>
-          DataController.Summary.SummaryGroups = <>
-          OptionsBehavior.FocusFirstCellOnNewRecord = True
-          OptionsBehavior.GoToNextCellOnEnter = True
-          OptionsBehavior.FocusCellOnCycle = True
-          OptionsData.Appending = True
-          OptionsView.GroupByBox = False
-          Styles.ContentEven = cxstylGridEven
-          Styles.ContentOdd = cxstylGridOdd
-          Styles.Header = cxstylGridHeader
-          object cxGridTableSatuanColumnUOM: TcxGridColumn
-            Caption = 'UOM'
-            PropertiesClassName = 'TcxExtLookupComboBoxProperties'
-            Properties.View = cxGridDBTableUOM
-            Properties.KeyFieldNames = 'ID'
-            Properties.ListFieldItem = cxgrdbclmnGridDBTableUOMColumnUOM
-            HeaderAlignmentHorz = taCenter
-            Width = 74
-          end
-          object cxGridTableSatuanColumnKonversi: TcxGridColumn
-            Caption = 'Konversi Ke PCS'
-            PropertiesClassName = 'TcxCurrencyEditProperties'
-            Properties.Alignment.Horz = taRightJustify
-            Properties.DisplayFormat = ',0.00;(,0.00)'
-            HeaderAlignmentHorz = taCenter
-            Width = 119
-          end
-          object cxGridTableSatuanColumnHargaJual: TcxGridColumn
-            Caption = 'Harga Jual'
-            DataBinding.ValueType = 'Currency'
-            PropertiesClassName = 'TcxCurrencyEditProperties'
-            Properties.Alignment.Horz = taRightJustify
-            Properties.DisplayFormat = ',0.00;(,0.00)'
-            HeaderAlignmentHorz = taCenter
-            Width = 95
-          end
-          object cxGridTableSatuanColumnHargaJualBengkel: TcxGridColumn
-            Caption = 'Harga Jual Bengkel'
-            DataBinding.ValueType = 'Currency'
-            PropertiesClassName = 'TcxCurrencyEditProperties'
-            Properties.Alignment.Horz = taRightJustify
-            Properties.DisplayFormat = ',0.00;(,0.00)'
-            HeaderAlignmentHorz = taCenter
-            Width = 131
-          end
-          object cxGridTableSatuanColumnHargaJualGrosir: TcxGridColumn
-            Caption = 'Harga Jual Grosir'
-            DataBinding.ValueType = 'Currency'
-            PropertiesClassName = 'TcxCurrencyEditProperties'
-            Properties.Alignment.Horz = taRightJustify
-            Properties.DisplayFormat = ',0.00;(,0.00)'
-            HeaderAlignmentHorz = taCenter
-            Width = 113
-          end
-          object cxGridTableSatuanColumnHargaJualKeliling: TcxGridColumn
-            Caption = 'Harga Jual Keliling'
-            DataBinding.ValueType = 'Currency'
-            PropertiesClassName = 'TcxCurrencyEditProperties'
-            Properties.Alignment.Horz = taRightJustify
-            Properties.DisplayFormat = ',0.00;(,0.00)'
-            HeaderAlignmentHorz = taCenter
-            Width = 140
-          end
-        end
-        object cxgrdlvlSatuan: TcxGridLevel
-          GridView = cxGridTableSatuan
-        end
+        Width = 185
       end
     end
   end
@@ -301,63 +120,27 @@ inherited frmBarang: TfrmBarang
     inherited ActionHapus: TAction
       OnExecute = ActionHapusExecute
     end
-  end
-  inherited cxStyleRepTrans: TcxStyleRepository
-    Left = 440
-    PixelsPerInch = 96
-  end
-  inherited cxGridRepTransaksi: TcxGridViewRepository
-    object cxGridDBTableGroupBarang: TcxGridDBTableView
-      Navigator.Buttons.CustomButtons = <>
-      DataController.KeyFieldNames = 'ID'
-      DataController.Summary.DefaultGroupSummaryItems = <>
-      DataController.Summary.FooterSummaryItems = <>
-      DataController.Summary.SummaryGroups = <>
-      OptionsData.CancelOnExit = False
-      OptionsData.Deleting = False
-      OptionsData.DeletingConfirmation = False
-      OptionsData.Editing = False
-      OptionsData.Inserting = False
-      OptionsView.GroupByBox = False
-      Styles.ContentEven = cxstylGridEven
-      Styles.ContentOdd = cxstylGridOdd
-      Styles.Header = cxstylGridHeader
-      object cxgrdbclmnGridDBTableGroupBarangColumnNama: TcxGridDBColumn
-        Caption = 'Nama '
-        DataBinding.FieldName = 'Nama'
-        HeaderAlignmentHorz = taCenter
-      end
-      object cxgrdbclmnGridDBTableGroupBarangColumnKode: TcxGridDBColumn
-        Caption = 'Kode '
-        DataBinding.FieldName = 'Kode'
-        Visible = False
-        HeaderAlignmentHorz = taCenter
-      end
-      object cxgrdbclmnGridDBTableGroupBarangColumnID: TcxGridDBColumn
-        DataBinding.FieldName = 'ID'
-        Visible = False
-        HeaderAlignmentHorz = taCenter
-      end
+    inherited ActionRefresh: TAction
+      OnExecute = ActionRefreshExecute
     end
-    object cxGridDBTableUOM: TcxGridDBTableView
-      Navigator.Buttons.CustomButtons = <>
-      DataController.KeyFieldNames = 'ID'
-      DataController.Summary.DefaultGroupSummaryItems = <>
-      DataController.Summary.FooterSummaryItems = <>
-      DataController.Summary.SummaryGroups = <>
-      OptionsView.GroupByBox = False
-      Styles.ContentEven = cxstylGridEven
-      Styles.ContentOdd = cxstylGridOdd
-      Styles.Header = cxstylGridHeader
-      object cxgrdbclmnGridDBTableUOMColumnUOM: TcxGridDBColumn
-        Caption = '  UOM '
-        DataBinding.FieldName = 'UOM'
-      end
-    end
+  end
+  inherited dsCabang: TDataSource
+    Left = 544
+    Top = 88
+  end
+  inherited DSPCabang: TDataSetProvider
+    Left = 584
+    Top = 88
+  end
+  inherited cdsCabang: TClientDataSet
+    Left = 616
+    Top = 88
   end
   inherited ilButton: TImageList
+    Left = 512
+    Top = 88
     Bitmap = {
-      494C010105000800540018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C0101050008006C0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

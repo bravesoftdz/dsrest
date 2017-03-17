@@ -14,7 +14,8 @@ uses
   dxBkgnd, dxWrap, dxPrnDev, dxPSCompsProvider, dxPSFillPatterns,
   dxPSEdgePatterns, dxPSPDFExportCore, dxPSPDFExport, cxDrawTextUtils,
   dxPSPrVwStd, dxPSPrVwAdv, dxPSPrVwRibbon, dxPScxPageControlProducer,
-  dxPScxEditorProducers, dxPScxExtEditorProducers, dxPrnDlg, dxPgsDlg, dxPSCore;
+  dxPScxEditorProducers, dxPScxExtEditorProducers, dxPrnDlg, dxPgsDlg, dxPSCore,
+  System.ImageList, dxBarExtItems, ufrmPilihGrid;
 
 type
   TfrmDefault = class(TForm)
@@ -34,12 +35,7 @@ type
     ActionRefresh: TAction;
     pnlListTransaksi: TPanel;
     splTransaksi: TSplitter;
-    cxStyleRepTrans: TcxStyleRepository;
-    cxstylGridHeader: TcxStyle;
-    cxstylGridOdd: TcxStyle;
-    cxstylGridEven: TcxStyle;
     cxGridRepTransaksi: TcxGridViewRepository;
-    ilButton: TImageList;
     cbbLUCabang: TdxBarLookupCombo;
     cxGridDBTableCabang: TcxGridDBTableView;
     cxGridColCabangKode: TcxGridDBColumn;
@@ -48,9 +44,22 @@ type
     DSPCabang: TDataSetProvider;
     cdsCabang: TClientDataSet;
     chkKonsolidasi: TcxBarEditItem;
+    cxGridDBTableWarehouse: TcxGridDBTableView;
+    cxGridColWHKode: TcxGridDBColumn;
+    cxGridColWHNama: TcxGridDBColumn;
+    dxbrbtn1: TdxBarButton;
+    dxbrlrgbtn1: TdxBarLargeButton;
+    actExport: TAction;
+    dxbrstc1: TdxBarStatic;
+    dlgSaveExportExcel: TSaveDialog;
+    ilButton: TImageList;
+    dxbrcmb1: TdxBarCombo;
+    procedure actExportExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
+    function GetcxGridDBTableViewExport(AGridName : String): TcxGridDBTableView;
+        virtual;
     procedure InisialisasiCDSCabang;
     { Private declarations }
   protected
@@ -68,14 +77,62 @@ uses
 
 {$R *.dfm}
 
+procedure TfrmDefault.actExportExecute(Sender: TObject);
+var
+  cxGridDBTableView: TcxGridDBTableView;
+  I: Integer;
+  lDaftarGrids: TStrings;
+begin
+  lDaftarGrids := TfrmPilihGrid.ShowPilihGrid(Self);
+  try
+    for I := 0 to lDaftarGrids.Count - 1 do
+    begin
+      cxGridDBTableView := GetcxGridDBTableViewExport(lDaftarGrids[i]);
+      if cxGridDBTableView <> nil then
+      begin
+        if dlgSaveExportExcel.Execute then
+        begin
+          cxGridDBTableView.ExportToXLS(dlgSaveExportExcel.FileName);
+        end;
+      end;
+    end;
+  finally
+    lDaftarGrids.Free;
+  end;
+end;
+
 procedure TfrmDefault.FormCreate(Sender: TObject);
+//var
+//  I: Integer;
 begin
   InisialisasiCDSCabang;
+
+//  for I := 0 to cxGridRepTransaksi.Count  do
+//  begin
+//    cxGridRepTransaksi.Items[i].Tag := 99;
+//  end;
 end;
 
 procedure TfrmDefault.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   Action := caFree;
+end;
+
+function TfrmDefault.GetcxGridDBTableViewExport(AGridName : String):
+    TcxGridDBTableView;
+var
+  I: Integer;
+begin
+  Result := nil;
+
+  for I := 0 to ComponentCount - 1 do
+  begin
+    if (Components[i] is TcxGridDBTableView) and (Components[i].Name = AGridName) then
+    begin
+      Result := Components[i] as TcxGridDBTableView;
+      Exit;
+    end;
+  end;
 end;
 
 procedure TfrmDefault.InisialisasiCDSCabang;

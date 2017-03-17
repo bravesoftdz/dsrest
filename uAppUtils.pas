@@ -7,7 +7,15 @@ uses
   ComCtrls,Math,
   cxGridDBTableView,DB,cxGridCustomTableView, cxGridTableView,ExtCtrls,
   Variants,StrUtils, Forms, Dialogs, Controls,
-  Windows, SysUtils, SqlExpr, System.UITypes;
+  Windows, SysUtils, SqlExpr, System.UITypes, cxGridBandedTableView,
+  cxGridDBBandedTableView, DBClient,
+
+  cxGrid, cxTreeView,   cxGridExportLink, cxExportPivotGridLink,
+   cxDBPivotGrid, cxCurrencyEdit, cxCustomPivotGrid,
+   cxDBExtLookupComboBox, cxCustomData, cxFilter,
+   cxDBTL, cxTLExportLink,cxCalendar,
+  cxGridDBDataDefinitions,
+  cxDropDownEdit,  System.Contnrs;
 
 type
   TTreeValues = Array of Variant;
@@ -142,17 +150,52 @@ type
     function GetInteger(ARec, ACol : Integer): Integer;
     function GetDate(ARec, ACol : Integer): TDatetime;
     procedure SetDouble(ARec, ACol : Integer; AValue : Double);
-
   end;
 
 
   TcxGridDBTableViewHelper = class helper for TcxGridDBTableView
+    function GetFooterSummary(aColumn: TcxGridDBBandedColumn): Variant;
   public
+    procedure AutoFormatCurrency(ADisplayFormat: String = ',0;(,0)');
+    procedure AutoFormatDate(ADisplayFormat: String = 'yyyy/mm/dd');
+    procedure ExportToXLS(sFileName: String = '');
+    procedure SetAllUpperCaseColumn;
+    procedure SetColumnsCaption(ColumnSets, ColumnCaption: Array Of String);
     procedure SetDataset(ADataset : TDataset;AAutoCreateField : Boolean=False);
         overload;
     procedure SetDataset(ASQL : String; AAutoCreateField : Boolean = False);
         overload;
+    procedure SetDetailKeyField(aKeyField: String);
+    procedure SetExtLookupCombo(ExtLookup: TcxExtLookupComboBox; IDField,
+        DisplayField: String; HideIDField: Boolean = True); overload;
+    procedure SetExtLookupCombo(ExtLookupProp: TcxExtLookupComboBoxProperties;
+        IDField, DisplayField: String; HideIDField: Boolean = True); overload;
+    procedure SetMasterKeyField(aKeyField: String);
+    procedure SetVisibleColumns(ColumnSets: Array Of String; IsVisible: Boolean);
   end;
+
+type
+  TcxExtLookupHelper = class helper for TcxExtLookupComboBoxProperties
+  protected
+  public
+    function cxDBTableGrid: TcxGridDBTableView;
+    function Dataset: TDataset;
+    procedure LoadFromCDS(aCDS: TClientDataSet; IDField, DisplayField: String;
+        HideFields: Array Of String; aOwnerForm: TComponent);
+    procedure LoadFromSQL(aSQL, IDField, DisplayField: String; HideFields: Array Of
+        String; aOwnerForm: TComponent);
+    procedure SetMultiPurposeLookup(ADropDownAutoSize : Boolean = True);
+
+  end;
+
+type
+  TcxExtLookup= class(TcxExtLookupComboBoxProperties)
+  protected
+  public
+    class procedure OnInitPopupCustom(Sender: TObject);
+
+  end;
+
 var
   FWaitForm : TForm;
   BusySaveCursor: TCursor;
@@ -183,7 +226,7 @@ const
 implementation
 
 uses
-  DBClient, uDBUtils;
+   uDBUtils;
 
 //uses
 //  DSharp.Bindings.VCLControls;
@@ -1274,15 +1317,149 @@ begin
     Result[I] := StrToIntDef('$' + Copy(value, (I * 2) + 1, 2), 0);
 end;
 
+procedure TcxGridDBTableViewHelper.AutoFormatCurrency(ADisplayFormat: String =
+    ',0;(,0)');
+var
+  i: Integer;
+  lDS: TDataSet;
+begin
+  lDS := Self.DataController.DataSource.DataSet;
+
+  //why use DS, because sometime format CDS <> grid.column.format
+  for i := 0 to lDS.FieldCount-1 do
+  begin
+    If not Assigned(Self.GetColumnByFieldName(lDS.Fields[i].FieldName)) then
+      continue;
+    with Self.GetColumnByFieldName(lDS.Fields[i].FieldName) do
+    begin
+      If lDS.Fields[i].DataType = ftFloat then
+      begin
+        PropertiesClassName := 'TcxCurrencyEditProperties';
+        TcxCurrencyEditProperties( Properties).DisplayFormat := ADisplayFormat;
+        TcxCurrencyEditProperties( Properties).Alignment.Horz := taRightJustify;
+        DataBinding.ValueType := 'Float';
+      end;
+    end;
+  end;
+end;
+
+procedure TcxGridDBTableViewHelper.AutoFormatDate(ADisplayFormat: String =
+    'yyyy/mm/dd');
+var
+  i: Integer;
+  lDS: TDataSet;
+begin
+  lDS := Self.DataController.DataSource.DataSet;
+
+  //why use DS, because sometime format CDS <> grid.column.format
+  for i := 0 to lDS.FieldCount-1 do
+  begin
+    If not Assigned(Self.GetColumnByFieldName(lDS.Fields[i].FieldName)) then
+      continue;
+    with Self.GetColumnByFieldName(lDS.Fields[i].FieldName) do
+    begin
+      If lDS.Fields[i].DataType in [ftDate, ftDateTime] then
+      begin
+        PropertiesClassName := 'TcxDateEditProperties';
+        TcxDateEditProperties( Properties).DisplayFormat := ADisplayFormat;
+        TcxDateEditProperties( Properties).EditMask := ADisplayFormat;
+        DataBinding.ValueType := 'DateTime';
+      end;
+    end;
+  end;
+end;
+
+procedure TcxGridDBTableViewHelper.ExportToXLS(sFileName: String = '');
+var
+  DoSave: Boolean;
+  lSaveDlg: TSaveDialog;
+begin
+  DoSave := True;
+  If sFileName = '' then
+  begin
+    lSaveDlg := TSaveDialog.Create(nil);
+    Try
+      if lSaveDlg.Execute then
+        sFileName := lSaveDlg.FileName
+      else
+        DoSave := False;
+    Finally
+      lSaveDlg.Free;
+    End;
+  end;
+
+  If DoSave then
+  begin
+    Try
+      ExportGridToExcel(sFileName, TcxGrid(Self.Control));
+      TAppUtils.Information('Data berhasil diexport ke: ' + sFileName);
+    except
+      TAppUtils.Warning('Gagal menyimpan data ke excel');
+    end;
+  end;
+end;
+
+function TcxGridDBTableViewHelper.GetFooterSummary(aColumn:
+    TcxGridDBBandedColumn): Variant;
+var
+  i: Integer;
+begin
+  Result := 0;
+
+  with Self.DataController.Summary do
+  begin
+    for i :=0 to FooterSummaryItems.Count-1 do
+    begin
+//      If FooterSummaryItems.Items[i].ItemLink.ClassName <> aColumn.ClassName then
+//        continue;
+
+      If FooterSummaryItems.Items[i].ItemLink = aColumn then
+        Result := FooterSummaryValues[i];
+    end;
+  end;
+end;
+
+procedure TcxGridDBTableViewHelper.SetAllUpperCaseColumn;
+var
+  i: Integer;
+begin
+  for i := 0 to Self.ColumnCount-1 do
+  begin
+    Self.Columns[i].Caption := UpperCase(Self.Columns[i].Caption);
+  end;
+end;
+
+procedure TcxGridDBTableViewHelper.SetColumnsCaption(ColumnSets, ColumnCaption:
+    Array Of String);
+var
+  i: Integer;
+begin
+  for i := Low(ColumnSets) to High(ColumnSets) do
+  begin
+    If Assigned(Self.GetColumnByFieldName(ColumnSets[i])) then
+      Self.GetColumnByFieldName(ColumnSets[i]).Caption := ColumnCaption[i];
+  end;
+end;
+
 procedure TcxGridDBTableViewHelper.SetDataset(ADataset : TDataset;
     AAutoCreateField : Boolean=False);
+var
+  I: Integer;
 begin
   if Self.DataController.DataSource = nil then
     Self.DataController.DataSource := TDataSource.Create(Self);
 
   Self.DataController.DataSource.DataSet := ADataset;
   if AAutoCreateField then
+  begin
     Self.DataController.CreateAllItems(True);
+    for I := 0 to Self.ColumnCount - 1 do
+    begin
+      Self.Columns[i].Caption := UpperCase(Self.Columns[i].Caption + ' ');
+      Self.Columns[i].HeaderAlignmentHorz := taCenter;
+    end;
+  end;
+
 end;
 
 procedure TcxGridDBTableViewHelper.SetDataset(ASQL : String; AAutoCreateField :
@@ -1292,6 +1469,52 @@ var
 begin
   lCDS := TDBUtils.OpenDataset(ASQL);
   Self.SetDataset(lCDS, AAutoCreateField);
+end;
+
+procedure TcxGridDBTableViewHelper.SetDetailKeyField(aKeyField: String);
+begin
+  Self.DataController.MasterKeyFieldNames   := aKeyField ;
+end;
+
+procedure TcxGridDBTableViewHelper.SetExtLookupCombo(ExtLookup:
+    TcxExtLookupComboBox; IDField, DisplayField: String; HideIDField: Boolean =
+    True);
+begin
+  SetExtLookupCombo( ExtLookup.Properties , IDField, DisplayField, HideIDField);
+end;
+
+procedure TcxGridDBTableViewHelper.SetExtLookupCombo(ExtLookupProp:
+    TcxExtLookupComboBoxProperties; IDField, DisplayField: String; HideIDField:
+    Boolean = True);
+begin
+  with ExtLookupProp do
+  begin
+    View              := Self;
+    KeyFieldNames     := IDField;
+    If HideIDField then Self.SetVisibleColumns([IDField],False);
+    ListFieldItem     := Self.GetColumnByFieldName(DisplayField);
+    DropDownAutoSize  := True;
+  end;
+  ExtLookupProp.PopupAutoSize := True;
+  Self.OptionsBehavior.BestFitMaxRecordCount := 0;
+  Self.ApplyBestFit;
+end;
+
+procedure TcxGridDBTableViewHelper.SetMasterKeyField(aKeyField: String);
+begin
+  Self.DataController.DetailKeyFieldNames   := aKeyField ;
+end;
+
+procedure TcxGridDBTableViewHelper.SetVisibleColumns(ColumnSets: Array Of
+    String; IsVisible: Boolean);
+var
+  i: Integer;
+begin
+  for i := Low(ColumnSets) to High(ColumnSets) do
+  begin
+    If Assigned(Self.GetColumnByFieldName(ColumnSets[i])) then
+      Self.GetColumnByFieldName(ColumnSets[i]).Visible := IsVisible;
+  end;
 end;
 
 procedure TcxGridTableViewHelper.ClearRows;
@@ -1349,6 +1572,107 @@ procedure TcxGridTableViewHelper.SetDouble(ARec, ACol : Integer; AValue :
     Double);
 begin
   DataController.Values[ARec,ACol] := AValue;
+end;
+
+function TcxExtLookupHelper.cxDBTableGrid: TcxGridDBTableView;
+begin
+  Result := Self.View as TcxGridDBTableView;
+end;
+
+function TcxExtLookupHelper.Dataset: TDataset;
+begin
+  Result := (Self.View as TcxGridDBTableView).DataController.DataSource.DataSet;
+end;
+
+procedure TcxExtLookupHelper.LoadFromCDS(aCDS: TClientDataSet; IDField,
+    DisplayField: String; HideFields: Array Of String; aOwnerForm: TComponent);
+var
+  aRepo: TcxGridViewRepository;
+  aView: TcxGridDBTableView;
+  i: Integer;
+begin
+  aRepo := nil;
+  for i := 0 to aOwnerForm.ComponentCount - 1 do
+  begin
+    If aOwnerForm.Components[i] is TcxGridViewRepository then
+    begin
+      aRepo := aOwnerForm.Components[i] as TcxGridViewRepository;
+      break;
+    end;
+  end;
+  If not Assigned(aRepo) then
+  begin
+    aRepo := TcxGridViewRepository.Create( aOwnerForm );
+    aRepo.Name  := 'ViewRepository_' + IntToStr(Integer(aRepo));
+
+  end;
+  aView       := aRepo.CreateItem(TcxGridDBTableView) as TcxGridDBTableView;
+  aView.Name  := 'GridView_' + IntToStr(Integer(aView));
+
+  aView.OptionsView.GroupByBox        := False;
+  aView.DataController.Filter.Active  := True;
+  aView.FilterBox.Visible             := fvNever;
+
+  aView.SetDataset(aCDS, True);
+  aView.SetVisibleColumns(HideFields,False);
+  aView.SetExtLookupCombo(Self, IDField, DisplayField, False);
+
+  If Self.GetOwner is TcxExtLookupComboBox then
+  begin
+    if aView.VisibleColumnCount = 1 then
+    begin
+      If aView.VisibleColumns[0].Width < TcxExtLookupComboBox(Self.GetOwner).Width then
+        aView.VisibleColumns[0].Width := TcxExtLookupComboBox(Self.GetOwner).Width
+    end;
+  end;
+end;
+
+procedure TcxExtLookupHelper.LoadFromSQL(aSQL, IDField, DisplayField: String;
+    HideFields: Array Of String; aOwnerForm: TComponent);
+var
+  lCDS: TClientDataSet;
+begin
+  //method ini hanya digunakan sekali saja,
+  //membuat cds sesuai owner form agar di free on destroy
+  lCDS := TDBUtils.OpenDataset(aSQL);
+  Self.LoadFromCDS(lCDS, IDField, DisplayField, HideFields, aOwnerForm);
+end;
+
+procedure TcxExtLookupHelper.SetMultiPurposeLookup(ADropDownAutoSize : Boolean =
+    True);
+begin
+  AutoSearchOnPopup  := True;
+  FocusPopup         := True;
+  DropDownAutoSize   := ADropDownAutoSize;
+  DropDownListStyle  := lsEditList;
+  FocusPopup         := True;
+
+  If Self.View is TcxGridDBTableView then
+  begin
+    Self.View.OptionsData.Editing           := False;
+    Self.View.OptionsData.Inserting         := False;
+    Self.View.OptionsData.Deleting          := False;
+    Self.View.OptionsData.Appending         := False;
+    Self.View.DataController.Filter.Options := [fcoCaseInsensitive];
+
+    TcxGridDBTableView(Self.View).Tag       := 99;
+
+    TcxGridDBTableView(Self.View).FilterRow.InfoText
+      := 'Click Here & Press F2 To Define Filter (use "%" for parsial word)';
+    TcxGridDBTableView(Self.View).FilterRow.Visible       := True;
+    TcxGridDBTableView(Self.View).FilterRow.ApplyChanges  := fracImmediately;
+  end;
+  If not Assigned(Self.OnInitPopup) then
+    Self.OnInitPopup := TcxExtLookup.OnInitPopupCustom;
+end;
+
+class procedure TcxExtLookup.OnInitPopupCustom(Sender: TObject);
+begin
+  If Sender is TcxExtLookupComboBox then
+  begin
+    TcxExtLookupComboBox(Sender).Properties.View.DataController.Filter.Clear;
+    TcxExtLookupComboBox(Sender).Properties.ListFieldItem.Focused := True;
+  end;
 end;
 
 //class function TAppUtils.Terbilang(x : LongInt): string;

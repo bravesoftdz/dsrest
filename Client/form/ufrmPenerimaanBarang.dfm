@@ -4,6 +4,7 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
   ClientWidth = 984
   WindowState = wsMaximized
   OnShow = FormShow
+  ExplicitLeft = -160
   ExplicitWidth = 1000
   ExplicitHeight = 473
   PixelsPerInch = 96
@@ -54,9 +55,6 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
         OptionsData.Editing = False
         OptionsData.Inserting = False
         OptionsView.GroupByBox = False
-        Styles.ContentEven = cxstylGridEven
-        Styles.ContentOdd = cxstylGridOdd
-        Styles.Header = cxstylGridHeader
         object cxgrdbclmnGridDBTableDaftarPBNoBukti: TcxGridDBColumn
           Caption = 'No Bukti '
           DataBinding.FieldName = 'NoBukti'
@@ -75,6 +73,14 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
           Properties.KeyFieldNames = 'ID'
           Properties.ListFieldItem = cxgrdbclmnGridDBTableSupplierColumnNama
           HeaderAlignmentHorz = taCenter
+        end
+        object cxgrdbclmnGridDBTableDaftarTempo: TcxGridDBColumn
+          Caption = 'Tempo'
+          DataBinding.FieldName = 'TOP'
+        end
+        object cxgrdbclmnGridDBTableDaftarJenisPembayaran: TcxGridDBColumn
+          Caption = 'Jenis Pembayaran'
+          DataBinding.FieldName = 'JenisPembayaran'
         end
         object cxgrdbclmnGridDBTableDaftarPBKeterangan: TcxGridDBColumn
           Caption = 'Keterangan '
@@ -104,36 +110,61 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
       TabOrder = 0
       object tsHeader: TTabSheet
         Caption = 'Header Penerimaan'
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object lblNoBukti: TLabel
-          Left = 23
+          Left = 17
           Top = 8
           Width = 39
           Height = 13
           Caption = 'No Bukti'
         end
         object lblTglBukti: TLabel
-          Left = 22
+          Left = 16
           Top = 32
           Width = 40
           Height = 13
           Caption = 'Tgl Bukti'
         end
         object lblSupplier: TLabel
-          Left = 24
+          Left = 18
           Top = 56
           Width = 38
           Height = 13
           Caption = 'Supplier'
         end
         object lblKeterangan: TLabel
-          Left = 262
-          Top = 7
+          Left = 254
+          Top = 56
           Width = 56
           Height = 13
           Caption = 'Keterangan'
         end
+        object lblGudang: TLabel
+          Left = 272
+          Top = 7
+          Width = 37
+          Height = 13
+          Caption = 'Gudang'
+        end
+        object lblJenisPembayaran: TLabel
+          Left = 249
+          Top = 31
+          Width = 60
+          Height = 13
+          Caption = 'Pembayaran'
+        end
+        object lblTempo: TLabel
+          Left = 406
+          Top = 31
+          Width = 32
+          Height = 13
+          Caption = 'Tempo'
+        end
         object edNoBukti: TcxTextEdit
-          Left = 80
+          Left = 62
           Top = 3
           Enabled = False
           Properties.ReadOnly = True
@@ -142,22 +173,22 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
           Width = 121
         end
         object edTglBukti: TcxDateEdit
-          Left = 80
+          Left = 62
           Top = 27
           TabOrder = 1
           Width = 121
         end
         object memKeterangan: TcxMemo
-          Left = 336
-          Top = 3
+          Left = 318
+          Top = 52
           Lines.Strings = (
             'memKeterangan')
-          TabOrder = 3
-          Height = 72
+          TabOrder = 6
+          Height = 21
           Width = 192
         end
         object cbbSupplier: TcxExtLookupComboBox
-          Left = 80
+          Left = 62
           Top = 52
           Properties.DropDownAutoSize = True
           Properties.FocusPopup = True
@@ -166,6 +197,38 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
           Properties.ListFieldItem = cxgrdbclmnGridDBTableSupplierColumnNama
           TabOrder = 2
           Width = 145
+        end
+        object cbbGudang: TcxExtLookupComboBox
+          Left = 318
+          Top = 3
+          Properties.DropDownAutoSize = True
+          Properties.FocusPopup = True
+          Properties.View = cxGridDBTableGudang
+          Properties.KeyFieldNames = 'ID'
+          Properties.ListFieldItem = cxGridColGudangNama
+          TabOrder = 3
+          Width = 192
+        end
+        object cbbJenisPembayaran: TcxComboBox
+          Left = 318
+          Top = 27
+          Properties.DropDownListStyle = lsFixedList
+          Properties.Items.Strings = (
+            'CASH'
+            'KREDIT')
+          Properties.OnChange = cbbJenisPembayaranPropertiesChange
+          TabOrder = 4
+          Text = 'CASH'
+          OnExit = cbbJenisPembayaranExit
+          Width = 65
+        end
+        object edTempo: TcxCalcEdit
+          Left = 444
+          Top = 27
+          EditValue = 0.000000000000000000
+          Properties.Alignment.Horz = taRightJustify
+          TabOrder = 5
+          Width = 66
         end
       end
     end
@@ -179,6 +242,10 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
       TabOrder = 1
       object tsDetailPenerimaan: TTabSheet
         Caption = 'Detail Penerimaan'
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object cxGridDBPenerimaanBarang: TcxGrid
           Left = 0
           Top = 0
@@ -186,8 +253,6 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
           Height = 222
           Align = alClient
           TabOrder = 0
-          ExplicitLeft = 1
-          ExplicitTop = -1
           object cxGridTablePenerimaanBarang: TcxGridTableView
             Navigator.Buttons.CustomButtons = <>
             DataController.Summary.DefaultGroupSummaryItems = <>
@@ -219,9 +284,6 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
             OptionsData.Appending = True
             OptionsView.Footer = True
             OptionsView.GroupByBox = False
-            Styles.ContentEven = cxstylGridEven
-            Styles.ContentOdd = cxstylGridOdd
-            Styles.Header = cxstylGridHeader
             object cxGridTablePenerimaanBarangColumnSKU: TcxGridColumn
               Caption = 'SKU'
               PropertiesClassName = 'TcxExtLookupComboBoxProperties'
@@ -250,7 +312,9 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
               Properties.View = cxGridDBTableUOM
               Properties.KeyFieldNames = 'ID'
               Properties.ListFieldItem = cxgrdbclmnGridDBTableUOMColumnUOM
+              Properties.OnInitPopup = cxGridTablePenerimaanBarangColumnSatuanPropertiesInitPopup
               HeaderAlignmentHorz = taCenter
+              Width = 92
             end
             object cxGridTablePenerimaanBarangColumnHarga: TcxGridColumn
               Caption = 'Harga'
@@ -383,16 +447,15 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
       OnExecute = ActionRefreshExecute
     end
   end
-  inherited cxStyleRepTrans: TcxStyleRepository
-    PixelsPerInch = 96
-  end
   inherited cxGridRepTransaksi: TcxGridViewRepository
     object cxGridDBTableSupplier: TcxGridDBTableView
+      Tag = 99
       Navigator.Buttons.CustomButtons = <>
       DataController.KeyFieldNames = 'ID'
       DataController.Summary.DefaultGroupSummaryItems = <>
       DataController.Summary.FooterSummaryItems = <>
       DataController.Summary.SummaryGroups = <>
+      FilterRow.Visible = True
       OptionsData.CancelOnExit = False
       OptionsData.Deleting = False
       OptionsData.DeletingConfirmation = False
@@ -409,11 +472,13 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
       end
     end
     object cxGridDBTableSKU: TcxGridDBTableView
+      Tag = 99
       Navigator.Buttons.CustomButtons = <>
       DataController.KeyFieldNames = 'ID'
       DataController.Summary.DefaultGroupSummaryItems = <>
       DataController.Summary.FooterSummaryItems = <>
       DataController.Summary.SummaryGroups = <>
+      FilterRow.Visible = True
       OptionsData.CancelOnExit = False
       OptionsData.Deleting = False
       OptionsData.DeletingConfirmation = False
@@ -430,7 +495,9 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
       end
     end
     object cxGridDBTableUOM: TcxGridDBTableView
+      Tag = 99
       Navigator.Buttons.CustomButtons = <>
+      FilterBox.Visible = fvNever
       DataController.KeyFieldNames = 'ID'
       DataController.Summary.DefaultGroupSummaryItems = <>
       DataController.Summary.FooterSummaryItems = <>
@@ -445,11 +512,46 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
         Caption = ' UOM '
         DataBinding.FieldName = 'UOM'
       end
+      object cxgrdbclmnGridDBTableUOMColumnID: TcxGridDBColumn
+        Caption = 'ID '
+        DataBinding.FieldName = 'ID'
+        Visible = False
+      end
     end
+    object cxGridDBTableGudang: TcxGridDBTableView
+      Tag = 99
+      Navigator.Buttons.CustomButtons = <>
+      DataController.KeyFieldNames = 'ID'
+      DataController.Summary.DefaultGroupSummaryItems = <>
+      DataController.Summary.FooterSummaryItems = <>
+      DataController.Summary.SummaryGroups = <>
+      OptionsData.CancelOnExit = False
+      OptionsData.Deleting = False
+      OptionsData.DeletingConfirmation = False
+      OptionsData.Editing = False
+      OptionsData.Inserting = False
+      OptionsView.GroupByBox = False
+      object cxGridColGudangNama: TcxGridDBColumn
+        Caption = 'Nama '
+        DataBinding.FieldName = 'Nama'
+      end
+      object cxGridColGudangKode: TcxGridDBColumn
+        Caption = 'Kode '
+        DataBinding.FieldName = 'Kode'
+      end
+    end
+  end
+  inherited DSPCabang: TDataSetProvider
+    Left = 192
+    Top = 104
+  end
+  inherited cdsCabang: TClientDataSet
+    Left = 224
+    Top = 104
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010105000800640018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C0101050008008C0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1049,14 +1151,6 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
       F0000F000001800003F3FF1FF8001F000003C00003F0003FFE007F800007E000
       07F8007FFFFFFFE0000FFFFFFFFFFFFF00000000000000000000000000000000
       000000000000}
-  end
-  inherited DSPCabang: TDataSetProvider
-    Left = 272
-    Top = 8
-  end
-  inherited cdsCabang: TClientDataSet
-    Left = 304
-    Top = 8
   end
   object dsPB: TDataSource
     Left = 392

@@ -4,14 +4,19 @@ interface
 
 uses
   SysUtils, Classes, DSServer, uModel, Windows, uDBUtils, Generics.Collections,
-  DBXJSON, DBClient, DB, rtti, uInterface;
+  DBXJSON, DBClient, DB, rtti, uInterface, uPenjualan,
+  uCustomerInvoice, uAR;
 
 type
   {$METHODINFO ON}
 
+//  TServerAR = class;
   TServerLaporan = class(TInterfacedPersistent)
   public
+    function LaporanKartok(ATglAwal , ATglAkhir : TDateTime; ABarang : TBarang;
+        AGudang : TGudang; ACabang : TCabang): TDataset;
     function LaporanStockSekarang(ACabang : TCabang): TDataset;
+    function LookUpPenerimaan(ABulan, ATahun : Integer): TDataset;
     function RetriveMutasiBarang(ATglAwal , ATglAtglAkhir : TDateTime) : TDataset;
 
   end;
@@ -27,7 +32,7 @@ type
   public
     function Delete(AAppObject : TAppObject): Boolean; virtual;
     function RetrieveCDS(AAppObject : TAppObject): TDataSet; virtual;
-    function RetrieveCDSJSON: TJSONArray;
+//    function RetrieveCDSJSON: TJSONArray;
     function Save(AOBject : TAppObject): Boolean; virtual;
   end;
 
@@ -119,7 +124,7 @@ type
   TServerStockSekarang = class(TCRUD)
   public
     function HapusMutasi(ANoBukti : String): Boolean;
-    function Retrieve(ABarang : TBarang): TStockSekarang;
+    function Retrieve(ABarang : TBarang; AGudang : TGudang): TStockSekarang;
   end;
 
   TServerReturSupplier = class(TServerTransaction, IBisaSimpanStock)
@@ -130,6 +135,7 @@ type
     function SimpanStockSekarang(AAppObject : TAppObject; AIsMenghapus : Boolean =
         False): Boolean; stdcall;
   protected
+    function AfterDelete(AOBject : TAppObject): Boolean; override;
     function AfterSave(AOBject : TAppObject): Boolean; override;
     function BeforeSave(AOBject : TAppObject): Boolean; override;
   public
@@ -149,6 +155,50 @@ type
     function Retrieve(AID : String): TPembayaranSupplier;
     function RetrieveCDS2: TDataset;
   end;
+
+  TServerGudang = class(TServerMaster)
+  public
+    function Retrieve(AID : String): TGudang;
+    function RetrieveKode(AKode : String): TGudang;
+  end;
+
+  TServerPenjualan = class(TServerTransaction, IBisaSimpanStock)
+  strict private
+    function HapusMutasi(ANoBukti : String): Boolean; stdcall;
+    function SimpanMutasiStock(AAppObject : TAppObject): Boolean; stdcall;
+  private
+    function SimpanStockSekarang(AAppObject : TAppObject; AIsMenghapus : Boolean =
+        False): Boolean; stdcall;
+  protected
+    function AfterDelete(AOBject : TAppObject): Boolean; override;
+    function AfterSave(AOBject : TAppObject): Boolean; override;
+    function BeforeSave(AOBject : TAppObject): Boolean; override;
+  public
+    function Retrieve(AID : String): TPenjualan;
+    function RetrieveNoBukti(ANoBukti : String): TPenjualan;
+  end;
+
+  TServerAR = class(TServerTransaction)
+  public
+    function Retrieve(AID : String): TAR;
+    function RetrieveCDSlip(AID : String): TDataset;
+    function RetrieveNoBukti(ANoBukti : String): TAR;
+  end;
+
+  TServerCustomerInvoice = class(TServerTransaction)
+  private
+    FServerAR: TServerAR;
+    function GetServerAR: TServerAR;
+    property ServerAR: TServerAR read GetServerAR write FServerAR;
+  public
+    destructor Destroy; override;
+    function AfterSave(AAppObject : TAppObject): Boolean; override;
+    function Retrieve(AID : String): TCustomerInvoice;
+    function RetrieveCDSlip(AID : String): TDataset;
+    function RetrieveNoBukti(ANoBukti : String): TCustomerInvoice;
+  end;
+
+
 
 
 
@@ -312,31 +362,31 @@ begin
   Result := StringReplace(Self.ClassName,'Server','', [rfIgnoreCase]);
 end;
 
-function TCRUD.RetrieveCDSJSON: TJSONArray;
-var
-  I: Integer;
-  jRecord: TJSONObject;
-begin
-  Result := TJSONArray.Create; ;
-
-  with TDBUtils.OpenDataset('select* from tbarang') do
-  begin
-    try
-      while not Eof do
-      begin
-        jRecord := TJSONObject.Create;
-        for I := 0 to FieldCount - 1 do
-        jRecord.AddPair(
-        Fields[I].FieldName,TJSONString.Create (Fields[I].AsString));
-        Result.AddElement(jRecord);
-
-        Next;
-      end;
-    finally
-      Free;
-    end;
-  end;
-end;
+//function TCRUD.RetrieveCDSJSON: TJSONArray;
+//var
+//  I: Integer;
+//  jRecord: TJSONObject;
+//begin
+//  Result := TJSONArray.Create; ;
+//
+//  with TDBUtils.OpenDataset('select* from tbarang') do
+//  begin
+//    try
+//      while not Eof do
+//      begin
+//        jRecord := TJSONObject.Create;
+//        for I := 0 to FieldCount - 1 do
+//        jRecord.AddPair(
+//        Fields[I].FieldName,TJSONString.Create (Fields[I].AsString));
+//        Result.AddElement(jRecord);
+//
+//        Next;
+//      end;
+//    finally
+//      Free;
+//    end;
+//  end;
+//end;
 
 function TCRUD.SaveNoCommit(AOBject : TAppObject): Boolean;
 begin
@@ -519,6 +569,7 @@ begin
         lMutasiStock.Transaksi  := 'Penerimaan Barang';
         lMutasiStock.TglBukti   := lPB.TglBukti;
         lMutasiStock.Konversi   := lPB.PenerimaanBarangItems[i].Konversi;
+        lMutasiStock.Gudang     := TGudang.CreateID(lPB.Gudang.ID);
 
         if not SaveNoCommit(lMutasiStock) then
           Exit;
@@ -556,9 +607,9 @@ begin
 
       for i := 0 to lPB.PenerimaanBarangItems.Count - 1 do
       begin
-        lStockSekarang           := Retrieve(lPB.PenerimaanBarangItems[i].Barang);
-        lStockSekarang.Cabang    := TCabang.Create;
-        lStockSekarang.Cabang.ID := lPB.Cabang.ID;
+        lStockSekarang           := Retrieve(lPB.PenerimaanBarangItems[i].Barang, lPB.Gudang);
+        lStockSekarang.Cabang    := TCabang.CreateID(lPB.Cabang.ID);
+        lStockSekarang.Gudang    := TGudang.CreateID(lPB.Gudang.ID);
 //        dKonversi                := lPB.PenerimaanBarangItems[i].Konversi;
 
         with TServerBarang.Create do
@@ -728,7 +779,8 @@ begin
 
 end;
 
-function TServerStockSekarang.Retrieve(ABarang : TBarang): TStockSekarang;
+function TServerStockSekarang.Retrieve(ABarang : TBarang; AGudang : TGudang):
+    TStockSekarang;
 var
   sID: string;
   sSQL: string;
@@ -739,7 +791,9 @@ begin
     Exit;
 
   sSQL := 'select id from ' + TStockSekarang.ClassName
-          + ' where barang = ' + QuotedStr(ABarang.ID);
+          + ' where barang = ' + QuotedStr(ABarang.ID)
+          + ' and gudang = ' + QuotedStr(AGudang.ID);
+
   with TDBUtils.OpenDataset(sSQL) do
   begin
     try
@@ -751,22 +805,82 @@ begin
   end;
 end;
 
+function TServerLaporan.LaporanKartok(ATglAwal , ATglAkhir : TDateTime; ABarang
+    : TBarang; AGudang : TGudang; ACabang : TCabang): TDataset;
+var
+  sSQL: string;
+begin
+  sSQL := 'select 1 as Urutan, cast(' + TAppUtils.QuotD(StartOfTheMonth(ATglAwal)) + ' as date) as TglBukti,' +
+          QuotedStr('Saldo Awal') + ' as NoBukti, b.Nama as Cabang, c.Nama as Gudang,' +
+          ' d.nama as Barang,  0 as Qtyout, qty as qtyin, e.uom, 1 as konversi,' +
+          ' a.rp as harga, e.uom as satuanstock,' +
+          QuotedStr('Saldo Awal') + ' as Transaksi ' +
+          ' from tclosinginventory a' +
+          ' inner join tcabang b on a.cabang =b.id' +
+          ' inner join tgudang c on a.gudang = c.id' +
+          ' inner join tbarang d on a.barang = d.id' +
+          ' inner join tuom e on a.uom = e.id' +
+          ' where periode = ' + FormatDateTime('yyyyMM', StartOfTheMonth(ATglAwal)) +
+          ' and a.barang = ' + QuotedStr(ABarang.ID);
+
+  if AGudang <> nil then
+    sSQL := sSQL + ' and a.gudang = ' + QuotedStr(AGudang.ID);
+
+  if ACabang <> nil then
+    sSQL := sSQL + ' and a.cabang = ' + QuotedStr(ACabang.ID);
+
+  sSQL := sSQL + ' union all ' +
+                 ' select 2,a.Tglbukti, a.NoBukti, b.Nama as Cabang, c.Nama as Gudang, d.nama as Barang,  a.qtyout, a.qtyin, e.uom, a.konversi, a.harga,' +
+                 ' f.uom as satuanstock, a.Transaksi' +
+                 ' from tmutasistock a' +
+                 ' inner join tcabang b on a.cabang =b.id' +
+                 ' inner join tgudang c on a.gudang = c.id' +
+                 ' inner join tbarang d on a.barang = d.id' +
+                 ' inner join tuom e on a.uom = e.id' +
+                 ' left join tuom f on d.satuanstock = f.id' +
+                 ' where a.tglbukti <= ' + TAppUtils.QuotDt(EndOfTheDay(ATglAkhir)) +
+                 ' and a.tglbukti >= ' + TAppUtils.QuotDt(StartOfTheDay(ATglAwal));
+
+  if AGudang <> nil then
+    sSQL := sSQL + ' and a.gudang = ' + QuotedStr(AGudang.ID);
+
+  if ACabang <> nil then
+    sSQL := sSQL + ' and a.cabang = ' + QuotedStr(ACabang.ID);
+
+  sSQL := sSQL + ' order by 1 ,2,3 ';
+
+  Result := TDBUtils.OpenDataset(sSQL);
+end;
+
 function TServerLaporan.LaporanStockSekarang(ACabang : TCabang): TDataset;
 var
   sSQL: string;
 begin
-  sSQL := 'select b.sku, b.nama, c.uom , d.nama as cabang, a.qty, a.rp' +
+  sSQL := 'select e.nama as gudang, b.sku, b.nama, c.uom , d.nama as cabang, a.qty, a.rp' +
           ' from tstocksekarang a' +
           ' INNER JOIN tbarang b on a.barang = b.id' +
           ' INNER JOIN tuom c on a.uom = c.id' +
           ' INNER JOIN tcabang d on a.cabang = d.id' +
-          ' order b.sku, b.nama'
+          ' INNER JOIN tgudang e on a.gudang = e.id'
           ;
+//          ' order b.sku, b.nama'
+//          ;
 
   if ACabang <> nil then
     sSQL := sSQL + ' where a.cabang = ' + QuotedStr(ACabang.Id);
 
-  sSQL := sSQL + ' order by b.sku';
+  sSQL := sSQL + ' order by e.nama,  b.sku';
+
+  Result := TDBUtils.OpenDataset(sSQL);
+end;
+
+function TServerLaporan.LookUpPenerimaan(ABulan, ATahun : Integer): TDataset;
+var
+  sSQL: string;
+begin
+  sSQL   := 'SELECT * FROM VLOOKUP_PENERIMAAN_BARANG' +
+            ' WHERE extract(month from TGLBUKTI) = ' + IntToStr(ABulan) +
+            ' AND extract(YEAR from TGLBUKTI) = ' + IntToStr(ATahun);
 
   Result := TDBUtils.OpenDataset(sSQL);
 end;
@@ -781,56 +895,51 @@ begin
   if DayOf(ATglAwal) <> 1 then
     raise Exception.Create('Periode laporan harus dimulai dari awal bulan');
 
-  sSQL := 'select cabang , barang , nama , sum(saldoawal) as saldoawal,' +
+  sSQL := 'select cabang ,gudang, barang , nama , sum(saldoawal) as saldoawal,' +
           ' sum(penerimaan) as penerimaan , sum(retursupplier) as retursupplier,' +
           ' sum(penjualan) as penjualan , sum(returcustomer) as returcustomer,' +
           ' sum(koreksiplus) as koreksiplus, sum(koreksiminus) as koreksiminus,' +
           ' sum(saldoakhir) as saldoakhir' +
           ' from proc_mutasi_barang_per_transaksi(' + TAppUtils.QuotD(ATglAwal) + ',' +
             TAppUtils.QuotDt(EndOfTheDay(ATglAtglAkhir)) + ')' +
-          ' group by cabang , barang , nama' +
+          ' group by cabang ,gudang, barang , nama' +
           ' order by barang, nama';
 
   Result   := TDBUtils.OpenDataset(sSQL);
 end;
 
+function TServerReturSupplier.AfterDelete(AOBject : TAppObject): Boolean;
+begin
+  Result := False;
+
+  if SimpanStockSekarang(AOBject, True) then
+  begin
+    if HapusMutasi(TPenerimaanBarang(AOBject).NoBukti) then
+      Result := True;
+  end;
+end;
+
 function TServerReturSupplier.AfterSave(AOBject : TAppObject): Boolean;
 begin
-  Result := SimpanStockSekarang(AOBject);
+  Result := False;
+
+  if SimpanStockSekarang(AOBject) then
+    if SimpanMutasiStock(AOBject) then
+      Result := True;
 
 end;
 
 function TServerReturSupplier.BeforeSave(AOBject : TAppObject): Boolean;
 var
-  i: Integer;
-//  lBarang: TBarang;
   lRSupLama: TReturSupplier;
 begin
   Result := False;
-
-//  for I := 0 to TReturSupplier(AOBject).ReturSupplierItems.count - 1 do
-//  begin
-//    with TServerStockSekarang.Create do
-//    begin
-//      try
-//        lBarang := TReturSupplier(AOBject).ReturSupplierItems[i].Barang;
-//        TReturSupplier(AOBject).ReturSupplierItems[i].HargaAVG := Retrieve(lBarang).Rp / Retrieve(lBarang).Qty *TReturSupplier(AOBject).ReturSupplierItems[i].Konversi;
-//      finally
-//        Free;
-//      end;
-//    end;
-//  end;
 
   lRSupLama := Retrieve(AOBject.ID);
   try
     if AOBject.ObjectState <> 1 then
     begin
-      for i := 0 to lRSupLama.ReturSupplierItems.Count - 1 do
-      begin
-        lRSupLama.ReturSupplierItems[i].Qty := lRSupLama.ReturSupplierItems[i].Qty;
-      end;
-
-      if NOT SimpanStockSekarang(lRSupLama) then
+       if NOT SimpanStockSekarang(lRSupLama, True) then
         Exit;
     end;
   finally
@@ -845,6 +954,17 @@ end;
 function TServerReturSupplier.HapusMutasi(ANoBukti : String): Boolean;
 begin
   Result := False;
+
+  with TServerStockSekarang.Create do
+  begin
+    try
+      if not HapusMutasi(ANoBukti) then
+        Exit;
+    finally
+      Free;
+    end;
+  end;
+  Result := True;
 end;
 
 function TServerReturSupplier.Retrieve(AID : String): TReturSupplier;
@@ -877,9 +997,45 @@ end;
 
 function TServerReturSupplier.SimpanMutasiStock(AAppObject : TAppObject):
     Boolean;
+var
+  i: Integer;
+  lMutasiStock: TMutasiStock;
+  lRS: TReturSupplier;
 begin
-  Result := True;
-end;
+  Result := False;
+
+  lRS := TReturSupplier(AAppObject);
+  if not HapusMutasi(lRS.NoBukti) then
+    Exit;
+
+  with TServerStockSekarang.Create do
+  begin
+    try
+      for i := 0 to lRS.ReturSupplierItems.Count - 1 do
+      begin
+        lMutasiStock            := TMutasiStock.Create;
+        lMutasiStock.Barang     := TBarang.CreateID(lRS.ReturSupplierItems[i].Barang.ID);
+        lMutasiStock.Cabang     := TCabang.CreateID(lRS.Cabang.ID);
+        lMutasiStock.Gudang     := TGudang.CreateID(lRS.Gudang.ID);
+        lMutasiStock.UOM        := TUOM.CreateID(lRS.ReturSupplierItems[i].UOM.ID);
+        lMutasiStock.Harga      := lRS.ReturSupplierItems[i].HargaBeli;
+        lMutasiStock.QtyIn      := 0;
+        lMutasiStock.QtyOut     := lRS.ReturSupplierItems[i].Qty;
+        lMutasiStock.Keterangan := lRS.NoBukti;
+        lMutasiStock.NoBukti    := lRS.NoBukti;
+        lMutasiStock.Transaksi  := 'Retur Supplier';
+        lMutasiStock.TglBukti   := lRS.TglBukti;
+        lMutasiStock.Konversi   := lRS.ReturSupplierItems[i].Konversi;
+
+        if not SaveNoCommit(lMutasiStock) then
+          Exit;
+      end;
+    finally
+      Free;
+    end;
+  end;
+
+  Result := True;end;
 
 function TServerReturSupplier.SimpanStockSekarang(AAppObject : TAppObject;
     AIsMenghapus : Boolean = False): Boolean;
@@ -891,20 +1047,23 @@ var
 begin
   Result := False;
 
+  lRSup := TReturSupplier(AAppObject);
   if AIsMenghapus then
   begin
-
+    for i := 0 to lRSup.ReturSupplierItems.Count - 1 do
+    begin
+      lRSup.ReturSupplierItems[i].Qty := -1 * lRSup.ReturSupplierItems[i].Qty;
+    end;
   end;
 
   with TServerStockSekarang.Create do
   begin
     try
-     lRSup := TReturSupplier(AAppObject);
       for i := 0 to lRSup.ReturSupplierItems.Count - 1 do
       begin
-        lStockSekarang           := Retrieve(lRSup.ReturSupplierItems[i].Barang);
-        lStockSekarang.Cabang    := TCabang.Create;
-        lStockSekarang.Cabang.ID := lRSup.Cabang.ID;
+        lStockSekarang           := Retrieve(lRSup.ReturSupplierItems[i].Barang, lRSup.Gudang);
+        lStockSekarang.Cabang    := TCabang.CreateID(lRSup.Cabang.ID);
+        lStockSekarang.Gudang    := TGudang.CreateID(lRSup.Gudang.ID);
 
         with TServerBarang.Create do
         begin
@@ -1027,6 +1186,347 @@ begin
           ' ORDER BY a.tglbukti DESC';
 
   Result := TDBUtils.OpenDataset(sSQL);
+end;
+
+function TServerGudang.Retrieve(AID : String): TGudang;
+begin
+  Result      := TGudang.Create;
+  TDBUtils.LoadFromDB(Result, AID);
+end;
+
+function TServerGudang.RetrieveKode(AKode : String): TGudang;
+var
+  sSQL: string;
+begin
+  Result      := TGudang.Create;
+
+  sSQL := 'select id from TGudang where kode = ' + QuotedStr(AKode);
+  with TDBUtils.OpenDataset(sSQL) do
+  begin
+    try
+      if not IsEmpty then
+        TDBUtils.LoadFromDB(Result, FieldByName('id').AsString);
+    finally
+      Free;
+    end;
+  end;
+end;
+
+function TServerPenjualan.AfterDelete(AOBject : TAppObject): Boolean;
+begin
+  Result := False;
+
+  if SimpanStockSekarang(AOBject, True) then
+  begin
+    if HapusMutasi(TPenerimaanBarang(AOBject).NoBukti) then
+      Result := True;
+  end;
+end;
+
+function TServerPenjualan.AfterSave(AOBject : TAppObject): Boolean;
+begin
+  Result := False;
+
+  if SimpanStockSekarang(AOBject) then
+    if SimpanMutasiStock(AOBject) then
+      Result := True;
+
+end;
+
+function TServerPenjualan.BeforeSave(AOBject : TAppObject): Boolean;
+var
+  lPenjualanLama: TPenjualan;
+begin
+  Result := False;
+
+  lPenjualanLama := Retrieve(AOBject.ID);
+  try
+    if AOBject.ObjectState <> 1 then
+    begin
+       if NOT SimpanStockSekarang(lPenjualanLama, True) then
+        Exit;
+    end;
+  finally
+    lPenjualanLama.Free;
+  end;
+
+
+  Result := True;
+
+end;
+
+function TServerPenjualan.HapusMutasi(ANoBukti : String): Boolean;
+begin
+  Result := False;
+
+  with TServerStockSekarang.Create do
+  begin
+    try
+      if not HapusMutasi(ANoBukti) then
+        Exit;
+    finally
+      Free;
+    end;
+  end;
+  Result := True;
+end;
+
+function TServerPenjualan.Retrieve(AID : String): TPenjualan;
+var
+  sSQL: string;
+  I: Integer;
+begin
+  Result := TPenjualan.Create;
+  TDBUtils.LoadFromDB(Result, AID);
+
+  sSQL := 'select c.* from tpenjualan a' +
+          ' inner join tpenjualanitem b on a.id = b.penjualan' +
+          ' inner join tbarangsatuanitem c on b.barang = c.barang and b.uom=c.uom' +
+          ' where a.id = ' + QuotedStr(AID);
+
+  with TDBUtils.OpenDataset(sSQL) do
+  begin
+    try
+      for I := 0 to Result.PenjualanItems.Count - 1 do
+      begin
+        First;
+        while not Eof do
+        begin
+          if FieldByName('barang').AsString = Result.PenjualanItems[i].Barang.ID then
+            if FieldByName('uom').AsString = Result.PenjualanItems[i].UOM.ID then
+            begin
+              Result.PenjualanItems[i].BarangSatuangItemID := FieldByName('ID').AsString;
+              Break;
+            end;
+
+          Next;
+        end;
+      end;
+    finally
+      Free;
+    end;
+  end;
+end;
+
+function TServerPenjualan.RetrieveNoBukti(ANoBukti : String): TPenjualan;
+var
+  sID: string;
+  sSQL: string;
+begin
+  sSQL := 'select * from ' + GetTableName
+          + ' where nobukti = ' + QuotedStr(ANoBukti);
+
+  with TDBUtils.OpenDataset(sSQL) do
+  begin
+    try
+      sID := FieldByName('ID').AsString;
+      Result := Retrieve(sID);
+    finally
+      Free;
+    end;
+  end;
+
+
+end;
+
+function TServerPenjualan.SimpanMutasiStock(AAppObject : TAppObject): Boolean;
+var
+  i: Integer;
+  lMutasiStock: TMutasiStock;
+  lPenjualan: TPenjualan;
+begin
+  Result := False;
+
+  lPenjualan := TPenjualan(AAppObject);
+  if not HapusMutasi(lPenjualan.NoBukti) then
+    Exit;
+
+  with TServerStockSekarang.Create do
+  begin
+    try
+      for i := 0 to lPenjualan.PenjualanItems.Count - 1 do
+      begin
+        lMutasiStock            := TMutasiStock.Create;
+        lMutasiStock.Barang     := TBarang.CreateID(lPenjualan.PenjualanItems[i].Barang.ID);
+        lMutasiStock.Cabang     := TCabang.CreateID(lPenjualan.Cabang.ID);
+        lMutasiStock.Gudang     := TGudang.CreateID(lPenjualan.Gudang.ID);
+        lMutasiStock.UOM        := TUOM.CreateID(lPenjualan.PenjualanItems[i].UOM.ID);
+        lMutasiStock.Harga      := lPenjualan.PenjualanItems[i].Harga;
+        lMutasiStock.QtyIn      := 0;
+        lMutasiStock.QtyOut     := lPenjualan.PenjualanItems[i].Qty;
+        lMutasiStock.Keterangan := lPenjualan.NoBukti;
+        lMutasiStock.NoBukti    := lPenjualan.NoBukti;
+        lMutasiStock.Transaksi  := 'Penjualan';
+        lMutasiStock.TglBukti   := lPenjualan.TglBukti;
+        lMutasiStock.Konversi   := lPenjualan.PenjualanItems[i].Konversi;
+
+        if not SaveNoCommit(lMutasiStock) then
+          Exit;
+      end;
+    finally
+      Free;
+    end;
+  end;
+
+  Result := True;end;
+
+function TServerPenjualan.SimpanStockSekarang(AAppObject : TAppObject;
+    AIsMenghapus : Boolean = False): Boolean;
+var
+  dKonversi: Double;
+  i: Integer;
+  lPenjualan: TPenjualan;
+  lStockSekarang: TStockSekarang;
+begin
+  Result := False;
+
+  lPenjualan := TPenjualan(AAppObject);
+  if AIsMenghapus then
+  begin
+    for i := 0 to lPenjualan.PenjualanItems.Count - 1 do
+    begin
+      lPenjualan.PenjualanItems[i].Qty := -1 * lPenjualan.PenjualanItems[i].Qty;
+    end;
+  end;
+
+  with TServerStockSekarang.Create do
+  begin
+    try
+      for i := 0 to lPenjualan.PenjualanItems.Count - 1 do
+      begin
+        lStockSekarang           := Retrieve(lPenjualan.PenjualanItems[i].Barang, lPenjualan.Gudang);
+        lStockSekarang.Cabang    := TCabang.CreateID(lPenjualan.Cabang.ID);
+        lStockSekarang.Gudang    := TGudang.CreateID(lPenjualan.Gudang.ID);
+
+        with TServerBarang.Create do
+        begin
+          try
+            lStockSekarang.Barang    := Retrieve(lPenjualan.PenjualanItems[i].Barang.ID);
+            dKonversi                := lStockSekarang.Barang.KonversiPC(lPenjualan.PenjualanItems[i].UOM);
+
+          finally
+            Free;
+          end;
+        end;
+
+        lStockSekarang.Qty       := lStockSekarang.Qty - (lPenjualan.PenjualanItems[i].Qty * dKonversi);
+        lStockSekarang.Rp        := lStockSekarang.Rp  - (lPenjualan.PenjualanItems[i].Qty *lPenjualan.PenjualanItems[i].HargaSetelahDiskon);
+        lStockSekarang.UOM       := TUOM.Create;
+        lStockSekarang.UOM.ID    := lStockSekarang.Barang.SatuanStock.ID;
+
+        Result := SaveNoCommit(lStockSekarang);
+      end;
+    finally
+      Free;
+    end;
+  end;
+end;
+
+destructor TServerCustomerInvoice.Destroy;
+begin
+  inherited;
+  FreeAndNil(FServerAR);
+end;
+
+function TServerCustomerInvoice.AfterSave(AAppObject : TAppObject): Boolean;
+var
+  lCI: TCustomerInvoice;
+begin
+  Result := False;
+
+  lCI    := TCustomerInvoice(AAppObject);
+  lCI.AR := ServerAR.Retrieve(lCI.AR.ID);
+  lCI.AR.Nominal := lCI.Nominal;
+
+  if lCI.AR.Cabang = nil then
+    lCI.AR.Cabang := TCabang.CreateID(lCI.Cabang.ID)
+  else
+    lCI.AR.Cabang.ID := lCI.ID;
+
+
+end;
+
+function TServerCustomerInvoice.GetServerAR: TServerAR;
+begin
+  if FServerAR = nil then
+    FServerAR := TServerAR.Create;
+
+  Result := FServerAR;
+end;
+
+function TServerCustomerInvoice.Retrieve(AID : String): TCustomerInvoice;
+begin
+  Result := TCustomerInvoice.Create;
+  TDBUtils.LoadFromDB(Result, AID);
+end;
+
+function TServerCustomerInvoice.RetrieveCDSlip(AID : String): TDataset;
+var
+  sSQL: string;
+begin
+  sSQL   := 'select * from TServerCustomerInvoice a ' +
+            ' where a.id = ' + QuotedStr(AID);
+
+  Result := TDBUtils.OpenDataset(sSQL);
+end;
+
+function TServerCustomerInvoice.RetrieveNoBukti(ANoBukti : String):
+    TCustomerInvoice;
+var
+  sID: string;
+  sSQL: string;
+begin
+  sSQL := 'select * from ' + GetTableName
+          + ' where nobukti = ' + QuotedStr(ANoBukti);
+
+  with TDBUtils.OpenDataset(sSQL) do
+  begin
+    try
+      sID := FieldByName('ID').AsString;
+      Result := Retrieve(sID);
+    finally
+      Free;
+    end;
+  end;
+
+
+end;
+
+function TServerAR.Retrieve(AID : String): TAR;
+begin
+  Result := TAR.Create;
+  TDBUtils.LoadFromDB(Result, AID);
+end;
+
+function TServerAR.RetrieveCDSlip(AID : String): TDataset;
+var
+  sSQL: string;
+begin
+  sSQL   := 'select * from TAR a ' +
+            ' where a.id = ' + QuotedStr(AID);
+
+  Result := TDBUtils.OpenDataset(sSQL);
+end;
+
+function TServerAR.RetrieveNoBukti(ANoBukti : String): TAR;
+var
+  sID: string;
+  sSQL: string;
+begin
+  sSQL := 'select * from ' + GetTableName
+          + ' where nobukti = ' + QuotedStr(ANoBukti);
+
+  with TDBUtils.OpenDataset(sSQL) do
+  begin
+    try
+      sID := FieldByName('ID').AsString;
+      Result := Retrieve(sID);
+    finally
+      Free;
+    end;
+  end;
+
+
 end;
 
 

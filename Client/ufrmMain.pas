@@ -10,7 +10,10 @@ uses
   StdCtrls,
   ComCtrls, System.Actions, FireDAC.UI.Intf, FireDAC.VCLUI.Wait,
   FireDAC.Comp.UI, FireDAC.Phys.PG, FireDAC.Stan.Intf, FireDAC.Phys,
-  FireDAC.Phys.ODBCBase, FireDAC.Phys.MSSQL, Firedac.Dapt;
+  FireDAC.Phys.ODBCBase, FireDAC.Phys.MSSQL, Firedac.Dapt,
+  dxRibbonCustomizationForm, FireDAC.Phys.MSSQLDef, FireDAC.Phys.PGDef,
+  System.ImageList, ufrmLapKartuStock, ufrmPenjualan, ufrmPenjualanPOS,
+  ufrmCustomerInvoice;
 
 type
 //  RawUTF8 = type AnsiString;
@@ -48,7 +51,7 @@ type
     dxBarLargeButton: TdxBarLargeButton;
     dxbrlrgbtnBarLargeAsset: TdxBarLargeButton;
     actMasterBarang: TAction;
-    actMasterPropertyAsset: TAction;
+    actMasterGudang: TAction;
     dxbrlrgbtnBarLargeAssetProperty: TdxBarLargeButton;
     actApplicationExit: TAction;
     dxbrlrgbtnExit: TdxBarLargeButton;
@@ -59,7 +62,7 @@ type
     dxbrlrgbtnAssetCat: TdxBarLargeButton;
     actMasterAssetCat: TAction;
     dxbrmngrAMSBarPenerimaanBarang: TdxBar;
-    dxrbntbPenerimaanBarangMainTab1: TdxRibbonTab;
+    dxrbntbPenerimaanBarangTransaksi: TdxRibbonTab;
     dxbrlrgbtnPenerimaanBarang: TdxBarLargeButton;
     dxbrlrgbtnReturn: TdxBarLargeButton;
     dxbrlrgbtnLaporanPenerimaanBarang: TdxBarLargeButton;
@@ -83,15 +86,36 @@ type
     actLapStockSekarang: TAction;
     dxbrlrgbtnGantiCabang: TdxBarLargeButton;
     actAlatGantiCabang: TAction;
+    actLapKartok: TAction;
+    dxbrsbtm1: TdxBarSubItem;
+    dxbrbtn1: TdxBarButton;
+    dxbrlrgbtn1: TdxBarLargeButton;
+    dxbrmngrAMSBarPenjualan: TdxBar;
+    dxbrsbtm2: TdxBarSubItem;
+    dxbrsbtm3: TdxBarSubItem;
+    dxbrbtn2: TdxBarButton;
+    dxbrlrgbtn2: TdxBarLargeButton;
+    actPenjualanSales: TAction;
+    dxbrlrgbtnPenjualanPOS: TdxBarLargeButton;
+    actPenjualanPOS: TAction;
+    actCustomerInvoice: TAction;
+    dxbrmngrAMSBarKeuangan: TdxBar;
+    dxbrbtnCustomerInvoice: TdxBarButton;
+    dxbrlrgbtn3: TdxBarLargeButton;
     procedure actAlatGantiCabangExecute(Sender: TObject);
     procedure actApplicationExitExecute(Sender: TObject);
     procedure actClosingInventoryExecute(Sender: TObject);
+    procedure actCustomerInvoiceExecute(Sender: TObject);
+    procedure actLapKartokExecute(Sender: TObject);
     procedure actMasSupplierExecute(Sender: TObject);
     procedure actMasterBarangExecute(Sender: TObject);
     procedure actPenerimaanBarangExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure actLapMutasiBarangExecute(Sender: TObject);
     procedure actLapStockSekarangExecute(Sender: TObject);
+    procedure actMasterGudangExecute(Sender: TObject);
+    procedure actPenjualanPOSExecute(Sender: TObject);
+    procedure actPenjualanSalesExecute(Sender: TObject);
     procedure actReturSupplierExecute(Sender: TObject);
     procedure actSettingKoneksiExecute(Sender: TObject);
   private
@@ -108,7 +132,8 @@ implementation
 uses
   ufrmSupplier, ufrmKoneksi,uAppUtils, ufrmBarang, ufrmPenerimaanBarang,
   ClientClassesUnit2, ClientModule, ufrmPilihCabang, ufrmLapMutasiBarangPerTransaksi,
-  ufrmReturSupplier, udbutils, ufrmClosingInventory, ufrmLapStockSekarang;
+  ufrmReturSupplier, udbutils, ufrmClosingInventory, ufrmLapStockSekarang,
+  ufrmGudang;
 
 {$R *.dfm}
 
@@ -142,6 +167,16 @@ begin
   frmClosingInventory := TfrmClosingInventory.Create(Self);
 end;
 
+procedure TfrmMain.actCustomerInvoiceExecute(Sender: TObject);
+begin
+  frmCustomerInvoice := TfrmCustomerInvoice.Create(Self);
+end;
+
+procedure TfrmMain.actLapKartokExecute(Sender: TObject);
+begin
+  frmLapKartuStock := TfrmLapKartuStock.Create(Self);
+end;
+
 procedure TfrmMain.actLapMutasiBarangExecute(Sender: TObject);
 begin
   frmLapMutasiBarangPerTransaksi := TfrmLapMutasiBarangPerTransaksi.Create(Self);
@@ -162,9 +197,24 @@ begin
   frmBarang := TfrmBarang.Create(Self);
 end;
 
+procedure TfrmMain.actMasterGudangExecute(Sender: TObject);
+begin
+  frmGudang := TfrmGudang.Create(Self);
+end;
+
 procedure TfrmMain.actPenerimaanBarangExecute(Sender: TObject);
 begin
   frmPenerimaanBarang := TfrmPenerimaanBarang.Create(Self);
+end;
+
+procedure TfrmMain.actPenjualanPOSExecute(Sender: TObject);
+begin
+  frmPenjualanPOS := TfrmPenjualanPOS.Create(Self);
+end;
+
+procedure TfrmMain.actPenjualanSalesExecute(Sender: TObject);
+begin
+  frmPenjualan := TfrmPenjualan.Create(Self);
 end;
 
 procedure TfrmMain.actReturSupplierExecute(Sender: TObject);

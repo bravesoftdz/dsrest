@@ -16,7 +16,8 @@ uses
   FireDAC.Phys.MSSQL, Data.DB, FireDAC.Stan.Option, FireDAC.Stan.Error,
   FireDAC.Phys.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async,
   FireDAC.Comp.Client, FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf,
-  FireDAC.Comp.DataSet, FireDAC.DApt, Bde.DBTables, cxGraphics;
+  FireDAC.Comp.DataSet, FireDAC.DApt, cxGraphics,
+  FireDAC.Phys.MSSQLDef, FireDAC.Phys.PGDef;
 
 type
   TfrmServer = class(TForm)
@@ -44,7 +45,6 @@ type
     EditPort: TEdit;
     ButtonOpenBrowser: TButton;
     mmoLogs: TMemo;
-    btnTest: TButton;
     FDPhysMSSQLDriverLink1: TFDPhysMSSQLDriverLink;
     FDPhysPgDriverLink1: TFDPhysPgDriverLink;
     FDGUIxWaitCursor1: TFDGUIxWaitCursor;
@@ -52,7 +52,6 @@ type
     FDTransaction1: TFDTransaction;
     FDMemTable1: TFDMemTable;
     FDQuery1: TFDQuery;
-    Session1: TSession;
     procedure FormCreate(Sender: TObject);
     procedure ApplicationEvents1Idle(Sender: TObject; var Done: Boolean);
     procedure btnTestClick(Sender: TObject);
@@ -201,6 +200,7 @@ begin
     FServer.Bindings.Clear;
     FServer.DefaultPort := StrToInt(EditPort.Text);
     FServer.Active := True;
+    WebModule2.DSServer1.Start;
 
     mmoLogs.Lines.Add('Rest server dijalankan');
   end;
