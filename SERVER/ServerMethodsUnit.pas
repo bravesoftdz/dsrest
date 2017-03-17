@@ -1435,15 +1435,23 @@ begin
   Result := False;
 
   lCI    := TCustomerInvoice(AAppObject);
-  lCI.AR := ServerAR.Retrieve(lCI.AR.ID);
-  lCI.AR.Nominal := lCI.Nominal;
+
+  if lCI.AR = nil then
+  begin
+    lCI.AR := TAR.Create;
+  end;
+
+  lCI.AR.Nominal  := lCI.Nominal;
+  lCI.AR.Customer := TSupplier.CreateID(lCI.Customer.ID);
 
   if lCI.AR.Cabang = nil then
     lCI.AR.Cabang := TCabang.CreateID(lCI.Cabang.ID)
   else
     lCI.AR.Cabang.ID := lCI.ID;
 
-
+  lCI.AR.NoBukti   := lCI.NoBukti;
+  lCI.AR.Transaksi := lCI.ClassName;
+  lCI.AR.JatuhTempo:= lCI.JatuhTempo;
 end;
 
 function TServerCustomerInvoice.GetServerAR: TServerAR;

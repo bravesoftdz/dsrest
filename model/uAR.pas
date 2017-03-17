@@ -15,6 +15,7 @@ type
     FPembayaranTerakhir: TDatetime;
     FTerBayar: Double;
     FTransaksi: string;
+    FJatuhTempo: TDateTime;
   public
   published
     property Cabang: TCabang read FCabang write FCabang;
@@ -25,6 +26,7 @@ type
         FPembayaranTerakhir;
     property TerBayar: Double read FTerBayar write FTerBayar;
     property Transaksi: string read FTransaksi write FTransaksi;
+    property JatuhTempo: TDateTime read FJatuhTempo write FJatuhTempo;
   end;
 
 implementation

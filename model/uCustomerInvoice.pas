@@ -42,16 +42,18 @@ type
   private
     FCustomerInvoice: TCustomerInvoice;
     FCustomerInvoicePenjualanItems: tobjectlist<TCustomerInvoicePenjualanItem>;
-    FTPenjualan: TPenjualan;
+    FPenjualan: TPenjualan;
     function GetCustomerInvoicePenjualanItems:
         tobjectlist<TCustomerInvoicePenjualanItem>;
+  public
+    destructor Destroy; override;
   published
     property CustomerInvoice: TCustomerInvoice read FCustomerInvoice write
         FCustomerInvoice;
     property CustomerInvoicePenjualanItems:
         tobjectlist<TCustomerInvoicePenjualanItem> read
         GetCustomerInvoicePenjualanItems write FCustomerInvoicePenjualanItems;
-    property TPenjualan: TPenjualan read FTPenjualan write FTPenjualan;
+    property Penjualan: TPenjualan read FPenjualan write FPenjualan;
   end;
 
   TCustomerInvoicePenjualanItem = class(TAppObject)
@@ -67,6 +69,7 @@ type
     FUOM: TUOM;
     function GetHargaSetelahDiskon: Double;
   public
+    destructor Destroy; override;
     property HargaSetelahDiskon: Double read GetHargaSetelahDiskon;
   published
     property Barang: TBarang read FBarang write FBarang;
@@ -83,15 +86,30 @@ type
 
 implementation
 
+destructor TCustomerInvoicePenjualanItem.Destroy;
+begin
+  inherited;
+  FreeAndNil(FBarang);
+  FreeAndNil(FUOM);
+end;
+
 function TCustomerInvoicePenjualanItem.GetHargaSetelahDiskon: Double;
 begin
   Result := Harga * (100 - Diskon) / 100;
 end;
 
 destructor TCustomerInvoice.Destroy;
+var
+  I: Integer;
 begin
   inherited;
   FreeAndNil(FCabang);
+  for I := 0 to CustomerInvoicePenjualans.Count - 1 do
+  begin
+    CustomerInvoicePenjualans[i].Free;
+  end;
+
+  CustomerInvoicePenjualans.Free;
   FreeAndNil(FAR);
 end;
 
@@ -121,6 +139,19 @@ begin
   end;
 
   Result := FNominal;
+end;
+
+destructor TCustomerInvoicePenjualan.Destroy;
+var
+  i: Integer;
+begin
+  inherited;
+  for i := 0 to CustomerInvoicePenjualanItems.Count - 1 do
+  begin
+    CustomerInvoicePenjualanItems[i].Free;
+  end;
+
+  FreeAndNil(FCustomerInvoicePenjualanItems);
 end;
 
 function TCustomerInvoicePenjualan.GetCustomerInvoicePenjualanItems:
