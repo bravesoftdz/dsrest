@@ -3,21 +3,27 @@ unit uAppUtils;
 interface
 uses
   //AdvGrid,
-  Classes, Graphics, Registry,
-  ComCtrls,Math,
-  cxGridDBTableView,DB,cxGridCustomTableView, cxGridTableView,ExtCtrls,
-  Variants,StrUtils, Forms, Dialogs, Controls,
-  Windows, SysUtils, SqlExpr, System.UITypes, cxGridBandedTableView,
-  cxGridDBBandedTableView, DBClient,
+  cxGrid,cxGridDBTableView, cxTreeView,  Math, cxGridExportLink,
+  cxExportPivotGridLink, cxGridDBBandedTableView, cxDBPivotGrid, cxCurrencyEdit,
+  cxCustomPivotGrid, cxGridBandedTableView, cxDBExtLookupComboBox, cxCustomData,
+  cxFilter, cxGridCustomTableView, cxDBTL, cxTLExportLink,cxCalendar, Dialogs,
+  SysUtils, cxGridDBDataDefinitions, System.Classes, DBClient,
 
-  cxGrid, cxTreeView,   cxGridExportLink, cxExportPivotGridLink,
-   cxDBPivotGrid, cxCurrencyEdit, cxCustomPivotGrid,
-   cxDBExtLookupComboBox, cxCustomData, cxFilter,
-   cxDBTL, cxTLExportLink,cxCalendar,
-  cxGridDBDataDefinitions,
-  cxDropDownEdit,  System.Contnrs;
+  Vcl.Controls, Vcl.Forms, Windows, Messages, Variants, Graphics, ExtCtrls,
+  ActnList, System.Actions, Vcl.StdCtrls, cxGraphics, cxControls,
+  cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit, cxTextEdit,
+  cxMaskEdit,  cxLookupEdit, cxDBLookupEdit, cxCheckBox, cxSpinEdit, Data.DB,
+  cxPC,   Registry,
+  ComCtrls,
+   cxGridTableView,
+  StrUtils,
+    SqlExpr, System.UITypes,
+
+
+    cxDropDownEdit,  System.Contnrs;
 
 type
+  TTag = set of byte;
   TTreeValues = Array of Variant;
   TComboObject = class(TComponent)
   public
@@ -127,7 +133,6 @@ type
     class function NumberToLetter(aNumber: Integer): string;
     class function DateToTiseraDate(aTanggal: TDateTime; aSeparator: string = ' '):
         string;
-    class function DeleteFileTrace(aFileName: string): Boolean;
     class function StrToOEM(s:string): string;
     class function BytesToStr(const Bytes: TBytes): string;
     class procedure IncStepProgressBar(AStep : Integer; ANomorPB : Integer = 0);
@@ -194,6 +199,18 @@ type
   public
     class procedure OnInitPopupCustom(Sender: TObject);
 
+  end;
+
+  TFormHelper = class helper for TForm
+  private
+    procedure OnKeyEnter(Sender: TObject; var Key: Word; Shift: TShiftState);
+  public
+    procedure AssignKeyDownEvent;
+    procedure ClearByTag(Tag: TTag);
+    function ValidateEmptyCtrl(Tag: TTag = [1]; ShowWarning: Boolean = True):
+        Boolean;
+    class procedure OnEditValueChanged(Sender: TObject);
+    function SetFocusRec(aWinCTRL: TWinControl): Boolean;
   end;
 
 var
@@ -1158,27 +1175,6 @@ end;
 ////  end;
 //end;
 //
-class function TAppUtils.DeleteFileTrace(aFileName: string): Boolean;
-begin
-  // TODO -cMM: TAppUtils.DeleteFileTrace default body inserted
-   Result := True;
-   try
-     if FileExists(aFileName) then
-       Result := DeleteFile(aFileName);
-   finally
-   end;
-   try
-//     if FileExists(ChangeFileExt(aFileName, EFILE_EXTDATA)) then
-//       Result := Result and DeleteFile(ChangeFileExt(aFileName, EFILE_EXTDATA));
-   finally
-   end;
-   try
-//     if FileExists(ChangeFileExt(aFileName, EFILE_EXTZIP)) then
-//       Result := Result and DeleteFile(ChangeFileExt(aFileName, EFILE_EXTZIP));
-   finally
-   end;
-end;
-
 // There is one more StrToOEM  function in the JRZip Unit
 class function TAppUtils.StrToOEM(s:string): string;
 var
@@ -1698,5 +1694,167 @@ end;
 //end;
 
 
+
+procedure TFormHelper.AssignKeyDownEvent;
+var
+  C: TComponent;
+  i: Integer;
+begin
+  for i := 0 to Self.ComponentCount-1 do
+  begin
+    C := Self.Components[i];
+    if C is TEdit then
+      If not Assigned(TEdit(C).OnKeyDown) then
+        TEdit(C).OnKeyDown := OnKeyEnter;
+    if C is TcxTextEdit then
+      If not Assigned(TcxTextEdit(C).OnKeyDown) then
+        TcxTextEdit(C).OnKeyDown := OnKeyEnter;
+    if C is TcxExtLookupComboBox then
+    begin
+      //bug: lookup standar, ketika user memilih dengan keyboard panah, lalu enter tidak ngefek
+      //bug: lookup generic / multipurpose harus enter 2x
+      //fix by this code :
+      //1st postpopupvalue must be active
+      TcxExtLookupComboBox(C).Properties.PostPopupValueOnTab := True;
+      //2nd utk generic lookup tambahkan editvaluechanged post tab agar fokus pindah dari view ke lookup
+      if TcxExtLookupComboBox(C).Properties.FocusPopup then
+        if not Assigned(TcxExtLookupComboBox(C).Properties.OnEditValueChanged) then
+          TcxExtLookupComboBox(C).Properties.OnEditValueChanged := OnEditValueChanged;
+      //3rd onEnter send tab key
+      if not Assigned(TcxExtLookupComboBox(C).OnKeyDown) then
+        TcxExtLookupComboBox(C).OnKeyDown:= OnKeyEnter;
+    end;
+    if C is TcxComboBox then
+      if not Assigned(TcxComboBox(C).OnKeyDown) then
+        TcxComboBox(C).OnKeyDown := OnKeyEnter;
+    if C is TcxCheckBox then
+      if not Assigned(TcxCheckBox(C).OnKeyDown) then
+        TcxCheckBox(C).OnKeyDown := OnKeyEnter;
+    if C is TcxSpinEdit then
+      if not Assigned(TcxSpinEdit(C).OnKeyDown) then
+        TcxSpinEdit(C).OnKeyDown := OnKeyEnter;
+    if C is TCheckBox then
+      if not Assigned(TCheckBox(C).OnKeyDown) then
+        TCheckBox(C).OnKeyDown := OnKeyEnter;
+  end;
+end;
+
+procedure TFormHelper.ClearByTag(Tag: TTag);
+var
+  C: TComponent;
+  i: Integer;
+begin
+  for i := 0 to Self.ComponentCount-1 do
+  begin
+    C := Self.Components[i];
+    if not (C.Tag in Tag) then continue;
+    if C is TEdit then TEdit(C).Clear;
+    if C is TcxTextEdit then TcxTextEdit(C).Clear;
+    if C is TcxExtLookupComboBox then TcxExtLookupComboBox(C).Clear;
+    if C is TcxComboBox then TcxComboBox(C).Clear;
+    if C is TcxCheckBox then TcxCheckBox(C).Clear;
+    if C is TcxSpinEdit then TcxSpinEdit(C).Clear;
+  end;
+end;
+
+function TFormHelper.ValidateEmptyCtrl(Tag: TTag = [1]; ShowWarning: Boolean =
+    True): Boolean;
+var
+  C: TComponent;
+  i: Integer;
+  iTabOrd: Integer;
+  sMsg: string;
+  EmptyCtrl: TWinControl;
+  IsEmpty: Boolean;
+begin
+  IsEmpty   := False;
+  iTabOrd   := MaxInt;
+  EmptyCtrl := nil;
+  for i := 0 to Self.ComponentCount-1 do
+  begin
+    C := Self.Components[i];
+    if not (C.Tag in Tag) then continue;
+    if not C.InheritsFrom(TWinControl) then continue;
+    if C is TcxExtLookupComboBox then
+      IsEmpty := VarIsNull(TcxExtLookupComboBox(C).EditValue)
+    else if C is TcxComboBox then IsEmpty := TcxComboBox(C).ItemIndex = -1
+    else if C is TComboBox then IsEmpty := TComboBox(C).ItemIndex = -1
+    else if C is TcxTextEdit then IsEmpty := TcxTextEdit(C).Text = ''
+    else if C is TEdit then IsEmpty := TEdit(C).Text = ''
+    else if C is TcxSpinEdit then IsEmpty := TcxSpinEdit(C).Value = 0
+    else if C is TcxCurrencyEdit then IsEmpty := TcxCurrencyEdit(C).Value = 0;
+    if (IsEmpty) and (TWinControl(C).TabOrder < iTabOrd) then
+    begin
+      EmptyCtrl := TWinControl(C);
+      iTabOrd   := EmptyCtrl.TabOrder;
+    end;
+  end;
+  Result := EmptyCtrl = nil;
+  if (not Result) {and (ShowWarning)} then
+  begin
+    SetFocusRec(EmptyCtrl);
+    If ShowWarning then
+    begin
+      if EmptyCtrl.HelpKeyword <> '' then
+        sMsg := EmptyCtrl.HelpKeyword + ' tidak boleh kosong'
+      else
+        sMsg := 'Input Tidak Boleh Kosong';
+      TAppUtils.Warning(sMsg);
+    end;
+  end;
+end;
+
+
+procedure TFormHelper.OnKeyEnter(Sender: TObject; var Key: Word; Shift:
+    TShiftState);
+begin
+  if Key = VK_RETURN then
+  begin
+    if Sender is TcxExtLookupComboBox then
+      Key := VK_TAB
+    else
+      SelectNext(Screen.ActiveControl, True, True);
+  end else if Key = VK_F5 then
+  begin
+//    if Sender is TcxExtLookupComboBox then
+//      TcxExtLookupComboBox(Sender).Properties.OnPopup(Sender); ;
+  end;
+end;
+
+class procedure TFormHelper.OnEditValueChanged(Sender: TObject);
+var
+  sDebug: string;
+begin
+  if Sender is TcxExtLookupComboBox then
+  begin
+    //agar generic lookup cukup enter 1x utk pindah ke komponent
+    Keybd_event(VK_TAB, 0, 0, 0);
+    sDebug := TcxExtLookupComboBox(Sender).Name;
+  end;
+end;
+
+function TFormHelper.SetFocusRec(aWinCTRL: TWinControl): Boolean;
+begin
+  Result := False;
+  If aWinCTRL.Enabled and aWinCTRL.Visible then
+  begin
+    //kapan2 diterusin
+//    if (aWinCTRL is TcxTabSheet) and (not aWinCTRL.Visible) then
+//    begin
+//      If (TcxPageControl(aWinCTRL.Parent).Enabled)
+//      and (TcxPageControl(aWinCTRL.Parent).Visible) then
+//        TcxPageControl(aWinCTRL.Parent).ActivePage := TcxTabSheet(aWinCTRL);
+//      Result := True;
+//    end else
+
+    If aWinCTRL.Parent <> nil then
+      Result := SetFocusRec(aWinCTRL.Parent)
+    else
+      Result := True;
+
+    If Result then
+      aWinCTRL.SetFocus;
+  end;
+end;
 
 end.

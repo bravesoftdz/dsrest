@@ -95,6 +95,8 @@ uses
 procedure TfrmCustomerInvoice.ActionBaruExecute(Sender: TObject);
 begin
   inherited;
+  ClearByTag([0,1]);
+
   FreeAndNil(FCustomerInvoice);
   FreeAndNil(FPenjualan);
 
@@ -114,6 +116,9 @@ var
   lCIPjlItem: TCustomerInvoicePenjualanItem;
 begin
   inherited;
+
+  if not ValidateEmptyCtrl([1], True) then
+    Exit;
 
   if FPenjualan = nil then
   begin
@@ -145,11 +150,11 @@ begin
     lCIPjlItem.PPN        := cxGridTablePenjualan.GetDouble(i, cxgrdclmnGridTablePenjualanColumnPPN.Index);
     lCIPjlItem.Qty        := cxGridTablePenjualan.GetDouble(i, cxgrdclmnGridTablePenjualanColumnQty.Index);
     lCIPjlItem.UOM        := TUOM.CreateID(cxGridTablePenjualan.GetString(i, cxgrdclmnGridTablePenjualanColumnSatuan.Index));
+
+    lCIPjl.CustomerInvoicePenjualanItems.Add(lCIPjlItem);
   end;
 
   CustomerInvoice.CustomerInvoicePenjualans.Add(lCIPjl);
-
-
 
   if ClientDataModule.ServerCustomerInvoiceClient.Save(CustomerInvoice) then
   begin
