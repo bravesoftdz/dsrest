@@ -61,6 +61,9 @@ type
     lblTempo: TLabel;
     edTempo: TcxCalcEdit;
     btnInvoice: TcxButton;
+    lblFee: TLabel;
+    cbbFee: TcxComboBox;
+    cxgrdclmnGridTablePenjualanColumnJenisHarga: TcxGridColumn;
     procedure FormCreate(Sender: TObject);
     procedure ActionBaruExecute(Sender: TObject);
     procedure ActionRefreshExecute(Sender: TObject);
@@ -89,6 +92,7 @@ type
     procedure Umum1Click(Sender: TObject);
     procedure edTempoPropertiesChange(Sender: TObject);
     procedure edTglBuktiPropertiesChange(Sender: TObject);
+    procedure cbbJenisPembayaranPropertiesChange(Sender: TObject);
   private
     FPenjualan: TPenjualan;
     function GetPenjualan: TPenjualan;
@@ -118,6 +122,18 @@ uses
 
 {$R *.dfm}
 
+procedure TfrmPenjualan.cbbJenisPembayaranPropertiesChange(Sender: TObject);
+begin
+  inherited;
+  if cbbJenisPembayaran.Text = 'CASH' then
+  begin
+    edTempo.Text := '0';
+    edTempo.Enabled := False;
+  end else begin
+    edTempo.Enabled := True;
+  end;
+end;
+
 procedure TfrmPenjualan.cxgrdclmnGridTablePenjualanColumnDiskonPropertiesValidate(
   Sender: TObject; var DisplayValue: Variant; var ErrorText: TCaption;
   var Error: Boolean);
@@ -144,7 +160,7 @@ begin
   cxGridTablePenjualan.SetValue(iBaris, cxgrdclmnGridTablePenjualanColumnSatuan.Index,lDSt.FieldByName('uom').AsString);
 
   cxGridTablePenjualan.SetValue(iBaris, cxgrdclmnGridTablePenjualanColumnHarga.Index,lDSt.FieldByName(getDefaultHarga).AsString);
-
+  cxGridTablePenjualan.SetValue(iBaris, cxgrdclmnGridTablePenjualanColumnJenisHarga.Index,getDefaultHarga);
   cxGridTablePenjualan.SetValue(iBaris, cxgrdclmnGridTablePenjualanColumnKonversi.Index,lDSt.FieldByName('konversi').AsFloat);
 end;
 
@@ -234,12 +250,12 @@ begin
   inherited;
   with ClientDataModule.ServerPenjualanClient do
   begin
-    FID := '';
-    memKeterangan.Clear;
+    FID             := '';
     edTglBukti.Date := Now;
     edJthTempo.Date := edTglBukti.Date + 7;
-
     edNoBukti.Text  := GenerateNoBukti(edTglBukti.Date, ClientDataModule.Cabang.Kode + '/PJL');
+
+    memKeterangan.Clear;
     cxGridTablePenjualan.ClearRows;
 
     FreeAndNil(FPenjualan);
@@ -256,14 +272,18 @@ begin
     lDS := ClientDataModule.ServerLaporanClient.RetrivePenjualan(dtpAwal.DateTime, dtpAkhir.DateTime, nil)
   else
     lDS := ClientDataModule.ServerLaporanClient.RetrivePenjualan(dtpAwal.DateTime, dtpAkhir.DateTime, ClientDataModule.Cabang);
-  try
-    lcds := TDBUtils.DSToCDS(lDS, Self);
-    cxGridDBTableOverview.SetDataset(lcds, True);
-    cxGridDBTableOverview.SetVisibleColumns(['id'], False);
-    cxGridDBTableOverview.ApplyBestFit();
-  finally
-//    lDS.Free;
+
+  lcds := TDBUtils.DSToCDS(lDS, Self);
+
+  if lcds <> nil then
+  begin
+    lcds.Filter   := 'jenispenjualan = ' + QuotedStr(JenisPenjualan);
+    lcds.Filtered := True;
   end;
+
+  cxGridDBTableOverview.SetDataset(lcds, True);
+  cxGridDBTableOverview.SetVisibleColumns(['id','cabangid','jenispenjualan'], False);
+  cxGridDBTableOverview.ApplyBestFit();
 end;
 
 procedure TfrmPenjualan.ActionSimpanExecute(Sender: TObject);
@@ -272,6 +292,10 @@ var
   lPenjualanItem: TPenjualanItem;
 begin
   inherited;
+
+  if not ValidateEmptyCtrl([1], True) then
+    Exit;
+
   Penjualan.ID             := FID;
   Penjualan.NoBukti        := edNoBukti.Text;
   Penjualan.Cabang         := TCabang.CreateID(ClientDataModule.Cabang.ID);
@@ -279,10 +303,11 @@ begin
   Penjualan.JatuhTempo     := edJthTempo.Date;
   Penjualan.TglBukti       := edTglBukti.Date;
   Penjualan.JenisPenjualan := JenisPenjualan;
+  Penjualan.JenisPembayaran:= cbbJenisPembayaran.Properties.Items[cbbJenisPembayaran.ItemIndex];
   Penjualan.Pembeli        := TSupplier.CreateID(cbbSalesman.EditValue);
   Penjualan.Kasir          := 'AKU';
   Penjualan.Keterangan     := memKeterangan.Text;
-//  Penjualan.TOP            := fl
+  Penjualan.Fee            := cbbFee.Properties.Items[cbbFee.ItemIndex];
 
   Penjualan.PenjualanItems.Clear;
   for I := 0 to cxGridTablePenjualan.DataController.RecordCount - 1 do
@@ -293,9 +318,9 @@ begin
     lPenjualanItem.Harga     := cxGridTablePenjualan.GetDouble(i, cxgrdclmnGridTablePenjualanColumnHarga.Index);
     lPenjualanItem.PPN       := cxGridTablePenjualan.GetDouble(i, cxgrdclmnGridTablePenjualanColumnPPN.Index);
     lPenjualanItem.Qty       := cxGridTablePenjualan.GetDouble(i, cxgrdclmnGridTablePenjualanColumnQty.Index);
-    lPenjualanItem.Harga     := cxGridTablePenjualan.GetDouble(i, cxgrdclmnGridTablePenjualanColumnHarga.Index);
     lPenjualanItem.UOM       := TUOM.CreateID(cxGridTablePenjualan.GetString(i, cxgrdclmnGridTablePenjualanColumnSatuan.Index));
     lPenjualanItem.Konversi  := cxGridTablePenjualan.GetDouble(i, cxgrdclmnGridTablePenjualanColumnKonversi.Index);
+    lPenjualanItem.JenisHarga:= cxGridTablePenjualan.GetString(i, cxgrdclmnGridTablePenjualanColumnJenisHarga.Index);
     lPenjualanItem.Penjualan := Penjualan;
 
     Penjualan.PenjualanItems.Add(lPenjualanItem);
@@ -442,7 +467,7 @@ begin
 
   TcxExtLookupComboBoxProperties(cxGridTablePenjualan.Columns[cxgrdclmnGridTablePenjualanColumnNama.Index].Properties).LoadFromCDS(lCDSSKU,'ID','Nama',['ID'],Self);
   TcxExtLookupComboBoxProperties(cxGridTablePenjualan.Columns[cxgrdclmnGridTablePenjualanColumnNama.Index].Properties).SetMultiPurposeLookup();
-  TcxExtLookupComboBoxProperties(cxGridTablePenjualan.Columns[cxgrdclmnGridTablePenjualanColumnNama.Index].Properties).cxDBTableGrid.SetVisibleColumns(['SKU','barang','uom','id','KONVERSI'], FALSE);
+  TcxExtLookupComboBoxProperties(cxGridTablePenjualan.Columns[cxgrdclmnGridTablePenjualanColumnNama.Index].Properties).cxDBTableGrid.SetVisibleColumns(['barang','uom','id','KONVERSI'], FALSE);
   TcxExtLookupComboBoxProperties(cxGridTablePenjualan.Columns[cxgrdclmnGridTablePenjualanColumnNama.Index].Properties).cxDBTableGrid.ApplyBestFit();
 
   sSQL := 'select Nama,sku, ID from TBarang';
@@ -482,47 +507,46 @@ var
 begin
   with ClientDataModule.ServerPenjualanClient do
   begin
-    try
-      FreeAndNil(FPenjualan);
-      FPenjualan := Retrieve(AID);
-      FID               := Penjualan.ID;
+    FreeAndNil(FPenjualan);
+    FPenjualan := Retrieve(AID);
+    FID               := Penjualan.ID;
 
-      if Penjualan <> nil then
+    if Penjualan <> nil then
+    begin
+      edNoBukti.Text := Penjualan.NoBukti;
+      edTglBukti.Date:= Penjualan.TglBukti;
+
+      if Penjualan.Pembeli.ID <> '' then
+        cbbSalesman.EditValue := Penjualan.Pembeli.ID;
+
+      if Penjualan.Gudang.ID <> '' then
+        cbbGudang.EditValue := Penjualan.Gudang.ID;
+
+      memKeterangan.Lines.Text     := Penjualan.Keterangan;
+      edTempo.Value                := Penjualan.TOP;
+      cbbJenisPembayaran.ItemIndex := cbbJenisPembayaran.Properties.Items.IndexOf(Penjualan.JenisPembayaran);
+      cbbFee.ItemIndex             := cbbFee.Properties.Items.IndexOf(Penjualan.Fee);
+
+      cxGridTablePenjualan.ClearRows;
+      for i := 0 to Penjualan.PenjualanItems.Count - 1 do
       begin
-        edNoBukti.Text := Penjualan.NoBukti;
-        edTglBukti.Date:= Penjualan.TglBukti;
+        cxGridTablePenjualan.DataController.RecordCount := i + 1;
+        cxGridTablePenjualan.SetValue(i, cxgrdclmnGridTablePenjualanColumnSKU.Index, FPenjualan.PenjualanItems[i].Barang.ID);
+        cxGridTablePenjualan.SetValue(i, cxgrdclmnGridTablePenjualanColumnNama.Index, FPenjualan.PenjualanItems[i].BarangSatuangItemID);
+        cxGridTablePenjualan.SetValue(i, cxgrdclmnGridTablePenjualanColumnSatuan.Index, FPenjualan.PenjualanItems[i].UOM.ID);
+        cxGridTablePenjualan.SetDouble(i, cxgrdclmnGridTablePenjualanColumnHarga.Index, FPenjualan.PenjualanItems[i].Harga);
+        cxGridTablePenjualan.SetDouble(i, cxgrdclmnGridTablePenjualanColumnQty.Index, FPenjualan.PenjualanItems[i].Qty);
+        cxGridTablePenjualan.SetDouble(i, cxgrdclmnGridTablePenjualanColumnDiskon.Index,FPenjualan.PenjualanItems[i].Diskon);
+        cxGridTablePenjualan.SetDouble(i, cxgrdclmnGridTablePenjualanColumnPPN.Index, FPenjualan.PenjualanItems[i].PPN);
+        cxGridTablePenjualan.SetDouble(i, cxgrdclmnGridTablePenjualanColumnKonversi.Index, FPenjualan.PenjualanItems[i].Konversi);
+        cxGridTablePenjualan.SetValue(i, cxgrdclmnGridTablePenjualanColumnJenisHarga.Index, FPenjualan.PenjualanItems[i].JenisHarga);
 
-        if Penjualan.Pembeli.ID <> '' then
-          cbbSalesman.EditValue := Penjualan.Pembeli.ID;
+        cxGridTablePenjualan.DataController.FocusedRecordIndex := i;
+        HitungNilaiNilaiPerBaris(FPenjualan.PenjualanItems[i].PPN, cxgrdclmnGridTablePenjualanColumnPPN.Index);
 
-        if Penjualan.Gudang.ID <> '' then
-          cbbGudang.EditValue := Penjualan.Gudang.ID;
-
-        memKeterangan.Lines.Text     := Penjualan.Keterangan;
-        edTempo.Value                := Penjualan.TOP;
-        cbbJenisPembayaran.ItemIndex := cbbJenisPembayaran.Properties.Items.IndexOf(Penjualan.JenisPembayaran);
-
-        cxGridTablePenjualan.ClearRows;
-        for i := 0 to Penjualan.PenjualanItems.Count - 1 do
-        begin
-          cxGridTablePenjualan.DataController.RecordCount := i + 1;
-          cxGridTablePenjualan.SetValue(i, cxgrdclmnGridTablePenjualanColumnSKU.Index, FPenjualan.PenjualanItems[i].Barang.ID);
-          cxGridTablePenjualan.SetValue(i, cxgrdclmnGridTablePenjualanColumnNama.Index, FPenjualan.PenjualanItems[i].BarangSatuangItemID);
-          cxGridTablePenjualan.SetValue(i, cxgrdclmnGridTablePenjualanColumnSatuan.Index, FPenjualan.PenjualanItems[i].UOM.ID);
-          cxGridTablePenjualan.SetDouble(i, cxgrdclmnGridTablePenjualanColumnHarga.Index, FPenjualan.PenjualanItems[i].Harga);
-          cxGridTablePenjualan.SetDouble(i, cxgrdclmnGridTablePenjualanColumnQty.Index, FPenjualan.PenjualanItems[i].Qty);
-          cxGridTablePenjualan.SetDouble(i, cxgrdclmnGridTablePenjualanColumnDiskon.Index,FPenjualan.PenjualanItems[i].Diskon);
-          cxGridTablePenjualan.SetDouble(i, cxgrdclmnGridTablePenjualanColumnPPN.Index, FPenjualan.PenjualanItems[i].PPN);
-
-          cxGridTablePenjualan.DataController.FocusedRecordIndex := i;
-          HitungNilaiNilaiPerBaris(FPenjualan.PenjualanItems[i].PPN, cxgrdclmnGridTablePenjualanColumnPPN.Index);
-
-
-        end;
 
       end;
-    finally
-      Free;
+
     end;
   end;
 end;
@@ -540,7 +564,7 @@ begin
   dHarga := dst.FieldByName(AJenisHarga).AsFloat;
 
   cxGridTablePenjualan.DataController.Values[iBaris, cxgrdclmnGridTablePenjualanColumnHarga.Index] := dHarga;
-//  cxGridTablePenjualan.DataController.Values[iBaris, cxgrdclmnGridTablePenjualanColumnHarga.Index] := dHarga;
+  cxGridTablePenjualan.DataController.Values[iBaris, cxgrdclmnGridTablePenjualanColumnJenisHarga.Index] := AJenisHarga;
 
   HitungNilaiNilaiPerBaris(dHarga, cxgrdclmnGridTablePenjualanColumnHarga.Index);
 end;

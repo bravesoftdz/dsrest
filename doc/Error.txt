@@ -1,0 +1,8 @@
+PB
+- Blm ada pengecekan saat mau simpan
+
+Penjualan
+- LookUp kolom barang tdk ada SKU-nya OK
+- Saat ganti UOM konversi td berubah OK
+- Saat ganti UOM Harga tdk berubah OK
+- Blm ada pengecekan saat mau simpan OK

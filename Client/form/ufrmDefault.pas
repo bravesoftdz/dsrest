@@ -83,7 +83,7 @@ var
 
 implementation
 uses
-  uAppUtils, uDBUtils;
+  uAppUtils, uDBUtils, System.DateUtils;
 
 {$R *.dfm}
 
@@ -113,7 +113,11 @@ end;
 
 procedure TfrmDefault.ActionBaruExecute(Sender: TObject);
 begin
+  dtpAwal.DateTime := StartOfTheMonth(Now);
+  dtpAkhir.DateTime:= EndOfTheDay(Now);
+
   cxPCData.ActivePageIndex := 1;
+
 end;
 
 procedure TfrmDefault.cxPCDataChange(Sender: TObject);

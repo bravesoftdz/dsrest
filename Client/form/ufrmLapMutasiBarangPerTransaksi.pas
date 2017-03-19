@@ -52,17 +52,15 @@ uses
 {$R *.dfm}
 
 procedure TfrmLapMutasiBarangPerTransaksi.ActionRefreshExecute(Sender: TObject);
+var
+  lcds: TClientDataSet;
 begin
   inherited;
   with TServerLaporanClient.Create(ClientDataModule.DSRestConnection, False) do
   begin
     try
-      cdsMutasi.Close;
-      ProvMutasi.DataSet := RetriveMutasiBarang(dtpAwal.Date,dtpAkhir.Date);
-
-      cdsMutasi.Open;
-
-      TDBUtils.DataSetToCxDBGrid(cdsMutasi, cxGridDBTableMutasiBarang);
+      lcds := TDBUtils.DSToCDS(RetriveMutasiBarang(dtpAwal.DateTime, dtpAkhir.DateTime), cxGridDBTableMutasiBarang);
+      cxGridDBTableMutasiBarang.SetDataset(lcds);
       cxGridDBTableMutasiBarang.ApplyBestFit();
     finally
       Free;

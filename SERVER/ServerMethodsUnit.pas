@@ -936,16 +936,12 @@ function TServerLaporan.RetrivePenjualan(ATglAwal , ATglAtglAkhir : TDateTime;
 var
   sSQL : String;
 begin
-  sSQL := 'select a.id, c.nama as cabang, c.id as CabangID,' +
-          ' a.nobukti, a.tglbukti, b.nama as Pembeli, a.keterangan' +
-          ' from tpenjualan a' +
-          ' inner join tsupplier b on a.pembeli = b.id' +
-          ' inner join tcabang c on a.cabang = c.id' +
+  sSQL := 'select * from vpenjualan a' +
           ' where a.tglbukti between ' + TAppUtils.QuotDt(StartOfTheDay(ATglAwal))+
           ' and ' + TAppUtils.QuotDt(EndOfTheDay(ATglAtglAkhir));
 
   if ACabang <> nil then
-    sSQL := sSQL + ' and a.cabang = ' + QuotedStr(ACabang.ID);
+    sSQL := sSQL + ' and a.cabangid = ' + QuotedStr(ACabang.ID);
 
   Result   := TDBUtils.OpenDataset(sSQL);
 end;
@@ -1338,6 +1334,10 @@ begin
     lPenjualanLama.Free;
   end;
 
+  with TPenjualan(AOBject) do
+  begin
+    JatuhTempo := TglBukti + TOP;
+  end;
 
   Result := True;
 

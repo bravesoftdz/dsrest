@@ -43,6 +43,7 @@ type
   TPenjualan = class(TAppObject)
   private
     FCabang: TCabang;
+    FFee: string;
     FGudang: TGudang;
     FJatuhTempo: TDatetime;
     FJenisPembayaran: string;
@@ -58,6 +59,7 @@ type
   public
   published
     property Cabang: TCabang read FCabang write FCabang;
+    property Fee: string read FFee write FFee;
     property Gudang: TGudang read FGudang write FGudang;
     property JatuhTempo: TDatetime read FJatuhTempo write FJatuhTempo;
     property JenisPembayaran: string read FJenisPembayaran write FJenisPembayaran;

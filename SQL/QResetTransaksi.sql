@@ -5,3 +5,5 @@ delete from tretursupplier;
 delete from tstocksekarang;
 delete from tclosinginventory;
 delete from tmutasistock;
+delete from tpenjualanitem;
+delete from tpenjualan;

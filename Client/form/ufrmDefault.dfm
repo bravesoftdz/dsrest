@@ -161,6 +161,10 @@ object frmDefault: TfrmDefault
     object cxTSInputData: TcxTabSheet
       Caption = 'Input/Update/Delete'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
     end
   end
   object pnlButton: TPanel
@@ -197,7 +201,6 @@ object frmDefault: TfrmDefault
       Align = alRight
       Action = ActionHapus
       TabOrder = 2
-      ExplicitLeft = 500
     end
     object btnExport: TcxButton
       Left = 113
@@ -218,7 +221,6 @@ object frmDefault: TfrmDefault
       Action = ActionSimpan
       Caption = 'Simpan [Ctrl+S]'
       TabOrder = 4
-      ExplicitLeft = 384
     end
     object chkKonsolidasi1: TcxCheckBox
       Left = 232
@@ -331,7 +333,7 @@ object frmDefault: TfrmDefault
     Left = 216
     Top = 184
     Bitmap = {
-      494C010107000800BC0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800C00018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

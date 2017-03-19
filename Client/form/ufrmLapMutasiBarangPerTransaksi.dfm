@@ -17,17 +17,22 @@ inherited frmLapMutasiBarangPerTransaksi: TfrmLapMutasiBarangPerTransaksi
   inherited cxPCData: TcxPageControl
     Width = 765
     Height = 372
+    ExplicitWidth = 765
+    ExplicitHeight = 372
     ClientRectBottom = 368
     ClientRectRight = 761
     inherited cxTSOverview: TcxTabSheet
+      ExplicitWidth = 757
+      ExplicitHeight = 344
       inherited splTransaksi: TSplitter
         Height = 344
+        ExplicitHeight = 344
       end
       inherited pnlListTransaksi: TPanel
         Width = 749
         Height = 344
-        ExplicitWidth = 757
-        ExplicitHeight = 0
+        ExplicitWidth = 749
+        ExplicitHeight = 344
         object lblAwal: TLabel [0]
           Left = 16
           Top = 17
@@ -37,25 +42,33 @@ inherited frmLapMutasiBarangPerTransaksi: TfrmLapMutasiBarangPerTransaksi
         end
         inherited pnlFilter: TPanel
           Width = 747
+          ExplicitWidth = 747
           inherited lblPeriode: TLabel
             Left = 342
+            ExplicitLeft = 342
           end
           inherited lblSD: TLabel
             Left = 497
+            ExplicitLeft = 497
           end
           inherited dtpAwal: TDateTimePicker
             Left = 392
+            ExplicitLeft = 392
           end
           inherited dtpAkhir: TDateTimePicker
             Left = 535
+            ExplicitLeft = 535
           end
           inherited btnRefresh: TcxButton
             Left = 640
+            ExplicitLeft = 640
           end
         end
         inherited cxGrid: TcxGrid
           Width = 747
           Height = 310
+          ExplicitWidth = 747
+          ExplicitHeight = 310
         end
         object cxGridLapMutasi: TcxGrid
           Left = 1
@@ -64,9 +77,6 @@ inherited frmLapMutasiBarangPerTransaksi: TfrmLapMutasiBarangPerTransaksi
           Height = 310
           Align = alClient
           TabOrder = 2
-          ExplicitTop = -344
-          ExplicitWidth = 755
-          ExplicitHeight = 344
           object cxGridDBTableMutasiBarang: TcxGridDBTableView
             Navigator.Buttons.CustomButtons = <>
             DataController.Summary.DefaultGroupSummaryItems = <>
@@ -155,6 +165,7 @@ inherited frmLapMutasiBarangPerTransaksi: TfrmLapMutasiBarangPerTransaksi
       end
     end
     inherited cxTSInputData: TcxTabSheet
+      TabVisible = False
       ExplicitLeft = 4
       ExplicitTop = 24
       ExplicitWidth = 757
@@ -164,14 +175,19 @@ inherited frmLapMutasiBarangPerTransaksi: TfrmLapMutasiBarangPerTransaksi
   inherited pnlButton: TPanel
     Top = 372
     Width = 765
+    ExplicitTop = 372
+    ExplicitWidth = 765
     inherited btnBaru: TcxButton
       Left = 653
+      ExplicitLeft = 653
     end
     inherited btnHapus: TcxButton
       Left = 529
+      ExplicitLeft = 529
     end
     inherited btnSave: TcxButton
       Left = 413
+      ExplicitLeft = 413
     end
   end
   inherited ActionListForm: TActionList
@@ -181,7 +197,7 @@ inherited frmLapMutasiBarangPerTransaksi: TfrmLapMutasiBarangPerTransaksi
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C0101050008005C0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010105000800600018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
