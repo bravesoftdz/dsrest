@@ -12,30 +12,22 @@ uses
   cxGridCustomView, cxGrid, Grids, DBGrids, DBClient, Provider,
   cxPCdxBarPopupMenu, cxPC, cxMemo, ImgList, uModel, cxNavigator, System.Actions,
   dxBarExtDBItems, cxCheckBox, dxBarBuiltInMenu, System.ImageList, cxBarEditItem,
-  dxBarExtItems;
+  dxBarExtItems, Vcl.Menus, cxButtons, Vcl.ComCtrls;
 
 type
   TfrmSupplier = class(TfrmDefault)
-    cxGridDBTableSupplier: TcxGridDBTableView;
-    cxgrdlvlSupplier: TcxGridLevel;
-    cxGridDBSupplier: TcxGrid;
-    cxPCInput: TcxPageControl;
-    Input: TcxTabSheet;
     lblKode: TLabel;
     lblNama: TLabel;
+    lblAlamat: TLabel;
     edKode: TcxTextEdit;
     edNama: TcxTextEdit;
-    cxgrdbclmnGridDBTableSupplierColumnKode: TcxGridDBColumn;
-    cxgrdbclmnGridDBTableSupplierColumnNama: TcxGridDBColumn;
-    cxgrdbclmnGridDBTableSupplierColumnAlamat: TcxGridDBColumn;
-    lblAlamat: TLabel;
     memAlamt: TcxMemo;
     procedure FormCreate(Sender: TObject);
     procedure ActionBaruExecute(Sender: TObject);
     procedure ActionHapusExecute(Sender: TObject);
     procedure ActionRefreshExecute(Sender: TObject);
     procedure ActionSimpanExecute(Sender: TObject);
-    procedure cxGridDBTableSupplierCellDblClick(Sender: TcxCustomGridTableView;
+    procedure cxGridDBTableOverviewCellDblClick(Sender: TcxCustomGridTableView;
         ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton; AShift:
         TShiftState; var AHandled: Boolean);
     procedure cxGridDBTableSupplierEditing(Sender: TcxCustomGridTableView; AItem:
@@ -104,8 +96,10 @@ var
   sSQL: string;
 begin
   inherited;
-  sSQL := 'select * from ' + TSupplier.ClassName;
-  TDBUtils.DataSetToCxDBGrid(TDBUtils.OpenDataset(sSQL), cxGridDBTableSupplier);
+  sSQL := 'select Kode,Nama,Alamat,ID from ' + TSupplier.ClassName;
+  TDBUtils.DataSetToCxDBGrid(TDBUtils.OpenDataset(sSQL), cxGridDBTableOverview, True);
+  cxGridDBTableOverview.SetVisibleColumns(['ID'], False);
+  cxGridDBTableOverview.ApplyBestFit();
 end;
 
 procedure TfrmSupplier.ActionSimpanExecute(Sender: TObject);
@@ -131,7 +125,7 @@ begin
   end;
 end;
 
-procedure TfrmSupplier.cxGridDBTableSupplierCellDblClick(Sender:
+procedure TfrmSupplier.cxGridDBTableOverviewCellDblClick(Sender:
     TcxCustomGridTableView; ACellViewInfo: TcxGridTableDataCellViewInfo;
     AButton: TMouseButton; AShift: TShiftState; var AHandled: Boolean);
 begin
@@ -139,15 +133,17 @@ begin
   with TServerSupplierClient.Create(ClientDataModule.DSRestConnection, False) do
   begin
     try
-      if cxGridDBTableSupplier.DataController.FocusedRecordIndex >= 0 then
+      if cxGridDBTableOverview.DataController.FocusedRecordIndex >= 0 then
       begin
         FreeAndNil(FSupplier);
-        FSupplier := Retrieve(cxGridDBTableSupplier.DataController.DataSource.DataSet.FieldByName('ID').AsString);
+        FSupplier                := Retrieve(cxGridDBTableOverview.DataController.DataSource.DataSet.FieldByName('ID').AsString);
 
-        edKode.Text   := FSupplier.Kode;
-        edNama.Text   := FSupplier.Nama;
-        memAlamt.Text := FSupplier.Alamat;
-        FID           := FSupplier.ID;
+        edKode.Text              := FSupplier.Kode;
+        edNama.Text              := FSupplier.Nama;
+        memAlamt.Text            := FSupplier.Alamat;
+        FID                      := FSupplier.ID;
+
+        cxPCData.ActivePageIndex := 1;
       end;
 
     finally

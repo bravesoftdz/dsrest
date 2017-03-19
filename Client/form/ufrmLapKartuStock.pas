@@ -13,21 +13,17 @@ uses
   dxBarExtDBItems, Vcl.ExtCtrls, dxStatusBar, cxGridLevel, cxContainer,
   Vcl.ComCtrls, dxCore, cxDateUtils, cxTextEdit, cxMaskEdit, cxDropDownEdit,
   cxCalendar, Vcl.StdCtrls, cxLookupEdit, cxDBLookupEdit, cxDBExtLookupComboBox,
-  uModel, dxBarExtItems;
+  uModel, dxBarExtItems, dxBarBuiltInMenu, Vcl.Menus, cxButtons, cxPC;
 
 type
   TfrmLapKartuStock = class(TfrmDefault)
-    cxGridDBLapMutasi: TcxGrid;
-    cxgrdlvlGridLapMutasiLevelLapMutasi: TcxGridLevel;
-    cxGridDBTableKartok: TcxGridDBTableView;
-    lblAwal: TLabel;
-    edAwal: TcxDateEdit;
-    lblSD: TLabel;
-    edAkhir: TcxDateEdit;
     lblGudang: TLabel;
     cbbGudang: TcxExtLookupComboBox;
     lblBarang: TLabel;
     cbbBarang: TcxExtLookupComboBox;
+    cxGridDBLapMutasi: TcxGrid;
+    cxGridDBTableKartok: TcxGridDBTableView;
+    cxgrdlvlGridLapMutasiLevelLapMutasi: TcxGridLevel;
     procedure ActionRefreshExecute(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private
@@ -62,9 +58,9 @@ begin
     try
       lBarang := TBarang.CreateID(cbbBarang.EditValue);
       lGudang := TGudang.CreateID(cbbGudang.EditValue);
-      lCabang := TCabang.CreateID(cbbLUCabang.KeyValue);
+      lCabang := TCabang.CreateID(ClientDataModule.Cabang.ID);
 
-      lDS := LaporanKartok(edAwal.Date, edAkhir.Date,lBarang, lGudang, lCabang);
+      lDS := LaporanKartok(dtpAwal.Date, dtpAkhir.Date,lBarang, lGudang, lCabang);
 
 
 //      lDS.Open;
@@ -81,8 +77,8 @@ end;
 procedure TfrmLapKartuStock.FormShow(Sender: TObject);
 begin
   inherited;
-  edAwal.Date := StartOfTheMonth(Now);
-  edAkhir.Date:= Now;
+  dtpAwal.Date := StartOfTheMonth(Now);
+  dtpAkhir.Date:= Now;
 
   InisialisasiGudang;
   InisialisasiCBBBarang;

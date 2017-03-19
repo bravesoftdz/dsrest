@@ -13,15 +13,18 @@ uses
   Datasnap.Provider, Datasnap.DBClient, uDBUtils, Vcl.StdCtrls, cxContainer,
   Vcl.ComCtrls, dxCore, cxDateUtils, cxTextEdit, cxMaskEdit, cxDropDownEdit,
   cxCalendar, dxBarExtDBItems, cxCheckBox, cxBarEditItem, System.ImageList,
-  dxBarExtItems;
+  dxBarExtItems, dxBarBuiltInMenu, Vcl.Menus, cxButtons, cxPC;
 
 type
   TfrmLapMutasiBarangPerTransaksi = class(TfrmDefault)
-    cxGridDBTableMutasiBarang: TcxGridDBTableView;
-    cxGridLapMutasiLevelLapMutasi: TcxGridLevel;
+    ProvMutasi: TDataSetProvider;
+    cdsMutasi: TClientDataSet;
+    lblAwal: TLabel;
     cxGridLapMutasi: TcxGrid;
+    cxGridDBTableMutasiBarang: TcxGridDBTableView;
     cxGridColsku: TcxGridDBColumn;
     cxGridColNama: TcxGridDBColumn;
+    cxGridColGudang: TcxGridDBColumn;
     cxGridColSaldoAwal: TcxGridDBColumn;
     cxGridColPenerimaan: TcxGridDBColumn;
     cxGridColReturSupplier: TcxGridDBColumn;
@@ -30,13 +33,7 @@ type
     cxGridColKoreksiPlus: TcxGridDBColumn;
     cxGridColKoreksiMinus: TcxGridDBColumn;
     cxGridColSaldoAkhir: TcxGridDBColumn;
-    ProvMutasi: TDataSetProvider;
-    cdsMutasi: TClientDataSet;
-    lblAwal: TLabel;
-    lblSD: TLabel;
-    edAwal: TcxDateEdit;
-    edAkhir: TcxDateEdit;
-    cxGridColGudang: TcxGridDBColumn;
+    cxGridLapMutasiLevelLapMutasi: TcxGridLevel;
     procedure ActionRefreshExecute(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private
@@ -61,7 +58,7 @@ begin
   begin
     try
       cdsMutasi.Close;
-      ProvMutasi.DataSet := RetriveMutasiBarang(edAwal.Date,edAkhir.Date);
+      ProvMutasi.DataSet := RetriveMutasiBarang(dtpAwal.Date,dtpAkhir.Date);
 
       cdsMutasi.Open;
 
@@ -76,8 +73,8 @@ end;
 procedure TfrmLapMutasiBarangPerTransaksi.FormShow(Sender: TObject);
 begin
   inherited;
-  edAwal.Date := StartOfTheMonth(Now);
-  edAkhir.Date:= Now;
+  dtpAwal.Date := StartOfTheMonth(Now);
+  dtpAkhir.Date:= Now;
 end;
 
 end.

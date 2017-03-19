@@ -8,168 +8,170 @@ inherited frmLapMutasiBarangPerTransaksi: TfrmLapMutasiBarangPerTransaksi
   ExplicitHeight = 464
   PixelsPerInch = 96
   TextHeight = 13
-  inherited splTransaksi: TSplitter
-    Left = 0
-    Top = 97
-    Width = 765
-    Height = 8
-    Cursor = crVSplit
-    Align = alTop
-    ExplicitLeft = 0
-    ExplicitTop = 235
-    ExplicitWidth = 91
-    ExplicitHeight = 8
-  end
   inherited cxSBTransaksi: TdxStatusBar
     Top = 405
     Width = 765
     ExplicitTop = 405
     ExplicitWidth = 765
   end
-  inherited pnlListTransaksi: TPanel
+  inherited cxPCData: TcxPageControl
     Width = 765
-    Height = 47
-    Align = alTop
-    ExplicitWidth = 765
-    ExplicitHeight = 47
-    object lblAwal: TLabel
-      Left = 16
-      Top = 17
-      Width = 36
-      Height = 13
-      Caption = 'Periode'
+    Height = 372
+    ClientRectBottom = 368
+    ClientRectRight = 761
+    inherited cxTSOverview: TcxTabSheet
+      inherited splTransaksi: TSplitter
+        Height = 344
+      end
+      inherited pnlListTransaksi: TPanel
+        Width = 749
+        Height = 344
+        ExplicitWidth = 757
+        ExplicitHeight = 0
+        object lblAwal: TLabel [0]
+          Left = 16
+          Top = 17
+          Width = 36
+          Height = 13
+          Caption = 'Periode'
+        end
+        inherited pnlFilter: TPanel
+          Width = 747
+          inherited lblPeriode: TLabel
+            Left = 342
+          end
+          inherited lblSD: TLabel
+            Left = 497
+          end
+          inherited dtpAwal: TDateTimePicker
+            Left = 392
+          end
+          inherited dtpAkhir: TDateTimePicker
+            Left = 535
+          end
+          inherited btnRefresh: TcxButton
+            Left = 640
+          end
+        end
+        inherited cxGrid: TcxGrid
+          Width = 747
+          Height = 310
+        end
+        object cxGridLapMutasi: TcxGrid
+          Left = 1
+          Top = 33
+          Width = 747
+          Height = 310
+          Align = alClient
+          TabOrder = 2
+          ExplicitTop = -344
+          ExplicitWidth = 755
+          ExplicitHeight = 344
+          object cxGridDBTableMutasiBarang: TcxGridDBTableView
+            Navigator.Buttons.CustomButtons = <>
+            DataController.Summary.DefaultGroupSummaryItems = <>
+            DataController.Summary.FooterSummaryItems = <>
+            DataController.Summary.SummaryGroups = <>
+            OptionsView.NoDataToDisplayInfoText = 'Tidak Ada Data'
+            OptionsView.GroupByBox = False
+            Styles.ContentEven = ClientDataModule.cxstylGridEven
+            Styles.ContentOdd = ClientDataModule.cxstylGridOdd
+            Styles.Header = ClientDataModule.cxstylGridHeader
+            object cxGridColsku: TcxGridDBColumn
+              Caption = 'SKU '
+              DataBinding.FieldName = 'Barang'
+              HeaderAlignmentHorz = taCenter
+            end
+            object cxGridColNama: TcxGridDBColumn
+              Caption = 'Nama '
+              DataBinding.FieldName = 'Nama'
+              HeaderAlignmentHorz = taCenter
+            end
+            object cxGridColGudang: TcxGridDBColumn
+              Caption = 'Gudang '
+              DataBinding.FieldName = 'Gudang'
+            end
+            object cxGridColSaldoAwal: TcxGridDBColumn
+              Caption = 'Saldo Awal'
+              DataBinding.FieldName = 'SaldoAwal'
+              PropertiesClassName = 'TcxCurrencyEditProperties'
+              Properties.DisplayFormat = ',0.##;(,0.##)'
+              HeaderAlignmentHorz = taCenter
+            end
+            object cxGridColPenerimaan: TcxGridDBColumn
+              Caption = 'Penerimaan '
+              DataBinding.FieldName = 'Penerimaan'
+              PropertiesClassName = 'TcxCurrencyEditProperties'
+              Properties.DisplayFormat = ',0.##;(,0.##)'
+              HeaderAlignmentHorz = taCenter
+            end
+            object cxGridColReturSupplier: TcxGridDBColumn
+              Caption = 'Retur Supplier'
+              DataBinding.FieldName = 'ReturSupplier'
+              PropertiesClassName = 'TcxCurrencyEditProperties'
+              Properties.DisplayFormat = ',0.##;(,0.##)'
+              HeaderAlignmentHorz = taCenter
+            end
+            object cxGridColPenjualan: TcxGridDBColumn
+              Caption = 'Penjualan '
+              DataBinding.FieldName = 'Penjualan'
+              PropertiesClassName = 'TcxCurrencyEditProperties'
+              Properties.DisplayFormat = ',0.##;(,0.##)'
+              HeaderAlignmentHorz = taCenter
+            end
+            object cxGridColReturCustomer: TcxGridDBColumn
+              Caption = 'Retur Customer'
+              DataBinding.FieldName = 'ReturCustomer'
+              PropertiesClassName = 'TcxCurrencyEditProperties'
+              Properties.DisplayFormat = ',0.##;(,0.##)'
+              HeaderAlignmentHorz = taCenter
+            end
+            object cxGridColKoreksiPlus: TcxGridDBColumn
+              Caption = 'Koreksi (+)'
+              DataBinding.FieldName = 'KoreksiPlus'
+              PropertiesClassName = 'TcxCurrencyEditProperties'
+              Properties.DisplayFormat = ',0.##;(,0.##)'
+              HeaderAlignmentHorz = taCenter
+            end
+            object cxGridColKoreksiMinus: TcxGridDBColumn
+              Caption = 'Koreksi (-)'
+              DataBinding.FieldName = 'KoreksiMinus'
+              PropertiesClassName = 'TcxCurrencyEditProperties'
+              Properties.DisplayFormat = ',0.##;(,0.##)'
+              HeaderAlignmentHorz = taCenter
+            end
+            object cxGridColSaldoAkhir: TcxGridDBColumn
+              Caption = 'Saldo Akhir'
+              DataBinding.FieldName = 'SaldoAkhir'
+              PropertiesClassName = 'TcxCurrencyEditProperties'
+              Properties.DisplayFormat = ',0.##;(,0.##)'
+              HeaderAlignmentHorz = taCenter
+            end
+          end
+          object cxGridLapMutasiLevelLapMutasi: TcxGridLevel
+            GridView = cxGridDBTableMutasiBarang
+          end
+        end
+      end
     end
-    object lblSD: TLabel
-      Left = 181
-      Top = 17
-      Width = 19
-      Height = 13
-      Caption = 's.d.'
-    end
-    object edAwal: TcxDateEdit
-      Left = 56
-      Top = 13
-      Properties.DisplayFormat = 'dd/MMM/yyyy'
-      TabOrder = 0
-      Width = 121
-    end
-    object edAkhir: TcxDateEdit
-      Left = 204
-      Top = 13
-      Properties.DisplayFormat = 'dd/MMM/yyyy'
-      TabOrder = 1
-      Width = 121
+    inherited cxTSInputData: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 757
+      ExplicitHeight = 344
     end
   end
-  object cxGridLapMutasi: TcxGrid [3]
-    Left = 0
-    Top = 105
+  inherited pnlButton: TPanel
+    Top = 372
     Width = 765
-    Height = 300
-    Align = alClient
-    TabOrder = 6
-    object cxGridDBTableMutasiBarang: TcxGridDBTableView
-      Navigator.Buttons.CustomButtons = <>
-      DataController.Summary.DefaultGroupSummaryItems = <>
-      DataController.Summary.FooterSummaryItems = <>
-      DataController.Summary.SummaryGroups = <>
-      OptionsView.NoDataToDisplayInfoText = 'Tidak Ada Data'
-      OptionsView.GroupByBox = False
-      object cxGridColsku: TcxGridDBColumn
-        Caption = 'SKU '
-        DataBinding.FieldName = 'Barang'
-        HeaderAlignmentHorz = taCenter
-      end
-      object cxGridColNama: TcxGridDBColumn
-        Caption = 'Nama '
-        DataBinding.FieldName = 'Nama'
-        HeaderAlignmentHorz = taCenter
-      end
-      object cxGridColGudang: TcxGridDBColumn
-        Caption = 'Gudang '
-        DataBinding.FieldName = 'Gudang'
-      end
-      object cxGridColSaldoAwal: TcxGridDBColumn
-        Caption = 'Saldo Awal'
-        DataBinding.FieldName = 'SaldoAwal'
-        PropertiesClassName = 'TcxCurrencyEditProperties'
-        Properties.DisplayFormat = ',0.##;(,0.##)'
-        HeaderAlignmentHorz = taCenter
-      end
-      object cxGridColPenerimaan: TcxGridDBColumn
-        Caption = 'Penerimaan '
-        DataBinding.FieldName = 'Penerimaan'
-        PropertiesClassName = 'TcxCurrencyEditProperties'
-        Properties.DisplayFormat = ',0.##;(,0.##)'
-        HeaderAlignmentHorz = taCenter
-      end
-      object cxGridColReturSupplier: TcxGridDBColumn
-        Caption = 'Retur Supplier'
-        DataBinding.FieldName = 'ReturSupplier'
-        PropertiesClassName = 'TcxCurrencyEditProperties'
-        Properties.DisplayFormat = ',0.##;(,0.##)'
-        HeaderAlignmentHorz = taCenter
-      end
-      object cxGridColPenjualan: TcxGridDBColumn
-        Caption = 'Penjualan '
-        DataBinding.FieldName = 'Penjualan'
-        PropertiesClassName = 'TcxCurrencyEditProperties'
-        Properties.DisplayFormat = ',0.##;(,0.##)'
-        HeaderAlignmentHorz = taCenter
-      end
-      object cxGridColReturCustomer: TcxGridDBColumn
-        Caption = 'Retur Customer'
-        DataBinding.FieldName = 'ReturCustomer'
-        PropertiesClassName = 'TcxCurrencyEditProperties'
-        Properties.DisplayFormat = ',0.##;(,0.##)'
-        HeaderAlignmentHorz = taCenter
-      end
-      object cxGridColKoreksiPlus: TcxGridDBColumn
-        Caption = 'Koreksi (+)'
-        DataBinding.FieldName = 'KoreksiPlus'
-        PropertiesClassName = 'TcxCurrencyEditProperties'
-        Properties.DisplayFormat = ',0.##;(,0.##)'
-        HeaderAlignmentHorz = taCenter
-      end
-      object cxGridColKoreksiMinus: TcxGridDBColumn
-        Caption = 'Koreksi (-)'
-        DataBinding.FieldName = 'KoreksiMinus'
-        PropertiesClassName = 'TcxCurrencyEditProperties'
-        Properties.DisplayFormat = ',0.##;(,0.##)'
-        HeaderAlignmentHorz = taCenter
-      end
-      object cxGridColSaldoAkhir: TcxGridDBColumn
-        Caption = 'Saldo Akhir'
-        DataBinding.FieldName = 'SaldoAkhir'
-        PropertiesClassName = 'TcxCurrencyEditProperties'
-        Properties.DisplayFormat = ',0.##;(,0.##)'
-        HeaderAlignmentHorz = taCenter
-      end
+    inherited btnBaru: TcxButton
+      Left = 653
     end
-    object cxGridLapMutasiLevelLapMutasi: TcxGridLevel
-      GridView = cxGridDBTableMutasiBarang
+    inherited btnHapus: TcxButton
+      Left = 529
     end
-  end
-  inherited dxBarManagerForm: TdxBarManager
-    DockControlHeights = (
-      0
-      0
-      50
-      0)
-    inherited dxBarLargeButtonNew: TdxBarLargeButton
-      ImageIndex = -1
-    end
-    inherited dxBarLargeButtonSave: TdxBarLargeButton
-      ImageIndex = -1
-    end
-    inherited dxBarLargeButtonEdit: TdxBarLargeButton
-      ImageIndex = -1
-    end
-    inherited dxBarLargeButtonDel: TdxBarLargeButton
-      ImageIndex = -1
-    end
-    inherited dxBarLargeButtonRefresh: TdxBarLargeButton
-      ImageIndex = -1
+    inherited btnSave: TcxButton
+      Left = 413
     end
   end
   inherited ActionListForm: TActionList
@@ -179,7 +181,7 @@ inherited frmLapMutasiBarangPerTransaksi: TfrmLapMutasiBarangPerTransaksi
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010105000800580018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C0101050008005C0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

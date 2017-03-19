@@ -29,7 +29,6 @@ object frmMain: TfrmMain
     TabOrder = 0
     TabStop = False
     object dxrbnAplikasi: TdxRibbonTab
-      Active = True
       Caption = 'Application'
       Groups = <
         item
@@ -47,6 +46,7 @@ object frmMain: TfrmMain
       Index = 1
     end
     object dxrbntbPenerimaanBarangTransaksi: TdxRibbonTab
+      Active = True
       Caption = 'Transaksi'
       Groups = <
         item
@@ -374,6 +374,10 @@ object frmMain: TfrmMain
         item
           Visible = True
           ItemName = 'dxbrlrgbtn3'
+        end
+        item
+          Visible = True
+          ItemName = 'dxbrlrgbtnPenerimaanKas'
         end>
       OneOnRow = False
       Row = 0
@@ -499,6 +503,11 @@ object frmMain: TfrmMain
       Category = 0
       LargeImageIndex = 14
     end
+    object dxbrlrgbtnPenerimaanKas: TdxBarLargeButton
+      Action = actPenerimaanKas
+      Category = 0
+      LargeImageIndex = 15
+    end
     object dxbrlrgbtnExit: TdxBarLargeButton
       Action = actApplicationExit
       Category = 1
@@ -618,6 +627,11 @@ object frmMain: TfrmMain
       Caption = 'Tagihan Penjualan'
       OnExecute = actCustomerInvoiceExecute
     end
+    object actPenerimaanKas: TAction
+      Category = 'Keuangan'
+      Caption = 'Penerimaan Kas'
+      OnExecute = actPenerimaanKasExecute
+    end
   end
   object ImgListMainLarge: TImageList
     ColorDepth = cd32Bit
@@ -626,7 +640,7 @@ object frmMain: TfrmMain
     Left = 688
     Top = 128
     Bitmap = {
-      494C010111001800A40020002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010111001800B00020002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000080000000A000000001002000000000000040
       0100000000000000000000000000000000000000000000000000131313224341
       3F7561605FAD797474D4878180ED8D8988F98A8685F8838181EC787574D3625E

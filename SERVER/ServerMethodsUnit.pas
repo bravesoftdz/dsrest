@@ -5,7 +5,7 @@ interface
 uses
   SysUtils, Classes, DSServer, uModel, Windows, uDBUtils, Generics.Collections,
   DBXJSON, DBClient, DB, rtti, uInterface, uPenjualan,
-  uCustomerInvoice, uAR;
+  uCustomerInvoice, uAR, uPenerimaanKas;
 
 type
   {$METHODINFO ON}
@@ -18,6 +18,13 @@ type
     function LaporanStockSekarang(ACabang : TCabang): TDataset;
     function LookUpPenerimaan(ABulan, ATahun : Integer): TDataset;
     function RetriveMutasiBarang(ATglAwal , ATglAtglAkhir : TDateTime) : TDataset;
+    function RetrivePenjualan(ATglAwal , ATglAtglAkhir : TDateTime; ACabang :
+        TCabang): TDataset;
+    function RetriveCI(ATglAwal , ATglAtglAkhir : TDateTime; ACabang : TCabang):
+        TDataset;
+    function RetrivePenerimaanKas(ATglAwal , ATglAtglAkhir : TDateTime; ACabang :
+        TCabang): TDataset;
+    function RetriveAR(ASupplier : TSupplier): TDataset;
 
   end;
   TCRUD = class(TInterfacedPersistent)
@@ -193,9 +200,23 @@ type
   public
     destructor Destroy; override;
     function AfterSave(AAppObject : TAppObject): Boolean; override;
+    function BeforeSave(AAppObject : TAppObject): Boolean; override;
     function Retrieve(AID : String): TCustomerInvoice;
     function RetrieveCDSlip(AID : String): TDataset;
     function RetrieveNoBukti(ANoBukti : String): TCustomerInvoice;
+  end;
+
+  TServerBarangSatuanItem = class(TCRUD)
+  private
+    function RetirveBySKUUOM(ASKU : TBarang; AUOM : TUOM): TBarangSatuanItem;
+  end;
+
+  TServerPenerimaanKas = class(TServerTransaction)
+  public
+    function AfterSave(AAppObject : TAppObject): Boolean; override;
+    function Retrieve(AID : String): TPenerimaanKas;
+    function RetrieveCDSlip(AID : String): TDataset;
+    function RetrieveNoBukti(ANoBukti : String): TPenerimaanKas;
   end;
 
 
@@ -908,6 +929,73 @@ begin
   Result   := TDBUtils.OpenDataset(sSQL);
 end;
 
+{ TLaporan }
+
+function TServerLaporan.RetrivePenjualan(ATglAwal , ATglAtglAkhir : TDateTime;
+    ACabang : TCabang): TDataset;
+var
+  sSQL : String;
+begin
+  sSQL := 'select a.id, c.nama as cabang, c.id as CabangID,' +
+          ' a.nobukti, a.tglbukti, b.nama as Pembeli, a.keterangan' +
+          ' from tpenjualan a' +
+          ' inner join tsupplier b on a.pembeli = b.id' +
+          ' inner join tcabang c on a.cabang = c.id' +
+          ' where a.tglbukti between ' + TAppUtils.QuotDt(StartOfTheDay(ATglAwal))+
+          ' and ' + TAppUtils.QuotDt(EndOfTheDay(ATglAtglAkhir));
+
+  if ACabang <> nil then
+    sSQL := sSQL + ' and a.cabang = ' + QuotedStr(ACabang.ID);
+
+  Result   := TDBUtils.OpenDataset(sSQL);
+end;
+
+{ TLaporan }
+
+function TServerLaporan.RetriveCI(ATglAwal , ATglAtglAkhir : TDateTime; ACabang
+    : TCabang): TDataset;
+var
+  sSQL : String;
+begin
+  sSQL := 'SELECT * FROM vdaftar_customer_invoice A' +
+          ' where a.tglbukti between ' + TAppUtils.QuotDt(StartOfTheDay(ATglAwal))+
+          ' and ' + TAppUtils.QuotDt(EndOfTheDay(ATglAtglAkhir));
+
+  if ACabang <> nil then
+    sSQL := sSQL + ' and a.cabangID = ' + QuotedStr(ACabang.ID);
+
+  Result   := TDBUtils.OpenDataset(sSQL);
+end;
+
+{ TLaporan }
+
+function TServerLaporan.RetrivePenerimaanKas(ATglAwal , ATglAtglAkhir :
+    TDateTime; ACabang : TCabang): TDataset;
+var
+  sSQL : String;
+begin
+  sSQL := 'SELECT * FROM TPenerimaanKas A' +
+          ' where a.tglbukti between ' + TAppUtils.QuotDt(StartOfTheDay(ATglAwal))+
+          ' and ' + TAppUtils.QuotDt(EndOfTheDay(ATglAtglAkhir));
+
+  if ACabang <> nil then
+    sSQL := sSQL + ' and a.cabangID = ' + QuotedStr(ACabang.ID);
+
+  Result   := TDBUtils.OpenDataset(sSQL);
+end;
+
+{ TLaporan }
+
+function TServerLaporan.RetriveAR(ASupplier : TSupplier): TDataset;
+var
+  sSQL : String;
+begin
+  sSQL := 'select * from tar ' +
+          ' where customer = ' + QuotedStr(ASupplier.ID);
+
+  Result   := TDBUtils.OpenDataset(sSQL);
+end;
+
 function TServerReturSupplier.AfterDelete(AOBject : TAppObject): Boolean;
 begin
   Result := False;
@@ -1429,6 +1517,33 @@ begin
 end;
 
 function TServerCustomerInvoice.AfterSave(AAppObject : TAppObject): Boolean;
+//var
+//  lCI: TCustomerInvoice;
+begin
+//  Result := False;
+//
+//  lCI    := TCustomerInvoice(AAppObject);
+//
+//  if lCI.AR = nil then
+//  begin
+//    lCI.AR := TAR.Create;
+//  end;
+//
+//  lCI.AR.Nominal  := lCI.Nominal;
+//  lCI.AR.Customer := TSupplier.CreateID(lCI.Customer.ID);
+//
+//  if lCI.AR.Cabang = nil then
+//    lCI.AR.Cabang := TCabang.CreateID(lCI.Cabang.ID)
+//  else
+//    lCI.AR.Cabang.ID := lCI.ID;
+//
+//  lCI.AR.NoBukti   := lCI.NoBukti;
+//  lCI.AR.Transaksi := lCI.ClassName;
+//  lCI.AR.JatuhTempo:= lCI.JatuhTempo;
+  Result := True;
+end;
+
+function TServerCustomerInvoice.BeforeSave(AAppObject : TAppObject): Boolean;
 var
   lCI: TCustomerInvoice;
 begin
@@ -1452,6 +1567,10 @@ begin
   lCI.AR.NoBukti   := lCI.NoBukti;
   lCI.AR.Transaksi := lCI.ClassName;
   lCI.AR.JatuhTempo:= lCI.JatuhTempo;
+
+  if ServerAR.SaveNoCommit(lCI.AR) then
+    Result := True;
+
 end;
 
 function TServerCustomerInvoice.GetServerAR: TServerAR;
@@ -1463,9 +1582,31 @@ begin
 end;
 
 function TServerCustomerInvoice.Retrieve(AID : String): TCustomerInvoice;
+var
+  I: Integer;
+  lBSItem: TBarangSatuanItem;
+  sSQL: string;
 begin
   Result := TCustomerInvoice.Create;
   TDBUtils.LoadFromDB(Result, AID);
+
+  with TServerBarangSatuanItem.Create do
+  begin
+    try
+      for I := 0 to Result.CustomerInvoicePenjualans[0].CustomerInvoicePenjualanItems.Count - 1 do
+      begin
+        lBSItem := RetirveBySKUUOM(Result.CustomerInvoicePenjualans[0].CustomerInvoicePenjualanItems[i].Barang,
+                                   Result.CustomerInvoicePenjualans[0].CustomerInvoicePenjualanItems[i].UOM);
+
+        Result.CustomerInvoicePenjualans[0].CustomerInvoicePenjualanItems[i].BarangSatuangItemID := lBSItem.ID;
+      end;
+
+    finally
+      Free
+    end;
+  end;
+
+  
 end;
 
 function TServerCustomerInvoice.RetrieveCDSlip(AID : String): TDataset;
@@ -1517,6 +1658,92 @@ begin
 end;
 
 function TServerAR.RetrieveNoBukti(ANoBukti : String): TAR;
+var
+  sID: string;
+  sSQL: string;
+begin
+  sSQL := 'select * from ' + GetTableName
+          + ' where nobukti = ' + QuotedStr(ANoBukti);
+
+  with TDBUtils.OpenDataset(sSQL) do
+  begin
+    try
+      sID := FieldByName('ID').AsString;
+      Result := Retrieve(sID);
+    finally
+      Free;
+    end;
+  end;
+
+
+end;
+
+function TServerBarangSatuanItem.RetirveBySKUUOM(ASKU : TBarang; AUOM : TUOM):
+    TBarangSatuanItem;
+var
+  sSQL: string;
+begin
+  Result := TBarangSatuanItem.Create;
+
+  sSQL := 'select ID from TBarangSatuanItem' +
+          ' where barang = ' + QuotedStr(ASKU.ID) +
+          ' and uom = ' + QuotedStr(AUOM.ID);
+
+  with TDBUtils.OpenQuery(sSQL) do
+  begin
+    if not IsEmpty then
+    begin
+      TDBUtils.LoadFromDB(Result, FieldByName('ID').AsString);
+    end;
+  end;
+
+end;
+
+function TServerPenerimaanKas.AfterSave(AAppObject : TAppObject): Boolean;
+//var
+//  lCI: TCustomerInvoice;
+begin
+//  Result := False;
+//
+//  lCI    := TCustomerInvoice(AAppObject);
+//
+//  if lCI.AR = nil then
+//  begin
+//    lCI.AR := TAR.Create;
+//  end;
+//
+//  lCI.AR.Nominal  := lCI.Nominal;
+//  lCI.AR.Customer := TSupplier.CreateID(lCI.Customer.ID);
+//
+//  if lCI.AR.Cabang = nil then
+//    lCI.AR.Cabang := TCabang.CreateID(lCI.Cabang.ID)
+//  else
+//    lCI.AR.Cabang.ID := lCI.ID;
+//
+//  lCI.AR.NoBukti   := lCI.NoBukti;
+//  lCI.AR.Transaksi := lCI.ClassName;
+//  lCI.AR.JatuhTempo:= lCI.JatuhTempo;
+  Result := True;
+end;
+
+function TServerPenerimaanKas.Retrieve(AID : String): TPenerimaanKas;
+begin
+  Result := TPenerimaanKas.Create;
+  TDBUtils.LoadFromDB(Result, AID);
+end;
+
+function TServerPenerimaanKas.RetrieveCDSlip(AID : String): TDataset;
+var
+  sSQL: string;
+begin
+  sSQL   := 'select * from TServerPenerimaanKas a ' +
+            ' where a.id = ' + QuotedStr(AID);
+
+  Result := TDBUtils.OpenDataset(sSQL);
+end;
+
+function TServerPenerimaanKas.RetrieveNoBukti(ANoBukti : String):
+    TPenerimaanKas;
 var
   sID: string;
   sSQL: string;

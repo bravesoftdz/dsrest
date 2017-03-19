@@ -4,148 +4,150 @@ inherited frmLapStockSekarang: TfrmLapStockSekarang
   ExplicitHeight = 385
   PixelsPerInch = 96
   TextHeight = 13
-  inherited splTransaksi: TSplitter
-    Left = 0
-    Top = 88
-    Width = 717
-    Height = 8
-    Cursor = crVSplit
-    Align = alTop
-    ExplicitLeft = 0
-    ExplicitTop = 235
-    ExplicitWidth = 91
-    ExplicitHeight = 8
+  inherited cxPCData: TcxPageControl
+    inherited cxTSOverview: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 709
+      ExplicitHeight = 265
+      inherited splTransaksi: TSplitter
+        Width = 9
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 9
+        ExplicitHeight = 265
+      end
+      inherited pnlListTransaksi: TPanel
+        Left = 9
+        Width = 700
+        ExplicitLeft = 0
+        ExplicitWidth = 709
+        ExplicitHeight = 233
+        inherited pnlFilter: TPanel
+          Width = 698
+          ExplicitWidth = 707
+          inherited lblPeriode: TLabel
+            Left = 293
+            ExplicitLeft = 333
+          end
+          inherited lblSD: TLabel
+            Left = 448
+            ExplicitLeft = 488
+          end
+          inherited dtpAwal: TDateTimePicker
+            Left = 343
+            ExplicitLeft = 352
+          end
+          inherited dtpAkhir: TDateTimePicker
+            Left = 486
+            ExplicitLeft = 495
+          end
+          inherited btnRefresh: TcxButton
+            Left = 591
+            ExplicitLeft = 600
+          end
+        end
+        inherited cxGrid: TcxGrid
+          Width = 698
+          Visible = False
+          ExplicitWidth = 707
+        end
+        object cxGridDBStockSekarang: TcxGrid
+          Left = 1
+          Top = 33
+          Width = 698
+          Height = 231
+          Align = alClient
+          TabOrder = 2
+          ExplicitTop = -265
+          ExplicitWidth = 707
+          ExplicitHeight = 265
+          object cxGridDBTableStockSekarang: TcxGridDBTableView
+            Navigator.Buttons.CustomButtons = <>
+            DataController.Summary.DefaultGroupSummaryItems = <>
+            DataController.Summary.FooterSummaryItems = <>
+            DataController.Summary.SummaryGroups = <>
+            OptionsView.GroupByBox = False
+            Styles.ContentEven = ClientDataModule.cxstylGridEven
+            Styles.ContentOdd = ClientDataModule.cxstylGridOdd
+            Styles.Header = ClientDataModule.cxstylGridHeader
+            object cxGridColGridDBTableStockSekarangColumnGudang: TcxGridDBColumn
+              Caption = 'Gudang '
+              DataBinding.FieldName = 'Gudang'
+              HeaderAlignmentHorz = taCenter
+            end
+            object cxGridColGridDBTableStockSekarangColumnSKU: TcxGridDBColumn
+              Caption = 'SKU '
+              DataBinding.FieldName = 'SKU'
+              PropertiesClassName = 'TcxTextEditProperties'
+              HeaderAlignmentHorz = taCenter
+              Width = 96
+            end
+            object cxGridColGridDBTableStockSekarangColumnNama: TcxGridDBColumn
+              Caption = 'Nama '
+              DataBinding.FieldName = 'Nama'
+              PropertiesClassName = 'TcxTextEditProperties'
+              HeaderAlignmentHorz = taCenter
+            end
+            object cxGridColGridDBTableStockSekarangColumnUOM: TcxGridDBColumn
+              Caption = 'UOM '
+              DataBinding.FieldName = 'UOM'
+              PropertiesClassName = 'TcxTextEditProperties'
+              HeaderAlignmentHorz = taCenter
+              Width = 81
+            end
+            object cxGridColGridDBTableStockSekarangColumnQty: TcxGridDBColumn
+              Caption = 'Qty '
+              DataBinding.FieldName = 'Qty'
+              PropertiesClassName = 'TcxCurrencyEditProperties'
+              Properties.DisplayFormat = ',#.##;(,#.##)'
+              HeaderAlignmentHorz = taCenter
+              Width = 85
+            end
+            object cxGridColGridDBTableStockSekarangColumnRP: TcxGridDBColumn
+              Caption = 'Rupiah '
+              DataBinding.FieldName = 'Rp'
+              PropertiesClassName = 'TcxCurrencyEditProperties'
+              Properties.DisplayFormat = ',#.##;(,#.##)'
+              HeaderAlignmentHorz = taCenter
+              Width = 108
+            end
+          end
+          object cxgrdlvlGridDBStockSekarangLevel1: TcxGridLevel
+            GridView = cxGridDBTableStockSekarang
+          end
+        end
+      end
+    end
+    inherited cxTSInputData: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 709
+      ExplicitHeight = 265
+    end
   end
-  inherited pnlListTransaksi: TPanel
-    Width = 717
-    Height = 38
-    Align = alTop
-    ExplicitWidth = 717
-    ExplicitHeight = 38
-  end
-  object cxGridDBStockSekarang: TcxGrid [3]
-    Left = 0
-    Top = 96
-    Width = 717
-    Height = 230
-    Align = alClient
-    TabOrder = 6
-    object cxGridDBTableStockSekarang: TcxGridDBTableView
-      Navigator.Buttons.CustomButtons = <>
-      DataController.Summary.DefaultGroupSummaryItems = <>
-      DataController.Summary.FooterSummaryItems = <>
-      DataController.Summary.SummaryGroups = <>
-      OptionsView.GroupByBox = False
-      object cxGridColGridDBTableStockSekarangColumnGudang: TcxGridDBColumn
-        Caption = 'Gudang '
-        DataBinding.FieldName = 'Gudang'
-        HeaderAlignmentHorz = taCenter
-      end
-      object cxGridColGridDBTableStockSekarangColumnSKU: TcxGridDBColumn
-        Caption = 'SKU '
-        DataBinding.FieldName = 'SKU'
-        PropertiesClassName = 'TcxTextEditProperties'
-        HeaderAlignmentHorz = taCenter
-        Width = 96
-      end
-      object cxGridColGridDBTableStockSekarangColumnNama: TcxGridDBColumn
-        Caption = 'Nama '
-        DataBinding.FieldName = 'Nama'
-        PropertiesClassName = 'TcxTextEditProperties'
-        HeaderAlignmentHorz = taCenter
-      end
-      object cxGridColGridDBTableStockSekarangColumnUOM: TcxGridDBColumn
-        Caption = 'UOM '
-        DataBinding.FieldName = 'UOM'
-        PropertiesClassName = 'TcxTextEditProperties'
-        HeaderAlignmentHorz = taCenter
-        Width = 81
-      end
-      object cxGridColGridDBTableStockSekarangColumnQty: TcxGridDBColumn
-        Caption = 'Qty '
-        DataBinding.FieldName = 'Qty'
-        PropertiesClassName = 'TcxCurrencyEditProperties'
-        Properties.DisplayFormat = ',#.##;(,#.##)'
-        HeaderAlignmentHorz = taCenter
-        Width = 85
-      end
-      object cxGridColGridDBTableStockSekarangColumnRP: TcxGridDBColumn
-        Caption = 'Rupiah '
-        DataBinding.FieldName = 'Rp'
-        PropertiesClassName = 'TcxCurrencyEditProperties'
-        Properties.DisplayFormat = ',#.##;(,#.##)'
-        HeaderAlignmentHorz = taCenter
-        Width = 108
-      end
+  inherited pnlButton: TPanel
+    inherited btnHapus: TcxButton
+      ExplicitLeft = 481
     end
-    object cxgrdlvlGridDBStockSekarangLevel1: TcxGridLevel
-      GridView = cxGridDBTableStockSekarang
+    inherited btnSave: TcxButton
+      ExplicitLeft = 365
     end
-  end
-  inherited dxBarManagerForm: TdxBarManager
-    Left = 608
-    DockControlHeights = (
-      0
-      0
-      50
-      0)
-    inherited dxBarManager1Bar1: TdxBar
-      ItemLinks = <
-        item
-          Visible = True
-          ItemName = 'dxBarLargeButtonNew'
-        end
-        item
-          Visible = True
-          ItemName = 'dxBarLargeButtonSave'
-        end
-        item
-          Visible = True
-          ItemName = 'dxBarLargeButtonDel'
-        end
-        item
-          Visible = True
-          ItemName = 'dxBarLargeButtonEdit'
-        end
-        item
-          Visible = True
-          ItemName = 'dxBarLargeButtonRefresh'
-        end
-        item
-          UserDefine = [udWidth]
-          UserWidth = 174
-          Visible = True
-          ItemName = 'cbbLUCabang'
-        end
-        item
-          ViewLayout = ivlGlyphControlCaption
-          Visible = True
-          ItemName = 'chkKonsolidasi'
-        end>
-    end
-    inherited dxBarLargeButtonNew: TdxBarLargeButton
-      ImageIndex = -1
-    end
-    inherited dxBarLargeButtonSave: TdxBarLargeButton
-      ImageIndex = -1
-    end
-    inherited dxBarLargeButtonEdit: TdxBarLargeButton
-      ImageIndex = -1
-    end
-    inherited dxBarLargeButtonDel: TdxBarLargeButton
-      ImageIndex = -1
-    end
-    inherited dxBarLargeButtonRefresh: TdxBarLargeButton
-      ImageIndex = -1
+    inherited chkKonsolidasi1: TcxCheckBox
+      ExplicitWidth = 76
+      ExplicitHeight = 31
     end
   end
   inherited ActionListForm: TActionList
+    Left = 120
+    Top = 120
     inherited ActionRefresh: TAction
       OnExecute = ActionRefreshExecute
     end
   end
   inherited cxGridRepTransaksi: TcxGridViewRepository
-    Left = 672
+    Left = 88
+    Top = 120
     object cxGridDBTableBarang: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       DataController.KeyFieldNames = 'ID'
@@ -175,7 +177,7 @@ inherited frmLapStockSekarang: TfrmLapStockSekarang
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010105000800780018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010105000800800018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

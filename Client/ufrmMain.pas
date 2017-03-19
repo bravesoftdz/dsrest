@@ -13,7 +13,7 @@ uses
   FireDAC.Phys.ODBCBase, FireDAC.Phys.MSSQL, Firedac.Dapt,
   dxRibbonCustomizationForm, FireDAC.Phys.MSSQLDef, FireDAC.Phys.PGDef,
   System.ImageList, ufrmLapKartuStock, ufrmPenjualan, ufrmPenjualanPOS,
-  ufrmCustomerInvoice;
+  ufrmCustomerInvoice,ufrmPenerimaanKas;
 
 type
 //  RawUTF8 = type AnsiString;
@@ -102,6 +102,8 @@ type
     dxbrmngrAMSBarKeuangan: TdxBar;
     dxbrbtnCustomerInvoice: TdxBarButton;
     dxbrlrgbtn3: TdxBarLargeButton;
+    dxbrlrgbtnPenerimaanKas: TdxBarLargeButton;
+    actPenerimaanKas: TAction;
     procedure actAlatGantiCabangExecute(Sender: TObject);
     procedure actApplicationExitExecute(Sender: TObject);
     procedure actClosingInventoryExecute(Sender: TObject);
@@ -114,6 +116,7 @@ type
     procedure actLapMutasiBarangExecute(Sender: TObject);
     procedure actLapStockSekarangExecute(Sender: TObject);
     procedure actMasterGudangExecute(Sender: TObject);
+    procedure actPenerimaanKasExecute(Sender: TObject);
     procedure actPenjualanPOSExecute(Sender: TObject);
     procedure actPenjualanSalesExecute(Sender: TObject);
     procedure actReturSupplierExecute(Sender: TObject);
@@ -205,6 +208,11 @@ end;
 procedure TfrmMain.actPenerimaanBarangExecute(Sender: TObject);
 begin
   frmPenerimaanBarang := TfrmPenerimaanBarang.Create(Self);
+end;
+
+procedure TfrmMain.actPenerimaanKasExecute(Sender: TObject);
+begin
+  frmPenerimaanKas := TfrmPenerimaanKas.Create(Self);
 end;
 
 procedure TfrmMain.actPenjualanPOSExecute(Sender: TObject);

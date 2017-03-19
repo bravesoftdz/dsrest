@@ -32,7 +32,11 @@ uses
   uPembayaranPenjualan in '..\model\uPembayaranPenjualan.pas',
   uAR in '..\model\uAR.pas',
   uCustomerInvoice in '..\model\uCustomerInvoice.pas',
-  ufrmCustomerInvoice in 'form\ufrmCustomerInvoice.pas' {frmCustomerInvoice};
+  ufrmCustomerInvoice in 'form\ufrmCustomerInvoice.pas' {frmCustomerInvoice},
+  uRekBank in '..\model\uRekBank.pas',
+  uPengeluaranKas in '..\model\uPengeluaranKas.pas',
+  uPenerimaanKas in '..\model\uPenerimaanKas.pas',
+  ufrmPenerimaanKas in 'form\ufrmPenerimaanKas.pas' {frmPenerimaanKas};
 
 {$R *.res}
 

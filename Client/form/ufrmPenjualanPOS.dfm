@@ -1,74 +1,64 @@
 inherited frmPenjualanPOS: TfrmPenjualanPOS
   Caption = 'Penjualan Melalui POS (Point Of Sales)'
-  ExplicitWidth = 320
-  ExplicitHeight = 240
   PixelsPerInch = 96
   TextHeight = 13
-  inherited pnlListTransaksi: TPanel
-    TabOrder = 4
-  end
-  inherited pnlInput: TPanel
-    inherited pgcHeader: TPageControl
-      inherited tsHeader: TTabSheet
-        ExplicitLeft = 5
-        ExplicitTop = 22
-        inherited lblSupplier: TLabel
-          Left = 26
-          Width = 36
-          Caption = 'Pembeli'
-          ExplicitLeft = 26
-          ExplicitWidth = 36
-        end
-        inherited lblKeterangan: TLabel
-          Visible = False
-        end
-        inherited lblJthTempo: TLabel
-          Visible = False
-        end
-        inherited edTglBukti: TcxDateEdit
-          Properties.OnChange = nil
-        end
-        inherited memKeterangan: TcxMemo
-          Visible = False
-        end
-        inherited edJthTempo: TcxDateEdit
-          Visible = False
-        end
-        inherited cbbJenisPembayaran: TcxComboBox
-          Properties.OnChange = nil
-          OnExit = nil
-        end
-        inherited edTempo: TcxCalcEdit
-          Properties.OnChange = nil
+  inherited cxPCData: TcxPageControl
+    inherited cxTSInputData: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitHeight = 348
+      inherited pnlInput: TPanel
+        ExplicitHeight = 348
+        inherited pgcHeader: TPageControl
+          inherited tsHeader: TTabSheet
+            ExplicitLeft = 4
+            ExplicitTop = 24
+            ExplicitWidth = 757
+            ExplicitHeight = 108
+            inherited lblSupplier: TLabel
+              Left = 26
+              Width = 36
+              Caption = 'Pembeli'
+              ExplicitLeft = 26
+              ExplicitWidth = 36
+            end
+            inherited lblKeterangan: TLabel
+              Visible = False
+            end
+            inherited lblJthTempo: TLabel
+              Visible = False
+            end
+            inherited edTglBukti: TcxDateEdit
+              Properties.OnChange = nil
+            end
+            inherited memKeterangan: TcxMemo
+              Visible = False
+            end
+            inherited edJthTempo: TcxDateEdit
+              Visible = False
+            end
+            inherited edTempo: TcxCalcEdit
+              Properties.OnChange = nil
+            end
+          end
         end
       end
     end
   end
-  inherited dxBarManagerForm: TdxBarManager
-    DockControlHeights = (
-      0
-      0
-      50
-      0)
-    inherited dxBarLargeButtonNew: TdxBarLargeButton
-      ImageIndex = -1
+  inherited pnlButton: TPanel
+    inherited btnBaru: TcxButton
+      Left = 682
     end
-    inherited dxBarLargeButtonSave: TdxBarLargeButton
-      ImageIndex = -1
+    inherited btnHapus: TcxButton
+      Left = 558
     end
-    inherited dxBarLargeButtonEdit: TdxBarLargeButton
-      ImageIndex = -1
-    end
-    inherited dxBarLargeButtonDel: TdxBarLargeButton
-      ImageIndex = -1
-    end
-    inherited dxBarLargeButtonRefresh: TdxBarLargeButton
-      ImageIndex = -1
+    inherited btnSave: TcxButton
+      Left = 442
     end
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010106000800A00018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010106000800A40018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

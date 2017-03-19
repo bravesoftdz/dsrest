@@ -12,27 +12,20 @@ uses
   cxGrid, cxClasses, System.Actions, Vcl.ActnList, cxBarEditItem, dxBar,
   dxBarExtDBItems, Vcl.ExtCtrls, dxStatusBar, dxBarBuiltInMenu, cxContainer,
   cxTextEdit, Vcl.StdCtrls, cxPC, cxGridLevel, ClientModule, uModel,
-  dxBarExtItems;
+  dxBarExtItems, Vcl.Menus, cxButtons, Vcl.ComCtrls;
 
 type
   TfrmGudang = class(TfrmDefault)
-    cxPCInput: TcxPageControl;
-    Input: TcxTabSheet;
     lblKode: TLabel;
     lblNama: TLabel;
     edKode: TcxTextEdit;
     edNama: TcxTextEdit;
-    cxGridDBGudang: TcxGrid;
-    cxGridDBTableGudang: TcxGridDBTableView;
-    cxgrdbclmnGridDBTableGudangColumnKode: TcxGridDBColumn;
-    cxgrdbclmnGridDBTableGudangColumnNama: TcxGridDBColumn;
-    cxgrdlvlGudang: TcxGridLevel;
     procedure FormCreate(Sender: TObject);
     procedure ActionBaruExecute(Sender: TObject);
     procedure ActionHapusExecute(Sender: TObject);
     procedure ActionRefreshExecute(Sender: TObject);
     procedure ActionSimpanExecute(Sender: TObject);
-    procedure cxGridDBTableGudangCellDblClick(Sender: TcxCustomGridTableView;
+    procedure cxGridDBTableOverviewCellDblClick(Sender: TcxCustomGridTableView;
         ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton; AShift:
         TShiftState; var AHandled: Boolean);
   private
@@ -82,11 +75,13 @@ var
   sSQL: string;
 begin
   inherited;
-  sSQL := 'select * from ' + TGudang.ClassName;
+  sSQL := 'select Kode,Nama, ID from ' + TGudang.ClassName;
   if ClientDataModule.Cabang.IsHO <> 1 then
     sSQL := sSQL + ' where cabang = ' + QuotedStr(ClientDataModule.Cabang.ID);
 
-  TDBUtils.DataSetToCxDBGrid(TDBUtils.OpenDataset(sSQL), cxGridDBTableGudang);
+  TDBUtils.DataSetToCxDBGrid(TDBUtils.OpenDataset(sSQL), cxGridDBTableOverview, True);
+  cxGridDBTableOverview.SetVisibleColumns(['ID'],False);
+  cxGridDBTableOverview.ApplyBestFit();
 end;
 
 procedure TfrmGudang.ActionSimpanExecute(Sender: TObject);
@@ -106,22 +101,21 @@ begin
   end;
 end;
 
-procedure TfrmGudang.cxGridDBTableGudangCellDblClick(Sender:
+procedure TfrmGudang.cxGridDBTableOverviewCellDblClick(Sender:
     TcxCustomGridTableView; ACellViewInfo: TcxGridTableDataCellViewInfo;
     AButton: TMouseButton; AShift: TShiftState; var AHandled: Boolean);
 begin
   inherited;
-  if cxGridDBTableGudang.DataController.FocusedRecordIndex >= 0 then
+  if cxGridDBTableOverview.DataController.FocusedRecordIndex >= 0 then
   begin
     FreeAndNil(FGudang);
-
-
-    FGudang     := ClientDataModule.ServerGudangClient.Retrieve(cxGridDBTableGudang.DataController.DataSource.DataSet.FieldByName('ID').AsString);
+    FGudang     := ClientDataModule.ServerGudangClient.Retrieve(cxGridDBTableOverview.DataController.DataSource.DataSet.FieldByName('ID').AsString);
     edKode.Text := Gudang.Kode;
     edNama.Text := Gudang.Nama;
     FID         := Gudang.ID;
-  end;
 
+    cxPCData.ActivePageIndex := 1;
+  end;
 end;
 
 function TfrmGudang.GetGudang: TGudang;

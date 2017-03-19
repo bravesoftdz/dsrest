@@ -7,133 +7,171 @@ inherited frmLapKartuStock: TfrmLapKartuStock
   ExplicitHeight = 456
   PixelsPerInch = 96
   TextHeight = 13
-  inherited splTransaksi: TSplitter
-    Left = 0
-    Top = 145
-    Width = 721
-    Height = 8
-    Cursor = crVSplit
-    Align = alTop
-    ExplicitLeft = 0
-    ExplicitTop = 235
-    ExplicitWidth = 91
-    ExplicitHeight = 8
-  end
   inherited cxSBTransaksi: TdxStatusBar
     Top = 397
     Width = 721
     ExplicitTop = 397
     ExplicitWidth = 721
   end
-  inherited pnlListTransaksi: TPanel
+  inherited cxPCData: TcxPageControl
     Width = 721
-    Height = 95
-    Align = alTop
+    Height = 364
     ExplicitWidth = 721
-    ExplicitHeight = 95
-    object lblAwal: TLabel
-      Left = 15
-      Top = 17
-      Width = 36
-      Height = 13
-      Caption = 'Periode'
+    ExplicitHeight = 364
+    ClientRectBottom = 360
+    ClientRectRight = 717
+    inherited cxTSOverview: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 713
+      ExplicitHeight = 336
+      inherited splTransaksi: TSplitter
+        Width = 9
+        Height = 336
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 9
+        ExplicitHeight = 336
+      end
+      inherited pnlListTransaksi: TPanel
+        Left = 9
+        Width = 704
+        Height = 336
+        ExplicitLeft = 0
+        ExplicitWidth = 713
+        ExplicitHeight = 129
+        inherited pnlFilter: TPanel
+          Width = 702
+          Height = 48
+          ExplicitWidth = 702
+          ExplicitHeight = 48
+          inherited lblPeriode: TLabel
+            Left = 297
+            Height = 46
+            ExplicitLeft = 306
+            ExplicitHeight = 65
+          end
+          inherited lblSD: TLabel
+            Left = 452
+            Height = 46
+            ExplicitLeft = 492
+          end
+          object lblBarang: TLabel [2]
+            Left = 14
+            Top = 30
+            Width = 37
+            Height = 13
+            Caption = 'Gudang'
+          end
+          object lblGudang: TLabel [3]
+            Left = 14
+            Top = 7
+            Width = 34
+            Height = 13
+            Caption = 'Barang'
+          end
+          inherited dtpAwal: TDateTimePicker
+            Left = 347
+            Height = 46
+            ExplicitLeft = 356
+          end
+          inherited dtpAkhir: TDateTimePicker
+            Left = 490
+            Height = 46
+            ExplicitLeft = 499
+          end
+          inherited btnRefresh: TcxButton
+            Left = 595
+            Height = 46
+            ExplicitLeft = 604
+          end
+          object cbbBarang: TcxExtLookupComboBox
+            Left = 56
+            Top = 26
+            Properties.DropDownAutoSize = True
+            Properties.FocusPopup = True
+            Properties.View = cxGridDBTableWarehouse
+            Properties.KeyFieldNames = 'ID'
+            Properties.ListFieldItem = cxGridColWHNama
+            TabOrder = 3
+            Width = 214
+          end
+          object cbbGudang: TcxExtLookupComboBox
+            Left = 56
+            Top = 3
+            Properties.DropDownAutoSize = True
+            Properties.FocusPopup = True
+            Properties.View = cxGridDBTableWarehouse
+            Properties.KeyFieldNames = 'ID'
+            Properties.ListFieldItem = cxGridColWHNama
+            TabOrder = 4
+            Width = 214
+          end
+        end
+        inherited cxGrid: TcxGrid
+          Top = 49
+          Width = 702
+          Height = 0
+          Align = alTop
+          Visible = False
+          ExplicitTop = 44
+          ExplicitWidth = 711
+          ExplicitHeight = 0
+        end
+        object cxGridDBLapMutasi: TcxGrid
+          Left = 1
+          Top = 49
+          Width = 702
+          Height = 286
+          Align = alClient
+          TabOrder = 2
+          ExplicitLeft = 9
+          ExplicitTop = 129
+          ExplicitWidth = 704
+          ExplicitHeight = 207
+          object cxGridDBTableKartok: TcxGridDBTableView
+            Navigator.Buttons.CustomButtons = <>
+            DataController.Summary.DefaultGroupSummaryItems = <>
+            DataController.Summary.FooterSummaryItems = <>
+            DataController.Summary.SummaryGroups = <>
+            OptionsView.GroupByBox = False
+            Styles.ContentEven = ClientDataModule.cxstylGridEven
+            Styles.ContentOdd = ClientDataModule.cxstylGridOdd
+            Styles.Header = ClientDataModule.cxstylGridHeader
+          end
+          object cxgrdlvlGridLapMutasiLevelLapMutasi: TcxGridLevel
+            GridView = cxGridDBTableKartok
+          end
+        end
+      end
     end
-    object lblSD: TLabel
-      Left = 181
-      Top = 17
-      Width = 19
-      Height = 13
-      Caption = 's.d.'
-    end
-    object lblGudang: TLabel
-      Left = 14
-      Top = 44
-      Width = 37
-      Height = 13
-      Caption = 'Gudang'
-    end
-    object lblBarang: TLabel
-      Left = 14
-      Top = 71
-      Width = 37
-      Height = 13
-      Caption = 'Gudang'
-    end
-    object edAwal: TcxDateEdit
-      Left = 56
-      Top = 13
-      Properties.DisplayFormat = 'dd/MMM/yyyy'
-      TabOrder = 0
-      Width = 121
-    end
-    object edAkhir: TcxDateEdit
-      Left = 204
-      Top = 13
-      Properties.DisplayFormat = 'dd/MMM/yyyy'
-      TabOrder = 1
-      Width = 121
-    end
-    object cbbGudang: TcxExtLookupComboBox
-      Left = 56
-      Top = 40
-      Properties.DropDownAutoSize = True
-      Properties.FocusPopup = True
-      Properties.View = cxGridDBTableWarehouse
-      Properties.KeyFieldNames = 'ID'
-      Properties.ListFieldItem = cxGridColWHNama
-      TabOrder = 2
-      Width = 269
-    end
-    object cbbBarang: TcxExtLookupComboBox
-      Left = 56
-      Top = 67
-      Properties.DropDownAutoSize = True
-      Properties.FocusPopup = True
-      Properties.View = cxGridDBTableWarehouse
-      Properties.KeyFieldNames = 'ID'
-      Properties.ListFieldItem = cxGridColWHNama
-      TabOrder = 3
-      Width = 269
+    inherited cxTSInputData: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 713
+      ExplicitHeight = 336
     end
   end
-  object cxGridDBLapMutasi: TcxGrid [3]
-    Left = 0
-    Top = 153
+  inherited pnlButton: TPanel
+    Top = 364
     Width = 721
-    Height = 244
-    Align = alClient
-    TabOrder = 6
-    object cxGridDBTableKartok: TcxGridDBTableView
-      Navigator.Buttons.CustomButtons = <>
-      DataController.Summary.DefaultGroupSummaryItems = <>
-      DataController.Summary.FooterSummaryItems = <>
-      DataController.Summary.SummaryGroups = <>
-      OptionsView.GroupByBox = False
+    ExplicitTop = 364
+    ExplicitWidth = 721
+    inherited btnBaru: TcxButton
+      Left = 609
+      ExplicitLeft = 609
     end
-    object cxgrdlvlGridLapMutasiLevelLapMutasi: TcxGridLevel
-      GridView = cxGridDBTableKartok
+    inherited btnHapus: TcxButton
+      Left = 485
+      ExplicitLeft = 485
     end
-  end
-  inherited dxBarManagerForm: TdxBarManager
-    DockControlHeights = (
-      0
-      0
-      50
-      0)
-    inherited dxBarLargeButtonNew: TdxBarLargeButton
-      ImageIndex = -1
+    inherited btnSave: TcxButton
+      Left = 369
+      ExplicitLeft = 369
     end
-    inherited dxBarLargeButtonSave: TdxBarLargeButton
-      ImageIndex = -1
-    end
-    inherited dxBarLargeButtonEdit: TdxBarLargeButton
-      ImageIndex = -1
-    end
-    inherited dxBarLargeButtonDel: TdxBarLargeButton
-      ImageIndex = -1
-    end
-    inherited dxBarLargeButtonRefresh: TdxBarLargeButton
-      ImageIndex = -1
+    inherited chkKonsolidasi1: TcxCheckBox
+      ExplicitWidth = 76
+      ExplicitHeight = 31
     end
   end
   inherited ActionListForm: TActionList
@@ -148,7 +186,7 @@ inherited frmLapKartuStock: TfrmLapKartuStock
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C0101050008007C0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010105000800840018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

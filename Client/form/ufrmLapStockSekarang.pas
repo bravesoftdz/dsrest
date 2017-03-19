@@ -18,26 +18,27 @@ uses
   cxDrawTextUtils, dxPSPrVwStd, dxPSPrVwAdv, dxPSPrVwRibbon,
   dxPScxPageControlProducer, dxPScxEditorProducers, dxPScxExtEditorProducers,
   dxPrnDlg, dxPgsDlg, dxPSCore, dxPScxGridLnk, dxPScxGridLayoutViewLnk, frxClass,
-  System.ImageList, dxBarExtItems;
+  System.ImageList, dxBarExtItems, dxBarBuiltInMenu, Vcl.Menus, cxButtons,
+  Vcl.ComCtrls, cxPC;
 
 type
   TfrmLapStockSekarang = class(TfrmDefault)
-    cxGridDBTableStockSekarang: TcxGridDBTableView;
-    cxgrdlvlGridDBStockSekarangLevel1: TcxGridLevel;
-    cxGridDBStockSekarang: TcxGrid;
     dtstprvdrStockSekarang: TDataSetProvider;
     cdsStockSekarang: TClientDataSet;
-    cxGridColGridDBTableStockSekarangColumnSKU: TcxGridDBColumn;
-    cxGridColGridDBTableStockSekarangColumnNama: TcxGridDBColumn;
-    cxGridColGridDBTableStockSekarangColumnUOM: TcxGridDBColumn;
-    cxGridColGridDBTableStockSekarangColumnQty: TcxGridDBColumn;
-    cxGridColGridDBTableStockSekarangColumnRP: TcxGridDBColumn;
     cxGridDBTableBarang: TcxGridDBTableView;
     cxGridColGridDBTableGridRepTransaksiDBTableViewBarangColumnSKU: TcxGridDBColumn;
     cxGridColGridDBTableGridRepTransaksiDBTableViewBarangColumnNama: TcxGridDBColumn;
     cxGridDBTableUOM: TcxGridDBTableView;
     cxGridColGridDBTableGridRepTransaksiDBTableViewUOMColumnNama: TcxGridDBColumn;
+    cxGridDBStockSekarang: TcxGrid;
+    cxGridDBTableStockSekarang: TcxGridDBTableView;
     cxGridColGridDBTableStockSekarangColumnGudang: TcxGridDBColumn;
+    cxGridColGridDBTableStockSekarangColumnSKU: TcxGridDBColumn;
+    cxGridColGridDBTableStockSekarangColumnNama: TcxGridDBColumn;
+    cxGridColGridDBTableStockSekarangColumnUOM: TcxGridDBColumn;
+    cxGridColGridDBTableStockSekarangColumnQty: TcxGridDBColumn;
+    cxGridColGridDBTableStockSekarangColumnRP: TcxGridDBColumn;
+    cxgrdlvlGridDBStockSekarangLevel1: TcxGridLevel;
     procedure ActionRefreshExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
   private
@@ -69,10 +70,10 @@ begin
     try
       cdsStockSekarang.Close;
 
-      if chkKonsolidasi.EditValue then
+      if chkKonsolidasi1.Checked then
         dtstprvdrStockSekarang.DataSet := LaporanStockSekarang(nil)
       else
-        dtstprvdrStockSekarang.DataSet := LaporanStockSekarang(TCabang.CreateID(cbbLUCabang.KeyValue));
+        dtstprvdrStockSekarang.DataSet := LaporanStockSekarang(TCabang.CreateID(ClientDataModule.Cabang.ID));
 
       cdsStockSekarang.Open;
 
@@ -89,7 +90,7 @@ end;
 procedure TfrmLapStockSekarang.FormCreate(Sender: TObject);
 begin
   inherited;
-  pnlListTransaksi.Visible := False;
+//  pnlListTransaksi.Visible := False;
   splTransaksi.Visible     := False;
 
   InisialisasiCDSUOM;

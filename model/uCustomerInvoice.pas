@@ -38,7 +38,7 @@ type
     property TglBukti: TDatetime read FTglBukti write FTglBukti;
   end;
 
-  TCustomerInvoicePenjualan = class(TAppObject)
+  TCustomerInvoicePenjualan = class(TAppObjectItem)
   private
     FCustomerInvoice: TCustomerInvoice;
     FCustomerInvoicePenjualanItems: tobjectlist<TCustomerInvoicePenjualanItem>;
@@ -47,6 +47,8 @@ type
         tobjectlist<TCustomerInvoicePenjualanItem>;
   public
     destructor Destroy; override;
+    function GetHeaderField: string; override;
+    procedure SetHeaderProperty(AHeaderProperty : TAppObject); override;
   published
     property CustomerInvoice: TCustomerInvoice read FCustomerInvoice write
         FCustomerInvoice;
@@ -56,9 +58,10 @@ type
     property Penjualan: TPenjualan read FPenjualan write FPenjualan;
   end;
 
-  TCustomerInvoicePenjualanItem = class(TAppObject)
+  TCustomerInvoicePenjualanItem = class(TAppObjectItem)
   private
     FBarang: TBarang;
+    FBarangSatuangItemID: string;
     FCustomerInvoicePenjualan: TCustomerInvoicePenjualan;
     FDiskon: Double;
     FHarga: Double;
@@ -70,6 +73,10 @@ type
     function GetHargaSetelahDiskon: Double;
   public
     destructor Destroy; override;
+    function GetHeaderField: string; override;
+    procedure SetHeaderProperty(AHeaderProperty : TAppObject); override;
+    property BarangSatuangItemID: string read FBarangSatuangItemID write
+        FBarangSatuangItemID;
     property HargaSetelahDiskon: Double read GetHargaSetelahDiskon;
   published
     property Barang: TBarang read FBarang write FBarang;
@@ -96,6 +103,17 @@ end;
 function TCustomerInvoicePenjualanItem.GetHargaSetelahDiskon: Double;
 begin
   Result := Harga * (100 - Diskon) / 100;
+end;
+
+function TCustomerInvoicePenjualanItem.GetHeaderField: string;
+begin
+  Result := 'CustomerInvoicePenjualan';
+end;
+
+procedure TCustomerInvoicePenjualanItem.SetHeaderProperty(AHeaderProperty :
+    TAppObject);
+begin
+  Self.CustomerInvoicePenjualan := TCustomerInvoicePenjualan(AHeaderProperty);
 end;
 
 destructor TCustomerInvoice.Destroy;
@@ -133,6 +151,7 @@ begin
     for j := 0 to CustomerInvoicePenjualans[i].CustomerInvoicePenjualanItems.Count - 1 do
     begin
       FNominal := FNominal + (CustomerInvoicePenjualans[i].CustomerInvoicePenjualanItems[j].GetHargaSetelahDiskon
+                              * CustomerInvoicePenjualans[i].CustomerInvoicePenjualanItems[j].Qty
                               * (100 + CustomerInvoicePenjualans[i].CustomerInvoicePenjualanItems[j].PPN) / 100);
 
     end;
@@ -161,6 +180,17 @@ begin
     FCustomerInvoicePenjualanItems := TObjectList<TCustomerInvoicePenjualanItem>.Create(False);
 
   Result := FCustomerInvoicePenjualanItems;
+end;
+
+function TCustomerInvoicePenjualan.GetHeaderField: string;
+begin
+  Result := 'CustomerInvoice';
+end;
+
+procedure TCustomerInvoicePenjualan.SetHeaderProperty(AHeaderProperty :
+    TAppObject);
+begin
+  Self.CustomerInvoice := TCustomerInvoice(AHeaderProperty);
 end;
 
 end.

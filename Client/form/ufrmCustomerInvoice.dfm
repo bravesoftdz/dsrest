@@ -6,304 +6,351 @@ inherited frmCustomerInvoice: TfrmCustomerInvoice
   ExplicitHeight = 385
   PixelsPerInch = 96
   TextHeight = 13
-  inherited splTransaksi: TSplitter
-    Left = 9
-    ExplicitLeft = 9
-  end
   inherited cxSBTransaksi: TdxStatusBar
     Width = 751
     ExplicitWidth = 751
   end
-  inherited pnlListTransaksi: TPanel
-    Width = 9
-    Visible = False
-    ExplicitWidth = 9
-  end
-  object pnlTransaksi: TPanel [3]
-    Left = 17
-    Top = 50
-    Width = 734
-    Height = 276
-    Align = alClient
-    Caption = 'pnlTransaksi'
-    TabOrder = 6
-    object pnlHeader: TPanel
-      Left = 1
-      Top = 1
-      Width = 732
-      Height = 104
-      Align = alTop
-      TabOrder = 0
-      object lblNoBukti: TLabel
-        Left = 66
-        Top = 8
-        Width = 39
-        Height = 13
-        Caption = 'No Bukti'
+  inherited cxPCData: TcxPageControl
+    Width = 751
+    Properties.ActivePage = cxTSInputData
+    ExplicitWidth = 751
+    ClientRectRight = 747
+    inherited cxTSOverview: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 743
+      ExplicitHeight = 265
+      inherited splTransaksi: TSplitter
+        ExplicitLeft = 9
       end
-      object lblCustomer: TLabel
-        Left = 10
-        Top = 83
-        Width = 95
-        Height = 13
-        Caption = 'Customer/Salesman'
+      inherited pnlListTransaksi: TPanel
+        Width = 735
+        ExplicitWidth = 735
+        inherited pnlFilter: TPanel
+          Width = 733
+          ExplicitWidth = 733
+          inherited lblPeriode: TLabel
+            Left = 328
+            ExplicitLeft = 359
+          end
+          inherited lblSD: TLabel
+            Left = 483
+            ExplicitLeft = 514
+          end
+          inherited dtpAwal: TDateTimePicker
+            Left = 378
+            ExplicitLeft = 378
+          end
+          inherited dtpAkhir: TDateTimePicker
+            Left = 521
+            ExplicitLeft = 521
+          end
+          inherited btnRefresh: TcxButton
+            Left = 626
+            ExplicitLeft = 626
+          end
+        end
+        inherited cxGrid: TcxGrid
+          Width = 733
+          ExplicitWidth = 733
+          inherited cxGridDBTableOverview: TcxGridDBTableView
+            OnCellDblClick = cxGridDBTableOverviewCellDblClick
+          end
+        end
       end
-      object lblJatuhTempo: TLabel
-        Left = 294
-        Top = 8
-        Width = 62
-        Height = 13
-        Caption = 'Jatuh Tempo'
-      end
-      object lblKeterangan: TLabel
-        Left = 300
-        Top = 33
-        Width = 56
-        Height = 13
-        Caption = 'Keterangan'
-      end
-      object lblTglBukti: TLabel
-        Left = 67
-        Top = 33
-        Width = 38
-        Height = 13
-        Caption = 'Tanggal'
-      end
-      object lblNoPenjualan: TLabel
-        Left = 16
-        Top = 58
-        Width = 89
-        Height = 13
-        Caption = 'No Bukti Penjualan'
-      end
-      object edNoBukti: TcxTextEdit
-        Left = 111
-        Top = 4
+    end
+    inherited cxTSInputData: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 743
+      ExplicitHeight = 265
+      object pnlTransaksi: TPanel
+        Left = 0
+        Top = 0
+        Width = 743
+        Height = 265
+        Align = alClient
+        Caption = 'pnlTransaksi'
         TabOrder = 0
-        Text = 'edNoBukti'
-        Width = 145
-      end
-      object cbbCustomer: TcxExtLookupComboBox
-        Left = 111
-        Top = 79
-        TabOrder = 3
-        Width = 145
-      end
-      object edJthTempo: TcxDateEdit
-        Left = 369
-        Top = 4
-        TabOrder = 4
-        Width = 145
-      end
-      object memKeterangan: TcxMemo
-        Left = 369
-        Top = 29
-        Lines.Strings = (
-          'memKeterangan')
-        TabOrder = 5
-        Height = 71
-        Width = 145
-      end
-      object edTglBukti: TcxDateEdit
-        Left = 111
-        Top = 29
-        TabOrder = 1
-        OnExit = edTglBuktiExit
-        Width = 145
-      end
-      object edNoPenjualan: TcxTextEdit
-        Left = 111
-        Top = 54
-        Properties.CharCase = ecUpperCase
-        TabOrder = 2
-        Text = 'EDNOBUKTI'
-        OnKeyDown = edNoPenjualanKeyDown
-        Width = 145
-      end
-    end
-    object cxGridDBPenjualan: TcxGrid
-      Left = 1
-      Top = 105
-      Width = 732
-      Height = 170
-      Align = alClient
-      TabOrder = 1
-      object cxGridTablePenjualan: TcxGridTableView
-        Navigator.Buttons.CustomButtons = <>
-        DataController.Summary.DefaultGroupSummaryItems = <>
-        DataController.Summary.FooterSummaryItems = <
-          item
-            Format = ',0.00;(,0.00)'
-            Kind = skSum
-            Column = cxgrdclmnGridTablePenjualanColumnDiskonRp
+        object pnlHeader: TPanel
+          Left = 1
+          Top = 1
+          Width = 741
+          Height = 104
+          Align = alTop
+          TabOrder = 0
+          object lblNoBukti: TLabel
+            Left = 66
+            Top = 8
+            Width = 39
+            Height = 13
+            Caption = 'No Bukti'
           end
-          item
-            Format = ',0.00;(,0.00)'
-            Kind = skSum
-            Column = cxgrdclmnGridTablePenjualanColumnPPNRp
+          object lblCustomer: TLabel
+            Left = 10
+            Top = 83
+            Width = 95
+            Height = 13
+            Caption = 'Customer/Salesman'
           end
-          item
-            Format = ',0.00;(,0.00)'
-            Kind = skSum
-            Column = cxgrdclmnGridTablePenjualanColumnTotal
+          object lblJatuhTempo: TLabel
+            Left = 294
+            Top = 8
+            Width = 62
+            Height = 13
+            Caption = 'Jatuh Tempo'
           end
-          item
-            Format = ',0.00;(,0.00)'
-            Kind = skSum
-            Column = cxgrdclmnGridTablePenjualanColumnSubTotalRp
-          end>
-        DataController.Summary.SummaryGroups = <>
-        OptionsBehavior.FocusFirstCellOnNewRecord = True
-        OptionsBehavior.GoToNextCellOnEnter = True
-        OptionsBehavior.FocusCellOnCycle = True
-        OptionsData.Appending = True
-        OptionsView.Footer = True
-        OptionsView.GroupByBox = False
-        object cxgrdclmnGridTablePenjualanColumnNama: TcxGridColumn
-          Caption = 'Nama'
-          PropertiesClassName = 'TcxExtLookupComboBoxProperties'
-          Properties.DropDownAutoSize = True
-          HeaderAlignmentHorz = taCenter
-          Width = 142
+          object lblKeterangan: TLabel
+            Left = 300
+            Top = 33
+            Width = 56
+            Height = 13
+            Caption = 'Keterangan'
+          end
+          object lblTglBukti: TLabel
+            Left = 67
+            Top = 33
+            Width = 38
+            Height = 13
+            Caption = 'Tanggal'
+          end
+          object lblNoPenjualan: TLabel
+            Left = 16
+            Top = 58
+            Width = 89
+            Height = 13
+            Caption = 'No Bukti Penjualan'
+          end
+          object edNoBukti: TcxTextEdit
+            Left = 111
+            Top = 4
+            TabOrder = 0
+            Text = 'edNoBukti'
+            Width = 145
+          end
+          object cbbCustomer: TcxExtLookupComboBox
+            Left = 111
+            Top = 79
+            TabOrder = 3
+            Width = 145
+          end
+          object edJthTempo: TcxDateEdit
+            Left = 369
+            Top = 4
+            TabOrder = 4
+            Width = 145
+          end
+          object memKeterangan: TcxMemo
+            Left = 369
+            Top = 29
+            Lines.Strings = (
+              'memKeterangan')
+            TabOrder = 5
+            Height = 71
+            Width = 145
+          end
+          object edTglBukti: TcxDateEdit
+            Left = 111
+            Top = 29
+            TabOrder = 1
+            OnExit = edTglBuktiExit
+            Width = 145
+          end
+          object edNoPenjualan: TcxTextEdit
+            Left = 111
+            Top = 54
+            Properties.CharCase = ecUpperCase
+            TabOrder = 2
+            Text = 'EDNOBUKTI'
+            OnDblClick = edNoPenjualanDblClick
+            OnKeyDown = edNoPenjualanKeyDown
+            Width = 145
+          end
         end
-        object cxgrdclmnGridTablePenjualanColumnSKU: TcxGridColumn
-          Caption = 'SKU'
-          PropertiesClassName = 'TcxExtLookupComboBoxProperties'
-          Properties.DropDownAutoSize = True
-          Properties.FocusPopup = True
-          Properties.ReadOnly = True
-          HeaderAlignmentHorz = taCenter
+        object cxGridDBPenjualan: TcxGrid
+          Left = 1
+          Top = 105
+          Width = 741
+          Height = 159
+          Align = alClient
+          TabOrder = 1
+          object cxGridTablePenjualan: TcxGridTableView
+            Navigator.Buttons.CustomButtons = <>
+            DataController.Summary.DefaultGroupSummaryItems = <>
+            DataController.Summary.FooterSummaryItems = <
+              item
+                Format = ',0.00;(,0.00)'
+                Kind = skSum
+                Column = cxgrdclmnGridTablePenjualanColumnDiskonRp
+              end
+              item
+                Format = ',0.00;(,0.00)'
+                Kind = skSum
+                Column = cxgrdclmnGridTablePenjualanColumnPPNRp
+              end
+              item
+                Format = ',0.00;(,0.00)'
+                Kind = skSum
+                Column = cxgrdclmnGridTablePenjualanColumnTotal
+              end
+              item
+                Format = ',0.00;(,0.00)'
+                Kind = skSum
+                Column = cxgrdclmnGridTablePenjualanColumnSubTotalRp
+              end>
+            DataController.Summary.SummaryGroups = <>
+            OptionsBehavior.FocusFirstCellOnNewRecord = True
+            OptionsBehavior.GoToNextCellOnEnter = True
+            OptionsBehavior.FocusCellOnCycle = True
+            OptionsData.Appending = True
+            OptionsView.Footer = True
+            OptionsView.GroupByBox = False
+            Styles.ContentEven = ClientDataModule.cxstylGridEven
+            Styles.ContentOdd = ClientDataModule.cxstylGridOdd
+            Styles.Header = ClientDataModule.cxstylGridHeader
+            object cxgrdclmnGridTablePenjualanColumnNama: TcxGridColumn
+              Caption = 'Nama'
+              PropertiesClassName = 'TcxExtLookupComboBoxProperties'
+              Properties.DropDownAutoSize = True
+              HeaderAlignmentHorz = taCenter
+              Width = 142
+            end
+            object cxgrdclmnGridTablePenjualanColumnSKU: TcxGridColumn
+              Caption = 'SKU'
+              PropertiesClassName = 'TcxExtLookupComboBoxProperties'
+              Properties.DropDownAutoSize = True
+              Properties.FocusPopup = True
+              Properties.ReadOnly = True
+              HeaderAlignmentHorz = taCenter
+            end
+            object cxgrdclmnGridTablePenjualanColumnSatuan: TcxGridColumn
+              Caption = 'Satuan'
+              PropertiesClassName = 'TcxExtLookupComboBoxProperties'
+              Properties.ReadOnly = False
+              HeaderAlignmentHorz = taCenter
+              Width = 92
+            end
+            object cxgrdclmnGridTablePenjualanColumnHarga: TcxGridColumn
+              Caption = 'Harga'
+              DataBinding.ValueType = 'Float'
+              PropertiesClassName = 'TcxCurrencyEditProperties'
+              Properties.Alignment.Horz = taRightJustify
+              Properties.DisplayFormat = ',0.##;(,0.##)'
+              Properties.OnValidate = cxgrdclmnGridTablePenjualanColumnHargaPropertiesValidate
+              HeaderAlignmentHorz = taCenter
+            end
+            object cxgrdclmnGridTablePenjualanColumnQty: TcxGridColumn
+              Caption = 'Qty'
+              DataBinding.ValueType = 'Float'
+              PropertiesClassName = 'TcxCurrencyEditProperties'
+              Properties.Alignment.Horz = taRightJustify
+              Properties.DisplayFormat = ',0.##;(,0.##)'
+              Properties.OnValidate = cxgrdclmnGridTablePenjualanColumnQtyPropertiesValidate
+              HeaderAlignmentHorz = taCenter
+            end
+            object cxgrdclmnGridTablePenjualanColumnDiskon: TcxGridColumn
+              Caption = 'Diskon %'
+              DataBinding.ValueType = 'Float'
+              PropertiesClassName = 'TcxCurrencyEditProperties'
+              Properties.Alignment.Horz = taRightJustify
+              Properties.DisplayFormat = ',0.##;(,0.##)'
+              Properties.OnValidate = cxgrdclmnGridTablePenjualanColumnDiskonPropertiesValidate
+              HeaderAlignmentHorz = taCenter
+            end
+            object cxgrdclmnGridTablePenjualanColumnPPN: TcxGridColumn
+              Caption = 'PPN %'
+              DataBinding.ValueType = 'Float'
+              PropertiesClassName = 'TcxCurrencyEditProperties'
+              Properties.Alignment.Horz = taRightJustify
+              Properties.DisplayFormat = ',0.##;(,0.##)'
+              Properties.OnValidate = cxgrdclmnGridTablePenjualanColumnPPNPropertiesValidate
+              HeaderAlignmentHorz = taCenter
+            end
+            object cxgrdclmnGridTablePenjualanColumnSubTotalRp: TcxGridColumn
+              Caption = 'Sub Total (Rp)'
+              DataBinding.ValueType = 'Float'
+              PropertiesClassName = 'TcxCurrencyEditProperties'
+              Properties.Alignment.Horz = taRightJustify
+              Properties.DisplayFormat = ',0.##;(,0.##)'
+              Properties.ReadOnly = True
+              FooterAlignmentHorz = taRightJustify
+              HeaderAlignmentHorz = taCenter
+              Options.Editing = False
+              Width = 97
+            end
+            object cxgrdclmnGridTablePenjualanColumnDiskonRp: TcxGridColumn
+              Caption = 'Dikon (Rp)'
+              DataBinding.ValueType = 'Float'
+              PropertiesClassName = 'TcxCurrencyEditProperties'
+              Properties.Alignment.Horz = taRightJustify
+              Properties.DisplayFormat = ',0.##;(,0.##)'
+              Properties.ReadOnly = True
+              FooterAlignmentHorz = taRightJustify
+              HeaderAlignmentHorz = taCenter
+              Options.Editing = False
+              Width = 94
+            end
+            object cxgrdclmnGridTablePenjualanColumnPPNRp: TcxGridColumn
+              Caption = 'PPN (Rp)'
+              DataBinding.ValueType = 'Float'
+              PropertiesClassName = 'TcxCurrencyEditProperties'
+              Properties.Alignment.Horz = taRightJustify
+              Properties.DisplayFormat = ',0.##;(,0.##)'
+              Properties.ReadOnly = True
+              FooterAlignmentHorz = taRightJustify
+              HeaderAlignmentHorz = taCenter
+              Options.Editing = False
+              Width = 87
+            end
+            object cxgrdclmnGridTablePenjualanColumnTotal: TcxGridColumn
+              Caption = 'Total (Rp)'
+              DataBinding.ValueType = 'Float'
+              PropertiesClassName = 'TcxCurrencyEditProperties'
+              Properties.Alignment.Horz = taRightJustify
+              Properties.DisplayFormat = ',0.##;(,0.##)'
+              Properties.ReadOnly = True
+              FooterAlignmentHorz = taRightJustify
+              HeaderAlignmentHorz = taCenter
+              Options.Editing = False
+              Width = 78
+            end
+            object cxgrdclmnGridTablePenjualanColumnKonversi: TcxGridColumn
+              Caption = 'Konversi'
+            end
+          end
+          object cxgrdlvlPenerimaanBarang: TcxGridLevel
+            GridView = cxGridTablePenjualan
+          end
         end
-        object cxgrdclmnGridTablePenjualanColumnSatuan: TcxGridColumn
-          Caption = 'Satuan'
-          PropertiesClassName = 'TcxExtLookupComboBoxProperties'
-          Properties.ReadOnly = False
-          HeaderAlignmentHorz = taCenter
-          Width = 92
-        end
-        object cxgrdclmnGridTablePenjualanColumnHarga: TcxGridColumn
-          Caption = 'Harga'
-          DataBinding.ValueType = 'Float'
-          PropertiesClassName = 'TcxCurrencyEditProperties'
-          Properties.Alignment.Horz = taRightJustify
-          Properties.DisplayFormat = ',0.##;(,0.##)'
-          Properties.OnValidate = cxgrdclmnGridTablePenjualanColumnHargaPropertiesValidate
-          HeaderAlignmentHorz = taCenter
-        end
-        object cxgrdclmnGridTablePenjualanColumnQty: TcxGridColumn
-          Caption = 'Qty'
-          DataBinding.ValueType = 'Float'
-          PropertiesClassName = 'TcxCurrencyEditProperties'
-          Properties.Alignment.Horz = taRightJustify
-          Properties.DisplayFormat = ',0.##;(,0.##)'
-          Properties.OnValidate = cxgrdclmnGridTablePenjualanColumnQtyPropertiesValidate
-          HeaderAlignmentHorz = taCenter
-        end
-        object cxgrdclmnGridTablePenjualanColumnDiskon: TcxGridColumn
-          Caption = 'Diskon %'
-          DataBinding.ValueType = 'Float'
-          PropertiesClassName = 'TcxCurrencyEditProperties'
-          Properties.Alignment.Horz = taRightJustify
-          Properties.DisplayFormat = ',0.##;(,0.##)'
-          Properties.OnValidate = cxgrdclmnGridTablePenjualanColumnDiskonPropertiesValidate
-          HeaderAlignmentHorz = taCenter
-        end
-        object cxgrdclmnGridTablePenjualanColumnPPN: TcxGridColumn
-          Caption = 'PPN %'
-          DataBinding.ValueType = 'Float'
-          PropertiesClassName = 'TcxCurrencyEditProperties'
-          Properties.Alignment.Horz = taRightJustify
-          Properties.DisplayFormat = ',0.##;(,0.##)'
-          Properties.OnValidate = cxgrdclmnGridTablePenjualanColumnPPNPropertiesValidate
-          HeaderAlignmentHorz = taCenter
-        end
-        object cxgrdclmnGridTablePenjualanColumnSubTotalRp: TcxGridColumn
-          Caption = 'Sub Total (Rp)'
-          DataBinding.ValueType = 'Float'
-          PropertiesClassName = 'TcxCurrencyEditProperties'
-          Properties.Alignment.Horz = taRightJustify
-          Properties.DisplayFormat = ',0.##;(,0.##)'
-          Properties.ReadOnly = True
-          FooterAlignmentHorz = taRightJustify
-          HeaderAlignmentHorz = taCenter
-          Options.Editing = False
-          Width = 97
-        end
-        object cxgrdclmnGridTablePenjualanColumnDiskonRp: TcxGridColumn
-          Caption = 'Dikon (Rp)'
-          DataBinding.ValueType = 'Float'
-          PropertiesClassName = 'TcxCurrencyEditProperties'
-          Properties.Alignment.Horz = taRightJustify
-          Properties.DisplayFormat = ',0.##;(,0.##)'
-          Properties.ReadOnly = True
-          FooterAlignmentHorz = taRightJustify
-          HeaderAlignmentHorz = taCenter
-          Options.Editing = False
-          Width = 94
-        end
-        object cxgrdclmnGridTablePenjualanColumnPPNRp: TcxGridColumn
-          Caption = 'PPN (Rp)'
-          DataBinding.ValueType = 'Float'
-          PropertiesClassName = 'TcxCurrencyEditProperties'
-          Properties.Alignment.Horz = taRightJustify
-          Properties.DisplayFormat = ',0.##;(,0.##)'
-          Properties.ReadOnly = True
-          FooterAlignmentHorz = taRightJustify
-          HeaderAlignmentHorz = taCenter
-          Options.Editing = False
-          Width = 87
-        end
-        object cxgrdclmnGridTablePenjualanColumnTotal: TcxGridColumn
-          Caption = 'Total (Rp)'
-          DataBinding.ValueType = 'Float'
-          PropertiesClassName = 'TcxCurrencyEditProperties'
-          Properties.Alignment.Horz = taRightJustify
-          Properties.DisplayFormat = ',0.##;(,0.##)'
-          Properties.ReadOnly = True
-          FooterAlignmentHorz = taRightJustify
-          HeaderAlignmentHorz = taCenter
-          Options.Editing = False
-          Width = 78
-        end
-        object cxgrdclmnGridTablePenjualanColumnKonversi: TcxGridColumn
-          Caption = 'Konversi'
-        end
-      end
-      object cxgrdlvlPenerimaanBarang: TcxGridLevel
-        GridView = cxGridTablePenjualan
       end
     end
   end
-  inherited dxBarManagerForm: TdxBarManager
-    Left = 568
-    Top = 168
-    DockControlHeights = (
-      0
-      0
-      50
-      0)
-    inherited dxBarLargeButtonNew: TdxBarLargeButton
-      ImageIndex = -1
+  inherited pnlButton: TPanel
+    Width = 751
+    ExplicitWidth = 751
+    inherited btnBaru: TcxButton
+      Left = 639
+      ExplicitLeft = 639
     end
-    inherited dxBarLargeButtonSave: TdxBarLargeButton
-      ImageIndex = -1
+    inherited btnHapus: TcxButton
+      Left = 515
+      ExplicitLeft = 515
     end
-    inherited dxBarLargeButtonEdit: TdxBarLargeButton
-      ImageIndex = -1
+    inherited btnSave: TcxButton
+      Left = 399
+      ExplicitLeft = 399
     end
-    inherited dxBarLargeButtonDel: TdxBarLargeButton
-      ImageIndex = -1
-    end
-    inherited dxBarLargeButtonRefresh: TdxBarLargeButton
-      ImageIndex = -1
+    inherited chkKonsolidasi1: TcxCheckBox
+      ExplicitWidth = 76
+      ExplicitHeight = 31
     end
   end
   inherited ActionListForm: TActionList
-    inherited ActionBaru: TAction
-      OnExecute = ActionBaruExecute
-    end
     inherited ActionSimpan: TAction
       OnExecute = ActionSimpanExecute
+    end
+    inherited ActionRefresh: TAction
+      OnExecute = ActionRefreshExecute
     end
   end
   inherited dsCabang: TDataSource
@@ -324,7 +371,7 @@ inherited frmCustomerInvoice: TfrmCustomerInvoice
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010106000800A80018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010106000800C00018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

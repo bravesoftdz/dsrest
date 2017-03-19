@@ -18,7 +18,9 @@ uses
   uPenjualan in '..\model\uPenjualan.pas',
   uCustomerInvoice in '..\model\uCustomerInvoice.pas',
   uAR in '..\model\uAR.pas',
-  uDSUtils in 'lib\uDSUtils.pas';
+  uDSUtils in 'lib\uDSUtils.pas',
+  uPenerimaanKas in '..\model\uPenerimaanKas.pas',
+  uRekBank in '..\model\uRekBank.pas';
 
 {$R *.res}
 

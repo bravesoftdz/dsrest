@@ -3,7 +3,7 @@ unit uAR;
 interface
 
 uses
-  uModel;
+  uModel, System.SysUtils,System.Classes;
 
 type
   TAR = class(TAppObject)
@@ -17,6 +17,7 @@ type
     FTransaksi: string;
     FJatuhTempo: TDateTime;
   public
+    destructor Destroy; override;
   published
     property Cabang: TCabang read FCabang write FCabang;
     property Customer: TSupplier read FCustomer write FCustomer;
@@ -30,5 +31,12 @@ type
   end;
 
 implementation
+
+destructor TAR.Destroy;
+begin
+  inherited;
+  FreeAndNil(FCabang);
+  FreeAndNil(FCustomer);
+end;
 
 end.

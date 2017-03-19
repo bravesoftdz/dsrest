@@ -13,7 +13,8 @@ uses
   ImgList, uModel, ClientClassesUnit2, DB, cxDBData, cxGridDBTableView,
   cxDBExtLookupComboBox, Provider, DBClient, cxNavigator, dxCore, cxDateUtils,
   System.Actions, dxBarExtDBItems, cxCheckBox, cxBarEditItem, System.ImageList,
-  dxBarExtItems, ufrmLookUpTransaksi;
+  dxBarExtItems, ufrmLookUpTransaksi, dxBarBuiltInMenu, Vcl.Menus, cxButtons,
+  cxPC;
 
 type
   TfrmReturSupplier = class(TfrmDefault)
@@ -53,16 +54,9 @@ type
     cxgrdclmnGridTableReturSupplierColumnPPNRp: TcxGridColumn;
     cxgrdclmnGridTableReturSupplierColumnSubTotalRp: TcxGridColumn;
     pnlFilterBarang: TPanel;
-    cxGridDBDaftarPB: TcxGrid;
-    cxGridDBTableDaftarPB: TcxGridDBTableView;
-    cxgrdlvlDaftarPB: TcxGridLevel;
     dsPB: TDataSource;
-    cxgrdbclmnGridDBTableDaftarPBNoBukti: TcxGridDBColumn;
-    cxgrdbclmnGridDBTableDaftarPBTglBukti: TcxGridDBColumn;
     ProvPB: TDataSetProvider;
     cdsPB: TClientDataSet;
-    cxgrdbclmnGridDBTableDaftarPBSupplier: TcxGridDBColumn;
-    cxgrdbclmnGridDBTableDaftarPBKeterangan: TcxGridDBColumn;
     lblNoPB: TLabel;
     edNoPB: TcxTextEdit;
     btnCari: TButton;
@@ -72,9 +66,6 @@ type
     procedure ActionRefreshExecute(Sender: TObject);
     procedure ActionSimpanExecute(Sender: TObject);
     procedure btnCariClick(Sender: TObject);
-    procedure cxGridDBTableDaftarPBCellDblClick(Sender: TcxCustomGridTableView;
-        ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton; AShift:
-        TShiftState; var AHandled: Boolean);
     procedure FormShow(Sender: TObject);
     procedure cxGridTablePenerimaanBarangColumnSKUPropertiesValidate(
       Sender: TObject; var DisplayValue: Variant; var ErrorText: TCaption;
@@ -96,6 +87,9 @@ type
       var Error: Boolean);
     procedure cxGridDBTableDaftarPBEditing(Sender: TcxCustomGridTableView;
       AItem: TcxCustomGridTableItem; var AAllow: Boolean);
+    procedure cxGridDBTableOverviewCellDblClick(Sender: TcxCustomGridTableView;
+        ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton; AShift:
+        TShiftState; var AHandled: Boolean);
     procedure edNoPBKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
@@ -168,22 +162,14 @@ begin
 end;
 
 procedure TfrmReturSupplier.ActionRefreshExecute(Sender: TObject);
+var
+  lcds: TClientDataSet;
 begin
   inherited;
-    with TServerReturSupplierClient.Create(ClientDataModule.DSRestConnection, False) do
-    begin
-      cdsPB.Close;
-      ProvPB.DataSet := RetrieveCDS(ReturSupplier);
-      cdsPB.Open;
-
-      try
-        TDBUtils.DataSetToCxDBGrid(cdsPB, cxGridDBTableDaftarPB);
-        cxGridDBTableDaftarPB.ApplyBestFit();
-      finally
-        Free;
-      end;
-
-  end;
+  lcds := TDBUtils.DSToCDS(ClientDataModule.ServerReturSupplierClient.RetrieveCDS(ReturSupplier), Self);
+  cxGridDBTableOverview.SetDataset(lcds, True);
+  cxGridDBTableOverview.ApplyBestFit();
+  cxGridDBTableOverview.SetVisibleColumns(['ID'], False);
 end;
 
 procedure TfrmReturSupplier.ActionSimpanExecute(Sender: TObject);
@@ -258,27 +244,21 @@ begin
   end;
 end;
 
-procedure TfrmReturSupplier.cxGridDBTableDaftarPBCellDblClick(Sender:
-    TcxCustomGridTableView; ACellViewInfo: TcxGridTableDataCellViewInfo;
-    AButton: TMouseButton; AShift: TShiftState; var AHandled: Boolean);
-var
-  iCol: Integer;
-  iRec: Integer;
-begin
-  inherited;
-  iRec := cxGridDBTableDaftarPB.DataController.FocusedRecordIndex;
-  iCol := cxgrdbclmnGridDBTableDaftarPBNoBukti.Index;
-
-  LoadDataReturSupplier(cxGridDBTableDaftarPB.GetString(iRec,iCol));
-
-end;
-
 procedure TfrmReturSupplier.cxGridDBTableDaftarPBEditing(
   Sender: TcxCustomGridTableView; AItem: TcxCustomGridTableItem;
   var AAllow: Boolean);
 begin
   inherited;
   AAllow := False;
+end;
+
+procedure TfrmReturSupplier.cxGridDBTableOverviewCellDblClick(Sender:
+    TcxCustomGridTableView; ACellViewInfo: TcxGridTableDataCellViewInfo;
+    AButton: TMouseButton; AShift: TShiftState; var AHandled: Boolean);
+begin
+  inherited;
+  LoadDataReturSupplier(cxGridDBTableOverview.DS.FieldByName('ID').AsString);
+  cxPCData.ActivePageIndex := 1;
 end;
 
 procedure TfrmReturSupplier.cxGridTablePenerimaanBarangColumnDiskonPropertiesValidate(
@@ -537,7 +517,7 @@ begin
   begin
     try
       FreeAndNil(FReturSupplier);
-      FReturSupplier := RetrieveNoBukti(ANoBukti);
+      FReturSupplier := Retrieve(ANoBukti);
       FID            := ReturSupplier.ID;
 
       if ReturSupplier <> nil then

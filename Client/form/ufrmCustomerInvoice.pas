@@ -14,7 +14,8 @@ uses
   cxContainer, Vcl.ComCtrls, dxCore, cxDateUtils, cxMemo, cxDropDownEdit,
   cxCalendar, cxMaskEdit, cxLookupEdit, cxDBLookupEdit, cxDBExtLookupComboBox,
   cxTextEdit, uCustomerInvoice,uModel, uAR, uPenjualan,
-  cxCurrencyEdit, cxGridLevel, ClientModule;
+  cxCurrencyEdit, cxGridLevel, ClientModule, dxBarBuiltInMenu, cxPC, Vcl.Menus,
+  cxButtons;
 
 type
   TfrmCustomerInvoice = class(TfrmDefault)
@@ -48,6 +49,7 @@ type
     cxgrdclmnGridTablePenjualanColumnKonversi: TcxGridColumn;
     cxgrdlvlPenerimaanBarang: TcxGridLevel;
     procedure ActionBaruExecute(Sender: TObject);
+    procedure ActionRefreshExecute(Sender: TObject);
     procedure ActionSimpanExecute(Sender: TObject);
     procedure edNoPenjualanKeyDown(Sender: TObject; var Key: Word; Shift:
         TShiftState);
@@ -65,6 +67,10 @@ type
     procedure cxgrdclmnGridTablePenjualanColumnPPNPropertiesValidate(
       Sender: TObject; var DisplayValue: Variant; var ErrorText: TCaption;
       var Error: Boolean);
+    procedure cxGridDBTableOverviewCellDblClick(Sender: TcxCustomGridTableView;
+        ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton; AShift:
+        TShiftState; var AHandled: Boolean);
+    procedure edNoPenjualanDblClick(Sender: TObject);
     procedure edTglBuktiExit(Sender: TObject);
   private
     FCustomerInvoice: TCustomerInvoice;
@@ -74,11 +80,13 @@ type
     procedure InisialisasiCBBSalesman;
     procedure InisialisasiCBBSKU;
     procedure InisialisasiCBBUOM;
+    procedure LoadDataCIItem(ACustomerInvoice: TCustomerInvoice);
     procedure LoadDataPenjualanItem(APenjualan : TPenjualan);
     property CustomerInvoice: TCustomerInvoice read GetCustomerInvoice write
         FCustomerInvoice;
     { Private declarations }
   public
+    procedure LoadDataCI(AID : String);
     procedure LoadDataPenjualan(ANoBuktiPenjualan : String);
     { Public declarations }
   end;
@@ -106,7 +114,23 @@ begin
 
   edNoBukti.Text  := ClientDataModule.ServerCustomerInvoiceClient.GenerateNoBukti(edTglBukti.Date,
                                                                                   ClientDataModule.Cabang.Kode + '/CI');
+  cxGridTablePenjualan.ClearRows;
   memKeterangan.Clear;
+end;
+
+procedure TfrmCustomerInvoice.ActionRefreshExecute(Sender: TObject);
+var
+  lcds: TClientDataSet;
+begin
+  inherited;
+  if chkKonsolidasi1.Checked then
+    lcds := TDBUtils.DSToCDS(ClientDataModule.ServerLaporanClient.RetriveCI(dtpAwal.DateTime, dtpAkhir.DateTime, nil), cxGridDBTableOverview)
+  else
+    lcds := TDBUtils.DSToCDS(ClientDataModule.ServerLaporanClient.RetriveCI(dtpAwal.DateTime, dtpAkhir.DateTime, ClientDataModule.Cabang), cxGridDBTableOverview);
+
+  cxGridDBTableOverview.SetDataset(lcds, True);
+  cxGridDBTableOverview.SetVisibleColumns(['ID', 'CABANGID'], False);
+  cxGridDBTableOverview.ApplyBestFit();
 end;
 
 procedure TfrmCustomerInvoice.ActionSimpanExecute(Sender: TObject);
@@ -132,8 +156,8 @@ begin
   CustomerInvoice.JatuhTempo := edJthTempo.Date;
   CustomerInvoice.Keterangan := memKeterangan.Text;
   CustomerInvoice.Customer   := TSupplier.CreateID(cbbCustomer.EditValue);
-  CustomerInvoice.AR         := TAR.CreateID(cbbCustomer.EditValue);
-  CustomerInvoice.Cabang     := TCabang.CreateID(cbbLUCabang.KeyValue);
+//  CustomerInvoice.AR         := TAR.CreateID(cbbCustomer.EditValue);
+  CustomerInvoice.Cabang     := TCabang.CreateID(ClientDataModule.Cabang.ID);
 
   lCIPjl := TCustomerInvoicePenjualan.Create;
   lCIPjl.CustomerInvoice := FCustomerInvoice;
@@ -205,6 +229,21 @@ begin
   inherited;
   dNilai := DisplayValue;
   HitungNilaiNilaiPerBaris(dNilai, cxgrdclmnGridTablePenjualanColumnQty.Index);
+end;
+
+procedure TfrmCustomerInvoice.cxGridDBTableOverviewCellDblClick(Sender:
+    TcxCustomGridTableView; ACellViewInfo: TcxGridTableDataCellViewInfo;
+    AButton: TMouseButton; AShift: TShiftState; var AHandled: Boolean);
+begin
+  inherited;
+  LoadDataCI(cxGridDBTableOverview.DS.FieldByName('ID').AsString);
+  cxPCData.ActivePageIndex := 1;
+end;
+
+procedure TfrmCustomerInvoice.edNoPenjualanDblClick(Sender: TObject);
+begin
+  inherited;
+  edNoPenjualan.Text := 'NUS/PJL/201703/0005';
 end;
 
 procedure TfrmCustomerInvoice.edNoPenjualanKeyDown(Sender: TObject; var Key:
@@ -355,24 +394,66 @@ begin
 
 end;
 
+procedure TfrmCustomerInvoice.LoadDataCI(AID : String);
+begin
+  FreeAndNil(FCustomerInvoice);
+  FCustomerInvoice := ClientDataModule.ServerCustomerInvoiceClient.Retrieve(AID);
+
+  if FCustomerInvoice = nil then
+    Exit;
+
+  if FCustomerInvoice.ID = '' then
+    Exit;
+
+  edNoBukti.Text := CustomerInvoice.NoBukti;
+  edTglBukti.Date := CustomerInvoice.TglBukti;
+  edJthTempo.Date := CustomerInvoice.JatuhTempo;
+  memKeterangan.Text := CustomerInvoice.Keterangan;
+  cbbCustomer.EditValue := CustomerInvoice.Customer.ID;
+
+  FPenjualan := ClientDataModule.ServerPenjualanClient.Retrieve(CustomerInvoice.CustomerInvoicePenjualans[0].Penjualan.ID);
+  edNoPenjualan.Text := FPenjualan.NoBukti;
+
+  LoadDataCIItem(FCustomerInvoice);
+
+end;
+
+procedure TfrmCustomerInvoice.LoadDataCIItem(ACustomerInvoice:
+    TCustomerInvoice);
+var
+  I: Integer;
+begin
+  cxGridTablePenjualan.ClearRows;
+  for I := 0 to CustomerInvoice.CustomerInvoicePenjualans[0].CustomerInvoicePenjualanItems.Count - 1 do
+  begin
+    cxGridTablePenjualan.DataController.RecordCount := i + 1;
+    cxGridTablePenjualan.SetValue(i, cxgrdclmnGridTablePenjualanColumnSKU.Index, CustomerInvoice.CustomerInvoicePenjualans[0].CustomerInvoicePenjualanItems[i].Barang.ID);
+    cxGridTablePenjualan.SetValue(i, cxgrdclmnGridTablePenjualanColumnNama.Index, CustomerInvoice.CustomerInvoicePenjualans[0].CustomerInvoicePenjualanItems[i].BarangSatuangItemID);
+    cxGridTablePenjualan.SetValue(i, cxgrdclmnGridTablePenjualanColumnSatuan.Index, CustomerInvoice.CustomerInvoicePenjualans[0].CustomerInvoicePenjualanItems[i].UOM.ID);
+    cxGridTablePenjualan.SetDouble(i, cxgrdclmnGridTablePenjualanColumnHarga.Index, CustomerInvoice.CustomerInvoicePenjualans[0].CustomerInvoicePenjualanItems[i].Harga);
+    cxGridTablePenjualan.SetDouble(i, cxgrdclmnGridTablePenjualanColumnQty.Index, CustomerInvoice.CustomerInvoicePenjualans[0].CustomerInvoicePenjualanItems[i].Qty);
+    cxGridTablePenjualan.SetDouble(i, cxgrdclmnGridTablePenjualanColumnDiskon.Index,CustomerInvoice.CustomerInvoicePenjualans[0].CustomerInvoicePenjualanItems[i].Diskon);
+    cxGridTablePenjualan.SetDouble(i, cxgrdclmnGridTablePenjualanColumnPPN.Index, CustomerInvoice.CustomerInvoicePenjualans[0].CustomerInvoicePenjualanItems[i].PPN);
+
+    cxGridTablePenjualan.DataController.FocusedRecordIndex := i;
+    HitungNilaiNilaiPerBaris(FPenjualan.PenjualanItems[i].PPN, cxgrdclmnGridTablePenjualanColumnPPN.Index);
+  end;
+end;
+
 procedure TfrmCustomerInvoice.LoadDataPenjualan(ANoBuktiPenjualan : String);
 begin
   FPenjualan := ClientDataModule.ServerPenjualanClient.RetrieveNoBukti(ANoBuktiPenjualan);
-  try
-    if FPenjualan = NIL then
-      eXIT;
+  if FPenjualan = NIL then
+    eXIT;
 
-    if FPenjualan.ID = '' then
-      eXIT;
+  if FPenjualan.ID = '' then
+    eXIT;
 
-    cbbCustomer.EditValue := FPenjualan.Pembeli.ID;
-    edJthTempo.Date       := FPenjualan.JatuhTempo;
+  cbbCustomer.EditValue := FPenjualan.Pembeli.ID;
+  edJthTempo.Date       := FPenjualan.JatuhTempo;
+  edNoPenjualan.Text    := FPenjualan.NoBukti;
 
-    LoadDataPenjualanItem(FPenjualan);
-  finally
-    if FPenjualan <> nil then
-      FPenjualan.Free;
-  end;
+  LoadDataPenjualanItem(FPenjualan);
 end;
 
 procedure TfrmCustomerInvoice.LoadDataPenjualanItem(APenjualan : TPenjualan);
@@ -396,6 +477,7 @@ begin
     cxGridTablePenjualan.SetValue(i,cxgrdclmnGridTablePenjualanColumnQty.Index, APenjualan.PenjualanItems[i].Qty);
     cxGridTablePenjualan.SetValue(i,cxgrdclmnGridTablePenjualanColumnDiskon.Index, APenjualan.PenjualanItems[i].Diskon);
     cxGridTablePenjualan.SetValue(i,cxgrdclmnGridTablePenjualanColumnPPN.Index, APenjualan.PenjualanItems[i].PPN);
+    cxGridTablePenjualan.SetValue(i,cxgrdclmnGridTablePenjualanColumnKonversi.Index, APenjualan.PenjualanItems[i].Konversi);
 
     cxGridTablePenjualan.DataController.FocusedRecordIndex := i;
     HitungNilaiNilaiPerBaris(APenjualan.PenjualanItems[i].PPN,cxgrdclmnGridTablePenjualanColumnPPN.Index);

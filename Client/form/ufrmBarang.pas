@@ -13,7 +13,7 @@ uses
   cxGrid, cxGridLevel, cxPCdxBarPopupMenu, cxPC, cxCurrencyEdit, ImgList, uModel,
   cxNavigator, System.Actions, Datasnap.DBClient, Datasnap.Provider,
   dxBarExtDBItems, cxCheckBox, cxBarEditItem, dxBarBuiltInMenu, dxBarExtItems,
-  System.ImageList;
+  System.ImageList, Vcl.Menus, cxButtons, Vcl.ComCtrls;
 
 type
   TfrmBarang = class(TfrmDefault)
@@ -28,31 +28,31 @@ type
     cxgrdbclmnGridDBTableBarangColumnKode: TcxGridDBColumn;
     cxgrdbclmnGridDBTableBarangColumnNama: TcxGridDBColumn;
     cxgrdbclmnGridDBTableBarangColumnGroup: TcxGridDBColumn;
+    cxGridDBTableUOM: TcxGridDBTableView;
+    cxgrdbclmnGridDBTableUOMColumnUOM: TcxGridDBColumn;
+    cxgrdbclmnGridDBTableBarangColumnPPN: TcxGridDBColumn;
     cxPCHeader: TcxPageControl;
     cxTSHeader: TcxTabSheet;
     lblKode: TLabel;
     lblNama: TLabel;
     lblGroup: TLabel;
+    lblPPN: TLabel;
+    lblSatuanStock: TLabel;
     edKode: TcxTextEdit;
     edNama: TcxTextEdit;
     cbbGroup: TcxExtLookupComboBox;
+    cbbPPN: TcxComboBox;
+    cbbSatuanStock: TcxExtLookupComboBox;
     cxTSSatuan: TcxTabSheet;
     cxGridDBSatuan: TcxGrid;
-    cxgrdlvlSatuan: TcxGridLevel;
     cxGridTableSatuan: TcxGridTableView;
     cxGridTableSatuanColumnUOM: TcxGridColumn;
     cxGridTableSatuanColumnKonversi: TcxGridColumn;
     cxGridTableSatuanColumnHargaJual: TcxGridColumn;
-    cxGridDBTableUOM: TcxGridDBTableView;
-    cxgrdbclmnGridDBTableUOMColumnUOM: TcxGridDBColumn;
-    lblPPN: TLabel;
-    cbbPPN: TcxComboBox;
-    cxgrdbclmnGridDBTableBarangColumnPPN: TcxGridDBColumn;
     cxGridTableSatuanColumnHargaJualBengkel: TcxGridColumn;
-    cxGridTableSatuanColumnHargaJualGrosir: TcxGridColumn;
     cxGridTableSatuanColumnHargaJualKeliling: TcxGridColumn;
-    lblSatuanStock: TLabel;
-    cbbSatuanStock: TcxExtLookupComboBox;
+    cxGridTableSatuanColumnHargaJualGrosir: TcxGridColumn;
+    cxgrdlvlSatuan: TcxGridLevel;
     procedure FormCreate(Sender: TObject);
     procedure ActionBaruExecute(Sender: TObject);
     procedure ActionHapusExecute(Sender: TObject);
@@ -194,6 +194,7 @@ procedure TfrmBarang.cxGridDBTableBarangCellDblClick(Sender:
 begin
   inherited;
   LoadDataBarang(cxGridDBTableBarang.DataController.DataSource.DataSet.FieldByName('ID').AsString);
+  cxPCData.ActivePageIndex := 1;
 end;
 
 procedure TfrmBarang.edKodeKeyDown(Sender: TObject; var Key: Word; Shift:

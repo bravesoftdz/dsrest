@@ -15,17 +15,11 @@ uses
   dxPSEdgePatterns, dxPSPDFExportCore, dxPSPDFExport, cxDrawTextUtils,
   dxPSPrVwStd, dxPSPrVwAdv, dxPSPrVwRibbon, dxPScxPageControlProducer,
   dxPScxEditorProducers, dxPScxExtEditorProducers, dxPrnDlg, dxPgsDlg, dxPSCore,
-  System.ImageList, dxBarExtItems, ufrmPilihGrid;
+  System.ImageList, dxBarExtItems, ufrmPilihGrid, dxBarBuiltInMenu, cxPC,
+  Vcl.ComCtrls, Vcl.StdCtrls, cxGridLevel, Vcl.Menus, cxButtons, cxContainer;
 
 type
   TfrmDefault = class(TForm)
-    dxBarManagerForm: TdxBarManager;
-    dxBarManager1Bar1: TdxBar;
-    dxBarLargeButtonNew: TdxBarLargeButton;
-    dxBarLargeButtonSave: TdxBarLargeButton;
-    dxBarLargeButtonEdit: TdxBarLargeButton;
-    dxBarLargeButtonDel: TdxBarLargeButton;
-    dxBarLargeButtonRefresh: TdxBarLargeButton;
     cxSBTransaksi: TdxStatusBar;
     ActionListForm: TActionList;
     ActionBaru: TAction;
@@ -33,28 +27,44 @@ type
     actCetak: TAction;
     ActionHapus: TAction;
     ActionRefresh: TAction;
-    pnlListTransaksi: TPanel;
-    splTransaksi: TSplitter;
     cxGridRepTransaksi: TcxGridViewRepository;
-    cbbLUCabang: TdxBarLookupCombo;
     cxGridDBTableCabang: TcxGridDBTableView;
     cxGridColCabangKode: TcxGridDBColumn;
     cxGridColCabangNama: TcxGridDBColumn;
     dsCabang: TDataSource;
     DSPCabang: TDataSetProvider;
     cdsCabang: TClientDataSet;
-    chkKonsolidasi: TcxBarEditItem;
     cxGridDBTableWarehouse: TcxGridDBTableView;
     cxGridColWHKode: TcxGridDBColumn;
     cxGridColWHNama: TcxGridDBColumn;
-    dxbrbtn1: TdxBarButton;
-    dxbrlrgbtn1: TdxBarLargeButton;
     actExport: TAction;
-    dxbrstc1: TdxBarStatic;
     dlgSaveExportExcel: TSaveDialog;
     ilButton: TImageList;
-    dxbrcmb1: TdxBarCombo;
+    cxPCData: TcxPageControl;
+    cxTSOverview: TcxTabSheet;
+    cxTSInputData: TcxTabSheet;
+    pnlListTransaksi: TPanel;
+    splTransaksi: TSplitter;
+    pnlFilter: TPanel;
+    lblPeriode: TLabel;
+    lblSD: TLabel;
+    dtpAwal: TDateTimePicker;
+    dtpAkhir: TDateTimePicker;
+    cxGrid: TcxGrid;
+    cxGridDBTableOverview: TcxGridDBTableView;
+    cxgrdlvlMaster: TcxGridLevel;
+    btnRefresh: TcxButton;
+    pnlButton: TPanel;
+    btnBaru: TcxButton;
+    btnCetak: TcxButton;
+    btnHapus: TcxButton;
+    btnExport: TcxButton;
+    btnSave: TcxButton;
+    chkKonsolidasi1: TcxCheckBox;
+    actNextTransaction: TAction;
     procedure actExportExecute(Sender: TObject);
+    procedure ActionBaruExecute(Sender: TObject);
+    procedure cxPCDataChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
@@ -101,16 +111,26 @@ begin
   end;
 end;
 
+procedure TfrmDefault.ActionBaruExecute(Sender: TObject);
+begin
+  cxPCData.ActivePageIndex := 1;
+end;
+
+procedure TfrmDefault.cxPCDataChange(Sender: TObject);
+begin
+  btnSave.Enabled    := cxPCData.ActivePageIndex = 1;
+  btnHapus.Enabled   := cxPCData.ActivePageIndex = 1;
+//  btnBaru.Enabled    := cxPCData.ActivePageIndex = 1;
+
+  btnExport.Enabled  := cxPCData.ActivePageIndex = 0;
+  btnCetak.Enabled   := cxPCData.ActivePageIndex = 0;
+  btnRefresh.Enabled := cxPCData.ActivePageIndex = 0;
+end;
+
 procedure TfrmDefault.FormCreate(Sender: TObject);
-//var
-//  I: Integer;
 begin
   InisialisasiCDSCabang;
-
-//  for I := 0 to cxGridRepTransaksi.Count  do
-//  begin
-//    cxGridRepTransaksi.Items[i].Tag := 99;
-//  end;
+  cxPCDataChange(Sender)
 end;
 
 procedure TfrmDefault.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -142,10 +162,10 @@ begin
   sSQL := 'select * from tcabang';
   dsCabang.DataSet := TDBUtils.OpenDataset(sSQL);
 
-  cbbLUCabang.KeyValue := ClientDataModule.Cabang.ID;
-  cbbLUCabang.Enabled := ClientDataModule.Cabang.IsHO = 1;
-  chkKonsolidasi.EditValue := False;
-  chkKonsolidasi.Enabled := ClientDataModule.Cabang.IsHO = 1;
+//  cbbLUCabang.KeyValue := ClientDataModule.Cabang.ID;
+//  cbbLUCabang.Enabled := ClientDataModule.Cabang.IsHO = 1;
+//  chkKonsolidasi.EditValue := False;
+//  chkKonsolidasi.Enabled := ClientDataModule.Cabang.IsHO = 1;
 end;
 
 end.

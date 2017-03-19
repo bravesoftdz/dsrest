@@ -14,7 +14,8 @@ uses
   cxDBExtLookupComboBox, cxCurrencyEdit, cxContainer, Vcl.ComCtrls, dxCore,
   cxDateUtils, cxGridLevel, cxDropDownEdit, cxLookupEdit, cxDBLookupEdit,
   cxMemo, cxMaskEdit, cxCalendar, cxTextEdit, Vcl.StdCtrls, ClientModule,
-  uPenjualan, uDBUtils, uAppUtils, Vcl.Menus, cxCalc;
+  uPenjualan, uDBUtils, uAppUtils, Vcl.Menus, cxCalc, dxBarBuiltInMenu, cxPC,
+  cxButtons;
 
 type
   TfrmPenjualan = class(TfrmDefault)
@@ -59,9 +60,12 @@ type
     cbbJenisPembayaran: TcxComboBox;
     lblTempo: TLabel;
     edTempo: TcxCalcEdit;
+    btnInvoice: TcxButton;
     procedure FormCreate(Sender: TObject);
     procedure ActionBaruExecute(Sender: TObject);
+    procedure ActionRefreshExecute(Sender: TObject);
     procedure ActionSimpanExecute(Sender: TObject);
+    procedure actNextTransactionExecute(Sender: TObject);
     procedure Bengkel1Click(Sender: TObject);
     procedure cxgrdclmnGridTablePenjualanColumnSatuanPropertiesInitPopup(
       Sender: TObject);
@@ -77,6 +81,9 @@ type
     procedure cxgrdclmnGridTablePenjualanColumnPPNPropertiesValidate(
       Sender: TObject; var DisplayValue: Variant; var ErrorText: TCaption;
       var Error: Boolean);
+    procedure cxGridDBTableOverviewCellDblClick(Sender: TcxCustomGridTableView;
+        ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton; AShift:
+        TShiftState; var AHandled: Boolean);
     procedure Grosir1Click(Sender: TObject);
     procedure Keliling1Click(Sender: TObject);
     procedure Umum1Click(Sender: TObject);
@@ -96,6 +103,7 @@ type
     function JenisPenjualan: string; virtual;
     procedure SetHarga(AJenisHarga : String);
   public
+    procedure LoadDataPenjualan(AID : String);
     property Penjualan: TPenjualan read GetPenjualan write FPenjualan;
     { Public declarations }
   end;
@@ -106,7 +114,7 @@ var
 implementation
 
 uses
-  uModel;
+  uModel, ufrmCustomerInvoice;
 
 {$R *.dfm}
 
@@ -238,6 +246,26 @@ begin
   end;
 end;
 
+procedure TfrmPenjualan.ActionRefreshExecute(Sender: TObject);
+var
+  lcds: TClientDataSet;
+  lDS: TDataset;
+begin
+  inherited;
+  if chkKonsolidasi1.Checked then
+    lDS := ClientDataModule.ServerLaporanClient.RetrivePenjualan(dtpAwal.DateTime, dtpAkhir.DateTime, nil)
+  else
+    lDS := ClientDataModule.ServerLaporanClient.RetrivePenjualan(dtpAwal.DateTime, dtpAkhir.DateTime, ClientDataModule.Cabang);
+  try
+    lcds := TDBUtils.DSToCDS(lDS, Self);
+    cxGridDBTableOverview.SetDataset(lcds, True);
+    cxGridDBTableOverview.SetVisibleColumns(['id'], False);
+    cxGridDBTableOverview.ApplyBestFit();
+  finally
+//    lDS.Free;
+  end;
+end;
+
 procedure TfrmPenjualan.ActionSimpanExecute(Sender: TObject);
 var
   I: Integer;
@@ -246,7 +274,7 @@ begin
   inherited;
   Penjualan.ID             := FID;
   Penjualan.NoBukti        := edNoBukti.Text;
-  Penjualan.Cabang         := TCabang.CreateID(cbbLUCabang.KeyValue);
+  Penjualan.Cabang         := TCabang.CreateID(ClientDataModule.Cabang.ID);
   Penjualan.Gudang         := TGudang.CreateID(cbbGudang.EditValue);
   Penjualan.JatuhTempo     := edJthTempo.Date;
   Penjualan.TglBukti       := edTglBukti.Date;
@@ -278,10 +306,30 @@ begin
 
 end;
 
+procedure TfrmPenjualan.actNextTransactionExecute(Sender: TObject);
+begin
+  inherited;
+  if FPenjualan = nil then
+    Exit;
+
+  frmCustomerInvoice := TfrmCustomerInvoice.Create(Application);
+  frmCustomerInvoice.ActionBaruExecute(Sender);
+  frmCustomerInvoice.LoadDataPenjualan(FPenjualan.NoBukti);
+end;
+
 procedure TfrmPenjualan.Bengkel1Click(Sender: TObject);
 begin
   inherited;
   SetHarga('bengkel');
+end;
+
+procedure TfrmPenjualan.cxGridDBTableOverviewCellDblClick(Sender:
+    TcxCustomGridTableView; ACellViewInfo: TcxGridTableDataCellViewInfo;
+    AButton: TMouseButton; AShift: TShiftState; var AHandled: Boolean);
+begin
+  inherited;
+  LoadDataPenjualan(cxGridDBTableOverview.DS.FieldByName('ID').AsString);
+  cxPCData.ActivePageIndex := 1;
 end;
 
 function TfrmPenjualan.getDefaultHarga: string;
@@ -426,6 +474,57 @@ procedure TfrmPenjualan.Keliling1Click(Sender: TObject);
 begin
   inherited;
   SetHarga('keliling');
+end;
+
+procedure TfrmPenjualan.LoadDataPenjualan(AID : String);
+var
+  i: Integer;
+begin
+  with ClientDataModule.ServerPenjualanClient do
+  begin
+    try
+      FreeAndNil(FPenjualan);
+      FPenjualan := Retrieve(AID);
+      FID               := Penjualan.ID;
+
+      if Penjualan <> nil then
+      begin
+        edNoBukti.Text := Penjualan.NoBukti;
+        edTglBukti.Date:= Penjualan.TglBukti;
+
+        if Penjualan.Pembeli.ID <> '' then
+          cbbSalesman.EditValue := Penjualan.Pembeli.ID;
+
+        if Penjualan.Gudang.ID <> '' then
+          cbbGudang.EditValue := Penjualan.Gudang.ID;
+
+        memKeterangan.Lines.Text     := Penjualan.Keterangan;
+        edTempo.Value                := Penjualan.TOP;
+        cbbJenisPembayaran.ItemIndex := cbbJenisPembayaran.Properties.Items.IndexOf(Penjualan.JenisPembayaran);
+
+        cxGridTablePenjualan.ClearRows;
+        for i := 0 to Penjualan.PenjualanItems.Count - 1 do
+        begin
+          cxGridTablePenjualan.DataController.RecordCount := i + 1;
+          cxGridTablePenjualan.SetValue(i, cxgrdclmnGridTablePenjualanColumnSKU.Index, FPenjualan.PenjualanItems[i].Barang.ID);
+          cxGridTablePenjualan.SetValue(i, cxgrdclmnGridTablePenjualanColumnNama.Index, FPenjualan.PenjualanItems[i].BarangSatuangItemID);
+          cxGridTablePenjualan.SetValue(i, cxgrdclmnGridTablePenjualanColumnSatuan.Index, FPenjualan.PenjualanItems[i].UOM.ID);
+          cxGridTablePenjualan.SetDouble(i, cxgrdclmnGridTablePenjualanColumnHarga.Index, FPenjualan.PenjualanItems[i].Harga);
+          cxGridTablePenjualan.SetDouble(i, cxgrdclmnGridTablePenjualanColumnQty.Index, FPenjualan.PenjualanItems[i].Qty);
+          cxGridTablePenjualan.SetDouble(i, cxgrdclmnGridTablePenjualanColumnDiskon.Index,FPenjualan.PenjualanItems[i].Diskon);
+          cxGridTablePenjualan.SetDouble(i, cxgrdclmnGridTablePenjualanColumnPPN.Index, FPenjualan.PenjualanItems[i].PPN);
+
+          cxGridTablePenjualan.DataController.FocusedRecordIndex := i;
+          HitungNilaiNilaiPerBaris(FPenjualan.PenjualanItems[i].PPN, cxgrdclmnGridTablePenjualanColumnPPN.Index);
+
+
+        end;
+
+      end;
+    finally
+      Free;
+    end;
+  end;
 end;
 
 procedure TfrmPenjualan.SetHarga(AJenisHarga : String);

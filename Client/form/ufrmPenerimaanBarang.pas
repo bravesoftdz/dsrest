@@ -13,7 +13,7 @@ uses
   ImgList, uModel, ClientClassesUnit2, DB, cxDBData, cxGridDBTableView,
   cxDBExtLookupComboBox, Provider, DBClient, cxNavigator, dxCore, cxDateUtils,
   System.Actions, dxBarExtDBItems, cxCheckBox, cxBarEditItem, System.ImageList,
-  dxBarExtItems, cxCalc;
+  dxBarExtItems, cxCalc, dxBarBuiltInMenu, Vcl.Menus, cxButtons, cxPC;
 
 type
   TfrmPenerimaanBarang = class(TfrmDefault)
@@ -53,16 +53,9 @@ type
     cxGridTablePenerimaanBarangColumnPPNRp: TcxGridColumn;
     cxGridTablePenerimaanBarangColumnSubTotalRp: TcxGridColumn;
     pnlFilterBarang: TPanel;
-    cxGridDBDaftarPB: TcxGrid;
-    cxGridDBTableDaftarPB: TcxGridDBTableView;
-    cxgrdlvlDaftarPB: TcxGridLevel;
     dsPB: TDataSource;
-    cxgrdbclmnGridDBTableDaftarPBNoBukti: TcxGridDBColumn;
-    cxgrdbclmnGridDBTableDaftarPBTglBukti: TcxGridDBColumn;
     ProvPB: TDataSetProvider;
     cdsPB: TClientDataSet;
-    cxgrdbclmnGridDBTableDaftarPBSupplier: TcxGridDBColumn;
-    cxgrdbclmnGridDBTableDaftarPBKeterangan: TcxGridDBColumn;
     DSPSlip: TDataSetProvider;
     cdsSlip: TClientDataSet;
     cxgrdbclmnGridDBTableUOMColumnID: TcxGridDBColumn;
@@ -75,17 +68,12 @@ type
     lblTempo: TLabel;
     edTempo: TcxCalcEdit;
     cbbJenisPembayaran: TcxComboBox;
-    cxgrdbclmnGridDBTableDaftarTempo: TcxGridDBColumn;
-    cxgrdbclmnGridDBTableDaftarJenisPembayaran: TcxGridDBColumn;
     procedure actCetakExecute(Sender: TObject);
     procedure ActionBaruExecute(Sender: TObject);
     procedure ActionHapusExecute(Sender: TObject);
     procedure ActionRefreshExecute(Sender: TObject);
     procedure ActionSimpanExecute(Sender: TObject);
     procedure cbbJenisPembayaranExit(Sender: TObject);
-    procedure cxGridDBTableDaftarPBCellDblClick(Sender: TcxCustomGridTableView;
-        ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton; AShift:
-        TShiftState; var AHandled: Boolean);
     procedure FormShow(Sender: TObject);
     procedure cxGridTablePenerimaanBarangColumnSKUPropertiesValidate(
       Sender: TObject; var DisplayValue: Variant; var ErrorText: TCaption;
@@ -110,6 +98,9 @@ type
     procedure cxGridTablePenerimaanBarangColumnSatuanPropertiesInitPopup(
       Sender: TObject);
     procedure cbbJenisPembayaranPropertiesChange(Sender: TObject);
+    procedure cxGridDBTableOverviewCellDblClick(Sender: TcxCustomGridTableView;
+        ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton; AShift:
+        TShiftState; var AHandled: Boolean);
   private
     FPenerimaanBarang: TPenerimaanBarang;
     function GetPenerimaanBarang: TPenerimaanBarang;
@@ -136,7 +127,7 @@ var
 
 implementation
 uses
-   ClientModule, uDBUtils, uAppUtils, uBarangUtils, uReport,System.Math ;
+   ClientModule, uDBUtils, uAppUtils, uBarangUtils, uReport,System.Math;
 
 {$R *.dfm}
 
@@ -205,19 +196,14 @@ begin
 end;
 
 procedure TfrmPenerimaanBarang.ActionRefreshExecute(Sender: TObject);
+var
+  lcds: TClientDataSet;
 begin
   inherited;
-//  if ProvPB.DataSet <> nil then
-//    ProvPB.DataSet.Free;
-
-  cdsPB.Close;
-  ProvPB.DataSet := ClientDataModule.ServerPenerimaanBarangClient.RetrieveCDS(PenerimaanBarang);
-  cdsPB.Open;
-
-
-  TDBUtils.DataSetToCxDBGrid(cdsPB, cxGridDBTableDaftarPB);
-  cxGridDBTableDaftarPB.ApplyBestFit();
-
+  lcds := TDBUtils.DSToCDS(ClientDataModule.ServerPenerimaanBarangClient.RetrieveCDS(PenerimaanBarang), Self);
+  cxGridDBTableOverview.SetDataset(lcds, True);
+  cxGridDBTableOverview.ApplyBestFit();
+  cxGridDBTableOverview.SetVisibleColumns(['ID'], False);
 
 end;
 
@@ -297,27 +283,21 @@ begin
   lblTempo.Visible:= cbbJenisPembayaran.ItemIndex = 1;
 end;
 
-procedure TfrmPenerimaanBarang.cxGridDBTableDaftarPBCellDblClick(Sender:
-    TcxCustomGridTableView; ACellViewInfo: TcxGridTableDataCellViewInfo;
-    AButton: TMouseButton; AShift: TShiftState; var AHandled: Boolean);
-var
-  iCol: Integer;
-  iRec: Integer;
-begin
-  inherited;
-  iRec := cxGridDBTableDaftarPB.DataController.FocusedRecordIndex;
-  iCol := cxgrdbclmnGridDBTableDaftarPBNoBukti.Index;
-
-  LoadDataPenerimaanBarang(cxGridDBTableDaftarPB.GetString(iRec,iCol));
-
-end;
-
 procedure TfrmPenerimaanBarang.cxGridDBTableDaftarPBEditing(
   Sender: TcxCustomGridTableView; AItem: TcxCustomGridTableItem;
   var AAllow: Boolean);
 begin
   inherited;
   AAllow := False;
+end;
+
+procedure TfrmPenerimaanBarang.cxGridDBTableOverviewCellDblClick(Sender:
+    TcxCustomGridTableView; ACellViewInfo: TcxGridTableDataCellViewInfo;
+    AButton: TMouseButton; AShift: TShiftState; var AHandled: Boolean);
+begin
+  inherited;
+  LoadDataPenerimaanBarang(cxGridDBTableOverview.DS.FieldByName('ID').AsString);
+  cxPCData.ActivePageIndex := 1;
 end;
 
 procedure TfrmPenerimaanBarang.cxGridTablePenerimaanBarangColumnDiskonPropertiesValidate(
@@ -605,7 +585,7 @@ begin
   begin
     try
       FreeAndNil(FPenerimaanBarang);
-      FPenerimaanBarang := RetrieveNoBukti(ANoBukti);
+      FPenerimaanBarang := Retrieve(ANoBukti);
       FID               := PenerimaanBarang.ID;
 
       if PenerimaanBarang <> nil then

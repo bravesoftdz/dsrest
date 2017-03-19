@@ -1,63 +1,38 @@
 inherited frmGudang: TfrmGudang
   Caption = 'Gudang'
-  ExplicitWidth = 733
-  ExplicitHeight = 385
   PixelsPerInch = 96
   TextHeight = 13
-  inherited pnlListTransaksi: TPanel
-    object cxGridDBGudang: TcxGrid
-      Left = 1
-      Top = 1
-      Width = 183
-      Height = 274
-      Align = alClient
-      TabOrder = 0
-      object cxGridDBTableGudang: TcxGridDBTableView
-        Navigator.Buttons.CustomButtons = <>
-        OnCellDblClick = cxGridDBTableGudangCellDblClick
-        DataController.Summary.DefaultGroupSummaryItems = <>
-        DataController.Summary.FooterSummaryItems = <>
-        DataController.Summary.SummaryGroups = <>
-        OptionsData.CancelOnExit = False
-        OptionsData.Deleting = False
-        OptionsData.DeletingConfirmation = False
-        OptionsData.Editing = False
-        OptionsData.Inserting = False
-        OptionsView.GroupByBox = False
-        object cxgrdbclmnGridDBTableGudangColumnKode: TcxGridDBColumn
-          Caption = 'Kode '
-          DataBinding.FieldName = 'Kode'
-          HeaderAlignmentHorz = taCenter
-          Width = 87
+  inherited cxPCData: TcxPageControl
+    inherited cxTSOverview: TcxTabSheet
+      inherited pnlListTransaksi: TPanel
+        inherited pnlFilter: TPanel
+          TabOrder = 1
+          inherited lblPeriode: TLabel
+            Visible = False
+          end
+          inherited lblSD: TLabel
+            Visible = False
+          end
+          inherited dtpAwal: TDateTimePicker
+            Visible = False
+          end
+          inherited dtpAkhir: TDateTimePicker
+            Visible = False
+          end
         end
-        object cxgrdbclmnGridDBTableGudangColumnNama: TcxGridDBColumn
-          Caption = 'Nama '
-          DataBinding.FieldName = 'Nama'
-          HeaderAlignmentHorz = taCenter
-          Width = 138
+        inherited cxGrid: TcxGrid
+          TabOrder = 0
+          inherited cxGridDBTableOverview: TcxGridDBTableView
+            OnCellDblClick = cxGridDBTableOverviewCellDblClick
+          end
         end
-      end
-      object cxgrdlvlGudang: TcxGridLevel
-        GridView = cxGridDBTableGudang
       end
     end
-  end
-  object cxPCInput: TcxPageControl [3]
-    Left = 193
-    Top = 50
-    Width = 524
-    Height = 276
-    Align = alClient
-    TabOrder = 6
-    Properties.ActivePage = Input
-    Properties.CustomButtons.Buttons = <>
-    ClientRectBottom = 272
-    ClientRectLeft = 4
-    ClientRectRight = 520
-    ClientRectTop = 24
-    object Input: TcxTabSheet
-      Caption = 'Input'
-      ImageIndex = 0
+    inherited cxTSInputData: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 709
+      ExplicitHeight = 265
       object lblKode: TLabel
         Left = 19
         Top = 17
@@ -86,28 +61,6 @@ inherited frmGudang: TfrmGudang
         Text = 'edNama'
         Width = 185
       end
-    end
-  end
-  inherited dxBarManagerForm: TdxBarManager
-    DockControlHeights = (
-      0
-      0
-      50
-      0)
-    inherited dxBarLargeButtonNew: TdxBarLargeButton
-      ImageIndex = -1
-    end
-    inherited dxBarLargeButtonSave: TdxBarLargeButton
-      ImageIndex = -1
-    end
-    inherited dxBarLargeButtonEdit: TdxBarLargeButton
-      ImageIndex = -1
-    end
-    inherited dxBarLargeButtonDel: TdxBarLargeButton
-      ImageIndex = -1
-    end
-    inherited dxBarLargeButtonRefresh: TdxBarLargeButton
-      ImageIndex = -1
     end
   end
   inherited ActionListForm: TActionList
@@ -140,7 +93,7 @@ inherited frmGudang: TfrmGudang
     Left = 512
     Top = 88
     Bitmap = {
-      494C0101050008006C0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010105000800700018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

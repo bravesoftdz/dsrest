@@ -23,7 +23,6 @@ type
         APort : String): Boolean;
     class procedure DataSetToCxDBGrid(ADataset : TDataset; ACxDBGrid :
         TcxGridDBTableView; AutoCreateFields : Boolean = False);
-    class procedure DSToCDS(ADataset : TDataset; ACDS : TClientDataset); overload;
     class function DSToCDS(aDataset: TDataSet; aOwner: TComponent): TClientDataset;
         overload;
     class function ExecuteSQL(ASQL : String): LongInt;
@@ -113,23 +112,6 @@ begin
 
   if AutoCreateFields then
     ACxDBGrid.DataController.CreateAllItems(True);
-end;
-
-class procedure TDBUtils.DSToCDS(ADataset : TDataset; ACDS : TClientDataset);
-var
-  i: Integer;
-begin
-  ACDS.Open;
-  ACDS.EmptyDataSet;
-
-  while not ADataset.Eof do
-  begin
-    for i := 0 to ACDS.Fields.Count - 1 do
-    begin
-      ACDS.Append;
-      ACDS.Fields[i] := ADataset.FieldByName(ACDS.FieldDefs[i].Name);
-    end;
-  end;
 end;
 
 class function TDBUtils.DSToCDS(aDataset: TDataSet; aOwner: TComponent):

@@ -163,6 +163,7 @@ type
   public
     procedure AutoFormatCurrency(ADisplayFormat: String = ',0;(,0)');
     procedure AutoFormatDate(ADisplayFormat: String = 'yyyy/mm/dd');
+    function DS: TDataset;
     procedure ExportToXLS(sFileName: String = '');
     procedure SetAllUpperCaseColumn;
     procedure SetColumnsCaption(ColumnSets, ColumnCaption: Array Of String);
@@ -1363,6 +1364,12 @@ begin
       end;
     end;
   end;
+end;
+
+function TcxGridDBTableViewHelper.DS: TDataset;
+begin
+  Result := Self.DataController.DataSource.DataSet;
+  // TODO -cMM: TcxGridDBTableViewHelper.DS default body inserted
 end;
 
 procedure TcxGridDBTableViewHelper.ExportToXLS(sFileName: String = '');
