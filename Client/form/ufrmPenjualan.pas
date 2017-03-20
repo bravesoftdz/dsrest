@@ -15,7 +15,7 @@ uses
   cxDateUtils, cxGridLevel, cxDropDownEdit, cxLookupEdit, cxDBLookupEdit,
   cxMemo, cxMaskEdit, cxCalendar, cxTextEdit, Vcl.StdCtrls, ClientModule,
   uPenjualan, uDBUtils, uAppUtils, Vcl.Menus, cxCalc, dxBarBuiltInMenu, cxPC,
-  cxButtons;
+  cxButtons, uReport;
 
 type
   TfrmPenjualan = class(TfrmDefault)
@@ -64,6 +64,7 @@ type
     lblFee: TLabel;
     cbbFee: TcxComboBox;
     cxgrdclmnGridTablePenjualanColumnJenisHarga: TcxGridColumn;
+    procedure actCetakExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ActionBaruExecute(Sender: TObject);
     procedure ActionRefreshExecute(Sender: TObject);
@@ -101,6 +102,7 @@ type
     procedure InisialisasiCBBGudang;
     procedure InisialisasiCBBSKU;
     procedure InisialisasiCBBUOM;
+    function IsPenjualanItemValid: Boolean;
     { Private declarations }
   protected
     function getDefaultHarga: string; virtual;
@@ -118,9 +120,30 @@ var
 implementation
 
 uses
-  uModel, ufrmCustomerInvoice;
+  uModel, ufrmCustomerInvoice, System.Math;
 
 {$R *.dfm}
+
+procedure TfrmPenjualan.actCetakExecute(Sender: TObject);
+var
+  lcds: TClientDataSet;
+  lTSReport: TTSReport;
+begin
+  inherited;
+  lTSReport := TTSReport.Create(self);
+  try
+    with ClientDataModule.ServerPenjualanClient do
+    begin
+      lcds := TDBUtils.DSToCDS(RetrieveCDSlip(Now-3000, Now + 3000, nil, Penjualan.NoBukti), cxGridTablePenjualan);
+
+      lTSReport.AddDataset(lcds, 'QPenjualan');
+      lTSReport.ShowReport('SlipPenjualan');
+    end;
+  finally
+    lTSReport.Free;
+  end;
+
+end;
 
 procedure TfrmPenjualan.cbbJenisPembayaranPropertiesChange(Sender: TObject);
 begin
@@ -296,6 +319,9 @@ begin
   if not ValidateEmptyCtrl([1], True) then
     Exit;
 
+  if not IsPenjualanItemValid then
+    Exit;
+
   Penjualan.ID             := FID;
   Penjualan.NoBukti        := edNoBukti.Text;
   Penjualan.Cabang         := TCabang.CreateID(ClientDataModule.Cabang.ID);
@@ -308,6 +334,7 @@ begin
   Penjualan.Kasir          := 'AKU';
   Penjualan.Keterangan     := memKeterangan.Text;
   Penjualan.Fee            := cbbFee.Properties.Items[cbbFee.ItemIndex];
+  Penjualan.TOP            := Floor(edTempo.Value);
 
   Penjualan.PenjualanItems.Clear;
   for I := 0 to cxGridTablePenjualan.DataController.RecordCount - 1 do
@@ -487,6 +514,44 @@ begin
 
   TcxExtLookupComboBoxProperties(cxGridTablePenjualan.Columns[cxgrdclmnGridTablePenjualanColumnSatuan.Index].Properties).LoadFromCDS(lCDSUOM,'ID','UOM',['ID'],Self);
   TcxExtLookupComboBoxProperties(cxGridTablePenjualan.Columns[cxgrdclmnGridTablePenjualanColumnSatuan.Index].Properties).SetMultiPurposeLookup;
+
+end;
+
+function TfrmPenjualan.IsPenjualanItemValid: Boolean;
+var
+  I: Integer;
+  j: Integer;
+begin
+  Result := False;
+
+  for I := 0 to cxGridTablePenjualan.DataController.RecordCount - 1 do
+  begin
+    cxGridTablePenjualan.DataController.FocusedRecordIndex := i;
+
+    if cxGridTablePenjualan.GetString(i,cxgrdclmnGridTablePenjualanColumnNama.Index) = '' then
+    begin
+      TAppUtils.Warning('Barang Belum Diisi');
+      Exit;
+    end;
+
+    if cxGridTablePenjualan.GetDouble(i,cxgrdclmnGridTablePenjualanColumnQty.Index) <= 0 then
+    begin
+      TAppUtils.Warning('Qty Harus >= 0');
+      Exit;
+    end;
+
+    for j := i + 1 to cxGridTablePenjualan.DataController.RecordCount - 1 do
+    begin
+      if cxGridTablePenjualan.GetString(i,cxgrdclmnGridTablePenjualanColumnNama.Index) =
+         cxGridTablePenjualan.GetString(j,cxgrdclmnGridTablePenjualanColumnNama.Index)then
+      begin
+        TAppUtils.Warning('Ada Barang Dan Satuan Double');
+        Exit;
+      end;
+    end;
+  end;
+
+  Result := True;
 
 end;
 

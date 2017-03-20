@@ -2,7 +2,7 @@ object frmKoneksi: TfrmKoneksi
   Left = 0
   Top = 0
   Caption = 'Koneksi Database'
-  ClientHeight = 318
+  ClientHeight = 343
   ClientWidth = 269
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -13,14 +13,13 @@ object frmKoneksi: TfrmKoneksi
   OldCreateOrder = False
   Position = poMainFormCenter
   OnCreate = FormCreate
-  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object grpKoneksiLokasi: TGroupBox
     Left = 0
     Top = 0
     Width = 269
-    Height = 177
+    Height = 219
     Align = alTop
     Caption = 'Koneksi Database Lokal'
     TabOrder = 0
@@ -65,6 +64,13 @@ object frmKoneksi: TfrmKoneksi
       Width = 20
       Height = 13
       Caption = 'Port'
+    end
+    object lblLaporan: TLabel
+      Left = 22
+      Top = 147
+      Width = 39
+      Height = 13
+      Caption = 'Laporan'
     end
     object edServer: TcxTextEdit
       Left = 78
@@ -117,7 +123,7 @@ object frmKoneksi: TfrmKoneksi
     end
     object btnKonekDB: TButton
       Left = 168
-      Top = 146
+      Top = 170
       Width = 87
       Height = 25
       Caption = 'Connect'
@@ -130,15 +136,23 @@ object frmKoneksi: TfrmKoneksi
       TabOrder = 6
       OnClick = btnKonekDBClick
     end
+    object edLaporan: TcxTextEdit
+      Left = 77
+      Top = 143
+      TabOrder = 7
+      Width = 178
+    end
   end
   object grpKoneksiRestServer: TGroupBox
     Left = 0
-    Top = 177
+    Top = 219
     Width = 269
-    Height = 141
+    Height = 124
     Align = alClient
     Caption = 'Rest Server'
     TabOrder = 1
+    ExplicitTop = 177
+    ExplicitHeight = 141
     object Label1: TLabel
       Left = 29
       Top = 20
@@ -213,7 +227,7 @@ object frmKoneksi: TfrmKoneksi
     end
   end
   object fdphysqltdrvrlnk1: TFDPhysSQLiteDriverLink
-    Left = 104
-    Top = 144
+    Left = 96
+    Top = 216
   end
 end

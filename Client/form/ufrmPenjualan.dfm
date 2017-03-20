@@ -2,7 +2,6 @@ inherited frmPenjualan: TfrmPenjualan
   Caption = 'Penjualan'
   ClientHeight = 429
   ClientWidth = 775
-  ExplicitTop = -73
   ExplicitWidth = 791
   ExplicitHeight = 468
   PixelsPerInch = 96
@@ -22,6 +21,8 @@ inherited frmPenjualan: TfrmPenjualan
     ClientRectBottom = 372
     ClientRectRight = 771
     inherited cxTSOverview: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
       ExplicitWidth = 767
       ExplicitHeight = 348
       inherited splTransaksi: TSplitter
@@ -443,6 +444,8 @@ inherited frmPenjualan: TfrmPenjualan
     inherited chkKonsolidasi1: TcxCheckBox
       Left = 307
       ExplicitLeft = 307
+      ExplicitWidth = 76
+      ExplicitHeight = 31
     end
     object btnInvoice: TcxButton
       Left = 232
@@ -459,6 +462,9 @@ inherited frmPenjualan: TfrmPenjualan
     Top = 280
     inherited ActionSimpan: TAction
       OnExecute = ActionSimpanExecute
+    end
+    inherited actCetak: TAction
+      OnExecute = actCetakExecute
     end
     inherited ActionRefresh: TAction
       OnExecute = ActionRefreshExecute
@@ -492,7 +498,7 @@ inherited frmPenjualan: TfrmPenjualan
     Left = 40
     Top = 352
     Bitmap = {
-      494C010106000800C80018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010106000800D80018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

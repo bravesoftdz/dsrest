@@ -183,6 +183,9 @@ type
   public
     function Retrieve(AID : String): TPenjualan;
     function RetrieveNoBukti(ANoBukti : String): TPenjualan;
+    function RetrieveCDSlip(ATglAwal , ATglAtglAkhir : TDateTime; ACabang :
+        TCabang; ANoBukti : String): TDataset;
+
   end;
 
   TServerAR = class(TServerTransaction)
@@ -1396,6 +1399,27 @@ begin
   end;
 end;
 
+function TServerPenjualan.RetrieveCDSlip(ATglAwal , ATglAtglAkhir : TDateTime;
+    ACabang : TCabang; ANoBukti : String): TDataset;
+var
+  sSQL: string;
+begin
+  sSQL := 'select * from VPenjualanSlip' +
+          ' where tglbukti between ' + TAppUtils.QuotDt(StartOfTheDay(ATglAwal)) +
+          ' and ' + TAppUtils.QuotDt(EndOfTheDay(ATglAtglAkhir)) +
+          ' and nobukti like ' + QuotedStr('%' + Trim(ANoBukti) + '%');
+
+  if ACabang <> nil then
+    sSQL := ' and cabangid = ' + QuotedStr(ACabang.ID);
+
+
+
+
+
+  Result := TDBUtils.OpenQuery(sSQL);
+  // TODO -cMM: TServerPenjualan.RetrieveCDSlip default body inserted
+end;
+
 function TServerPenjualan.RetrieveNoBukti(ANoBukti : String): TPenjualan;
 var
   sID: string;
@@ -1585,7 +1609,6 @@ function TServerCustomerInvoice.Retrieve(AID : String): TCustomerInvoice;
 var
   I: Integer;
   lBSItem: TBarangSatuanItem;
-  sSQL: string;
 begin
   Result := TCustomerInvoice.Create;
   TDBUtils.LoadFromDB(Result, AID);

@@ -71,7 +71,7 @@ type
 
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-    procedure AddDataset(ADataset : TClientDataSet); overload;
+    procedure AddDataset(ADataset : TClientDataSet; ANama : String = ''); overload;
     procedure AddDataset(ADataset: TClientDataSet; ASQL, AName: String); overload;
     procedure ShowReport(AReportFileName: String; AFolderReportPath: String = '');
         overload;
@@ -79,6 +79,7 @@ type
     procedure AddSQL(ASQL, ANama: String); overload;
     procedure AddVariable(aCategory, AVarName: String; AVarValue: Variant);
     procedure ClearSQL;
+    class function GetReportPath: string;
     procedure ShowReport; overload;
 
     property Datasets: TCDSItems read FDatasets write FDatasets;
@@ -91,7 +92,7 @@ type
 implementation
 
 uses
-  SysUtils, uAppUtils;
+  SysUtils, uAppUtils, System.StrUtils;
 
 
 function TCDSItems.Add: TCDSITem;
@@ -176,9 +177,14 @@ begin
   Datasets.Clear;
 end;
 
-procedure TTSReport.AddDataset(ADataset : TClientDataSet);
+procedure TTSReport.AddDataset(ADataset : TClientDataSet; ANama : String = '');
 begin
-  Datasets.Add.CDS := ADataset;
+  with Datasets.Add do
+  begin
+    CDS := ADataset;
+    if ANama <> '' then
+      CDSName := ANama;
+  end;
 end;
 
 procedure TTSReport.AddDataset(ADataset: TClientDataSet; ASQL, AName: String);
@@ -267,13 +273,20 @@ begin
   }
 end;
 
+class function TTSReport.GetReportPath: string;
+begin
+  Result := Trim(TAppUtils.BacaRegistry('ReportPath'));
+  if RightStr(Result,1) <> '\' then
+    Result := Result + '\';
+end;
+
 procedure TTSReport.ShowReport(AReportFileName: String; AFolderReportPath:
     String = '');
 begin
   Nama := AFolderReportPath + AReportFileName + '.fr3';
   if not LocaleFileExists(Nama) then
   begin
-    Nama := 'Laporan\' + AReportFileName + '.fr3';
+    Nama := TTSReport.GetReportPath + AReportFileName + '.fr3';
   end;
   ShowReport();
 end;

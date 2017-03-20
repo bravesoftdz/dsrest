@@ -6,3 +6,4 @@ Penjualan
 - Saat ganti UOM konversi td berubah OK
 - Saat ganti UOM Harga tdk berubah OK
 - Blm ada pengecekan saat mau simpan OK
+- Kalo item double error

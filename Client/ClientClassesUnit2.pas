@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 3/18/2017 2:15:43 PM
+// 3/20/2017 5:04:48 PM
 //
 
 unit ClientClassesUnit2;
@@ -380,6 +380,8 @@ type
     FRetrieveCommand_Cache: TDSRestCommand;
     FRetrieveNoBuktiCommand: TDSRestCommand;
     FRetrieveNoBuktiCommand_Cache: TDSRestCommand;
+    FRetrieveCDSlipCommand: TDSRestCommand;
+    FRetrieveCDSlipCommand_Cache: TDSRestCommand;
     FGenerateNoBuktiCommand: TDSRestCommand;
     FDeleteCommand: TDSRestCommand;
     FRetrieveCDSCommand: TDSRestCommand;
@@ -393,6 +395,8 @@ type
     function Retrieve_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedTPenjualan;
     function RetrieveNoBukti(ANoBukti: string; const ARequestFilter: string = ''): TPenjualan;
     function RetrieveNoBukti_Cache(ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedTPenjualan;
+    function RetrieveCDSlip(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; ANoBukti: string; const ARequestFilter: string = ''): TDataSet;
+    function RetrieveCDSlip_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
     function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
     function RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string = ''): TDataSet;
@@ -1233,6 +1237,24 @@ const
 
   TServerPenjualan_RetrieveNoBukti_Cache: array [0..1] of TDSRestParameterMetaData =
   (
+    (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerPenjualan_RetrieveCDSlip: array [0..4] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ATglAtglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
+    (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TServerPenjualan_RetrieveCDSlip_Cache: array [0..4] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ATglAtglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
     (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
@@ -4516,6 +4538,67 @@ begin
   Result := TDSRestCachedTPenjualan.Create(FRetrieveNoBuktiCommand_Cache.Parameters[1].Value.GetString);
 end;
 
+function TServerPenjualanClient.RetrieveCDSlip(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; ANoBukti: string; const ARequestFilter: string): TDataSet;
+begin
+  if FRetrieveCDSlipCommand = nil then
+  begin
+    FRetrieveCDSlipCommand := FConnection.CreateCommand;
+    FRetrieveCDSlipCommand.RequestType := 'POST';
+    FRetrieveCDSlipCommand.Text := 'TServerPenjualan."RetrieveCDSlip"';
+    FRetrieveCDSlipCommand.Prepare(TServerPenjualan_RetrieveCDSlip);
+  end;
+  FRetrieveCDSlipCommand.Parameters[0].Value.AsDateTime := ATglAwal;
+  FRetrieveCDSlipCommand.Parameters[1].Value.AsDateTime := ATglAtglAkhir;
+  if not Assigned(ACabang) then
+    FRetrieveCDSlipCommand.Parameters[2].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FRetrieveCDSlipCommand.Parameters[2].ConnectionHandler).GetJSONMarshaler;
+    try
+      FRetrieveCDSlipCommand.Parameters[2].Value.SetJSONValue(FMarshal.Marshal(ACabang), True);
+      if FInstanceOwner then
+        ACabang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FRetrieveCDSlipCommand.Parameters[3].Value.SetWideString(ANoBukti);
+  FRetrieveCDSlipCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FRetrieveCDSlipCommand.Parameters[4].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FRetrieveCDSlipCommand.FreeOnExecute(Result);
+end;
+
+function TServerPenjualanClient.RetrieveCDSlip_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; ANoBukti: string; const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FRetrieveCDSlipCommand_Cache = nil then
+  begin
+    FRetrieveCDSlipCommand_Cache := FConnection.CreateCommand;
+    FRetrieveCDSlipCommand_Cache.RequestType := 'POST';
+    FRetrieveCDSlipCommand_Cache.Text := 'TServerPenjualan."RetrieveCDSlip"';
+    FRetrieveCDSlipCommand_Cache.Prepare(TServerPenjualan_RetrieveCDSlip_Cache);
+  end;
+  FRetrieveCDSlipCommand_Cache.Parameters[0].Value.AsDateTime := ATglAwal;
+  FRetrieveCDSlipCommand_Cache.Parameters[1].Value.AsDateTime := ATglAtglAkhir;
+  if not Assigned(ACabang) then
+    FRetrieveCDSlipCommand_Cache.Parameters[2].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FRetrieveCDSlipCommand_Cache.Parameters[2].ConnectionHandler).GetJSONMarshaler;
+    try
+      FRetrieveCDSlipCommand_Cache.Parameters[2].Value.SetJSONValue(FMarshal.Marshal(ACabang), True);
+      if FInstanceOwner then
+        ACabang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FRetrieveCDSlipCommand_Cache.Parameters[3].Value.SetWideString(ANoBukti);
+  FRetrieveCDSlipCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FRetrieveCDSlipCommand_Cache.Parameters[4].Value.GetString);
+end;
+
 function TServerPenjualanClient.GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string): string;
 begin
   if FGenerateNoBuktiCommand = nil then
@@ -4654,6 +4737,8 @@ begin
   FRetrieveCommand_Cache.DisposeOf;
   FRetrieveNoBuktiCommand.DisposeOf;
   FRetrieveNoBuktiCommand_Cache.DisposeOf;
+  FRetrieveCDSlipCommand.DisposeOf;
+  FRetrieveCDSlipCommand_Cache.DisposeOf;
   FGenerateNoBuktiCommand.DisposeOf;
   FDeleteCommand.DisposeOf;
   FRetrieveCDSCommand.DisposeOf;

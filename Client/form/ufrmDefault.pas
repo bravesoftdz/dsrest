@@ -127,7 +127,7 @@ begin
 //  btnBaru.Enabled    := cxPCData.ActivePageIndex = 1;
 
   btnExport.Enabled  := cxPCData.ActivePageIndex = 0;
-  btnCetak.Enabled   := cxPCData.ActivePageIndex = 0;
+//  btnCetak.Enabled   := cxPCData.ActivePageIndex = 0;
   btnRefresh.Enabled := cxPCData.ActivePageIndex = 0;
 end;
 

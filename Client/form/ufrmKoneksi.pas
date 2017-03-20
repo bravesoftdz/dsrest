@@ -36,10 +36,11 @@ type
     edRestPort: TcxTextEdit;
     btnTestRestServer: TButton;
     fdphysqltdrvrlnk1: TFDPhysSQLiteDriverLink;
+    lblLaporan: TLabel;
+    edLaporan: TcxTextEdit;
     procedure FormCreate(Sender: TObject);
     procedure btnKonekDBClick(Sender: TObject);
     procedure btnTestRestServerClick(Sender: TObject);
-    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
   public
@@ -63,6 +64,7 @@ begin
     edUser.Text          := TAppUtils.BacaRegistry('User_Name');
     edPassword.Text      := TAppUtils.BacaRegistry('Password');
     edPort.Text          := TAppUtils.BacaRegistry('Port');
+    edLaporan.Text       := TAppUtils.BacaRegistry('ReportPath');
 
     edRestServer.Text    := TAppUtils.BacaRegistry('RestServer');
     edRestPort.Text    := TAppUtils.BacaRegistry('RestPort');
@@ -76,6 +78,7 @@ begin
     if TDBUtils.ConnectDB(cbbEngine.Text, edServer.Text, edDatabase.Text, edUser.Text, edPassword.Text, edPort.Text) then
     begin
       btnKonekDB.Caption := 'Disconect';
+      TAppUtils.TulisRegistry('ReportPath', edLaporan.Text);
 //      grpRestServer.Enabled := True;
     end;
   end else begin
@@ -104,11 +107,6 @@ begin
     end;
 
   end;
-end;
-
-procedure TfrmKoneksi.FormShow(Sender: TObject);
-begin
-  //
 end;
 
 end.
