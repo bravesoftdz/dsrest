@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 3/20/2017 5:04:48 PM
+// 3/22/2017 6:32:24 AM
 //
 
 unit ClientClassesUnit2;
@@ -28,6 +28,8 @@ type
 
   TServerLaporanClient = class(TDSAdminRestClient)
   private
+    FDS_OverviewAccountCommand: TDSRestCommand;
+    FDS_OverviewAccountCommand_Cache: TDSRestCommand;
     FLaporanKartokCommand: TDSRestCommand;
     FLaporanKartokCommand_Cache: TDSRestCommand;
     FLaporanStockSekarangCommand: TDSRestCommand;
@@ -48,6 +50,8 @@ type
     constructor Create(ARestConnection: TDSRestConnection); overload;
     constructor Create(ARestConnection: TDSRestConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
+    function DS_OverviewAccount(const ARequestFilter: string = ''): TDataSet;
+    function DS_OverviewAccount_Cache(const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function LaporanKartok(ATglAwal: TDateTime; ATglAkhir: TDateTime; ABarang: TBarang; AGudang: TGudang; ACabang: TCabang; const ARequestFilter: string = ''): TDataSet;
     function LaporanKartok_Cache(ATglAwal: TDateTime; ATglAkhir: TDateTime; ABarang: TBarang; AGudang: TGudang; ACabang: TCabang; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function LaporanStockSekarang(ACabang: TCabang; const ARequestFilter: string = ''): TDataSet;
@@ -506,6 +510,16 @@ type
   end;
 
 const
+  TServerLaporan_DS_OverviewAccount: array [0..0] of TDSRestParameterMetaData =
+  (
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TServerLaporan_DS_OverviewAccount_Cache: array [0..0] of TDSRestParameterMetaData =
+  (
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
   TServerLaporan_LaporanKartok: array [0..5] of TDSRestParameterMetaData =
   (
     (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
@@ -1359,6 +1373,35 @@ const
 
 implementation
 
+function TServerLaporanClient.DS_OverviewAccount(const ARequestFilter: string): TDataSet;
+begin
+  if FDS_OverviewAccountCommand = nil then
+  begin
+    FDS_OverviewAccountCommand := FConnection.CreateCommand;
+    FDS_OverviewAccountCommand.RequestType := 'GET';
+    FDS_OverviewAccountCommand.Text := 'TServerLaporan.DS_OverviewAccount';
+    FDS_OverviewAccountCommand.Prepare(TServerLaporan_DS_OverviewAccount);
+  end;
+  FDS_OverviewAccountCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FDS_OverviewAccountCommand.Parameters[0].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FDS_OverviewAccountCommand.FreeOnExecute(Result);
+end;
+
+function TServerLaporanClient.DS_OverviewAccount_Cache(const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FDS_OverviewAccountCommand_Cache = nil then
+  begin
+    FDS_OverviewAccountCommand_Cache := FConnection.CreateCommand;
+    FDS_OverviewAccountCommand_Cache.RequestType := 'GET';
+    FDS_OverviewAccountCommand_Cache.Text := 'TServerLaporan.DS_OverviewAccount';
+    FDS_OverviewAccountCommand_Cache.Prepare(TServerLaporan_DS_OverviewAccount_Cache);
+  end;
+  FDS_OverviewAccountCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FDS_OverviewAccountCommand_Cache.Parameters[0].Value.GetString);
+end;
+
 function TServerLaporanClient.LaporanKartok(ATglAwal: TDateTime; ATglAkhir: TDateTime; ABarang: TBarang; AGudang: TGudang; ACabang: TCabang; const ARequestFilter: string): TDataSet;
 begin
   if FLaporanKartokCommand = nil then
@@ -1835,6 +1878,8 @@ end;
 
 destructor TServerLaporanClient.Destroy;
 begin
+  FDS_OverviewAccountCommand.DisposeOf;
+  FDS_OverviewAccountCommand_Cache.DisposeOf;
   FLaporanKartokCommand.DisposeOf;
   FLaporanKartokCommand_Cache.DisposeOf;
   FLaporanStockSekarangCommand.DisposeOf;

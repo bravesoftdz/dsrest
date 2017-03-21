@@ -13,6 +13,7 @@ type
 //  TServerAR = class;
   TServerLaporan = class(TInterfacedPersistent)
   public
+    function DS_OverviewAccount: TDataset;
     function LaporanKartok(ATglAwal , ATglAkhir : TDateTime; ABarang : TBarang;
         AGudang : TGudang; ACabang : TCabang): TDataset;
     function LaporanStockSekarang(ACabang : TCabang): TDataset;
@@ -827,6 +828,18 @@ begin
       Free;
     end;
   end;
+end;
+
+function TServerLaporan.DS_OverviewAccount: TDataset;
+var
+  sSQL: string;
+begin
+  sSQL := 'select a.kode,a.nama,a.isakuntransaksi,a.kelompok,' +
+          ' b.Kode as KodeParent, b.Nama as NamaParent, a.id, a.parent' +
+          ' from TAccount a ' +
+          ' left outer join Taccount b on a.parent = b.id';
+
+  Result := TDBUtils.OpenQuery(sSQL);
 end;
 
 function TServerLaporan.LaporanKartok(ATglAwal , ATglAkhir : TDateTime; ABarang

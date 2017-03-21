@@ -104,6 +104,9 @@ type
     dxbrlrgbtn3: TdxBarLargeButton;
     dxbrlrgbtnPenerimaanKas: TdxBarLargeButton;
     actPenerimaanKas: TAction;
+    dxbrmngrAMSBarFA: TdxBar;
+    dxbrlrgbtnAccount: TdxBarLargeButton;
+    actMasterAccount: TAction;
     procedure actAlatGantiCabangExecute(Sender: TObject);
     procedure actApplicationExitExecute(Sender: TObject);
     procedure actClosingInventoryExecute(Sender: TObject);
@@ -115,6 +118,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure actLapMutasiBarangExecute(Sender: TObject);
     procedure actLapStockSekarangExecute(Sender: TObject);
+    procedure actMasterAccountExecute(Sender: TObject);
     procedure actMasterGudangExecute(Sender: TObject);
     procedure actPenerimaanKasExecute(Sender: TObject);
     procedure actPenjualanPOSExecute(Sender: TObject);
@@ -136,7 +140,7 @@ uses
   ufrmSupplier, ufrmKoneksi,uAppUtils, ufrmBarang, ufrmPenerimaanBarang,
   ClientClassesUnit2, ClientModule, ufrmPilihCabang, ufrmLapMutasiBarangPerTransaksi,
   ufrmReturSupplier, udbutils, ufrmClosingInventory, ufrmLapStockSekarang,
-  ufrmGudang;
+  ufrmGudang, ufrmAccount;
 
 {$R *.dfm}
 
@@ -193,6 +197,11 @@ end;
 procedure TfrmMain.actMasSupplierExecute(Sender: TObject);
 begin
   frmSupplier := TfrmSupplier.Create(Self);
+end;
+
+procedure TfrmMain.actMasterAccountExecute(Sender: TObject);
+begin
+  frmAccount := TfrmAccount.Create(Self);
 end;
 
 procedure TfrmMain.actMasterBarangExecute(Sender: TObject);

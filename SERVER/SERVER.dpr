@@ -20,7 +20,8 @@ uses
   uAR in '..\model\uAR.pas',
   uDSUtils in 'lib\uDSUtils.pas',
   uPenerimaanKas in '..\model\uPenerimaanKas.pas',
-  uRekBank in '..\model\uRekBank.pas';
+  uRekBank in '..\model\uRekBank.pas',
+  uAccount in '..\model\uAccount.pas';
 
 {$R *.res}
 
