@@ -30,6 +30,9 @@ type
     FServerLaporanClient: TServerLaporanClient;
     FServerCustomerInvoiceClient: TServerCustomerInvoiceClient;
     FServerPenjualanClient: TServerPenjualanClient;
+    FServerAccountClient: TServerAccountClient;
+    FServerRekBankClient: TServerRekBankClient;
+    FServerPenerimaanKasClient: TServerPenerimaanKasClient;
     function GetCabang: tcabang;
     function GetServerUOMClient: TServerUOMClient;
     function GetServerSupplierClient: TServerSupplierClient;
@@ -44,12 +47,19 @@ type
     function GetServerLaporanClient: TServerLaporanClient;
     function GetServerCustomerInvoiceClient: TServerCustomerInvoiceClient;
     function GetServerPenjualanClient: TServerPenjualanClient;
+    function GetServerAccountClient: TServerAccountClient;
+    function GetServerRekBankClient: TServerRekBankClient;
+    function GetServerPenerimaanKasClient: TServerPenerimaanKasClient;
     { Private declarations }
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     property Cabang: tcabang read GetCabang write FCabang;
     property InstanceOwner: Boolean read FInstanceOwner write FInstanceOwner;
+    property ServerAccountClient: TServerAccountClient read GetServerAccountClient
+        write FServerAccountClient;
+    property ServerRekBankClient: TServerRekBankClient read GetServerRekBankClient
+        write FServerRekBankClient;
     property ServerUOMClient: TServerUOMClient read GetServerUOMClient write FServerUOMClient;
     property ServerSupplierClient: TServerSupplierClient read GetServerSupplierClient write FServerSupplierClient;
     property ServerBarangClient: TServerBarangClient read GetServerBarangClient write FServerBarangClient;
@@ -68,7 +78,8 @@ type
         GetServerCustomerInvoiceClient write FServerCustomerInvoiceClient;
     property ServerPenjualanClient: TServerPenjualanClient read
         GetServerPenjualanClient write FServerPenjualanClient;
-
+    property ServerPenerimaanKasClient: TServerPenerimaanKasClient read
+        GetServerPenerimaanKasClient write FServerPenerimaanKasClient;
 end;
 
 var
@@ -105,7 +116,8 @@ begin
   FServerLaporanClient.Free;
   FServerPenjualanClient.Free;
   FServerGudangClient.Free;
-
+  FServerAccountClient.Free;
+  FServerPenerimaanKasClient.Free;
   inherited;
 end;
 
@@ -229,6 +241,34 @@ begin
 
   FServerPenjualanClient := TServerPenjualanClient.Create(DSRestConnection, FInstanceOwner);
   Result := FServerPenjualanClient;
+end;
+
+function TClientDataModule.GetServerAccountClient: TServerAccountClient;
+begin
+  if FServerAccountClient <> nil then
+    FreeAndNil(FServerAccountClient);
+
+  FServerAccountClient:= TServerAccountClient.Create(DSRestConnection, FInstanceOwner);
+  Result := FServerAccountClient;
+end;
+
+function TClientDataModule.GetServerRekBankClient: TServerRekBankClient;
+begin
+  if FServerRekBankClient <> nil then
+    FreeAndNil(FServerRekBankClient);
+
+  FServerRekBankClient:= TServerRekBankClient.Create(DSRestConnection, FInstanceOwner);
+  Result := FServerRekBankClient;
+end;
+
+function TClientDataModule.GetServerPenerimaanKasClient:
+    TServerPenerimaanKasClient;
+begin
+  if FServerPenerimaanKasClient <> nil then
+    FreeAndNil(FServerPenerimaanKasClient);
+
+  FServerPenerimaanKasClient:= TServerPenerimaanKasClient.Create(DSRestConnection, FInstanceOwner);
+  Result := FServerPenerimaanKasClient;
 end;
 
 end.

@@ -1,11 +1,10 @@
-inherited frmAccount: TfrmAccount
-  Caption = 'Account'
+inherited frmRekBank: TfrmRekBank
+  Caption = 'Daftar Rekening Bank'
   ExplicitWidth = 733
   ExplicitHeight = 385
   PixelsPerInch = 96
   TextHeight = 13
   inherited cxPCData: TcxPageControl
-    Properties.ActivePage = cxTSInputData
     inherited cxTSOverview: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
@@ -27,67 +26,8 @@ inherited frmAccount: TfrmAccount
           end
         end
         inherited cxGrid: TcxGrid
-          Top = 224
-          Height = 40
-          Align = alBottom
-          Visible = False
-          ExplicitTop = 224
-          ExplicitHeight = 40
-        end
-        object lstAccount: TcxDBTreeList
-          Left = 1
-          Top = 33
-          Width = 699
-          Height = 191
-          Align = alClient
-          Bands = <
-            item
-            end>
-          DataController.ParentField = 'Parent'
-          DataController.KeyField = 'ID'
-          Navigator.Buttons.CustomButtons = <>
-          RootValue = -1
-          Styles.ColumnHeader = ClientDataModule.cxstylGridHeader
-          Styles.ContentEven = ClientDataModule.cxstylGridEven
-          Styles.ContentOdd = ClientDataModule.cxstylGridOdd
-          TabOrder = 2
-          OnDblClick = lstAccountDblClick
-          OnEditing = lstAccountEditing
-          object cxdbtrlstclmnKode: TcxDBTreeListColumn
-            Caption.AlignHorz = taCenter
-            Caption.Text = 'Kode & Account'
-            DataBinding.FieldName = 'KodeNama'
-            Width = 183
-            Position.ColIndex = 0
-            Position.RowIndex = 0
-            Position.BandIndex = 0
-            Summary.FooterSummaryItems = <>
-            Summary.GroupFooterSummaryItems = <>
-          end
-          object cxdbtrlstclmnKelompok: TcxDBTreeListColumn
-            Caption.AlignHorz = taCenter
-            Caption.Text = 'Kelompok '
-            DataBinding.FieldName = 'Kelompok'
-            Width = 117
-            Position.ColIndex = 1
-            Position.RowIndex = 0
-            Position.BandIndex = 0
-            Summary.FooterSummaryItems = <>
-            Summary.GroupFooterSummaryItems = <>
-          end
-          object cxdbtrlstclmnIsAkunTransaksi: TcxDBTreeListColumn
-            PropertiesClassName = 'TcxCheckBoxProperties'
-            Properties.ValueChecked = 1
-            Properties.ValueUnchecked = 0
-            Caption.AlignHorz = taCenter
-            Caption.Text = 'IsAkunTransaksi '
-            DataBinding.FieldName = 'IsAkunTransaksi'
-            Width = 129
-            Position.ColIndex = 2
-            Position.RowIndex = 0
-            Position.BandIndex = 0
-            Summary.FooterSummaryItems = <>
-            Summary.GroupFooterSummaryItems = <>
+          inherited cxGridDBTableOverview: TcxGridDBTableView
+            OnCellDblClick = cxGridDBTableOverviewCellDblClick
           end
         end
       end
@@ -97,79 +37,89 @@ inherited frmAccount: TfrmAccount
       ExplicitTop = 24
       ExplicitWidth = 709
       ExplicitHeight = 265
-      object lblParent: TLabel
-        Left = 40
-        Top = 14
-        Width = 32
+      object lblBank: TLabel
+        Left = 46
+        Top = 17
+        Width = 23
         Height = 13
-        Caption = 'Parent'
+        Caption = 'Bank'
       end
-      object lblKode: TLabel
-        Left = 8
-        Top = 39
-        Width = 64
+      object lblNoRek: TLabel
+        Left = 9
+        Top = 67
+        Width = 60
         Height = 13
-        Caption = 'Kode && Nama'
+        Caption = 'No Rekening'
       end
-      object lblKelompok: TLabel
-        Left = 11
-        Top = 64
-        Width = 45
+      object lblPemegang: TLabel
+        Left = 19
+        Top = 92
+        Width = 50
         Height = 13
-        Caption = 'Kelompok'
+        Caption = 'Pemegang'
       end
-      object cbbParent: TcxExtLookupComboBox
-        Left = 78
-        Top = 10
+      object lblCabang: TLabel
+        Left = 6
+        Top = 42
+        Width = 63
+        Height = 13
+        Caption = 'Cabang Bank'
+      end
+      object lblAccount: TLabel
+        Left = 30
+        Top = 116
+        Width = 39
+        Height = 13
+        Caption = 'Account'
+      end
+      object edBank: TcxTextEdit
+        Tag = 1
+        Left = 75
+        Top = 12
         TabOrder = 0
-        OnExit = cbbParentExit
-        Width = 145
+        Text = 'edBank'
+        Width = 121
       end
-      object edParentNama: TcxTextEdit
-        Left = 229
-        Top = 10
+      object edCabang: TcxTextEdit
+        Tag = 1
+        Left = 75
+        Top = 37
+        TabOrder = 1
+        Text = 'edBank'
+        Width = 121
+      end
+      object edNoRek: TcxTextEdit
+        Tag = 1
+        Left = 75
+        Top = 62
+        TabOrder = 2
+        Text = 'edBank'
+        Width = 121
+      end
+      object edPemegang: TcxTextEdit
+        Tag = 1
+        Left = 75
+        Top = 87
+        TabOrder = 3
+        Text = 'edBank'
+        Width = 121
+      end
+      object cbbAccount: TcxExtLookupComboBox
+        Tag = 1
+        Left = 75
+        Top = 112
+        TabOrder = 4
+        OnExit = cbbAccountExit
+        Width = 121
+      end
+      object edAccountName: TcxTextEdit
+        Left = 202
+        Top = 112
         TabStop = False
         Enabled = False
-        TabOrder = 1
-        Text = 'edParentNama'
-        Width = 228
-      end
-      object edKode: TcxTextEdit
-        Tag = 1
-        Left = 78
-        Top = 35
-        TabOrder = 2
-        Text = 'edParentNama'
-        Width = 145
-      end
-      object edNama: TcxTextEdit
-        Tag = 1
-        Left = 229
-        Top = 35
-        TabOrder = 3
-        Text = 'edParentNama'
-        Width = 228
-      end
-      object cbbKelompok: TcxComboBox
-        Tag = 1
-        Left = 78
-        Top = 60
-        Properties.DropDownListStyle = lsFixedList
-        Properties.Items.Strings = (
-          'AKTIVA'
-          'PASIVA'
-          'PENDAPATAN'
-          'BEBAN'
-          'MODAL')
-        TabOrder = 4
-        Text = 'AKTIVA'
-        Width = 145
-      end
-      object chkIsAkunTransaksi: TcxCheckBox
-        Left = 229
-        Top = 60
-        Caption = 'Akun Transaksi'
         TabOrder = 5
+        Text = 'edAccountName'
+        Width = 194
       end
     end
   end
@@ -180,7 +130,8 @@ inherited frmAccount: TfrmAccount
     end
   end
   inherited ActionListForm: TActionList
-    Top = 136
+    Left = 616
+    Top = 72
     inherited ActionSimpan: TAction
       OnExecute = ActionSimpanExecute
     end
@@ -189,30 +140,22 @@ inherited frmAccount: TfrmAccount
     end
   end
   inherited cxGridRepTransaksi: TcxGridViewRepository
-    Left = 584
-    Top = 136
+    Left = 560
+    Top = 64
   end
   inherited dsCabang: TDataSource
-    Left = 560
-    Top = 8
-  end
-  inherited DSPCabang: TDataSetProvider
-    Left = 592
-    Top = 8
-  end
-  inherited cdsCabang: TClientDataSet
-    Left = 624
-    Top = 8
+    Left = 608
+    Top = 32
   end
   inherited dlgSaveExportExcel: TSaveDialog
-    Left = 496
-    Top = 8
+    Left = 488
+    Top = 48
   end
   inherited ilButton: TImageList
-    Left = 528
-    Top = 8
+    Left = 320
+    Top = 296
     Bitmap = {
-      494C010107000800DC0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800D00018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

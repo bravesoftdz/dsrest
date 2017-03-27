@@ -38,7 +38,8 @@ uses
   uPenerimaanKas in '..\model\uPenerimaanKas.pas',
   ufrmPenerimaanKas in 'form\ufrmPenerimaanKas.pas' {frmPenerimaanKas},
   ufrmAccount in 'form\ufrmAccount.pas' {frmAccount},
-  uAccount in '..\model\uAccount.pas';
+  uAccount in '..\model\uAccount.pas',
+  ufrmRekBank in 'form\ufrmRekBank.pas' {frmRekBank};
 
 {$R *.res}
 

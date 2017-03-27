@@ -1,6 +1,6 @@
 ﻿// 
 // Created by the DataSnap proxy generator.
-// 3/15/2017 3:57:25 AM
+// 3/27/2017 5:14:38 AM
 // 
 
 function DSAdmin(connectionInfo)
@@ -621,6 +621,30 @@ function TServerLaporan(connectionInfo)
   this.executor = new ServerFunctionExecutor("TServerLaporan",connectionInfo);
 
   /*
+   * @return result - Type on server: TDataSet
+   */
+  this.DS_OverviewAccount = function() {
+    var returnObject = this.executor.executeMethod('DS_OverviewAccount', "GET", [], arguments[0], true, arguments[1], arguments[2]);
+    if (arguments[0] == null) {
+      if (returnObject != null && returnObject.result != null && isArray(returnObject.result)) {
+        var resultArray = returnObject.result;
+        var resultObject = new Object();
+        resultObject.result = resultArray[0];
+        if (returnObject.cacheId != null && returnObject.cmdIndex != null) {
+          resultObject._cacheId = returnObject.cacheId;
+          resultObject._cmdIndex = returnObject.cmdIndex;
+        }
+        return resultObject;
+      }
+      return returnObject;
+    }
+  };
+
+  this.DS_OverviewAccount_URL = function() {
+    return this.executor.getMethodURL("DS_OverviewAccount", "GET", [], arguments[0])[0];
+  };
+
+  /*
    * @param ATglAwal [in] - Type on server: TDateTime
    * @param ATglAkhir [in] - Type on server: TDateTime
    * @param ABarang [in] - Type on server: TBarang
@@ -726,6 +750,106 @@ function TServerLaporan(connectionInfo)
 
   this.RetriveMutasiBarang_URL = function(ATglAwal, ATglAtglAkhir) {
     return this.executor.getMethodURL("RetriveMutasiBarang", "GET", [ATglAwal, ATglAtglAkhir], arguments[2])[0];
+  };
+
+  /*
+   * @param ATglAwal [in] - Type on server: TDateTime
+   * @param ATglAtglAkhir [in] - Type on server: TDateTime
+   * @param ACabang [in] - Type on server: TCabang
+   * @return result - Type on server: TDataSet
+   */
+  this.RetrivePenjualan = function(ATglAwal, ATglAtglAkhir, ACabang) {
+    var returnObject = this.executor.executeMethod('"RetrivePenjualan"', "POST", [ATglAwal, ATglAtglAkhir, ACabang], arguments[3], true, arguments[4], arguments[5]);
+    if (arguments[3] == null) {
+      if (returnObject != null && returnObject.result != null && isArray(returnObject.result)) {
+        var resultArray = returnObject.result;
+        var resultObject = new Object();
+        resultObject.ATglAwal = ATglAwal;
+        resultObject.ATglAtglAkhir = ATglAtglAkhir;
+        resultObject.ACabang = ACabang;
+        resultObject.result = resultArray[0];
+        if (returnObject.cacheId != null && returnObject.cmdIndex != null) {
+          resultObject._cacheId = returnObject.cacheId;
+          resultObject._cmdIndex = returnObject.cmdIndex;
+        }
+        return resultObject;
+      }
+      return returnObject;
+    }
+  };
+
+  /*
+   * @param ATglAwal [in] - Type on server: TDateTime
+   * @param ATglAtglAkhir [in] - Type on server: TDateTime
+   * @param ACabang [in] - Type on server: TCabang
+   * @return result - Type on server: TDataSet
+   */
+  this.RetriveCI = function(ATglAwal, ATglAtglAkhir, ACabang) {
+    var returnObject = this.executor.executeMethod('"RetriveCI"', "POST", [ATglAwal, ATglAtglAkhir, ACabang], arguments[3], true, arguments[4], arguments[5]);
+    if (arguments[3] == null) {
+      if (returnObject != null && returnObject.result != null && isArray(returnObject.result)) {
+        var resultArray = returnObject.result;
+        var resultObject = new Object();
+        resultObject.ATglAwal = ATglAwal;
+        resultObject.ATglAtglAkhir = ATglAtglAkhir;
+        resultObject.ACabang = ACabang;
+        resultObject.result = resultArray[0];
+        if (returnObject.cacheId != null && returnObject.cmdIndex != null) {
+          resultObject._cacheId = returnObject.cacheId;
+          resultObject._cmdIndex = returnObject.cmdIndex;
+        }
+        return resultObject;
+      }
+      return returnObject;
+    }
+  };
+
+  /*
+   * @param ATglAwal [in] - Type on server: TDateTime
+   * @param ATglAtglAkhir [in] - Type on server: TDateTime
+   * @param ACabang [in] - Type on server: TCabang
+   * @return result - Type on server: TDataSet
+   */
+  this.RetrivePenerimaanKas = function(ATglAwal, ATglAtglAkhir, ACabang) {
+    var returnObject = this.executor.executeMethod('"RetrivePenerimaanKas"', "POST", [ATglAwal, ATglAtglAkhir, ACabang], arguments[3], true, arguments[4], arguments[5]);
+    if (arguments[3] == null) {
+      if (returnObject != null && returnObject.result != null && isArray(returnObject.result)) {
+        var resultArray = returnObject.result;
+        var resultObject = new Object();
+        resultObject.ATglAwal = ATglAwal;
+        resultObject.ATglAtglAkhir = ATglAtglAkhir;
+        resultObject.ACabang = ACabang;
+        resultObject.result = resultArray[0];
+        if (returnObject.cacheId != null && returnObject.cmdIndex != null) {
+          resultObject._cacheId = returnObject.cacheId;
+          resultObject._cmdIndex = returnObject.cmdIndex;
+        }
+        return resultObject;
+      }
+      return returnObject;
+    }
+  };
+
+  /*
+   * @param ASupplier [in] - Type on server: TSupplier
+   * @return result - Type on server: TDataSet
+   */
+  this.RetriveAR = function(ASupplier) {
+    var returnObject = this.executor.executeMethod('"RetriveAR"', "POST", [ASupplier], arguments[1], true, arguments[2], arguments[3]);
+    if (arguments[1] == null) {
+      if (returnObject != null && returnObject.result != null && isArray(returnObject.result)) {
+        var resultArray = returnObject.result;
+        var resultObject = new Object();
+        resultObject.ASupplier = ASupplier;
+        resultObject.result = resultArray[0];
+        if (returnObject.cacheId != null && returnObject.cmdIndex != null) {
+          resultObject._cacheId = returnObject.cacheId;
+          resultObject._cmdIndex = returnObject.cmdIndex;
+        }
+        return resultObject;
+      }
+      return returnObject;
+    }
   };
 }
 
@@ -854,6 +978,24 @@ function TServerCustomerInvoice(connectionInfo)
    */
   this.AfterSave = function(AAppObject) {
     var returnObject = this.executor.executeMethod('"AfterSave"', "POST", [AAppObject], arguments[1], true, arguments[2], arguments[3]);
+    if (arguments[1] == null) {
+      if (returnObject != null && returnObject.result != null && isArray(returnObject.result)) {
+        var resultArray = returnObject.result;
+        var resultObject = new Object();
+        resultObject.AAppObject = AAppObject;
+        resultObject.result = resultArray[0];
+        return resultObject;
+      }
+      return returnObject;
+    }
+  };
+
+  /*
+   * @param AAppObject [in] - Type on server: TAppObject
+   * @return result - Type on server: Boolean
+   */
+  this.BeforeSave = function(AAppObject) {
+    var returnObject = this.executor.executeMethod('"BeforeSave"', "POST", [AAppObject], arguments[1], true, arguments[2], arguments[3]);
     if (arguments[1] == null) {
       if (returnObject != null && returnObject.result != null && isArray(returnObject.result)) {
         var resultArray = returnObject.result;
@@ -2246,6 +2388,34 @@ function TServerPenjualan(connectionInfo)
   };
 
   /*
+   * @param ATglAwal [in] - Type on server: TDateTime
+   * @param ATglAtglAkhir [in] - Type on server: TDateTime
+   * @param ACabang [in] - Type on server: TCabang
+   * @param ANoBukti [in] - Type on server: string
+   * @return result - Type on server: TDataSet
+   */
+  this.RetrieveCDSlip = function(ATglAwal, ATglAtglAkhir, ACabang, ANoBukti) {
+    var returnObject = this.executor.executeMethod('"RetrieveCDSlip"', "POST", [ATglAwal, ATglAtglAkhir, ACabang, ANoBukti], arguments[4], true, arguments[5], arguments[6]);
+    if (arguments[4] == null) {
+      if (returnObject != null && returnObject.result != null && isArray(returnObject.result)) {
+        var resultArray = returnObject.result;
+        var resultObject = new Object();
+        resultObject.ATglAwal = ATglAwal;
+        resultObject.ATglAtglAkhir = ATglAtglAkhir;
+        resultObject.ACabang = ACabang;
+        resultObject.ANoBukti = ANoBukti;
+        resultObject.result = resultArray[0];
+        if (returnObject.cacheId != null && returnObject.cmdIndex != null) {
+          resultObject._cacheId = returnObject.cacheId;
+          resultObject._cmdIndex = returnObject.cmdIndex;
+        }
+        return resultObject;
+      }
+      return returnObject;
+    }
+  };
+
+  /*
    * @param ATglBukti [in] - Type on server: TDateTime
    * @param APrefix [in] - Type on server: string
    * @return result - Type on server: string
@@ -2493,11 +2663,189 @@ function TServerAR(connectionInfo)
   };
 }
 
+function TServerAccount(connectionInfo)
+{
+  this.executor = new ServerFunctionExecutor("TServerAccount",connectionInfo);
+
+  /*
+   * @param AID [in] - Type on server: string
+   * @return result - Type on server: TAccount
+   */
+  this.Retrieve = function(AID) {
+    var returnObject = this.executor.executeMethod('Retrieve', "GET", [AID], arguments[1], true, arguments[2], arguments[3]);
+    if (arguments[1] == null) {
+      if (returnObject != null && returnObject.result != null && isArray(returnObject.result)) {
+        var resultArray = returnObject.result;
+        var resultObject = new Object();
+        resultObject.AID = AID;
+        resultObject.result = resultArray[0];
+        if (returnObject.cacheId != null && returnObject.cmdIndex != null) {
+          resultObject._cacheId = returnObject.cacheId;
+          resultObject._cmdIndex = returnObject.cmdIndex;
+        }
+        return resultObject;
+      }
+      return returnObject;
+    }
+  };
+
+  this.Retrieve_URL = function(AID) {
+    return this.executor.getMethodURL("Retrieve", "GET", [AID], arguments[1])[0];
+  };
+
+  /*
+   * @param AAppObject [in] - Type on server: TAppObject
+   * @return result - Type on server: Boolean
+   */
+  this.Delete = function(AAppObject) {
+    var returnObject = this.executor.executeMethod('"Delete"', "POST", [AAppObject], arguments[1], true, arguments[2], arguments[3]);
+    if (arguments[1] == null) {
+      if (returnObject != null && returnObject.result != null && isArray(returnObject.result)) {
+        var resultArray = returnObject.result;
+        var resultObject = new Object();
+        resultObject.AAppObject = AAppObject;
+        resultObject.result = resultArray[0];
+        return resultObject;
+      }
+      return returnObject;
+    }
+  };
+
+  /*
+   * @param AAppObject [in] - Type on server: TAppObject
+   * @return result - Type on server: TDataSet
+   */
+  this.RetrieveCDS = function(AAppObject) {
+    var returnObject = this.executor.executeMethod('"RetrieveCDS"', "POST", [AAppObject], arguments[1], true, arguments[2], arguments[3]);
+    if (arguments[1] == null) {
+      if (returnObject != null && returnObject.result != null && isArray(returnObject.result)) {
+        var resultArray = returnObject.result;
+        var resultObject = new Object();
+        resultObject.AAppObject = AAppObject;
+        resultObject.result = resultArray[0];
+        if (returnObject.cacheId != null && returnObject.cmdIndex != null) {
+          resultObject._cacheId = returnObject.cacheId;
+          resultObject._cmdIndex = returnObject.cmdIndex;
+        }
+        return resultObject;
+      }
+      return returnObject;
+    }
+  };
+
+  /*
+   * @param AOBject [in] - Type on server: TAppObject
+   * @return result - Type on server: Boolean
+   */
+  this.Save = function(AOBject) {
+    var returnObject = this.executor.executeMethod('"Save"', "POST", [AOBject], arguments[1], true, arguments[2], arguments[3]);
+    if (arguments[1] == null) {
+      if (returnObject != null && returnObject.result != null && isArray(returnObject.result)) {
+        var resultArray = returnObject.result;
+        var resultObject = new Object();
+        resultObject.AOBject = AOBject;
+        resultObject.result = resultArray[0];
+        return resultObject;
+      }
+      return returnObject;
+    }
+  };
+}
+
+function TServerRekBank(connectionInfo)
+{
+  this.executor = new ServerFunctionExecutor("TServerRekBank",connectionInfo);
+
+  /*
+   * @param AID [in] - Type on server: string
+   * @return result - Type on server: TRekBank
+   */
+  this.Retrieve = function(AID) {
+    var returnObject = this.executor.executeMethod('Retrieve', "GET", [AID], arguments[1], true, arguments[2], arguments[3]);
+    if (arguments[1] == null) {
+      if (returnObject != null && returnObject.result != null && isArray(returnObject.result)) {
+        var resultArray = returnObject.result;
+        var resultObject = new Object();
+        resultObject.AID = AID;
+        resultObject.result = resultArray[0];
+        if (returnObject.cacheId != null && returnObject.cmdIndex != null) {
+          resultObject._cacheId = returnObject.cacheId;
+          resultObject._cmdIndex = returnObject.cmdIndex;
+        }
+        return resultObject;
+      }
+      return returnObject;
+    }
+  };
+
+  this.Retrieve_URL = function(AID) {
+    return this.executor.getMethodURL("Retrieve", "GET", [AID], arguments[1])[0];
+  };
+
+  /*
+   * @param AAppObject [in] - Type on server: TAppObject
+   * @return result - Type on server: Boolean
+   */
+  this.Delete = function(AAppObject) {
+    var returnObject = this.executor.executeMethod('"Delete"', "POST", [AAppObject], arguments[1], true, arguments[2], arguments[3]);
+    if (arguments[1] == null) {
+      if (returnObject != null && returnObject.result != null && isArray(returnObject.result)) {
+        var resultArray = returnObject.result;
+        var resultObject = new Object();
+        resultObject.AAppObject = AAppObject;
+        resultObject.result = resultArray[0];
+        return resultObject;
+      }
+      return returnObject;
+    }
+  };
+
+  /*
+   * @param AAppObject [in] - Type on server: TAppObject
+   * @return result - Type on server: TDataSet
+   */
+  this.RetrieveCDS = function(AAppObject) {
+    var returnObject = this.executor.executeMethod('"RetrieveCDS"', "POST", [AAppObject], arguments[1], true, arguments[2], arguments[3]);
+    if (arguments[1] == null) {
+      if (returnObject != null && returnObject.result != null && isArray(returnObject.result)) {
+        var resultArray = returnObject.result;
+        var resultObject = new Object();
+        resultObject.AAppObject = AAppObject;
+        resultObject.result = resultArray[0];
+        if (returnObject.cacheId != null && returnObject.cmdIndex != null) {
+          resultObject._cacheId = returnObject.cacheId;
+          resultObject._cmdIndex = returnObject.cmdIndex;
+        }
+        return resultObject;
+      }
+      return returnObject;
+    }
+  };
+
+  /*
+   * @param AOBject [in] - Type on server: TAppObject
+   * @return result - Type on server: Boolean
+   */
+  this.Save = function(AOBject) {
+    var returnObject = this.executor.executeMethod('"Save"', "POST", [AOBject], arguments[1], true, arguments[2], arguments[3]);
+    if (arguments[1] == null) {
+      if (returnObject != null && returnObject.result != null && isArray(returnObject.result)) {
+        var resultArray = returnObject.result;
+        var resultObject = new Object();
+        resultObject.AOBject = AOBject;
+        resultObject.result = resultArray[0];
+        return resultObject;
+      }
+      return returnObject;
+    }
+  };
+}
+
 var JSProxyClassList = {
   "DSAdmin": ["GetPlatformName","ClearResources","FindPackages","FindClasses","FindMethods","CreateServerClasses","DropServerClasses","CreateServerMethods","DropServerMethods","GetServerClasses","ListClasses","DescribeClass","ListMethods","DescribeMethod","GetServerMethods","GetServerMethodParameters","GetDatabaseConnectionProperties","GetDSServerName","ConsumeClientChannel","ConsumeClientChannelTimeout","CloseClientChannel","RegisterClientCallbackServer","UnregisterClientCallback","BroadcastToChannel","BroadcastObjectToChannel","NotifyCallback","NotifyObject"],
-  "TServerLaporan": ["LaporanKartok","LaporanStockSekarang","LookUpPenerimaan","RetriveMutasiBarang"],
+  "TServerLaporan": ["DS_OverviewAccount","LaporanKartok","LaporanStockSekarang","LookUpPenerimaan","RetriveMutasiBarang","RetrivePenjualan","RetriveCI","RetrivePenerimaanKas","RetriveAR"],
   "TServerBarang": ["Retrieve","RetrieveKode","Delete","RetrieveCDS","Save"],
-  "TServerCustomerInvoice": ["AfterSave","Retrieve","RetrieveCDSlip","RetrieveNoBukti","GenerateNoBukti","Delete","RetrieveCDS","Save"],
+  "TServerCustomerInvoice": ["AfterSave","BeforeSave","Retrieve","RetrieveCDSlip","RetrieveNoBukti","GenerateNoBukti","Delete","RetrieveCDS","Save"],
   "TServerUOM": ["Retrieve","RetrieveKode"],
   "TServerSupplier": ["Retrieve","Delete","RetrieveCDS","Save"],
   "TServerGroupBarang": ["Retrieve","Delete","RetrieveCDS","Save"],
@@ -2510,7 +2858,9 @@ var JSProxyClassList = {
   "TServerClosingInventory": ["Close","Delete","RetrieveCDS","Save"],
   "TServerPembayaranSupplier": ["Retrieve","RetrieveCDS2","Delete","RetrieveCDS","Save"],
   "TServerGudang": ["Retrieve","RetrieveKode","Delete","RetrieveCDS","Save"],
-  "TServerPenjualan": ["Retrieve","RetrieveNoBukti","GenerateNoBukti","Delete","RetrieveCDS","Save"],
-  "TServerAR": ["Retrieve","RetrieveCDSlip","RetrieveNoBukti","GenerateNoBukti","Delete","RetrieveCDS","Save"]
+  "TServerPenjualan": ["Retrieve","RetrieveNoBukti","RetrieveCDSlip","GenerateNoBukti","Delete","RetrieveCDS","Save"],
+  "TServerAR": ["Retrieve","RetrieveCDSlip","RetrieveNoBukti","GenerateNoBukti","Delete","RetrieveCDS","Save"],
+  "TServerAccount": ["Retrieve","Delete","RetrieveCDS","Save"],
+  "TServerRekBank": ["Retrieve","Delete","RetrieveCDS","Save"]
 };
 

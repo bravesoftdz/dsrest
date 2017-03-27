@@ -4,6 +4,12 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
   TextHeight = 13
   inherited cxPCData: TcxPageControl
     Properties.ActivePage = cxTSInputData
+    inherited cxTSOverview: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 709
+      ExplicitHeight = 265
+    end
     inherited cxTSInputData: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
@@ -13,7 +19,7 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
         Left = 0
         Top = 0
         Width = 709
-        Height = 114
+        Height = 108
         Align = alTop
         TabOrder = 0
         object lblNoBukti: TLabel
@@ -52,11 +58,18 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
           Caption = 'Customer/Salesman'
         end
         object lblKeterangan: TLabel
-          Left = 292
-          Top = 37
+          Left = 299
+          Top = 62
           Width = 56
           Height = 13
           Caption = 'Keterangan'
+        end
+        object lblNominal: TLabel
+          Left = 318
+          Top = 37
+          Width = 37
+          Height = 13
+          Caption = 'Nominal'
         end
         object edNoBukti: TcxTextEdit
           Left = 83
@@ -69,6 +82,7 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
           Left = 83
           Top = 33
           TabOrder = 1
+          OnExit = edTglBuktiExit
           Width = 145
         end
         object cbbJenisTransaksi: TcxComboBox
@@ -96,11 +110,11 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
         end
         object memKeterangan: TcxMemo
           Left = 361
-          Top = 33
+          Top = 58
           Lines.Strings = (
             'memKeterangan')
-          TabOrder = 5
-          Height = 71
+          TabOrder = 7
+          Height = 46
           Width = 145
         end
         object btnLoadAR: TcxButton
@@ -109,22 +123,26 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
           Width = 75
           Height = 25
           Caption = 'Load AR'
-          TabOrder = 6
+          TabOrder = 5
           OnClick = btnLoadARClick
+        end
+        object edNominal: TcxCurrencyEdit
+          Left = 361
+          Top = 33
+          Properties.Alignment.Horz = taRightJustify
+          Properties.DisplayFormat = ',0.00;(,0.00)'
+          TabOrder = 6
+          Width = 145
         end
       end
       object cxGridDBAR: TcxGrid
         Left = 0
-        Top = 114
+        Top = 108
         Width = 709
-        Height = 151
+        Height = 157
         Align = alClient
         TabOrder = 1
         RootLevelOptions.DetailTabsPosition = dtpTop
-        ExplicitLeft = 1
-        ExplicitTop = 105
-        ExplicitWidth = 741
-        ExplicitHeight = 159
         object cxGridTableAR: TcxGridTableView
           Navigator.Buttons.CustomButtons = <>
           DataController.Summary.DefaultGroupSummaryItems = <>
@@ -183,6 +201,11 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
             HeaderAlignmentHorz = taCenter
             Width = 101
           end
+          object cxgrdclmnKeterangan: TcxGridColumn
+            Caption = 'Keterangan'
+            HeaderAlignmentHorz = taCenter
+            Width = 121
+          end
         end
         object cxGridTableGridDBARTableView1: TcxGridTableView
           Navigator.Buttons.CustomButtons = <>
@@ -212,6 +235,9 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
     end
   end
   inherited ActionListForm: TActionList
+    inherited ActionSimpan: TAction
+      OnExecute = ActionSimpanExecute
+    end
     inherited ActionRefresh: TAction
       OnExecute = ActionRefreshExecute
     end
@@ -227,7 +253,7 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
     Left = 584
     Top = 144
     Bitmap = {
-      494C010107000800C40018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800CC0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

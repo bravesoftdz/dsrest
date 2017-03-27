@@ -5,7 +5,7 @@ interface
 uses
   SysUtils, Classes, DSServer, uModel, Windows, uDBUtils, Generics.Collections,
   DBXJSON, DBClient, DB, rtti, uInterface, uPenjualan,
-  uCustomerInvoice, uAR, uPenerimaanKas;
+  uCustomerInvoice, uAR, uPenerimaanKas, uAccount, uRekBank;
 
 type
   {$METHODINFO ON}
@@ -221,6 +221,20 @@ type
     function Retrieve(AID : String): TPenerimaanKas;
     function RetrieveCDSlip(AID : String): TDataset;
     function RetrieveNoBukti(ANoBukti : String): TPenerimaanKas;
+  end;
+
+type
+  TServerAccount = class(TServerMaster)
+  protected
+  public
+    function Retrieve(AID : String): TAccount;
+  end;
+
+type
+  TServerRekBank = class(TServerMaster)
+  protected
+  public
+    function Retrieve(AID : String): TRekBank;
   end;
 
 
@@ -834,12 +848,14 @@ function TServerLaporan.DS_OverviewAccount: TDataset;
 var
   sSQL: string;
 begin
-  sSQL := 'select a.kode,a.nama,a.isakuntransaksi,a.kelompok,' +
+  sSQL := 'select cast(a.kode || ' + QuotedStr(' - ') + ' || a.nama as character varying(120))  as KodeNama, a.kode,a.nama,a.isakuntransaksi,a.kelompok,' +
           ' b.Kode as KodeParent, b.Nama as NamaParent, a.id, a.parent' +
           ' from TAccount a ' +
-          ' left outer join Taccount b on a.parent = b.id';
+          ' left outer join Taccount b on a.parent = b.id' +
+          ' order by kode ';
 
   Result := TDBUtils.OpenQuery(sSQL);
+
 end;
 
 function TServerLaporan.LaporanKartok(ATglAwal , ATglAkhir : TDateTime; ABarang
@@ -1798,6 +1814,18 @@ begin
   end;
 
 
+end;
+
+function TServerAccount.Retrieve(AID : String): TAccount;
+begin
+  Result      := TAccount.Create;
+  TDBUtils.LoadFromDB(Result, AID);
+end;
+
+function TServerRekBank.Retrieve(AID : String): TRekBank;
+begin
+  Result      := TRekBank.Create;
+  TDBUtils.LoadFromDB(Result, AID);
 end;
 
 

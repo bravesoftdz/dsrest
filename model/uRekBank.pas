@@ -3,7 +3,7 @@ unit uRekBank;
 interface
 
 uses
-  uModel, uAccount;
+  uModel, uAccount, System.SysUtils;
 
 type
   TRekBank = class(TAppObject)
@@ -13,6 +13,8 @@ type
     FBank: string;
     FNamaPemegang: string;
     FNoRek: string;
+  public
+    destructor Destroy; override;
   published
     property Account: TAccount read FAccount write FAccount;
     property Alamat: string read FAlamat write FAlamat;
@@ -22,5 +24,11 @@ type
   end;
 
 implementation
+
+destructor TRekBank.Destroy;
+begin
+  inherited;
+  FreeAndNil(FAccount);
+end;
 
 end.

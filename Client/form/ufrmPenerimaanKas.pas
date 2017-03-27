@@ -13,7 +13,7 @@ uses
   cxGridCustomView, Vcl.StdCtrls, cxButtons, Vcl.ComCtrls, Vcl.ExtCtrls, cxPC,
   dxStatusBar, uDBUtils, ClientModule, uAppUtils, dxCore, cxDateUtils,
   cxMaskEdit, cxDropDownEdit, cxCalendar, cxTextEdit, cxMemo, cxLookupEdit,
-  cxDBLookupEdit, cxDBExtLookupComboBox, cxCurrencyEdit,uModel;
+  cxDBLookupEdit, cxDBExtLookupComboBox, cxCurrencyEdit,uModel,uPenerimaanKas;
 
 type
   TfrmPenerimaanKas = class(TfrmDefault)
@@ -42,14 +42,24 @@ type
     cxGridTableGridDBARTableView1: TcxGridTableView;
     cxgrdlvlOI: TcxGridLevel;
     cxGridTableGridDBARTableView2: TcxGridTableView;
+    lblNominal: TLabel;
+    edNominal: TcxCurrencyEdit;
+    cxgrdclmnKeterangan: TcxGridColumn;
     procedure FormCreate(Sender: TObject);
     procedure ActionBaruExecute(Sender: TObject);
     procedure ActionRefreshExecute(Sender: TObject);
+    procedure ActionSimpanExecute(Sender: TObject);
     procedure btnLoadARClick(Sender: TObject);
+    procedure edTglBuktiExit(Sender: TObject);
   private
+    FPenerimaanKas: TPenerimaanKas;
+    function GetPenerimaanKas: TPenerimaanKas;
     procedure InisialisasiCBBSalesman;
+    property PenerimaanKas: TPenerimaanKas read GetPenerimaanKas write
+        FPenerimaanKas;
     { Private declarations }
   public
+    destructor Destroy; override;
     { Public declarations }
   end;
 
@@ -57,20 +67,30 @@ var
   frmPenerimaanKas: TfrmPenerimaanKas;
 
 implementation
+uses uAR;
 
 {$R *.dfm}
+
+destructor TfrmPenerimaanKas.Destroy;
+begin
+  inherited;
+  FreeAndNil(FPenerimaanKas);
+end;
 
 procedure TfrmPenerimaanKas.FormCreate(Sender: TObject);
 begin
   inherited;
   InisialisasiCBBSalesman;
+
+  ActionBaruExecute(Sender);
+
 end;
 
 procedure TfrmPenerimaanKas.ActionBaruExecute(Sender: TObject);
 begin
   inherited;
   ClearByTag([0,1]);
-
+  edNoBukti.Text := ClientDataModule.ServerPenerimaanKasClient.GenerateNoBukti(edTglBukti.Date, ClientDataModule.Cabang.Kode + '/BKM/');
 end;
 
 procedure TfrmPenerimaanKas.ActionRefreshExecute(Sender: TObject);
@@ -86,6 +106,43 @@ begin
   cxGridDBTableOverview.SetDataset(lcds, True);
   cxGridDBTableOverview.SetVisibleColumns(['ID', 'CABANG','PEMBELI'], False);
   cxGridDBTableOverview.ApplyBestFit();
+end;
+
+procedure TfrmPenerimaanKas.ActionSimpanExecute(Sender: TObject);
+var
+  I: Integer;
+  lPKAR: TPenerimaanKasAR;
+begin
+  inherited;
+  if not ValidateEmptyCtrl([1]) then
+    Exit;
+
+  PenerimaanKas.Cabang         := TCabang.CreateID(ClientDataModule.Cabang.ID);
+  PenerimaanKas.JenisTransaksi := 'PENERIMAAN KAS';
+  PenerimaanKas.Keterangan     := memKeterangan.Text;
+  PenerimaanKas.NoBukti        := edNoBukti.Text;
+  PenerimaanKas.Nominal        := edNominal.Value;
+  PenerimaanKas.Pembeli        := TSupplier.CreateID(cbbCustomer.EditValue);
+
+  PenerimaanKas.PenerimaanKasARItems.Clear;
+  for I := 0 to cxGridTableAR.DataController.RecordCount - 1 do
+  begin
+    lPKAR               := TPenerimaanKasAR.Create;
+    lPKAR.AR            := TAR.CreateID(cxGridTableAR.GetString(i, cxgrdclmnARNo.Index));
+    lPKAR.Nominal       := cxGridTableAR.GetDouble(i, cxgrdclmnNominal.Index);
+    lPKAR.Keterangan    := cxGridTableAR.GetString(i, cxgrdclmnKeterangan.Index);
+    lPKAR.PenerimaanKas := PenerimaanKas;
+
+    PenerimaanKas.PenerimaanKasARItems.Add(lPKAR);
+  end;
+
+  if ClientDataModule.ServerPenerimaanKasClient.Save(PenerimaanKas) then
+  begin
+    TAppUtils.InformationBerhasilSimpan;
+    ActionBaruExecute(Sender);
+  end;
+
+
 end;
 
 procedure TfrmPenerimaanKas.btnLoadARClick(Sender: TObject);
@@ -115,6 +172,21 @@ begin
   finally
     lds.Free;
   end;
+end;
+
+procedure TfrmPenerimaanKas.edTglBuktiExit(Sender: TObject);
+begin
+  inherited;
+  if PenerimaanKas.ID = '' then
+    edNoBukti.Text := ClientDataModule.ServerPenerimaanKasClient.GenerateNoBukti(edTglBukti.Date, ClientDataModule.Cabang.Kode + '/BKM/');
+end;
+
+function TfrmPenerimaanKas.GetPenerimaanKas: TPenerimaanKas;
+begin
+  if FPenerimaanKas = nil then
+    FPenerimaanKas := TPenerimaanKas.Create;
+
+  Result := FPenerimaanKas;
 end;
 
 procedure TfrmPenerimaanKas.InisialisasiCBBSalesman;

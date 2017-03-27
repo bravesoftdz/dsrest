@@ -26,7 +26,8 @@ type
     class function DSToCDS(aDataset: TDataSet; aOwner: TComponent): TClientDataset;
         overload;
     class function ExecuteSQL(ASQL : String): LongInt;
-    class function OpenDataset(ASQL : String): TClientDataSet; overload;
+    class function OpenDataset(ASQL : String; AOwner : TComponent = nil):
+        TClientDataSet; overload;
     class function GenerateSQL(AObject : TAppObject): string;
     class function GenerateSQLDelete(AObject : TAppObject; AID : String): string;
     class function GenerateSQLSelect(AObject : TAppObject): string;
@@ -140,12 +141,16 @@ begin
   Result := ADConnection.ExecSQL(ASQL);
 end;
 
-class function TDBUtils.OpenDataset(ASQL : String): TClientDataSet;
+class function TDBUtils.OpenDataset(ASQL : String; AOwner : TComponent = nil):
+    TClientDataSet;
 var
   LDSP: TDataSetProvider;
   LSQLQuery: TFDQuery;
 begin
-  Result      := TClientDataSet.Create(Application);
+  if AOwner = nil then
+    AOwner := Application;
+
+  Result      := TClientDataSet.Create(AOwner);
   LDSP        := TDataSetProvider.Create(Result);
   LSQLQuery   := TFDQuery.Create(LDSP);
   LSQLQuery.FetchOptions.Unidirectional := False;
@@ -232,7 +237,10 @@ begin
                           end;
                         end else begin
                           sNama := prop.Name;
-                          Result := Result + QuotedStr(TAppObject(prop.GetValue(AObject).AsObject).ID) + ',';
+                          if prop.GetValue(AObject).AsObject = nil then
+                            Result := Result +  ' null,'
+                          else
+                            Result := Result + QuotedStr(TAppObject(prop.GetValue(AObject).AsObject).ID) + ',';
                         end;
 
 

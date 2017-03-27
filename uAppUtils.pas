@@ -20,7 +20,7 @@ uses
     SqlExpr, System.UITypes,
 
 
-    cxDropDownEdit,  System.Contnrs;
+    cxDropDownEdit,  System.Contnrs, cxMemo;
 
 type
   TTag = set of byte;
@@ -1755,12 +1755,15 @@ begin
   begin
     C := Self.Components[i];
     if not (C.Tag in Tag) then continue;
-    if C is TEdit then TEdit(C).Clear;
-    if C is TcxTextEdit then TcxTextEdit(C).Clear;
-    if C is TcxExtLookupComboBox then TcxExtLookupComboBox(C).Clear;
-    if C is TcxComboBox then TcxComboBox(C).Clear;
-    if C is TcxCheckBox then TcxCheckBox(C).Clear;
-    if C is TcxSpinEdit then TcxSpinEdit(C).Clear;
+    if C is TEdit then TEdit(C).Clear else
+    if C is TcxTextEdit then TcxTextEdit(C).Clear else
+    if C is TcxExtLookupComboBox then TcxExtLookupComboBox(C).Clear else
+    if C is TcxComboBox then TcxComboBox(C).Clear else
+    if C is TcxCheckBox then TcxCheckBox(C).Clear else
+    if C is TcxSpinEdit then TcxSpinEdit(C).Clear else
+    if C is TcxCurrencyEdit then TcxCurrencyEdit(C).Value := 0 else
+    if C is TcxMemo then TcxMemo(C).Clear;
+
   end;
 end;
 

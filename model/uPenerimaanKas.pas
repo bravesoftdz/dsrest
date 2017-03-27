@@ -13,7 +13,7 @@ type
   TPenerimaanKasAR = class(TAppObjectItem)
   private
     FAR: TAR;
-    FKeterangan: Integer;
+    FKeterangan: string;
     FNominal: Double;
     FPenerimaanKas: TPenerimaanKas;
   public
@@ -21,7 +21,7 @@ type
     procedure SetHeaderProperty(AHeaderProperty : TAppObject); override;
   published
     property AR: TAR read FAR write FAR;
-    property Keterangan: Integer read FKeterangan write FKeterangan;
+    property Keterangan: string read FKeterangan write FKeterangan;
     property Nominal: Double read FNominal write FNominal;
     property PenerimaanKas: TPenerimaanKas read FPenerimaanKas write FPenerimaanKas;
   end;
@@ -64,6 +64,9 @@ end;
 
 function TPenerimaanKas.GetPenerimaanKasARItems: TObjectlist<TPenerimaanKasAR>;
 begin
+  if FPenerimaanKasARItems = nil then
+    FPenerimaanKasARItems := TObjectList<TPenerimaanKasAR>.Create(False);
+
   Result := FPenerimaanKasARItems;
 end;
 

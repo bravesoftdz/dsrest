@@ -301,6 +301,9 @@ begin
   TCustServerClass.Create(Self, DSServer1, TServerGudang, DSServerClass1.LifeCycle);
   TCustServerClass.Create(Self, DSServer1, TServerPenjualan, DSServerClass1.LifeCycle);
   TCustServerClass.Create(Self, DSServer1, TServerAR, DSServerClass1.LifeCycle);
+  TCustServerClass.Create(Self, DSServer1, TServerAccount, DSServerClass1.LifeCycle);
+  TCustServerClass.Create(Self, DSServer1, TServerRekBank, DSServerClass1.LifeCycle);
+  TCustServerClass.Create(Self, DSServer1, TServerPenerimaanKas, DSServerClass1.LifeCycle);
 end;
 
 procedure TWebModule2.SetIP(const Value: string);

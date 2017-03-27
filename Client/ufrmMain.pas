@@ -13,10 +13,9 @@ uses
   FireDAC.Phys.ODBCBase, FireDAC.Phys.MSSQL, Firedac.Dapt,
   dxRibbonCustomizationForm, FireDAC.Phys.MSSQLDef, FireDAC.Phys.PGDef,
   System.ImageList, ufrmLapKartuStock, ufrmPenjualan, ufrmPenjualanPOS,
-  ufrmCustomerInvoice,ufrmPenerimaanKas;
+  ufrmCustomerInvoice,ufrmPenerimaanKas, ufrmRekBank;
 
 type
-//  RawUTF8 = type AnsiString;
   TfrmMain = class(TForm)
     mm1: TMainMenu;
     mniMaster1: TMenuItem;
@@ -107,6 +106,8 @@ type
     dxbrmngrAMSBarFA: TdxBar;
     dxbrlrgbtnAccount: TdxBarLargeButton;
     actMasterAccount: TAction;
+    dxbrlrgbtnBank: TdxBarLargeButton;
+    actMasterBank: TAction;
     procedure actAlatGantiCabangExecute(Sender: TObject);
     procedure actApplicationExitExecute(Sender: TObject);
     procedure actClosingInventoryExecute(Sender: TObject);
@@ -119,6 +120,7 @@ type
     procedure actLapMutasiBarangExecute(Sender: TObject);
     procedure actLapStockSekarangExecute(Sender: TObject);
     procedure actMasterAccountExecute(Sender: TObject);
+    procedure actMasterBankExecute(Sender: TObject);
     procedure actMasterGudangExecute(Sender: TObject);
     procedure actPenerimaanKasExecute(Sender: TObject);
     procedure actPenjualanPOSExecute(Sender: TObject);
@@ -202,6 +204,11 @@ end;
 procedure TfrmMain.actMasterAccountExecute(Sender: TObject);
 begin
   frmAccount := TfrmAccount.Create(Self);
+end;
+
+procedure TfrmMain.actMasterBankExecute(Sender: TObject);
+begin
+  frmRekBank := TfrmRekBank.Create(Self);
 end;
 
 procedure TfrmMain.actMasterBarangExecute(Sender: TObject);
