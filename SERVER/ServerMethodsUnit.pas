@@ -199,8 +199,12 @@ type
   TServerCustomerInvoice = class(TServerTransaction)
   private
     FServerAR: TServerAR;
+    FServerPenjualan: TServerPenjualan;
     function GetServerAR: TServerAR;
+    function GetServerPenjualan: TServerPenjualan;
     property ServerAR: TServerAR read GetServerAR write FServerAR;
+    property ServerPenjualan: TServerPenjualan read GetServerPenjualan write
+        FServerPenjualan;
   public
     destructor Destroy; override;
     function AfterSave(AAppObject : TAppObject): Boolean; override;
@@ -216,7 +220,12 @@ type
   end;
 
   TServerPenerimaanKas = class(TServerTransaction)
+  private
+    FServerAR: TServerAR;
+    function GetServerAR: TServerAR;
+    property ServerAR: TServerAR read GetServerAR write FServerAR;
   public
+    destructor Destroy; override;
     function AfterSave(AAppObject : TAppObject): Boolean; override;
     function Retrieve(AID : String): TPenerimaanKas;
     function RetrieveCDSlip(AID : String): TDataset;
@@ -1567,6 +1576,7 @@ destructor TServerCustomerInvoice.Destroy;
 begin
   inherited;
   FreeAndNil(FServerAR);
+  FreeAndNil(FServerPenjualan);
 end;
 
 function TServerCustomerInvoice.AfterSave(AAppObject : TAppObject): Boolean;
@@ -1599,6 +1609,7 @@ end;
 function TServerCustomerInvoice.BeforeSave(AAppObject : TAppObject): Boolean;
 var
   lCI: TCustomerInvoice;
+  lPenjualan: TPenjualan;
 begin
   Result := False;
 
@@ -1617,9 +1628,17 @@ begin
   else
     lCI.AR.Cabang.ID := lCI.ID;
 
-  lCI.AR.NoBukti   := lCI.NoBukti;
-  lCI.AR.Transaksi := lCI.ClassName;
-  lCI.AR.JatuhTempo:= lCI.JatuhTempo;
+  lCI.AR.NoBukti          := lCI.NoBukti;
+  lCI.AR.Transaksi        := lCI.ClassName;
+  lCI.AR.JatuhTempo       := lCI.JatuhTempo;
+  lCI.AR.TglBukti         := lCI.TglBukti;
+
+  lPenjualan              := ServerPenjualan.Retrieve(lCI.CustomerInvoicePenjualans[0].Penjualan.ID);
+  try
+    lCI.AR.NoBuktiTransaksi := lPenjualan.NoBukti;
+  finally
+    lPenjualan.Free;
+  end;
 
   if ServerAR.SaveNoCommit(lCI.AR) then
     Result := True;
@@ -1632,6 +1651,14 @@ begin
     FServerAR := TServerAR.Create;
 
   Result := FServerAR;
+end;
+
+function TServerCustomerInvoice.GetServerPenjualan: TServerPenjualan;
+begin
+  if FServerPenjualan = nil then
+    FServerPenjualan := TServerPenjualan.Create;
+
+  Result := FServerPenjualan;
 end;
 
 function TServerCustomerInvoice.Retrieve(AID : String): TCustomerInvoice;
@@ -1751,31 +1778,43 @@ begin
 
 end;
 
-function TServerPenerimaanKas.AfterSave(AAppObject : TAppObject): Boolean;
-//var
-//  lCI: TCustomerInvoice;
+destructor TServerPenerimaanKas.Destroy;
 begin
-//  Result := False;
-//
-//  lCI    := TCustomerInvoice(AAppObject);
-//
-//  if lCI.AR = nil then
-//  begin
-//    lCI.AR := TAR.Create;
-//  end;
-//
-//  lCI.AR.Nominal  := lCI.Nominal;
-//  lCI.AR.Customer := TSupplier.CreateID(lCI.Customer.ID);
-//
-//  if lCI.AR.Cabang = nil then
-//    lCI.AR.Cabang := TCabang.CreateID(lCI.Cabang.ID)
-//  else
-//    lCI.AR.Cabang.ID := lCI.ID;
-//
-//  lCI.AR.NoBukti   := lCI.NoBukti;
-//  lCI.AR.Transaksi := lCI.ClassName;
-//  lCI.AR.JatuhTempo:= lCI.JatuhTempo;
+  inherited;
+  ServerAR.Free;
+end;
+
+function TServerPenerimaanKas.AfterSave(AAppObject : TAppObject): Boolean;
+var
+  lPK: TPenerimaanKas;
+  I: Integer;
+  sIDAR: string;
+begin
+  Result := False;
+
+  lPK    := TPenerimaanKas(AAppObject);
+  for I := 0 to lPK.PenerimaanKasARItems.Count - 1 do
+  begin
+    sIDAR := lPK.PenerimaanKasARItems[i].AR.ID;
+    lPK.PenerimaanKasARItems[i].AR.Free;
+    lPK.PenerimaanKasARItems[i].AR := ServerAR.Retrieve(sIDAR);
+    lPK.PenerimaanKasARItems[i].AR.TerBayar := lPK.PenerimaanKasARItems[i].AR.TerBayar + lPK.PenerimaanKasARItems[i].Nominal;
+
+    if not ServerAR.SaveNoCommit(lPK.PenerimaanKasARItems[i].AR) then
+      Exit;
+  end;
+
+
+
   Result := True;
+end;
+
+function TServerPenerimaanKas.GetServerAR: TServerAR;
+begin
+  if FServerAR = nil then
+    FServerAR := TServerAR.Create;
+
+  Result := FServerAR;
 end;
 
 function TServerPenerimaanKas.Retrieve(AID : String): TPenerimaanKas;

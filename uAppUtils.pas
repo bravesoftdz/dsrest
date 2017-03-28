@@ -1762,7 +1762,8 @@ begin
     if C is TcxCheckBox then TcxCheckBox(C).Clear else
     if C is TcxSpinEdit then TcxSpinEdit(C).Clear else
     if C is TcxCurrencyEdit then TcxCurrencyEdit(C).Value := 0 else
-    if C is TcxMemo then TcxMemo(C).Clear;
+    if C is TcxMemo then TcxMemo(C).Clear else
+    if C is TcxDateEdit then TcxDateEdit(C).Date := Now;
 
   end;
 end;

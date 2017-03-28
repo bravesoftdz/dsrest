@@ -3,7 +3,7 @@ unit uPenerimaanKas;
 interface
 
 uses
-  uModel, uRekBank, uAR, System.Generics.Collections;
+  uModel, uRekBank, uAR, System.Generics.Collections,System.SysUtils;
 
 type
   TPenerimaanKas = class;
@@ -38,6 +38,8 @@ type
     FRekBank: TRekBank;
     FTglBukti: TDatetime;
     function GetPenerimaanKasARItems: TObjectlist<TPenerimaanKasAR>;
+  public
+    destructor Destroy; override;
   published
     property Cabang: TCabang read FCabang write FCabang;
     property JenisTransaksi: string read FJenisTransaksi write FJenisTransaksi;
@@ -54,12 +56,29 @@ implementation
 
 function TPenerimaanKasAR.GetHeaderField: string;
 begin
-  Result := 'PenerimaanKasAR';
+  Result := 'PenerimaanKas';
 end;
 
 procedure TPenerimaanKasAR.SetHeaderProperty(AHeaderProperty : TAppObject);
 begin
   Self.PenerimaanKas := TPenerimaanKas(AHeaderProperty);
+end;
+
+destructor TPenerimaanKas.Destroy;
+var
+  I: Integer;
+begin
+  inherited;
+  FreeAndNil(FRekBank);
+  FreeAndNil(FPembeli);
+  FreeAndNil(FCabang);
+
+  for I := 0 to PenerimaanKasARItems.Count - 1 do
+  begin
+    PenerimaanKasARItems[i].AR.Free;
+  end;
+
+  PenerimaanKasARItems.Free;
 end;
 
 function TPenerimaanKas.GetPenerimaanKasARItems: TObjectlist<TPenerimaanKasAR>;

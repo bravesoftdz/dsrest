@@ -13,7 +13,7 @@ uses
   FireDAC.Phys.ODBCBase, FireDAC.Phys.MSSQL, Firedac.Dapt,
   dxRibbonCustomizationForm, FireDAC.Phys.MSSQLDef, FireDAC.Phys.PGDef,
   System.ImageList, ufrmLapKartuStock, ufrmPenjualan, ufrmPenjualanPOS,
-  ufrmCustomerInvoice,ufrmPenerimaanKas, ufrmRekBank;
+  ufrmCustomerInvoice,ufrmPenerimaanKas, ufrmRekBank, ufrmLaporanAR;
 
 type
   TfrmMain = class(TForm)

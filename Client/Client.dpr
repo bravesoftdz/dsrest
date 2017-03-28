@@ -39,7 +39,9 @@ uses
   ufrmPenerimaanKas in 'form\ufrmPenerimaanKas.pas' {frmPenerimaanKas},
   ufrmAccount in 'form\ufrmAccount.pas' {frmAccount},
   uAccount in '..\model\uAccount.pas',
-  ufrmRekBank in 'form\ufrmRekBank.pas' {frmRekBank};
+  ufrmRekBank in 'form\ufrmRekBank.pas' {frmRekBank},
+  ufrmDefaultLaporan in 'form\ufrmDefaultLaporan.pas' {frmDefaultLaporan},
+  ufrmLaporanAR in 'form\ufrmLaporanAR.pas' {frmLaporanAR};
 
 {$R *.res}
 
@@ -48,5 +50,6 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TClientDataModule, ClientDataModule);
   Application.CreateForm(TfrmMain, frmMain);
+  Application.CreateForm(TfrmDefaultLaporan, frmDefaultLaporan);
   Application.Run;
 end.

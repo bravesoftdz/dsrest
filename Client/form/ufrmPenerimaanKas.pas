@@ -13,7 +13,7 @@ uses
   cxGridCustomView, Vcl.StdCtrls, cxButtons, Vcl.ComCtrls, Vcl.ExtCtrls, cxPC,
   dxStatusBar, uDBUtils, ClientModule, uAppUtils, dxCore, cxDateUtils,
   cxMaskEdit, cxDropDownEdit, cxCalendar, cxTextEdit, cxMemo, cxLookupEdit,
-  cxDBLookupEdit, cxDBExtLookupComboBox, cxCurrencyEdit,uModel,uPenerimaanKas;
+  cxDBLookupEdit, cxDBExtLookupComboBox, cxCurrencyEdit,uModel,uPenerimaanKas, uRekBank;
 
 type
   TfrmPenerimaanKas = class(TfrmDefault)
@@ -23,7 +23,6 @@ type
     lblTglBukti: TLabel;
     edTglBukti: TcxDateEdit;
     lblJenisTransaksi: TLabel;
-    cbbJenisTransaksi: TcxComboBox;
     lblPenerima: TLabel;
     edPenerima: TcxTextEdit;
     lblCustomer: TLabel;
@@ -45,16 +44,25 @@ type
     lblNominal: TLabel;
     edNominal: TcxCurrencyEdit;
     cxgrdclmnKeterangan: TcxGridColumn;
+    cbbRekBank: TcxExtLookupComboBox;
+    edNoRek: TcxTextEdit;
+    edAlamatBank: TcxTextEdit;
     procedure FormCreate(Sender: TObject);
     procedure ActionBaruExecute(Sender: TObject);
     procedure ActionRefreshExecute(Sender: TObject);
     procedure ActionSimpanExecute(Sender: TObject);
     procedure btnLoadARClick(Sender: TObject);
+    procedure cbbRekBankExit(Sender: TObject);
+    procedure cxGridTableAREditing(Sender: TcxCustomGridTableView; AItem:
+        TcxCustomGridTableItem; var AAllow: Boolean);
     procedure edTglBuktiExit(Sender: TObject);
   private
+    FCDSRekBank: TClientDataSet;
     FPenerimaanKas: TPenerimaanKas;
     function GetPenerimaanKas: TPenerimaanKas;
     procedure InisialisasiCBBSalesman;
+    procedure InisialisasiRekBank;
+    property CDSRekBank: TClientDataSet read FCDSRekBank write FCDSRekBank;
     property PenerimaanKas: TPenerimaanKas read GetPenerimaanKas write
         FPenerimaanKas;
     { Private declarations }
@@ -81,6 +89,7 @@ procedure TfrmPenerimaanKas.FormCreate(Sender: TObject);
 begin
   inherited;
   InisialisasiCBBSalesman;
+  InisialisasiRekBank;
 
   ActionBaruExecute(Sender);
 
@@ -118,7 +127,7 @@ begin
     Exit;
 
   PenerimaanKas.Cabang         := TCabang.CreateID(ClientDataModule.Cabang.ID);
-  PenerimaanKas.JenisTransaksi := 'PENERIMAAN KAS';
+  PenerimaanKas.RekBank        := TRekBank.CreateID(cbbRekBank.EditValue);
   PenerimaanKas.Keterangan     := memKeterangan.Text;
   PenerimaanKas.NoBukti        := edNoBukti.Text;
   PenerimaanKas.Nominal        := edNominal.Value;
@@ -151,6 +160,11 @@ var
   lds: TDataset;
 begin
   inherited;
+  if cbbCustomer.EditValue = null then
+  begin
+    TAppUtils.Warning('Salesman/Pembeli Belum Dipilih');
+    Exit;
+  end;
 
   lds := ClientDataModule.ServerLaporanClient.RetriveAR(TSupplier.CreateID(cbbCustomer.EditValue));
   try
@@ -163,15 +177,32 @@ begin
 
       cxGridTableAR.SetValue(iBaris,cxgrdclmnARID.Index, lds.FieldByName('ID').AsString);
       cxGridTableAR.SetValue(iBaris,cxgrdclmnARNo.Index, lds.FieldByName('NoBukti').AsString);
-      cxGridTableAR.SetValue(iBaris,cxgrdclmnNominal.Index, lds.FieldByName('Nominal').AsString);
-      cxGridTableAR.SetValue(iBaris,cxgrdclmnBayar.Index, lds.FieldByName('Nominal').AsString);
+      cxGridTableAR.SetValue(iBaris,cxgrdclmnNominal.Index, lds.FieldByName('Nominal').AsFloat - lds.FieldByName('Terbayar').AsFloat);
+      cxGridTableAR.SetValue(iBaris,cxgrdclmnBayar.Index, lds.FieldByName('Nominal').AsFloat - lds.FieldByName('Terbayar').AsFloat);
 
       lds.Next;
     end;
 
+    cxGridTableAR.ApplyBestFit();
   finally
     lds.Free;
   end;
+end;
+
+procedure TfrmPenerimaanKas.cbbRekBankExit(Sender: TObject);
+begin
+  inherited;
+  edAlamatBank.Text := CDSRekBank.FieldByName('alamat').AsString;
+  edNoRek.Text      := CDSRekBank.FieldByName('norek').AsString;
+end;
+
+procedure TfrmPenerimaanKas.cxGridTableAREditing(Sender:
+    TcxCustomGridTableView; AItem: TcxCustomGridTableItem; var AAllow: Boolean);
+begin
+  inherited;
+  AAllow := False;
+  if AItem.Index in [cxgrdclmnBayar.Index,cxgrdclmnKeterangan.Index] then
+    AAllow := True;
 end;
 
 procedure TfrmPenerimaanKas.edTglBuktiExit(Sender: TObject);
@@ -198,6 +229,16 @@ begin
   lCDSSalesman := TDBUtils.OpenDataset(sSQL);
   cbbCustomer.Properties.LoadFromCDS(lCDSSalesman,'ID','Nama',['ID'],Self);
   cbbCustomer.Properties.SetMultiPurposeLookup;
+end;
+
+procedure TfrmPenerimaanKas.InisialisasiRekBank;
+var
+  sSQL: string;
+begin
+  sSQL := 'select bank,alamat,norek,namapemegang,id FROM trekbank';
+  CDSRekBank := TDBUtils.OpenDataset(sSQL);
+  cbbRekBank.Properties.LoadFromCDS(CDSRekBank,'ID','bank',['ID'],Self);
+  cbbRekBank.Properties.SetMultiPurposeLookup;
 end;
 
 end.

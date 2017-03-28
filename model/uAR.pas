@@ -16,6 +16,8 @@ type
     FTerBayar: Double;
     FTransaksi: string;
     FJatuhTempo: TDateTime;
+    FNoBuktiTransaksi: string;
+    FTglBukti: TDatetime;
   public
     destructor Destroy; override;
   published
@@ -28,6 +30,9 @@ type
     property TerBayar: Double read FTerBayar write FTerBayar;
     property Transaksi: string read FTransaksi write FTransaksi;
     property JatuhTempo: TDateTime read FJatuhTempo write FJatuhTempo;
+    property NoBuktiTransaksi: string read FNoBuktiTransaksi write
+        FNoBuktiTransaksi;
+    property TglBukti: TDatetime read FTglBukti write FTglBukti;
   end;
 
 implementation
