@@ -35,6 +35,7 @@ type
     FNominal: Double;
     FPembeli: TSupplier;
     FPenerimaanKasARItems: TObjectlist<TPenerimaanKasAR>;
+    FPetugas: string;
     FRekBank: TRekBank;
     FTglBukti: TDatetime;
     function GetPenerimaanKasARItems: TObjectlist<TPenerimaanKasAR>;
@@ -49,6 +50,7 @@ type
     property Pembeli: TSupplier read FPembeli write FPembeli;
     property PenerimaanKasARItems: TObjectlist<TPenerimaanKasAR> read
         GetPenerimaanKasARItems write FPenerimaanKasARItems;
+    property Petugas: string read FPetugas write FPetugas;
     property RekBank: TRekBank read FRekBank write FRekBank;
     property TglBukti: TDatetime read FTglBukti write FTglBukti;
   end;

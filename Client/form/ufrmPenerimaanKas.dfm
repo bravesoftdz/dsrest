@@ -11,6 +11,13 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
       ExplicitTop = 24
       ExplicitWidth = 709
       ExplicitHeight = 265
+      inherited pnlListTransaksi: TPanel
+        inherited cxGrid: TcxGrid
+          inherited cxGridDBTableOverview: TcxGridDBTableView
+            OnCellDblClick = cxGridDBTableOverviewCellDblClick
+          end
+        end
+      end
     end
     inherited cxTSInputData: TcxTabSheet
       ExplicitLeft = 4
@@ -73,6 +80,19 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
           Height = 13
           Caption = 'Nominal'
         end
+        object lblStatusNominal: TLabel
+          Left = 512
+          Top = 59
+          Width = 28
+          Height = 13
+          Caption = 'Beda'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
         object edNoBukti: TcxTextEdit
           Tag = 1
           Left = 83
@@ -128,6 +148,7 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
           Top = 55
           Properties.Alignment.Horz = taRightJustify
           Properties.DisplayFormat = ',0.00;(,0.00)'
+          Properties.OnChange = edNominalPropertiesChange
           TabOrder = 7
           Width = 145
         end
@@ -166,8 +187,6 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
         Align = alClient
         TabOrder = 1
         RootLevelOptions.DetailTabsPosition = dtpTop
-        ExplicitTop = 108
-        ExplicitHeight = 157
         object cxGridTableAR: TcxGridTableView
           Navigator.Buttons.CustomButtons = <>
           OnEditing = cxGridTableAREditing
@@ -223,6 +242,7 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
             PropertiesClassName = 'TcxCurrencyEditProperties'
             Properties.Alignment.Horz = taRightJustify
             Properties.DisplayFormat = ',0.00;(,0.00)'
+            Properties.OnChange = cxgrdclmnBayarPropertiesChange
             FooterAlignmentHorz = taRightJustify
             HeaderAlignmentHorz = taCenter
             Width = 101
@@ -270,6 +290,9 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
     inherited ActionSimpan: TAction
       OnExecute = ActionSimpanExecute
     end
+    inherited ActionHapus: TAction
+      OnExecute = ActionHapusExecute
+    end
     inherited ActionRefresh: TAction
       OnExecute = ActionRefreshExecute
     end
@@ -285,7 +308,7 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
     Left = 584
     Top = 144
     Bitmap = {
-      494C010107000800D40018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800E80018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 3/27/2017 10:59:14 PM
+// 4/1/2017 3:47:40 AM
 //
 
 unit ClientClassesUnit2;
@@ -486,6 +486,8 @@ type
     FAfterSaveCommand: TDSRestCommand;
     FRetrieveCommand: TDSRestCommand;
     FRetrieveCommand_Cache: TDSRestCommand;
+    FRetrievePenerimaanARsCommand: TDSRestCommand;
+    FRetrievePenerimaanARsCommand_Cache: TDSRestCommand;
     FRetrieveCDSlipCommand: TDSRestCommand;
     FRetrieveCDSlipCommand_Cache: TDSRestCommand;
     FRetrieveNoBuktiCommand: TDSRestCommand;
@@ -502,6 +504,8 @@ type
     function AfterSave(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
     function Retrieve(AID: string; const ARequestFilter: string = ''): TPenerimaanKas;
     function Retrieve_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedTPenerimaanKas;
+    function RetrievePenerimaanARs(AID: string; const ARequestFilter: string = ''): TDataSet;
+    function RetrievePenerimaanARs_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function RetrieveCDSlip(AID: string; const ARequestFilter: string = ''): TDataSet;
     function RetrieveCDSlip_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function RetrieveNoBukti(ANoBukti: string; const ARequestFilter: string = ''): TPenerimaanKas;
@@ -1546,6 +1550,18 @@ const
   );
 
   TServerPenerimaanKas_Retrieve_Cache: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AID'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerPenerimaanKas_RetrievePenerimaanARs: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AID'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TServerPenerimaanKas_RetrievePenerimaanARs_Cache: array [0..1] of TDSRestParameterMetaData =
   (
     (Name: 'AID'; Direction: 1; DBXType: 26; TypeName: 'string'),
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
@@ -5688,6 +5704,37 @@ begin
   Result := TDSRestCachedTPenerimaanKas.Create(FRetrieveCommand_Cache.Parameters[1].Value.GetString);
 end;
 
+function TServerPenerimaanKasClient.RetrievePenerimaanARs(AID: string; const ARequestFilter: string): TDataSet;
+begin
+  if FRetrievePenerimaanARsCommand = nil then
+  begin
+    FRetrievePenerimaanARsCommand := FConnection.CreateCommand;
+    FRetrievePenerimaanARsCommand.RequestType := 'GET';
+    FRetrievePenerimaanARsCommand.Text := 'TServerPenerimaanKas.RetrievePenerimaanARs';
+    FRetrievePenerimaanARsCommand.Prepare(TServerPenerimaanKas_RetrievePenerimaanARs);
+  end;
+  FRetrievePenerimaanARsCommand.Parameters[0].Value.SetWideString(AID);
+  FRetrievePenerimaanARsCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FRetrievePenerimaanARsCommand.Parameters[1].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FRetrievePenerimaanARsCommand.FreeOnExecute(Result);
+end;
+
+function TServerPenerimaanKasClient.RetrievePenerimaanARs_Cache(AID: string; const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FRetrievePenerimaanARsCommand_Cache = nil then
+  begin
+    FRetrievePenerimaanARsCommand_Cache := FConnection.CreateCommand;
+    FRetrievePenerimaanARsCommand_Cache.RequestType := 'GET';
+    FRetrievePenerimaanARsCommand_Cache.Text := 'TServerPenerimaanKas.RetrievePenerimaanARs';
+    FRetrievePenerimaanARsCommand_Cache.Prepare(TServerPenerimaanKas_RetrievePenerimaanARs_Cache);
+  end;
+  FRetrievePenerimaanARsCommand_Cache.Parameters[0].Value.SetWideString(AID);
+  FRetrievePenerimaanARsCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FRetrievePenerimaanARsCommand_Cache.Parameters[1].Value.GetString);
+end;
+
 function TServerPenerimaanKasClient.RetrieveCDSlip(AID: string; const ARequestFilter: string): TDataSet;
 begin
   if FRetrieveCDSlipCommand = nil then
@@ -5896,6 +5943,8 @@ begin
   FAfterSaveCommand.DisposeOf;
   FRetrieveCommand.DisposeOf;
   FRetrieveCommand_Cache.DisposeOf;
+  FRetrievePenerimaanARsCommand.DisposeOf;
+  FRetrievePenerimaanARsCommand_Cache.DisposeOf;
   FRetrieveCDSlipCommand.DisposeOf;
   FRetrieveCDSlipCommand_Cache.DisposeOf;
   FRetrieveNoBuktiCommand.DisposeOf;

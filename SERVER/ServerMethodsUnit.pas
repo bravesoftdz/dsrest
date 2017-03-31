@@ -224,10 +224,14 @@ type
     FServerAR: TServerAR;
     function GetServerAR: TServerAR;
     property ServerAR: TServerAR read GetServerAR write FServerAR;
+  protected
   public
     destructor Destroy; override;
     function AfterSave(AAppObject : TAppObject): Boolean; override;
+    function AfterDelete(AAppObject : TAppObject): Boolean; override;
+    function BeforeSave(AAppObject : TAppObject): Boolean; override;
     function Retrieve(AID : String): TPenerimaanKas;
+    function RetrievePenerimaanARs(AID : String): TDataSet;
     function RetrieveCDSlip(AID : String): TDataset;
     function RetrieveNoBukti(ANoBukti : String): TPenerimaanKas;
   end;
@@ -1011,7 +1015,7 @@ function TServerLaporan.RetrivePenerimaanKas(ATglAwal , ATglAtglAkhir :
 var
   sSQL : String;
 begin
-  sSQL := 'SELECT * FROM TPenerimaanKas A' +
+  sSQL := 'SELECT * FROM vpenerimaan_kas A' +
           ' where a.tglbukti between ' + TAppUtils.QuotDt(StartOfTheDay(ATglAwal))+
           ' and ' + TAppUtils.QuotDt(EndOfTheDay(ATglAtglAkhir));
 
@@ -1809,6 +1813,60 @@ begin
   Result := True;
 end;
 
+function TServerPenerimaanKas.AfterDelete(AAppObject : TAppObject): Boolean;
+var
+  lPK: TPenerimaanKas;
+  I: Integer;
+  sIDAR: string;
+begin
+  Result := False;
+
+  lPK    := TPenerimaanKas(AAppObject);
+  for I := 0 to lPK.PenerimaanKasARItems.Count - 1 do
+  begin
+    sIDAR := lPK.PenerimaanKasARItems[i].AR.ID;
+    lPK.PenerimaanKasARItems[i].AR.Free;
+    lPK.PenerimaanKasARItems[i].AR := ServerAR.Retrieve(sIDAR);
+    lPK.PenerimaanKasARItems[i].AR.TerBayar := lPK.PenerimaanKasARItems[i].AR.TerBayar - lPK.PenerimaanKasARItems[i].Nominal;
+
+    if not ServerAR.SaveNoCommit(lPK.PenerimaanKasARItems[i].AR) then
+      Exit;
+  end;
+
+
+
+  Result := True;
+end;
+
+function TServerPenerimaanKas.BeforeSave(AAppObject : TAppObject): Boolean;
+var
+  lPK: TPenerimaanKas;
+  I: Integer;
+  sIDAR: string;
+begin
+  Result := False;
+
+  lPK    := Retrieve(AAppObject.ID);
+  try
+    for I := 0 to lPK.PenerimaanKasARItems.Count - 1 do
+    begin
+      sIDAR := lPK.PenerimaanKasARItems[i].AR.ID;
+      lPK.PenerimaanKasARItems[i].AR.Free;
+      lPK.PenerimaanKasARItems[i].AR := ServerAR.Retrieve(sIDAR);
+      lPK.PenerimaanKasARItems[i].AR.TerBayar := lPK.PenerimaanKasARItems[i].AR.TerBayar - lPK.PenerimaanKasARItems[i].Nominal;
+
+      if not ServerAR.SaveNoCommit(lPK.PenerimaanKasARItems[i].AR) then
+        Exit;
+    end;
+  finally
+    lPK.Free;
+  end;
+
+
+
+  Result := True;
+end;
+
 function TServerPenerimaanKas.GetServerAR: TServerAR;
 begin
   if FServerAR = nil then
@@ -1821,6 +1879,18 @@ function TServerPenerimaanKas.Retrieve(AID : String): TPenerimaanKas;
 begin
   Result := TPenerimaanKas.Create;
   TDBUtils.LoadFromDB(Result, AID);
+end;
+
+function TServerPenerimaanKas.RetrievePenerimaanARs(AID : String): TDataSet;
+var
+  sSQL: string;
+begin
+  sSQL   := 'select a.*, b.nobukti, b.nominal as nominalar, b.terbayar' +
+            ' from tpenerimaankasar a ' +
+            ' INNER JOIN tar b on a.ar = b.id ' +
+            ' where a.penerimaankas = ' + QuotedStr(AID);
+
+  Result := TDBUtils.OpenDataset(sSQL);
 end;
 
 function TServerPenerimaanKas.RetrieveCDSlip(AID : String): TDataset;

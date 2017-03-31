@@ -155,6 +155,7 @@ type
     function GetInteger(ARec, ACol : Integer): Integer;
     function GetDate(ARec, ACol : Integer): TDatetime;
     procedure SetDouble(ARec, ACol : Integer; AValue : Double);
+    function Summary(ACol : Integer): Double;
   end;
 
 
@@ -1459,6 +1460,7 @@ begin
     for I := 0 to Self.ColumnCount - 1 do
     begin
       Self.Columns[i].Caption := UpperCase(Self.Columns[i].Caption + ' ');
+      Self.Columns[i].Caption := StringReplace(Self.Columns[i].Caption ,'_', ' ',[rfReplaceAll]);
       Self.Columns[i].HeaderAlignmentHorz := taCenter;
     end;
   end;
@@ -1575,6 +1577,19 @@ procedure TcxGridTableViewHelper.SetDouble(ARec, ACol : Integer; AValue :
     Double);
 begin
   DataController.Values[ARec,ACol] := AValue;
+end;
+
+function TcxGridTableViewHelper.Summary(ACol : Integer): Double;
+var
+  iGroupIndex: Integer;
+  iIndex: Integer;
+begin
+  with DataController do
+  begin
+    iGroupIndex := Groups.DataGroupIndexByRowIndex[0];
+    iIndex      :=  Summary.DefaultGroupSummaryItems.IndexOfItemLink(Self.Columns[ACol]);
+    Result      := Summary.GroupSummaryValues[iGroupIndex, iIndex]
+  end;
 end;
 
 function TcxExtLookupHelper.cxDBTableGrid: TcxGridDBTableView;
