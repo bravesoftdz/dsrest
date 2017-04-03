@@ -138,7 +138,7 @@ begin
       edNoBukti.Text        := GenerateNoBukti(edTglBukti.Date, 'RS');
       edNoPB.Text           := '';
       cbbSupplier.EditValue := Null;
-      FID                   := '';
+//      FID                   := '';
 
       cxGridTableReturSupplier.ClearRows;
       memKeterangan.Clear;
@@ -184,7 +184,7 @@ begin
   with TServerReturSupplierClient.Create(ClientDataModule.DSRestConnection, False) do
   begin
     try
-      ReturSupplier.ID          := FID;
+//      ReturSupplier.ID          := FID;
       ReturSupplier.NoBukti     := edNoBukti.Text;
       ReturSupplier.Keterangan  := memKeterangan.Text;
       ReturSupplier.Supplier    := TSupplier.CreateID(cbbSupplier.EditValue);
@@ -518,7 +518,7 @@ begin
     try
       FreeAndNil(FReturSupplier);
       FReturSupplier := Retrieve(ANoBukti);
-      FID            := ReturSupplier.ID;
+//      FID            := ReturSupplier.ID;
 
       if ReturSupplier <> nil then
       begin

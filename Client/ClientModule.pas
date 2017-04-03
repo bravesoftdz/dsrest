@@ -4,7 +4,7 @@ interface
 
 uses
   System.SysUtils, System.Classes,  ClientClassesUnit2, IPPeerClient,
-  Datasnap.DSClientRest, uModel, cxStyles, cxClasses;
+  Datasnap.DSClientRest, uModel, cxStyles, cxClasses, uSettingApp;
 
 type
   TClientDataModule = class(TDataModule)
@@ -33,6 +33,8 @@ type
     FServerAccountClient: TServerAccountClient;
     FServerRekBankClient: TServerRekBankClient;
     FServerPenerimaanKasClient: TServerPenerimaanKasClient;
+    FServerSettingAppClient: TServerSettingAppClient;
+    FSettingApp: TSettingApp;
     function GetCabang: tcabang;
     function GetServerUOMClient: TServerUOMClient;
     function GetServerSupplierClient: TServerSupplierClient;
@@ -50,6 +52,8 @@ type
     function GetServerAccountClient: TServerAccountClient;
     function GetServerRekBankClient: TServerRekBankClient;
     function GetServerPenerimaanKasClient: TServerPenerimaanKasClient;
+    function GetServerSettingAppClient: TServerSettingAppClient;
+    function GetSettingApp: TSettingApp;
     { Private declarations }
   public
     constructor Create(AOwner: TComponent); override;
@@ -80,6 +84,9 @@ type
         GetServerPenjualanClient write FServerPenjualanClient;
     property ServerPenerimaanKasClient: TServerPenerimaanKasClient read
         GetServerPenerimaanKasClient write FServerPenerimaanKasClient;
+    property ServerSettingAppClient: TServerSettingAppClient read
+        GetServerSettingAppClient write FServerSettingAppClient;
+    property SettingApp: TSettingApp read GetSettingApp write FSettingApp;
 end;
 
 var
@@ -104,6 +111,9 @@ end;
 
 destructor TClientDataModule.Destroy;
 begin
+  FCabang.Free;
+  FSettingApp.Free;
+
   FServerUOMClient.Free;
   FServerSupplierClient.Free;
   FServerBarangClient.Free;
@@ -118,6 +128,7 @@ begin
   FServerGudangClient.Free;
   FServerAccountClient.Free;
   FServerPenerimaanKasClient.Free;
+  FServerSettingAppClient.Free;
   inherited;
 end;
 
@@ -269,6 +280,23 @@ begin
 
   FServerPenerimaanKasClient:= TServerPenerimaanKasClient.Create(DSRestConnection, FInstanceOwner);
   Result := FServerPenerimaanKasClient;
+end;
+
+function TClientDataModule.GetServerSettingAppClient: TServerSettingAppClient;
+begin
+  if FServerSettingAppClient <> nil then
+    FreeAndNil(FServerSettingAppClient);
+
+  FServerSettingAppClient:= TServerSettingAppClient.Create(DSRestConnection, FInstanceOwner);
+  Result := FServerSettingAppClient;
+end;
+
+function TClientDataModule.GetSettingApp: TSettingApp;
+begin
+  if FSettingApp = nil then
+    FSettingApp := TSettingApp.Create;
+
+  Result := FSettingApp;
 end;
 
 end.

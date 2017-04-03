@@ -13,7 +13,8 @@ uses
   cxGridCustomView, Vcl.StdCtrls, cxButtons, Vcl.ComCtrls, Vcl.ExtCtrls, cxPC,
   dxStatusBar, uDBUtils, ClientModule, uAppUtils, dxCore, cxDateUtils,
   cxMaskEdit, cxDropDownEdit, cxCalendar, cxTextEdit, cxMemo, cxLookupEdit,
-  cxDBLookupEdit, cxDBExtLookupComboBox, cxCurrencyEdit,uModel,uPenerimaanKas, uRekBank;
+  cxDBLookupEdit, cxDBExtLookupComboBox, cxCurrencyEdit,uModel,uPenerimaanKas,
+  uReport, uRekBank;
 
 type
   TfrmPenerimaanKas = class(TfrmDefault)
@@ -48,6 +49,7 @@ type
     edNoRek: TcxTextEdit;
     edAlamatBank: TcxTextEdit;
     lblStatusNominal: TLabel;
+    procedure actCetakExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ActionBaruExecute(Sender: TObject);
     procedure ActionHapusExecute(Sender: TObject);
@@ -94,6 +96,27 @@ destructor TfrmPenerimaanKas.Destroy;
 begin
   inherited;
   FreeAndNil(FPenerimaanKas);
+end;
+
+procedure TfrmPenerimaanKas.actCetakExecute(Sender: TObject);
+var
+  lcds: TClientDataSet;
+  lTSReport: TTSReport;
+begin
+  inherited;
+  lTSReport := TTSReport.Create(self);
+  try
+    with ClientDataModule.ServerPenerimaanKasClient do
+    begin
+      lcds := TDBUtils.DSToCDS(RetrieveCDSlip(Now-3000, Now + 3000, nil, PenerimaanKas.NoBukti), cxGridTableAR);
+
+      lTSReport.AddDataset(lcds, 'QPenerimaanKas');
+      lTSReport.ShowReport('SlipPenerimaanKas');
+    end;
+  finally
+    lTSReport.Free;
+  end;
+
 end;
 
 procedure TfrmPenerimaanKas.FormCreate(Sender: TObject);
@@ -316,8 +339,8 @@ end;
 
 procedure TfrmPenerimaanKas.LoadData(AID : String);
 var
-  dNominal: Double;
-  I: Integer;
+//  dNominal: Double;
+//  I: Integer;
   iBaris: Integer;
   lds: TDataSet;
 begin

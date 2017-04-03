@@ -15,10 +15,10 @@ uses
   cxDateUtils, cxGridLevel, cxDropDownEdit, cxLookupEdit, cxDBLookupEdit,
   cxMemo, cxMaskEdit, cxCalendar, cxTextEdit, Vcl.StdCtrls, ClientModule,
   uPenjualan, uDBUtils, uAppUtils, Vcl.Menus, cxCalc, dxBarBuiltInMenu, cxPC,
-  cxButtons, uReport;
+  cxButtons, uReport, uInterface;
 
 type
-  TfrmPenjualan = class(TfrmDefault)
+  TfrmPenjualan = class(TfrmDefault, IForm)
     pnlInput: TPanel;
     pgcHeader: TPageControl;
     tsHeader: TTabSheet;
@@ -26,12 +26,12 @@ type
     lblTglBukti: TLabel;
     lblSupplier: TLabel;
     lblKeterangan: TLabel;
-    lblGudang: TLabel;
+    lblPembeli: TLabel;
     edNoBukti: TcxTextEdit;
     edTglBukti: TcxDateEdit;
     memKeterangan: TcxMemo;
     cbbSalesman: TcxExtLookupComboBox;
-    cbbGudang: TcxExtLookupComboBox;
+    cbbPembeli: TcxExtLookupComboBox;
     pgcDetail: TPageControl;
     tsDetailPenerimaan: TTabSheet;
     cxGridDBPenjualan: TcxGrid;
@@ -99,7 +99,7 @@ type
     function GetPenjualan: TPenjualan;
     procedure HitungNilaiNilaiPerBaris(dNilai: Double; Acolumn : Integer);
     procedure InisialisasiCBBSalesman;
-    procedure InisialisasiCBBGudang;
+    procedure InisialisasiCBBPembeli;
     procedure InisialisasiCBBSKU;
     procedure InisialisasiCBBUOM;
     function IsPenjualanItemValid: Boolean;
@@ -109,7 +109,7 @@ type
     function JenisPenjualan: string; virtual;
     procedure SetHarga(AJenisHarga : String);
   public
-    procedure LoadDataPenjualan(AID : String);
+    function LoadData(AID : String): Boolean; stdcall;
     property Penjualan: TPenjualan read GetPenjualan write FPenjualan;
     { Public declarations }
   end;
@@ -261,7 +261,7 @@ procedure TfrmPenjualan.FormCreate(Sender: TObject);
 begin
   inherited;
   InisialisasiCBBSalesman;
-  InisialisasiCBBGudang;
+  InisialisasiCBBPembeli;
   InisialisasiCBBSKU;
   InisialisasiCBBUOM;
 
@@ -273,7 +273,6 @@ begin
   inherited;
   with ClientDataModule.ServerPenjualanClient do
   begin
-    FID             := '';
     edTglBukti.Date := Now;
     edJthTempo.Date := edTglBukti.Date + 7;
     edNoBukti.Text  := GenerateNoBukti(edTglBukti.Date, ClientDataModule.Cabang.Kode + '/PJL');
@@ -305,7 +304,7 @@ begin
   end;
 
   cxGridDBTableOverview.SetDataset(lcds, True);
-  cxGridDBTableOverview.SetVisibleColumns(['id','cabangid','jenispenjualan'], False);
+  cxGridDBTableOverview.SetVisibleColumns(['id','cabangid','jenispenjualan', 'salesmanid'], False);
   cxGridDBTableOverview.ApplyBestFit();
 end;
 
@@ -322,15 +321,17 @@ begin
   if not IsPenjualanItemValid then
     Exit;
 
-  Penjualan.ID             := FID;
   Penjualan.NoBukti        := edNoBukti.Text;
   Penjualan.Cabang         := TCabang.CreateID(ClientDataModule.Cabang.ID);
-  Penjualan.Gudang         := TGudang.CreateID(cbbGudang.EditValue);
   Penjualan.JatuhTempo     := edJthTempo.Date;
   Penjualan.TglBukti       := edTglBukti.Date;
   Penjualan.JenisPenjualan := JenisPenjualan;
   Penjualan.JenisPembayaran:= cbbJenisPembayaran.Properties.Items[cbbJenisPembayaran.ItemIndex];
-  Penjualan.Pembeli        := TSupplier.CreateID(cbbSalesman.EditValue);
+
+  Penjualan.Salesman       := TSupplier.CreateID(cbbSalesman.EditValue);
+  Penjualan.Pembeli        := TSupplier.CreateID(cbbPembeli.EditValue);
+  Penjualan.Gudang         := TGudang.CreateID(ClientDataModule.SettingApp.GudangPenjualan.ID);
+
   Penjualan.Kasir          := 'AKU';
   Penjualan.Keterangan     := memKeterangan.Text;
   Penjualan.Fee            := cbbFee.Properties.Items[cbbFee.ItemIndex];
@@ -366,7 +367,7 @@ begin
 
   frmCustomerInvoice := TfrmCustomerInvoice.Create(Application);
   frmCustomerInvoice.ActionBaruExecute(Sender);
-  frmCustomerInvoice.LoadDataPenjualan(FPenjualan.NoBukti);
+  frmCustomerInvoice.LoadDataCI(FPenjualan.NoBukti);
 end;
 
 procedure TfrmPenjualan.Bengkel1Click(Sender: TObject);
@@ -380,7 +381,7 @@ procedure TfrmPenjualan.cxGridDBTableOverviewCellDblClick(Sender:
     AButton: TMouseButton; AShift: TShiftState; var AHandled: Boolean);
 begin
   inherited;
-  LoadDataPenjualan(cxGridDBTableOverview.DS.FieldByName('ID').AsString);
+  LoadData(cxGridDBTableOverview.DS.FieldByName('ID').AsString);
   cxPCData.ActivePageIndex := 1;
 end;
 
@@ -464,15 +465,15 @@ begin
   cbbSalesman.Properties.SetMultiPurposeLookup;
 end;
 
-procedure TfrmPenjualan.InisialisasiCBBGudang;
+procedure TfrmPenjualan.InisialisasiCBBPembeli;
 var
-  lCDSGudang: TClientDataSet;
+  lCDSPembeli: TClientDataSet;
   sSQL: string;
 begin
-  sSQL := 'select Nama,Kode,ID from TGudang';
-  lCDSGudang := TDBUtils.OpenDataset(sSQL);
-  cbbGudang.Properties.LoadFromCDS(lCDSGudang,'ID','Nama',['ID'],Self);
-  cbbGudang.Properties.SetMultiPurposeLookup;
+  sSQL := 'select * from vpembeli';
+  lCDSPembeli := TDBUtils.OpenDataset(sSQL, Self);
+  cbbPembeli.Properties.LoadFromCDS(lCDSPembeli,'ID','Nama',['ID'],Self);
+  cbbPembeli.Properties.SetMultiPurposeLookup;
 end;
 
 procedure TfrmPenjualan.InisialisasiCBBSKU;
@@ -566,26 +567,32 @@ begin
   SetHarga('keliling');
 end;
 
-procedure TfrmPenjualan.LoadDataPenjualan(AID : String);
+function TfrmPenjualan.LoadData(AID : String): Boolean;
 var
   i: Integer;
 begin
-  with ClientDataModule.ServerPenjualanClient do
-  begin
-    FreeAndNil(FPenjualan);
-    FPenjualan := Retrieve(AID);
-    FID               := Penjualan.ID;
+  Result := False;
 
-    if Penjualan <> nil then
+  try
+    with ClientDataModule.ServerPenjualanClient do
     begin
+      FreeAndNil(FPenjualan);
+      FPenjualan := Retrieve(AID);
+
+      if FPenjualan = nil then
+        Exit;
+
+      if FPenjualan.ID = '' then
+        Exit;
+
       edNoBukti.Text := Penjualan.NoBukti;
       edTglBukti.Date:= Penjualan.TglBukti;
 
       if Penjualan.Pembeli.ID <> '' then
-        cbbSalesman.EditValue := Penjualan.Pembeli.ID;
+        cbbPembeli.EditValue := Penjualan.Pembeli.ID;
 
-      if Penjualan.Gudang.ID <> '' then
-        cbbGudang.EditValue := Penjualan.Gudang.ID;
+      if Penjualan.Salesman.ID <> '' then
+        cbbSalesman.EditValue := Penjualan.Salesman.ID;
 
       memKeterangan.Lines.Text     := Penjualan.Keterangan;
       edTempo.Value                := Penjualan.TOP;
@@ -611,8 +618,11 @@ begin
 
 
       end;
-
     end;
+
+    Result := True;
+  except
+    raise
   end;
 end;
 

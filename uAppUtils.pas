@@ -47,6 +47,7 @@ type
         TcxGridDBTableView); overload;
     class function BacaRegistry(aNama: String; aPath : String = ''): string;
     class procedure BeginBusy;
+    class function BoolToInt(AStatus : Boolean): Integer;
     class procedure cCloseWaitWindow;
 //    class function cGetIDfromCombo(AComboBox :TComboBox; itemIndex : integer = -1):
 //        string; overload;
@@ -339,6 +340,13 @@ begin
     Screen.Cursor := crHourglass;
   end;
   Inc(BusyCount);
+end;
+
+class function TAppUtils.BoolToInt(AStatus : Boolean): Integer;
+begin
+  Result := 0;
+  if AStatus then
+    Result := 1;
 end;
 
 class procedure TAppUtils.cCloseWaitWindow;
@@ -652,12 +660,12 @@ end;
 
 class procedure TAppUtils.InformationBerhasilHapus;
 begin
-  //MessageDlg(_MSG_BERHASIL_HAPUS, mtInformation, [mbYes], 0);;
+  MessageDlg(_MSG_BERHASIL_HAPUS, mtInformation, [mbYes], 0);;
 end;
 
 class procedure TAppUtils.InformationBerhasilSimpan;
 begin
-  //MessageDlg(_MSG_BERHASIL_SIMPAN, mtInformation, [mbYes], 0);;
+  MessageDlg(_MSG_BERHASIL_SIMPAN, mtInformation, [mbYes], 0);;
 end;
 
 class procedure TAppUtils.InformationBerhasilSimpan(aNoBukti: string);
@@ -1459,7 +1467,7 @@ begin
     Self.DataController.CreateAllItems(True);
     for I := 0 to Self.ColumnCount - 1 do
     begin
-      Self.Columns[i].Caption := UpperCase(Self.Columns[i].Caption + ' ');
+      Self.Columns[i].Caption := UpperCase(Trim(' ' + Self.Columns[i].Caption) + ' ');
       Self.Columns[i].Caption := StringReplace(Self.Columns[i].Caption ,'_', ' ',[rfReplaceAll]);
       Self.Columns[i].HeaderAlignmentHorz := taCenter;
     end;
@@ -1775,6 +1783,7 @@ begin
     if C is TcxExtLookupComboBox then TcxExtLookupComboBox(C).Clear else
     if C is TcxComboBox then TcxComboBox(C).Clear else
     if C is TcxCheckBox then TcxCheckBox(C).Clear else
+    if C is TCheckBox then TCheckBox(C).Checked := False else
     if C is TcxSpinEdit then TcxSpinEdit(C).Clear else
     if C is TcxCurrencyEdit then TcxCurrencyEdit(C).Value := 0 else
     if C is TcxMemo then TcxMemo(C).Clear else

@@ -1,32 +1,30 @@
 inherited frmSupplier: TfrmSupplier
-  Caption = 'Supplier'
-  ClientHeight = 462
-  ExplicitTop = -28
+  Caption = 'Business Partner'
+  ClientHeight = 364
   ExplicitWidth = 733
-  ExplicitHeight = 501
+  ExplicitHeight = 403
   PixelsPerInch = 96
   TextHeight = 13
   inherited cxSBTransaksi: TdxStatusBar
-    Top = 442
+    Top = 344
     ExplicitTop = 442
   end
   inherited cxPCData: TcxPageControl
-    Height = 409
-    ExplicitTop = 0
+    Height = 311
     ExplicitHeight = 409
-    ClientRectBottom = 405
+    ClientRectBottom = 307
     inherited cxTSOverview: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
       ExplicitWidth = 709
       ExplicitHeight = 381
       inherited splTransaksi: TSplitter
-        Height = 381
+        Height = 283
         ExplicitLeft = 161
         ExplicitHeight = 392
       end
       inherited pnlListTransaksi: TPanel
-        Height = 381
+        Height = 283
         ExplicitHeight = 381
         inherited pnlFilter: TPanel
           TabOrder = 1
@@ -42,9 +40,13 @@ inherited frmSupplier: TfrmSupplier
           inherited dtpAkhir: TDateTimePicker
             Visible = False
           end
+          inherited btnRefresh: TcxButton
+            ExplicitLeft = 598
+            ExplicitTop = -4
+          end
         end
         inherited cxGrid: TcxGrid
-          Height = 347
+          Height = 249
           TabOrder = 0
           ExplicitHeight = 347
           inherited cxGridDBTableOverview: TcxGridDBTableView
@@ -54,6 +56,9 @@ inherited frmSupplier: TfrmSupplier
       end
     end
     inherited cxTSInputData: TcxTabSheet
+      ExplicitLeft = 5
+      ExplicitTop = 25
+      ExplicitWidth = 709
       ExplicitHeight = 381
       object lblKode: TLabel
         Left = 19
@@ -70,13 +75,14 @@ inherited frmSupplier: TfrmSupplier
         Caption = 'Nama'
       end
       object lblAlamat: TLabel
-        Left = 10
-        Top = 63
+        Left = 290
+        Top = 17
         Width = 33
         Height = 13
         Caption = 'Alamat'
       end
       object edKode: TcxTextEdit
+        Tag = 1
         Left = 49
         Top = 13
         TabOrder = 0
@@ -84,6 +90,7 @@ inherited frmSupplier: TfrmSupplier
         Width = 121
       end
       object edNama: TcxTextEdit
+        Tag = 1
         Left = 49
         Top = 38
         TabOrder = 1
@@ -91,54 +98,57 @@ inherited frmSupplier: TfrmSupplier
         Width = 185
       end
       object memAlamt: TcxMemo
-        Left = 49
-        Top = 63
+        Left = 329
+        Top = 13
         Lines.Strings = (
           'memAlamt')
         TabOrder = 2
-        Height = 89
+        Height = 46
         Width = 185
+      end
+      object grpRole: TGroupBox
+        Left = 49
+        Top = 63
+        Width = 465
+        Height = 49
+        Caption = 'grpRole'
+        TabOrder = 3
+        object chkSupplier: TCheckBox
+          Left = 59
+          Top = 16
+          Width = 62
+          Height = 17
+          Caption = 'Supplier'
+          TabOrder = 0
+        end
+        object chkPembeli: TCheckBox
+          Left = 205
+          Top = 16
+          Width = 55
+          Height = 17
+          Caption = 'Pembeli'
+          TabOrder = 1
+        end
+        object chkSalesman: TCheckBox
+          Left = 336
+          Top = 16
+          Width = 65
+          Height = 17
+          Caption = 'Salesman'
+          TabOrder = 2
+        end
       end
     end
   end
   inherited pnlButton: TPanel
-    Top = 409
+    Top = 311
     ExplicitTop = 409
-    inherited btnBaru: TcxButton
-      ExplicitLeft = 641
-      ExplicitTop = 1
-      ExplicitHeight = 31
-    end
-    inherited btnCetak: TcxButton
-      ExplicitLeft = 1
-      ExplicitTop = 1
-      ExplicitHeight = 31
-    end
-    inherited btnHapus: TcxButton
-      ExplicitLeft = 566
-      ExplicitTop = 1
-      ExplicitHeight = 31
-    end
-    inherited btnExport: TcxButton
-      ExplicitLeft = 76
-      ExplicitHeight = 31
-    end
-    inherited btnSave: TcxButton
-      ExplicitLeft = 458
-      ExplicitTop = 1
-      ExplicitHeight = 31
-    end
     inherited chkKonsolidasi1: TcxCheckBox
-      ExplicitLeft = 195
-      ExplicitTop = 1
       ExplicitWidth = 76
       ExplicitHeight = 31
     end
   end
   inherited ActionListForm: TActionList
-    inherited ActionBaru: TAction
-      OnExecute = ActionBaruExecute
-    end
     inherited ActionSimpan: TAction
       OnExecute = ActionSimpanExecute
     end
@@ -151,7 +161,7 @@ inherited frmSupplier: TfrmSupplier
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C0101050008005C0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010105000800600018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

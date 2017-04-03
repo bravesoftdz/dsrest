@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<TfrxReport Version="5.3.16" DotMatrixReport="False" IniFile="\Software\Fast Reports" PreviewOptions.Buttons="4095" PreviewOptions.Zoom="1" PrintOptions.Printer="Default" PrintOptions.PrintOnSheet="0" ReportOptions.CreateDate="42814.7252085301" ReportOptions.Description.Text="" ReportOptions.LastChange="42826.6003952083" ScriptLanguage="PascalScript" ScriptText.Text="var      &#13;&#10;  dDiskon : Double;&#13;&#10;  dTotal : Double ;&#13;&#10;  dTerbayar : Double;                                            &#13;&#10;procedure MasterData1OnBeforePrint(Sender: TfrxComponent);&#13;&#10;begin&#13;&#10;  //dDiskon := &#60;QPenjualan.&#34;qty&#34;&#62;*&#60;QPenjualan.&#34;harga&#34;&#62;*&#60;QPenjualan.&#34;diskon&#34;&#62;/100;&#13;&#10; // dTotal := &#60;QPenjualan.&#34;qty&#34;&#62;*&#60;QPenjualan.&#34;harga&#34;&#62;*(100 - &#60;QPenjualan.&#34;diskon&#34;&#62;)/100;                  &#13;&#10;end;&#13;&#10;&#13;&#10;begin&#13;&#10;  dDiskon := 0;&#13;&#10;  dTotal := 0;                            &#13;&#10;&#13;&#10;end." StoreInDFM="False">
+  <Datasets>
+    <item DataSet="QPenerimaanKas" DataSetName="QPenerimaanKas"/>
+  </Datasets>
+  <TfrxDataPage Name="Data" Height="1000" Left="0" Top="0" Width="1000"/>
+  <TfrxReportPage Name="Page1" Orientation="poLandscape" PaperWidth="257" PaperHeight="182" PaperSize="13" LeftMargin="10" RightMargin="10" TopMargin="10" BottomMargin="10" ColumnWidth="0" ColumnPositions.Text="" HGuides.Text="" VGuides.Text="">
+    <TfrxMasterData Name="MasterData1" FillType="ftBrush" FillGap.Top="0" FillGap.Left="0" FillGap.Bottom="0" FillGap.Right="0" Height="18.89765" Left="0" Top="230.55133" Width="895.74861" OnBeforePrint="MasterData1OnBeforePrint" ColumnWidth="0" ColumnGap="0" DataSet="QPenerimaanKas" DataSetName="QPenerimaanKas" RowCount="0">
+      <TfrxMemoView Name="QPenjualanbarang" Left="49.13389" Top="0" Width="185.19671614" Height="18.89765" DataField="nobuktiar" DataSet="QPenerimaanKas" DataSetName="QPenerimaanKas" Font.Charset="1" Font.Color="0" Font.Height="-11" Font.Name="verdana" Font.Style="0" Frame.Typ="2" GapX="5" GapY="3" ParentFont="False" Text="[QPenerimaanKas.&#34;nobuktiar&#34;]"/>
+      <TfrxMemoView Name="QPenjualanharga" Left="540.47279" Top="0" Width="98.26778" Height="18.89765" DataField="detnominal" DataSet="QPenerimaanKas" DataSetName="QPenerimaanKas" DisplayFormat.DecimalSeparator="." DisplayFormat.FormatStr="%2.0n" DisplayFormat.Kind="fkNumeric" Font.Charset="1" Font.Color="0" Font.Height="-11" Font.Name="verdana" Font.Style="0" Frame.Typ="2" GapX="5" GapY="3" HAlign="haRight" ParentFont="False" Text="[QPenerimaanKas.&#34;detnominal&#34;]"/>
+      <TfrxMemoView Name="Memo15" Left="0" Top="0" Width="49.13389" Height="18.89765" DataSetName="QPenjualan" Font.Charset="1" Font.Color="0" Font.Height="-11" Font.Name="verdana" Font.Style="0" Frame.Typ="3" GapX="5" GapY="3" HAlign="haRight" ParentFont="False" Text="[Line#]"/>
+      <TfrxMemoView Name="QPenjualanharga1" Left="419.52783" Top="0" Width="120.94488189" Height="18.89765" DataField="detket" DataSet="QPenerimaanKas" DataSetName="QPenerimaanKas" Font.Charset="1" Font.Color="0" Font.Height="-11" Font.Name="verdana" Font.Style="0" Frame.Typ="2" GapX="5" HAlign="haRight" ParentFont="False" Text="[QPenerimaanKas.&#34;detket&#34;]"/>
+      <TfrxMemoView Name="Memo8" Left="234.33086" Top="0" Width="185.19671614" Height="18.89765" DataField="nobuktitransaksi" DataSet="QPenerimaanKas" DataSetName="QPenerimaanKas" Font.Charset="1" Font.Color="0" Font.Height="-11" Font.Name="verdana" Font.Style="0" Frame.Typ="2" GapX="5" GapY="3" ParentFont="False" Text="[QPenerimaanKas.&#34;nobuktitransaksi&#34;]"/>
+    </TfrxMasterData>
+    <TfrxGroupHeader Name="GroupHeader1" FillType="ftBrush" FillGap.Top="0" FillGap.Left="0" FillGap.Bottom="0" FillGap.Right="0" Height="188.8741378" Left="0" Top="18.89765" Width="895.74861" Condition="QPenerimaanKas.&#34;nobukti&#34;" StartNewPage="True">
+      <TfrxMemoView Name="Memo6" Left="0" Top="0" Width="336.37817" Height="37.7953" Font.Charset="1" Font.Color="0" Font.Height="-24" Font.Name="Arial" Font.Style="1" ParentFont="False" Text="Motoroli Cab. [QPenerimaanKas.&#34;cabang&#34;]"/>
+      <TfrxMemoView Name="QPenjualancabangalamat" Left="0" Top="37.7953" Width="336.37817" Height="18.89765" DataSetName="QPenjualan" Font.Charset="1" Font.Color="0" Font.Height="-11" Font.Name="Arial" Font.Style="0" ParentFont="False" Text="[QPenerimaanKas.&#34;cabangalamat&#34;]"/>
+      <TfrxMemoView Name="QPenjualancabangtelp" Left="0" Top="56.69295" Width="336.37817" Height="18.89765" DataSetName="QPenjualan" Font.Charset="1" Font.Color="0" Font.Height="-11" Font.Name="Arial" Font.Style="0" ParentFont="False" Text="Telp[QPenerimaanKas.&#34;cabangtelp&#34;] Fax [QPenerimaanKas.&#34;cabangfax&#34;]">
+        <Formats>
+          <item/>
+          <item/>
+        </Formats>
+      </TfrxMemoView>
+      <TfrxMemoView Name="Memo7" Left="383.62245244" Top="0" Width="255.11811756" Height="37.7953" Font.Charset="1" Font.Color="0" Font.Height="-24" Font.Name="Arial" Font.Style="1" Frame.Typ="15" Fill.BackColor="12632256" HAlign="haCenter" ParentFont="False" Text="Penerimaan Kas"/>
+      <TfrxMemoView Name="Memo16" Left="0" Top="90.70872" Width="226.7718" Height="22.67718" Font.Charset="1" Font.Color="0" Font.Height="-11" Font.Name="Arial" Font.Style="5" Frame.Typ="8" ParentFont="False" Text="Dibayarkan Oleh"/>
+      <TfrxMemoView Name="QPenjualanpembeli" Left="0" Top="117.16543" Width="226.7718" Height="18.89765" DataSetName="QPenjualan" Font.Charset="1" Font.Color="0" Font.Height="-11" Font.Name="Arial" Font.Style="1" ParentFont="False" Text="[ &#60;QPenerimaanKas.&#34;nama_pembeli&#34;&#62;]"/>
+      <TfrxMemoView Name="Memo14" Left="419.52783" Top="169.9765" Width="120.94496" Height="18.8976378" Font.Charset="1" Font.Color="0" Font.Height="-11" Font.Name="verdana" Font.Style="1" Frame.Typ="14" Fill.BackColor="15790320" HAlign="haCenter" ParentFont="False" VAlign="vaCenter" Text="Keterangan"/>
+      <TfrxMemoView Name="Memo4" Left="49.13389" Top="169.9765" Width="185.19697" Height="18.8976378" Font.Charset="1" Font.Color="0" Font.Height="-11" Font.Name="verdana" Font.Style="1" Frame.Typ="14" Fill.BackColor="15790320" HAlign="haCenter" ParentFont="False" VAlign="vaCenter" Text="No Invoice"/>
+      <TfrxMemoView Name="Memo13" Left="0" Top="169.9765" Width="49.13389" Height="18.8976377952756" Font.Charset="1" Font.Color="0" Font.Height="-11" Font.Name="verdana" Font.Style="1" Frame.Typ="15" Fill.BackColor="15790320" HAlign="haCenter" ParentFont="False" VAlign="vaCenter" Text="No"/>
+      <TfrxMemoView Name="QPenjualanalamatpembeli" Left="0" Top="136.06308" Width="226.7718" Height="34.01577" DataSetName="QPenjualan" Font.Charset="1" Font.Color="0" Font.Height="-11" Font.Name="Arial" Font.Style="0" ParentFont="False" Text="[QPenerimaanKas.&#34;alamat_pembeli&#34;]"/>
+      <TfrxMemoView Name="QPenjualanjenispembayaran" Left="536.69326" Top="151.40167" Width="102.04731" Height="18.89765" DataSetName="QPenjualan" Font.Charset="1" Font.Color="0" Font.Height="-11" Font.Name="Arial" Font.Style="0" HAlign="haRight" ParentFont="False" Text="Tgl :[QPenerimaanKas.&#34;tglbukti&#34;]">
+        <Formats>
+          <item FormatStr="dd mmm yyyy" Kind="fkDateTime"/>
+          <item/>
+        </Formats>
+      </TfrxMemoView>
+      <TfrxBarCodeView Name="BarCode1" Left="383.62245244" Top="38.5906" Width="90" Height="37.79527559" BarType="bcCodeEAN128" Expression="&#60;QPenerimaanKas.&#34;nobukti&#34;&#62;" Frame.Typ="15" Rotation="0" Text="12345678" WideBarRatio="2" Zoom="1" Font.Charset="1" Font.Color="0" Font.Height="-12" Font.Name="Arial" Font.Style="1"/>
+      <TfrxMemoView Name="Memo3" Left="234.33086" Top="170.07885" Width="185.19697" Height="18.8976378" Font.Charset="1" Font.Color="0" Font.Height="-11" Font.Name="verdana" Font.Style="1" Frame.Typ="14" Fill.BackColor="15790320" HAlign="haCenter" ParentFont="False" VAlign="vaCenter" Text="No Transaksi"/>
+      <TfrxMemoView Name="Memo9" Left="332.59864" Top="151.40167" Width="200.31509" Height="18.89765" DataSetName="QPenjualan" DisplayFormat.FormatStr="%2.2n" DisplayFormat.Kind="fkNumeric" Font.Charset="1" Font.Color="0" Font.Height="-11" Font.Name="Arial" Font.Style="0" HAlign="haRight" ParentFont="False" Text="Total : Rp [QPenerimaanKas.&#34;nominal&#34;]"/>
+      <TfrxMemoView Name="Memo1" Left="540.47279" Top="169.9765" Width="98.26778" Height="18.8976378" Font.Charset="1" Font.Color="0" Font.Height="-11" Font.Name="verdana" Font.Style="1" Frame.Typ="15" Fill.BackColor="15790320" HAlign="haCenter" ParentFont="False" VAlign="vaCenter" Text="Nominal"/>
+    </TfrxGroupHeader>
+    <TfrxGroupFooter Name="GroupFooter1" FillType="ftBrush" FillGap.Top="0" FillGap.Left="0" FillGap.Bottom="0" FillGap.Right="0" Height="145.94496" Left="0" Top="272.12616" Width="895.74861">
+      <TfrxLineView Name="Line1" Left="0" Top="0" Width="638.74057" Height="0" Color="0" Frame.Typ="4"/>
+      <TfrxMemoView Name="QPenjualanketerangan" Left="0" Top="0" Width="351.49629" Height="37.7953" DataSetName="QPenjualan" Font.Charset="1" Font.Color="0" Font.Height="-11" Font.Name="Arial" Font.Style="2" ParentFont="False" Text="Keterangan : [QPenerimaanKas.&#34;keterangan&#34;]"/>
+      <TfrxMemoView Name="QPenjualankasir" Left="449.76411394" Top="122.5906" Width="188.97637795" Height="18.89765" DataSetName="QPenjualan" Font.Charset="1" Font.Color="0" Font.Height="-11" Font.Name="Arial" Font.Style="0" HAlign="haCenter" ParentFont="False" Text="[QPenerimaanKas.&#34;petugas&#34;]"/>
+      <TfrxMemoView Name="Memo26" Left="449.76411394" Top="78.69295" Width="188.97637795" Height="18.89765" Font.Charset="1" Font.Color="0" Font.Height="-11" Font.Name="Arial" Font.Style="0" HAlign="haCenter" ParentFont="False" Text="Keuangan"/>
+      <TfrxMemoView Name="Memo20" Left="449.76407" Top="0.55906" Width="90.70866142" Height="18.89765" DataSetName="QPenjualan" Font.Charset="1" Font.Color="0" Font.Height="-11" Font.Name="verdana" Font.Style="1" GapX="0" GapY="3" HAlign="haRight" ParentFont="False" Text="TOTAL "/>
+      <TfrxMemoView Name="Memo24" Left="540.47279" Top="0.55906" Width="98.26770189" Height="18.89765" DataSetName="QPenjualan" DisplayFormat.DecimalSeparator="." DisplayFormat.FormatStr="%2.0n" DisplayFormat.Kind="fkNumeric" Font.Charset="1" Font.Color="0" Font.Height="-11" Font.Name="verdana" Font.Style="1" HAlign="haRight" ParentFont="False" Text="[SUM(&#60;QPenerimaanKas.&#34;detnominal&#34;&#62;,MasterData1)]"/>
+      <TfrxMemoView Name="Memo2" Left="449.76407" Top="59.7953" Width="188.97637795" Height="18.89765" DisplayFormat.FormatStr="dd mmm yyyy" DisplayFormat.Kind="fkDateTime" Font.Charset="1" Font.Color="0" Font.Height="-11" Font.Name="Arial" Font.Style="0" HAlign="haCenter" ParentFont="False" Text="Surakarta, [Date]"/>
+    </TfrxGroupFooter>
+    <TfrxPageFooter Name="PageFooter1" FillType="ftBrush" FillGap.Top="0" FillGap.Left="0" FillGap.Bottom="0" FillGap.Right="0" Height="18.8976377952756" Left="0" Top="480.00031" Width="895.74861">
+      <TfrxMemoView Name="Memo27" Left="0" Top="0" Width="619.84279795" Height="18.89765" Font.Charset="1" Font.Color="0" Font.Height="-11" Font.Name="Arial" Font.Style="2" Frame.Typ="4" ParentFont="False" Text="Dicetak Pada : [&#60;Date&#62;] [&#60;Time&#62;]">
+        <Formats>
+          <item/>
+          <item/>
+        </Formats>
+      </TfrxMemoView>
+      <TfrxMemoView Name="Memo28" Left="619.84292" Top="0" Width="275.90556795" Height="18.89765" Font.Charset="1" Font.Color="0" Font.Height="-11" Font.Name="Arial" Font.Style="2" Frame.Typ="4" HAlign="haRight" ParentFont="False" Text="Dicetak Oleh : [QPenerimaanKas.&#34;petugas&#34;]"/>
+    </TfrxPageFooter>
+  </TfrxReportPage>
+</TfrxReport>

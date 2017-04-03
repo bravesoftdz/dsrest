@@ -35,6 +35,7 @@ type
     class function GetNextIDGUID: TGuid;
     class function GetNextIDGUIDToString: string;
     class procedure LoadFromDB(AOBject : TAppObject; AID : String);
+    class procedure LoadFromDBSQL(AOBject : TAppObject; ASQL : String);
     class function OpenMemTable(ASQL : String): TFDMemTable;
     class function OpenQuery(ASQL : String): TFDQuery;
   end;
@@ -595,6 +596,19 @@ begin
     AOBject.ObjectState := 3;
     Q.Free;
   end;
+end;
+
+class procedure TDBUtils.LoadFromDBSQL(AOBject : TAppObject; ASQL : String);
+begin
+  with TDBUtils.OpenQuery(ASQL) do
+  begin
+    try
+      LoadFromDB(AOBject, FieldByName('ID').AsString);
+    finally
+      Free;
+    end;
+  end;
+
 end;
 
 class function TDBUtils.OpenMemTable(ASQL : String): TFDMemTable;

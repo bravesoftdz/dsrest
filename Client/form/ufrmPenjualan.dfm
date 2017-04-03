@@ -2,6 +2,7 @@ inherited frmPenjualan: TfrmPenjualan
   Caption = 'Penjualan'
   ClientHeight = 429
   ClientWidth = 775
+  ExplicitTop = -73
   ExplicitWidth = 791
   ExplicitHeight = 468
   PixelsPerInch = 96
@@ -15,7 +16,6 @@ inherited frmPenjualan: TfrmPenjualan
   inherited cxPCData: TcxPageControl
     Width = 775
     Height = 376
-    Properties.ActivePage = cxTSInputData
     ExplicitWidth = 775
     ExplicitHeight = 376
     ClientRectBottom = 372
@@ -120,12 +120,12 @@ inherited frmPenjualan: TfrmPenjualan
               Height = 13
               Caption = 'Keterangan'
             end
-            object lblGudang: TLabel
+            object lblPembeli: TLabel
               Left = 24
               Top = 81
-              Width = 37
+              Width = 36
               Height = 13
-              Caption = 'Gudang'
+              Caption = 'Pembeli'
             end
             object lblJthTempo: TLabel
               Left = 450
@@ -192,7 +192,7 @@ inherited frmPenjualan: TfrmPenjualan
               TabOrder = 2
               Width = 192
             end
-            object cbbGudang: TcxExtLookupComboBox
+            object cbbPembeli: TcxExtLookupComboBox
               Tag = 1
               Left = 72
               Top = 78
@@ -498,7 +498,7 @@ inherited frmPenjualan: TfrmPenjualan
     Left = 40
     Top = 352
     Bitmap = {
-      494C010106000800D80018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010106000800E40018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

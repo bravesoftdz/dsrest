@@ -13,7 +13,7 @@ uses
   FireDAC.Phys.ODBCBase, FireDAC.Phys.MSSQL, Firedac.Dapt,
   dxRibbonCustomizationForm, FireDAC.Phys.MSSQLDef, FireDAC.Phys.PGDef,
   System.ImageList, ufrmLapKartuStock, ufrmPenjualan, ufrmPenjualanPOS,
-  ufrmCustomerInvoice,ufrmPenerimaanKas, ufrmRekBank, ufrmLaporanAR;
+  ufrmCustomerInvoice,ufrmPenerimaanKas, ufrmRekBank, ufrmLaporanAR, ufrmSettingAplikasi;
 
 type
   TfrmMain = class(TForm)
@@ -108,6 +108,9 @@ type
     actMasterAccount: TAction;
     dxbrlrgbtnBank: TdxBarLargeButton;
     actMasterBank: TAction;
+    dxbrlrgbtnSettingAplikasi: TdxBarLargeButton;
+    dxbrlrgbtnSettingAplikas: TdxBarLargeButton;
+    actSettingAplikasi: TAction;
     procedure actAlatGantiCabangExecute(Sender: TObject);
     procedure actApplicationExitExecute(Sender: TObject);
     procedure actClosingInventoryExecute(Sender: TObject);
@@ -126,6 +129,7 @@ type
     procedure actPenjualanPOSExecute(Sender: TObject);
     procedure actPenjualanSalesExecute(Sender: TObject);
     procedure actReturSupplierExecute(Sender: TObject);
+    procedure actSettingAplikasiExecute(Sender: TObject);
     procedure actSettingKoneksiExecute(Sender: TObject);
   private
     procedure UpdateStatusBar;
@@ -246,6 +250,11 @@ begin
   frmReturSupplier := TfrmReturSupplier.Create(Self);
 end;
 
+procedure TfrmMain.actSettingAplikasiExecute(Sender: TObject);
+begin
+  frmSettingAplikasi := TfrmSettingAplikasi.Create(Self);
+end;
+
 procedure TfrmMain.actSettingKoneksiExecute(Sender: TObject);
 var
   I: Integer;
@@ -286,6 +295,11 @@ begin
     if TAppUtils.BacaRegistry('cabang') <> '' then
     begin
       TDBUtils.LoadFromDB(ClientDataModule.Cabang, TAppUtils.BacaRegistry('cabang'));
+
+      ClientDataModule.SettingApp.Free;
+      ClientDataModule.SettingApp := ClientDataModule.ServerSettingAppClient.RetrieveByCabang(ClientDataModule.Cabang.ID);
+
+
     end else begin
       frmPilihCabang := TfrmPilihCabang.Create(Self);
       try

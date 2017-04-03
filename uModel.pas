@@ -362,11 +362,15 @@ type
     FTglBukti: TDatetime;
     FUOM: TUOM;
     function GetPeriode: Integer;
+    procedure SetBarang(const Value: TBarang);
+    procedure SetCabang(const Value: TCabang);
+    procedure SetGudang(const Value: TGudang);
+    procedure SetUOM(const Value: TUOM);
   public
   published
-    property Barang: TBarang read FBarang write FBarang;
-    property Cabang: TCabang read FCabang write FCabang;
-    property Gudang: TGudang read FGudang write FGudang;
+    property Barang: TBarang read FBarang write SetBarang;
+    property Cabang: TCabang read FCabang write SetCabang;
+    property Gudang: TGudang read FGudang write SetGudang;
     property Harga: Double read FHarga write FHarga;
     property Keterangan: string read FKeterangan write FKeterangan;
     property Konversi: Double read FKonversi write FKonversi;
@@ -376,7 +380,7 @@ type
     property QtyIn: Double read FQtyIn write FQtyIn;
     property QtyOut: Double read FQtyOut write FQtyOut;
     property TglBukti: TDatetime read FTglBukti write FTglBukti;
-    property UOM: TUOM read FUOM write FUOM;
+    property UOM: TUOM read FUOM write SetUOM;
   end;
 
 type
@@ -538,6 +542,30 @@ function TMutasiStock.GetPeriode: Integer;
 begin
   FPeriode  := StrToInt(FormatDateTime('yyyyMM', TglBukti));
   Result := FPeriode;
+end;
+
+procedure TMutasiStock.SetBarang(const Value: TBarang);
+begin
+  FreeAndNil(FBarang);
+  FBarang := Value;
+end;
+
+procedure TMutasiStock.SetCabang(const Value: TCabang);
+begin
+  FreeAndNil(FCabang);
+  FCabang := Value;
+end;
+
+procedure TMutasiStock.SetGudang(const Value: TGudang);
+begin
+  FreeAndNil(FGudang);
+  FGudang := Value;
+end;
+
+procedure TMutasiStock.SetUOM(const Value: TUOM);
+begin
+  FreeAndNil(FUOM);
+  FUOM := Value;
 end;
 
 function TInvoiceSupplierItem.GetHargaSetelahDiskon: Double;

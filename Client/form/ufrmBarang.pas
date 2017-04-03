@@ -100,7 +100,6 @@ end;
 procedure TfrmBarang.ActionBaruExecute(Sender: TObject);
 begin
   inherited;
-  FID := '';
   edKode.Text := '';
   edNama.Text := '';
 
@@ -148,7 +147,7 @@ begin
   begin
     try
 //      Barang              := TBarang.Create;
-      Barang.ID             := FID;
+//      Barang.ID             := FID;
       Barang.SKU            := edKode.Text;
       Barang.Nama           := edNama.Text;
       Barang.GroupBarang    := TGroupBarang.Create;
@@ -329,7 +328,7 @@ begin
     FreeAndNil(FBarang);
     FBarang                  := Retrieve(AID);
 
-    FID                      := Barang.ID;
+//    FID                      := Barang.ID;
     edKode.Text              := Barang.SKU;
     edNama.Text              := Barang.Nama;
     cbbGroup.EditValue       := Barang.GroupBarang.ID;

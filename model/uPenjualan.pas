@@ -52,6 +52,7 @@ type
     FKeterangan: string;
     FNoBukti: string;
     FPembeli: TSupplier;
+    FSalesman: TSupplier;
     FPenjualanItems: TObjectList<TPenjualanItem>;
     FTglBukti: TDatetime;
     FTOP: Integer;
@@ -68,6 +69,7 @@ type
     property Keterangan: string read FKeterangan write FKeterangan;
     property NoBukti: string read FNoBukti write FNoBukti;
     property Pembeli: TSupplier read FPembeli write FPembeli;
+    property Salesman: TSupplier read FSalesman write FSalesman;
     property PenjualanItems: TObjectList<TPenjualanItem> read GetPenjualanItems
         write FPenjualanItems;
     property TglBukti: TDatetime read FTglBukti write FTglBukti;

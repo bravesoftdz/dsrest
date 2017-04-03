@@ -21,7 +21,9 @@ uses
   uDSUtils in 'lib\uDSUtils.pas',
   uPenerimaanKas in '..\model\uPenerimaanKas.pas',
   uRekBank in '..\model\uRekBank.pas',
-  uAccount in '..\model\uAccount.pas';
+  uAccount in '..\model\uAccount.pas',
+  uTransferAntarGudang in '..\model\uTransferAntarGudang.pas',
+  uSettingApp in '..\model\uSettingApp.pas';
 
 {$R *.res}
 

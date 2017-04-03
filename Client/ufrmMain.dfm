@@ -67,16 +67,16 @@ object frmMain: TfrmMain
       Index = 2
     end
     object dxrbntbPenerimaanBarangClosing: TdxRibbonTab
+      Active = True
       Caption = 'Alat'
       Groups = <
         item
-          Caption = 'Inventory'
+          Caption = 'Setting'
           ToolbarName = 'dxbrCLosing'
         end>
       Index = 3
     end
     object dxrbntbLaporan: TdxRibbonTab
-      Active = True
       Caption = 'Laporan'
       Groups = <
         item
@@ -333,6 +333,10 @@ object frmMain: TfrmMain
         end
         item
           Visible = True
+          ItemName = 'dxbrlrgbtnSettingAplikas'
+        end
+        item
+          Visible = True
           ItemName = 'dxbrlrgbtnGantiCabang'
         end>
       OneOnRow = True
@@ -547,6 +551,17 @@ object frmMain: TfrmMain
       Category = 0
       LargeImageIndex = 11
     end
+    object dxbrlrgbtnSettingAplikasi: TdxBarLargeButton
+      Caption = 'New Button'
+      Category = 0
+      Hint = 'New Button'
+      Visible = ivAlways
+    end
+    object dxbrlrgbtnSettingAplikas: TdxBarLargeButton
+      Action = actSettingAplikasi
+      Category = 0
+      LargeImageIndex = 5
+    end
     object dxbrlrgbtnExit: TdxBarLargeButton
       Action = actApplicationExit
       Category = 1
@@ -681,6 +696,11 @@ object frmMain: TfrmMain
       Caption = 'Bank'
       OnExecute = actMasterBankExecute
     end
+    object actSettingAplikasi: TAction
+      Category = 'Alat'
+      Caption = 'Setting Aplikasi'
+      OnExecute = actSettingAplikasiExecute
+    end
   end
   object ImgListMainLarge: TImageList
     ColorDepth = cd32Bit
@@ -689,7 +709,7 @@ object frmMain: TfrmMain
     Left = 688
     Top = 128
     Bitmap = {
-      494C010112001800C80020002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010112001800D40020002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000080000000A000000001002000000000000040
       0100000000000000000000000000000000000000000000000000131313224341
       3F7561605FAD797474D4878180ED8D8988F98A8685F8838181EC787574D3625E

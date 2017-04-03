@@ -73,7 +73,6 @@ type
     procedure InisialisasiCDSCabang;
     { Private declarations }
   protected
-    FID: string;
   public
     { Public declarations }
   end;
@@ -124,10 +123,9 @@ procedure TfrmDefault.cxPCDataChange(Sender: TObject);
 begin
   btnSave.Enabled    := cxPCData.ActivePageIndex = 1;
   btnHapus.Enabled   := cxPCData.ActivePageIndex = 1;
-//  btnBaru.Enabled    := cxPCData.ActivePageIndex = 1;
+  btnCetak.Enabled   := cxPCData.ActivePageIndex = 1;
 
   btnExport.Enabled  := cxPCData.ActivePageIndex = 0;
-//  btnCetak.Enabled   := cxPCData.ActivePageIndex = 0;
   btnRefresh.Enabled := cxPCData.ActivePageIndex = 0;
 end;
 

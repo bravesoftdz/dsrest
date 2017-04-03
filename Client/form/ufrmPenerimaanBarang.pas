@@ -139,7 +139,7 @@ begin
 
   lReport := TTSReport.Create(Self);
   try
-    DSPSlip.DataSet := ClientDataModule.ServerPenerimaanBarangClient.RetrieveCDSlip(FID);
+    DSPSlip.DataSet := ClientDataModule.ServerPenerimaanBarangClient.RetrieveCDSlip(PenerimaanBarang.ID);
     cdsSlip := TClientDataSet.Create(lReport);
     cdsSlip.SetProvider(DSPSlip);
     cdsSlip.Open;
@@ -162,7 +162,7 @@ begin
   with TServerPenerimaanBarangClient.Create(ClientDataModule.DSRestConnection, False) do
   begin
     try
-      FID                          := '';
+//      FID                          := '';
       edNoBukti.Text               := GenerateNoBukti(edTglBukti.Date, ClientDataModule.Cabang.Kode + '/PB');
       cbbJenisPembayaran.ItemIndex := 0;
       edTempo.Value                := 0;
@@ -220,7 +220,7 @@ begin
   with TServerPenerimaanBarangClient.Create(ClientDataModule.DSRestConnection, False) do
   begin
     try
-      PenerimaanBarang.ID              := FID;
+//      PenerimaanBarang.ID              := FID;
       PenerimaanBarang.NoBukti         := edNoBukti.Text;
       PenerimaanBarang.Keterangan      := memKeterangan.Text;
       PenerimaanBarang.Supplier        := TSupplier.CreateID(cbbSupplier.EditValue);
@@ -586,7 +586,7 @@ begin
     try
       FreeAndNil(FPenerimaanBarang);
       FPenerimaanBarang := Retrieve(ANoBukti);
-      FID               := PenerimaanBarang.ID;
+//      FID               := PenerimaanBarang.ID;
 
       if PenerimaanBarang <> nil then
       begin

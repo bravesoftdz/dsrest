@@ -41,6 +41,8 @@ uses
 procedure TfrmPilihCabang.btnPilihClick(Sender: TObject);
 begin
   TDBUtils.LoadFromDB(ClientDataModule.Cabang, cbbCabang.EditValue);
+  ClientDataModule.SettingApp := ClientDataModule.ServerSettingAppClient.RetrieveByCabang(ClientDataModule.Cabang.ID);
+
   TAppUtils.TulisRegistry('Cabang', ClientDataModule.Cabang.ID);
 end;
 

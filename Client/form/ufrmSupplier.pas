@@ -12,16 +12,20 @@ uses
   cxGridCustomView, cxGrid, Grids, DBGrids, DBClient, Provider,
   cxPCdxBarPopupMenu, cxPC, cxMemo, ImgList, uModel, cxNavigator, System.Actions,
   dxBarExtDBItems, cxCheckBox, dxBarBuiltInMenu, System.ImageList, cxBarEditItem,
-  dxBarExtItems, Vcl.Menus, cxButtons, Vcl.ComCtrls;
+  dxBarExtItems, Vcl.Menus, cxButtons, Vcl.ComCtrls, uInterface;
 
 type
-  TfrmSupplier = class(TfrmDefault)
+  TfrmSupplier = class(TfrmDefault, IForm)
     lblKode: TLabel;
     lblNama: TLabel;
     lblAlamat: TLabel;
     edKode: TcxTextEdit;
     edNama: TcxTextEdit;
     memAlamt: TcxMemo;
+    grpRole: TGroupBox;
+    chkSupplier: TCheckBox;
+    chkPembeli: TCheckBox;
+    chkSalesman: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure ActionBaruExecute(Sender: TObject);
     procedure ActionHapusExecute(Sender: TObject);
@@ -39,6 +43,7 @@ type
 //    function GetSupplier: TSupplier;
     { Private declarations }
   public
+    function LoadData(AID : String): Boolean; stdcall;
     property Supplier: TSupplier read GetSupplier write FSupplier;
 //    property Supplier: TSupplier read GetSupplier write FSupplier;
     { Public declarations }
@@ -63,11 +68,8 @@ end;
 procedure TfrmSupplier.ActionBaruExecute(Sender: TObject);
 begin
   inherited;
-  edKode.Text := '';
-  edNama.Text := '';
-
-  memAlamt.Clear;
-  FID         := '';
+  LoadData('');
+  cxPCData.ActivePageIndex := 1;
 end;
 
 procedure TfrmSupplier.ActionHapusExecute(Sender: TObject);
@@ -96,8 +98,8 @@ var
   sSQL: string;
 begin
   inherited;
-  sSQL := 'select Kode,Nama,Alamat,ID from ' + TSupplier.ClassName;
-  TDBUtils.DataSetToCxDBGrid(TDBUtils.OpenDataset(sSQL), cxGridDBTableOverview, True);
+  sSQL := 'select * from vBusinessPartner';
+  cxGridDBTableOverview.SetDataset(sSQL, True);
   cxGridDBTableOverview.SetVisibleColumns(['ID'], False);
   cxGridDBTableOverview.ApplyBestFit();
 end;
@@ -105,13 +107,24 @@ end;
 procedure TfrmSupplier.ActionSimpanExecute(Sender: TObject);
 begin
   inherited;
+  if not ValidateEmptyCtrl([1]) then
+    Exit;
+
+  if chkSupplier.Checked = chkPembeli.Checked = chkSalesman.Checked = False then
+  begin
+    TAppUtils.Warning('Role Belum Diset');
+    Exit;
+  end;
+
   with TServerSupplierClient.Create(ClientDataModule.DSRestConnection, False) do
   begin
     try
-      Supplier.ID     := FID;
-      Supplier.Kode   := edKode.Text;
-      Supplier.Nama   := edNama.Text;
-      Supplier.Alamat := memAlamt.Text;
+      Supplier.Kode       := edKode.Text;
+      Supplier.Nama       := edNama.Text;
+      Supplier.Alamat     := memAlamt.Text;
+      Supplier.IsSupplier := TAppUtils.BoolToInt(chkSupplier.Checked);
+      Supplier.IsPembeli  := TAppUtils.BoolToInt(chkPembeli.Checked);
+      Supplier.IsSalesman := TAppUtils.BoolToInt(chkSalesman.Checked);
 
       if Save(Supplier) then
       begin
@@ -130,26 +143,9 @@ procedure TfrmSupplier.cxGridDBTableOverviewCellDblClick(Sender:
     AButton: TMouseButton; AShift: TShiftState; var AHandled: Boolean);
 begin
   inherited;
-  with TServerSupplierClient.Create(ClientDataModule.DSRestConnection, False) do
-  begin
-    try
-      if cxGridDBTableOverview.DataController.FocusedRecordIndex >= 0 then
-      begin
-        FreeAndNil(FSupplier);
-        FSupplier                := Retrieve(cxGridDBTableOverview.DataController.DataSource.DataSet.FieldByName('ID').AsString);
+  if LoadData(cxGridDBTableOverview.DS.FieldByName('ID').AsString) then
+    cxPCData.ActivePageIndex := 1;
 
-        edKode.Text              := FSupplier.Kode;
-        edNama.Text              := FSupplier.Nama;
-        memAlamt.Text            := FSupplier.Alamat;
-        FID                      := FSupplier.ID;
-
-        cxPCData.ActivePageIndex := 1;
-      end;
-
-    finally
-      Free;
-    end;
-  end;
 end;
 
 procedure TfrmSupplier.cxGridDBTableSupplierEditing(Sender:
@@ -165,6 +161,35 @@ begin
     FSupplier := TSupplier.Create;
 
   Result := FSupplier;
+end;
+
+function TfrmSupplier.LoadData(AID : String): Boolean;
+begin
+  Result := False;
+
+  FreeAndNil(FSupplier);
+  ClearByTag([0,1]);
+
+  try
+    FSupplier := ClientDataModule.ServerSupplierClient.Retrieve(AID);
+    if FSupplier =nil then
+      Exit;
+
+    if FSupplier.ID = '' then
+      Exit;
+
+    edKode.Text              := FSupplier.Kode;
+    edNama.Text              := FSupplier.Nama;
+    memAlamt.Text            := FSupplier.Alamat;
+
+    chkSupplier.Checked      := FSupplier.IsSupplier =1;
+    chkPembeli.Checked       := FSupplier.IsPembeli =1;
+    chkSalesman.Checked      := FSupplier.IsSalesman =1;
+  except
+    raise
+  end;
+
+  Result := True;
 end;
 
 

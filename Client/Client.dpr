@@ -41,7 +41,10 @@ uses
   uAccount in '..\model\uAccount.pas',
   ufrmRekBank in 'form\ufrmRekBank.pas' {frmRekBank},
   ufrmDefaultLaporan in 'form\ufrmDefaultLaporan.pas' {frmDefaultLaporan},
-  ufrmLaporanAR in 'form\ufrmLaporanAR.pas' {frmLaporanAR};
+  ufrmLaporanAR in 'form\ufrmLaporanAR.pas' {frmLaporanAR},
+  ufrmSettingAplikasi in 'form\ufrmSettingAplikasi.pas' {frmSettingAplikasi},
+  uSettingApp in '..\model\uSettingApp.pas',
+  uInterface in 'lib\uInterface.pas';
 
 {$R *.res}
 
@@ -50,6 +53,5 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TClientDataModule, ClientDataModule);
   Application.CreateForm(TfrmMain, frmMain);
-  Application.CreateForm(TfrmDefaultLaporan, frmDefaultLaporan);
   Application.Run;
 end.

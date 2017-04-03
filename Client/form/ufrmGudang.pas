@@ -57,7 +57,7 @@ begin
   inherited;
   edKode.Text := '';
   edNama.Text := '';
-  FID         := '';
+//  FID         := '';
 end;
 
 procedure TfrmGudang.ActionHapusExecute(Sender: TObject);
@@ -90,7 +90,7 @@ begin
   try
     Gudang.Kode   := edKode.Text;
     Gudang.Nama   := edNama.Text;
-    Gudang.ID     := FID;
+//    Gudang.ID     := FID;
 
     Gudang.Cabang := TCabang.CreateID(ClientDataModule.Cabang.ID);
 
@@ -112,7 +112,7 @@ begin
     FGudang     := ClientDataModule.ServerGudangClient.Retrieve(cxGridDBTableOverview.DataController.DataSource.DataSet.FieldByName('ID').AsString);
     edKode.Text := Gudang.Kode;
     edNama.Text := Gudang.Nama;
-    FID         := Gudang.ID;
+//    FID         := Gudang.ID;
 
     cxPCData.ActivePageIndex := 1;
   end;

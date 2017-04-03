@@ -259,7 +259,7 @@ end;
 procedure TfrmCustomerInvoice.edTglBuktiExit(Sender: TObject);
 begin
   inherited;
-  if FID ='' then
+  if FPenjualan.ID = '' then
     edNoBukti.Text  := ClientDataModule.ServerCustomerInvoiceClient.GenerateNoBukti(edTglBukti.Date,
                                                                                   ClientDataModule.Cabang.Kode + '/CI');
 
