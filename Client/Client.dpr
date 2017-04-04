@@ -44,7 +44,9 @@ uses
   ufrmLaporanAR in 'form\ufrmLaporanAR.pas' {frmLaporanAR},
   ufrmSettingAplikasi in 'form\ufrmSettingAplikasi.pas' {frmSettingAplikasi},
   uSettingApp in '..\model\uSettingApp.pas',
-  uInterface in 'lib\uInterface.pas';
+  uInterface in 'lib\uInterface.pas',
+  uTransferAntarGudang in '..\model\uTransferAntarGudang.pas',
+  ufrmTransferAntarGudang in 'form\ufrmTransferAntarGudang.pas' {frmTransferAntarGudang};
 
 {$R *.res}
 

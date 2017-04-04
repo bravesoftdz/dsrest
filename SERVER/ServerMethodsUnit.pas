@@ -2109,19 +2109,31 @@ begin
         lMutasiStock            := TMutasiStock.Create;
         lMutasiStock.Barang     := TBarang.CreateID(lTAG.TransferAntarGudangItems[i].Barang.ID);
         lMutasiStock.Cabang     := TCabang.CreateID(lTAG.Cabang.ID);
-        lMutasiStock.Gudang     := TGudang.CreateID(lTAG.Gudang.ID);
-        lMutasiStock.UOM        := TUOM.CreateID(lTAG.ReturSupplierItems[i].UOM.ID);
-        lMutasiStock.Harga      := lTAG.ReturSupplierItems[i].HargaBeli;
-        lMutasiStock.QtyIn      := 0;
-        lMutasiStock.QtyOut     := lTAG.ReturSupplierItems[i].Qty;
-        lMutasiStock.Keterangan := lTAG.NoBukti;
+        lMutasiStock.Harga      := lTAG.TransferAntarGudangItems[i].Harga;
+        lMutasiStock.Keterangan := lTAG.Keterangan;
         lMutasiStock.NoBukti    := lTAG.NoBukti;
-        lMutasiStock.Transaksi  := 'Retur Supplier';
         lMutasiStock.TglBukti   := lTAG.TglBukti;
-        lMutasiStock.Konversi   := lTAG.ReturSupplierItems[i].Konversi;
+        lMutasiStock.Konversi   := lTAG.TransferAntarGudangItems[i].Konversi;
+
+        lMutasiStock.Gudang     := TGudang.CreateID(lTAG.GudangAsal.ID);
+        lMutasiStock.UOM        := TUOM.CreateID(lTAG.TransferAntarGudangItems[i].UOM.ID);
+        lMutasiStock.QtyIn      := 0;
+        lMutasiStock.QtyOut     := lTAG.TransferAntarGudangItems[i].Qty;
+        lMutasiStock.Transaksi  := 'Transfer Antar Gudang Out';
 
         if not SaveNoCommit(lMutasiStock) then
           Exit;
+
+        lMutasiStock.Gudang     := TGudang.CreateID(lTAG.GudangTujuan.ID);
+        lMutasiStock.UOM        := TUOM.CreateID(lTAG.TransferAntarGudangItems[i].UOM.ID);
+        lMutasiStock.QtyIn      := lTAG.TransferAntarGudangItems[i].Qty;
+        lMutasiStock.QtyOut     := 0;
+        lMutasiStock.Transaksi  := 'Transfer Antar Gudang In';
+
+        if not SaveNoCommit(lMutasiStock) then
+          Exit;
+
+
       end;
     finally
       Free;
@@ -2150,7 +2162,7 @@ var
 begin
   Result := False;
 
-  lTAGOut := TTransferAntarGudangIn(AAppObject);
+  lTAGOut := TTransferAntarGudangOut(AAppObject);
   if AIsMenghapus then
   begin
     for i := 0 to lTAGOut.TransferAntarGudangItems.Count - 1 do

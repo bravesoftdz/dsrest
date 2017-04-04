@@ -34,6 +34,7 @@ type
     FServerRekBankClient: TServerRekBankClient;
     FServerPenerimaanKasClient: TServerPenerimaanKasClient;
     FServerSettingAppClient: TServerSettingAppClient;
+    FServerTransferAntarGudang: TServerTransferAntarGudangClient;
     FSettingApp: TSettingApp;
     function GetCabang: tcabang;
     function GetServerUOMClient: TServerUOMClient;
@@ -53,6 +54,7 @@ type
     function GetServerRekBankClient: TServerRekBankClient;
     function GetServerPenerimaanKasClient: TServerPenerimaanKasClient;
     function GetServerSettingAppClient: TServerSettingAppClient;
+    function GetServerTransferAntarGudang: TServerTransferAntarGudangClient;
     function GetSettingApp: TSettingApp;
     { Private declarations }
   public
@@ -86,6 +88,8 @@ type
         GetServerPenerimaanKasClient write FServerPenerimaanKasClient;
     property ServerSettingAppClient: TServerSettingAppClient read
         GetServerSettingAppClient write FServerSettingAppClient;
+    property ServerTransferAntarGudang: TServerTransferAntarGudangClient read
+        GetServerTransferAntarGudang write FServerTransferAntarGudang;
     property SettingApp: TSettingApp read GetSettingApp write FSettingApp;
 end;
 
@@ -289,6 +293,16 @@ begin
 
   FServerSettingAppClient:= TServerSettingAppClient.Create(DSRestConnection, FInstanceOwner);
   Result := FServerSettingAppClient;
+end;
+
+function TClientDataModule.GetServerTransferAntarGudang:
+    TServerTransferAntarGudangClient;
+begin
+  if FServerTransferAntarGudang <> nil then
+    FreeAndNil(FServerTransferAntarGudang);
+
+  FServerTransferAntarGudang:= TServerTransferAntarGudangClient.Create(DSRestConnection, FInstanceOwner);
+  Result := FServerTransferAntarGudang;
 end;
 
 function TClientDataModule.GetSettingApp: TSettingApp;

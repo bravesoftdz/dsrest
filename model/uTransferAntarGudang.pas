@@ -13,26 +13,30 @@ type
     FKeterangan: string;
     FNoBukti: string;
     FPetugas: string;
-    FTglBukti: string;
+    FTglBukti: TDatetime;
     FTransferAntarGudang: TTransferAntarGudang;
     FTransferAntarGudangItems: Tobjectlist<TTransferAntarGudangItem>;
     FGudangAsal: tgudang;
     FGudangTujuan: tgudang;
     function GetTransferAntarGudangItems: Tobjectlist<TTransferAntarGudangItem>;
+    procedure SetCabang(const Value: TCabang);
+    procedure SetGudangAsal(const Value: tgudang);
+    procedure SetGudangTujuan(const Value: tgudang);
+
   public
     destructor Destroy; override;
   published
-    property Cabang: TCabang read FCabang write FCabang;
+    property Cabang: TCabang read FCabang write SetCabang;
     property Keterangan: string read FKeterangan write FKeterangan;
     property NoBukti: string read FNoBukti write FNoBukti;
     property Petugas: string read FPetugas write FPetugas;
-    property TglBukti: string read FTglBukti write FTglBukti;
+    property TglBukti: TDatetime read FTglBukti write FTglBukti;
     property TransferAntarGudang: TTransferAntarGudang read FTransferAntarGudang
         write FTransferAntarGudang;
     property TransferAntarGudangItems: Tobjectlist<TTransferAntarGudangItem> read
         GetTransferAntarGudangItems write FTransferAntarGudangItems;
-    property GudangAsal: tgudang read FGudangAsal write FGudangAsal;
-    property GudangTujuan: tgudang read FGudangTujuan write FGudangTujuan;
+    property GudangAsal: tgudang read FGudangAsal write SetGudangAsal;
+    property GudangTujuan: tgudang read FGudangTujuan write SetGudangTujuan;
   end;
 
   TTransferAntarGudangItem = class(TAppObjectItem)
@@ -98,6 +102,24 @@ begin
     FTransferAntarGudangItems := TObjectList<TTransferAntarGudangItem>.Create(False);
 
   Result := FTransferAntarGudangItems;
+end;
+
+procedure TTransferAntarGudang.SetCabang(const Value: TCabang);
+begin
+  FreeAndNil(FCabang);
+  FCabang := Value;
+end;
+
+procedure TTransferAntarGudang.SetGudangAsal(const Value: tgudang);
+begin
+  FreeAndNil(FGudangAsal);
+  FGudangAsal := Value;
+end;
+
+procedure TTransferAntarGudang.SetGudangTujuan(const Value: tgudang);
+begin
+  FreeAndNil(FGudangTujuan);
+  FGudangTujuan := Value;
 end;
 
 end.

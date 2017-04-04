@@ -50,6 +50,7 @@ object frmMain: TfrmMain
       Index = 1
     end
     object dxrbntbPenerimaanBarangTransaksi: TdxRibbonTab
+      Active = True
       Caption = 'Transaksi'
       Groups = <
         item
@@ -63,11 +64,14 @@ object frmMain: TfrmMain
         item
           Caption = 'Keuangan'
           ToolbarName = 'dxbrmngrAMSBarKeuangan'
+        end
+        item
+          Caption = 'Transfer Antar Gudang'
+          ToolbarName = 'dxbrTAG'
         end>
       Index = 2
     end
     object dxrbntbPenerimaanBarangClosing: TdxRibbonTab
-      Active = True
       Caption = 'Alat'
       Groups = <
         item
@@ -280,7 +284,7 @@ object frmMain: TfrmMain
           ItemName = 'dxbrlrgbtnLaporanPenerimaanBarang'
         end>
       OneOnRow = False
-      Row = 0
+      Row = 1
       UseOwnFont = False
       Visible = True
       WholeRow = False
@@ -364,7 +368,7 @@ object frmMain: TfrmMain
           ItemName = 'dxbrlrgbtnPenjualanPOS'
         end>
       OneOnRow = False
-      Row = 0
+      Row = 1
       UseOwnFont = False
       Visible = True
       WholeRow = False
@@ -388,7 +392,7 @@ object frmMain: TfrmMain
           ItemName = 'dxbrlrgbtnPenerimaanKas'
         end>
       OneOnRow = False
-      Row = 0
+      Row = 1
       UseOwnFont = False
       Visible = True
       WholeRow = False
@@ -412,6 +416,26 @@ object frmMain: TfrmMain
           ItemName = 'dxbrlrgbtnBank'
         end>
       OneOnRow = False
+      Row = 0
+      UseOwnFont = False
+      Visible = True
+      WholeRow = False
+    end
+    object dxbrTAG: TdxBar
+      Caption = 'Transfer Inventory'
+      CaptionButtons = <>
+      DockedLeft = 507
+      DockedTop = 0
+      FloatLeft = 900
+      FloatTop = 8
+      FloatClientWidth = 0
+      FloatClientHeight = 0
+      ItemLinks = <
+        item
+          Visible = True
+          ItemName = 'dxbrlrgbtnTAG'
+        end>
+      OneOnRow = True
       Row = 0
       UseOwnFont = False
       Visible = True
@@ -562,6 +586,11 @@ object frmMain: TfrmMain
       Category = 0
       LargeImageIndex = 5
     end
+    object dxbrlrgbtnTAG: TdxBarLargeButton
+      Action = actTAG
+      Category = 0
+      LargeImageIndex = 8
+    end
     object dxbrlrgbtnExit: TdxBarLargeButton
       Action = actApplicationExit
       Category = 1
@@ -701,6 +730,11 @@ object frmMain: TfrmMain
       Caption = 'Setting Aplikasi'
       OnExecute = actSettingAplikasiExecute
     end
+    object actTAG: TAction
+      Category = 'TAG'
+      Caption = 'Transfer Antar Gudang'
+      OnExecute = actTAGExecute
+    end
   end
   object ImgListMainLarge: TImageList
     ColorDepth = cd32Bit
@@ -709,7 +743,7 @@ object frmMain: TfrmMain
     Left = 688
     Top = 128
     Bitmap = {
-      494C010112001800D40020002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010112001800D80020002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000080000000A000000001002000000000000040
       0100000000000000000000000000000000000000000000000000131313224341
       3F7561605FAD797474D4878180ED8D8988F98A8685F8838181EC787574D3625E

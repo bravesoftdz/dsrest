@@ -231,11 +231,14 @@ type
     FQty: Double;
     FRp: Double;
     FUOM: TUOM;
+    procedure SetBarang(const Value: TBarang);
+    procedure SetCabang(const Value: TCabang);
+    procedure SetGudang(const Value: TGudang);
   public
   published
-    property Barang: TBarang read FBarang write FBarang;
-    property Cabang: TCabang read FCabang write FCabang;
-    property Gudang: TGudang read FGudang write FGudang;
+    property Barang: TBarang read FBarang write SetBarang;
+    property Cabang: TCabang read FCabang write SetCabang;
+    property Gudang: TGudang read FGudang write SetGudang;
     property Qty: Double read FQty write FQty;
     property Rp: Double read FRp write FRp;
     property UOM: TUOM read FUOM write FUOM;
@@ -581,6 +584,24 @@ end;
 procedure TInvoiceSupplierItem.SetHeaderProperty(AHeaderProperty : TAppObject);
 begin
   PenerimaanBarang := TPenerimaanBarang(AHeaderProperty);
+end;
+
+procedure TStockSekarang.SetBarang(const Value: TBarang);
+begin
+  FreeAndNil(FBarang);
+  FBarang := Value;
+end;
+
+procedure TStockSekarang.SetCabang(const Value: TCabang);
+begin
+  FreeAndNil(FCabang);
+  FCabang := Value;
+end;
+
+procedure TStockSekarang.SetGudang(const Value: TGudang);
+begin
+  FreeAndNil(FGudang);
+  FGudang := Value;
 end;
 
 end.

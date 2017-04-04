@@ -73,6 +73,7 @@ type
     procedure InisialisasiCDSCabang;
     { Private declarations }
   protected
+    function User: string;
   public
     { Public declarations }
   end;
@@ -168,6 +169,11 @@ begin
 //  cbbLUCabang.Enabled := ClientDataModule.Cabang.IsHO = 1;
 //  chkKonsolidasi.EditValue := False;
 //  chkKonsolidasi.Enabled := ClientDataModule.Cabang.IsHO = 1;
+end;
+
+function TfrmDefault.User: string;
+begin
+  Result := 'AKU';
 end;
 
 end.
