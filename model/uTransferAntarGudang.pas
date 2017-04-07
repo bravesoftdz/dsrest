@@ -14,7 +14,6 @@ type
     FNoBukti: string;
     FPetugas: string;
     FTglBukti: TDatetime;
-    FTransferAntarGudang: TTransferAntarGudang;
     FTransferAntarGudangItems: Tobjectlist<TTransferAntarGudangItem>;
     FGudangAsal: tgudang;
     FGudangTujuan: tgudang;
@@ -31,8 +30,6 @@ type
     property NoBukti: string read FNoBukti write FNoBukti;
     property Petugas: string read FPetugas write FPetugas;
     property TglBukti: TDatetime read FTglBukti write FTglBukti;
-    property TransferAntarGudang: TTransferAntarGudang read FTransferAntarGudang
-        write FTransferAntarGudang;
     property TransferAntarGudangItems: Tobjectlist<TTransferAntarGudangItem> read
         GetTransferAntarGudangItems write FTransferAntarGudangItems;
     property GudangAsal: tgudang read FGudangAsal write SetGudangAsal;

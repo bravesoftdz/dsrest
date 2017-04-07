@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 4/4/2017 5:34:48 AM
+// 4/6/2017 5:44:19 AM
 //
 
 unit ClientClassesUnit2;
@@ -41,6 +41,8 @@ type
     FLaporanStockSekarangCommand_Cache: TDSRestCommand;
     FLookUpPenerimaanCommand: TDSRestCommand;
     FLookUpPenerimaanCommand_Cache: TDSRestCommand;
+    FRetrieveTransferAntarGudangCommand: TDSRestCommand;
+    FRetrieveTransferAntarGudangCommand_Cache: TDSRestCommand;
     FRetriveMutasiBarangCommand: TDSRestCommand;
     FRetriveMutasiBarangCommand_Cache: TDSRestCommand;
     FRetrivePenjualanCommand: TDSRestCommand;
@@ -65,6 +67,8 @@ type
     function LaporanStockSekarang_Cache(ACabang: TCabang; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function LookUpPenerimaan(ABulan: Integer; ATahun: Integer; const ARequestFilter: string = ''): TDataSet;
     function LookUpPenerimaan_Cache(ABulan: Integer; ATahun: Integer; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function RetrieveTransferAntarGudang(ATglAwal: TDateTime; ATglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string = ''): TDataSet;
+    function RetrieveTransferAntarGudang_Cache(ATglAwal: TDateTime; ATglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function RetriveMutasiBarang(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; const ARequestFilter: string = ''): TDataSet;
     function RetriveMutasiBarang_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function RetrivePenjualan(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string = ''): TDataSet;
@@ -729,6 +733,22 @@ const
   (
     (Name: 'ABulan'; Direction: 1; DBXType: 6; TypeName: 'Integer'),
     (Name: 'ATahun'; Direction: 1; DBXType: 6; TypeName: 'Integer'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerLaporan_RetrieveTransferAntarGudang: array [0..3] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ATglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TServerLaporan_RetrieveTransferAntarGudang_Cache: array [0..3] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ATglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
@@ -2063,6 +2083,65 @@ begin
   Result := TDSRestCachedDataSet.Create(FLookUpPenerimaanCommand_Cache.Parameters[2].Value.GetString);
 end;
 
+function TServerLaporanClient.RetrieveTransferAntarGudang(ATglAwal: TDateTime; ATglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string): TDataSet;
+begin
+  if FRetrieveTransferAntarGudangCommand = nil then
+  begin
+    FRetrieveTransferAntarGudangCommand := FConnection.CreateCommand;
+    FRetrieveTransferAntarGudangCommand.RequestType := 'POST';
+    FRetrieveTransferAntarGudangCommand.Text := 'TServerLaporan."RetrieveTransferAntarGudang"';
+    FRetrieveTransferAntarGudangCommand.Prepare(TServerLaporan_RetrieveTransferAntarGudang);
+  end;
+  FRetrieveTransferAntarGudangCommand.Parameters[0].Value.AsDateTime := ATglAwal;
+  FRetrieveTransferAntarGudangCommand.Parameters[1].Value.AsDateTime := ATglAkhir;
+  if not Assigned(ACabang) then
+    FRetrieveTransferAntarGudangCommand.Parameters[2].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FRetrieveTransferAntarGudangCommand.Parameters[2].ConnectionHandler).GetJSONMarshaler;
+    try
+      FRetrieveTransferAntarGudangCommand.Parameters[2].Value.SetJSONValue(FMarshal.Marshal(ACabang), True);
+      if FInstanceOwner then
+        ACabang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FRetrieveTransferAntarGudangCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FRetrieveTransferAntarGudangCommand.Parameters[3].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FRetrieveTransferAntarGudangCommand.FreeOnExecute(Result);
+end;
+
+function TServerLaporanClient.RetrieveTransferAntarGudang_Cache(ATglAwal: TDateTime; ATglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FRetrieveTransferAntarGudangCommand_Cache = nil then
+  begin
+    FRetrieveTransferAntarGudangCommand_Cache := FConnection.CreateCommand;
+    FRetrieveTransferAntarGudangCommand_Cache.RequestType := 'POST';
+    FRetrieveTransferAntarGudangCommand_Cache.Text := 'TServerLaporan."RetrieveTransferAntarGudang"';
+    FRetrieveTransferAntarGudangCommand_Cache.Prepare(TServerLaporan_RetrieveTransferAntarGudang_Cache);
+  end;
+  FRetrieveTransferAntarGudangCommand_Cache.Parameters[0].Value.AsDateTime := ATglAwal;
+  FRetrieveTransferAntarGudangCommand_Cache.Parameters[1].Value.AsDateTime := ATglAkhir;
+  if not Assigned(ACabang) then
+    FRetrieveTransferAntarGudangCommand_Cache.Parameters[2].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FRetrieveTransferAntarGudangCommand_Cache.Parameters[2].ConnectionHandler).GetJSONMarshaler;
+    try
+      FRetrieveTransferAntarGudangCommand_Cache.Parameters[2].Value.SetJSONValue(FMarshal.Marshal(ACabang), True);
+      if FInstanceOwner then
+        ACabang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FRetrieveTransferAntarGudangCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FRetrieveTransferAntarGudangCommand_Cache.Parameters[3].Value.GetString);
+end;
+
 function TServerLaporanClient.RetriveMutasiBarang(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; const ARequestFilter: string): TDataSet;
 begin
   if FRetriveMutasiBarangCommand = nil then
@@ -2403,6 +2482,8 @@ begin
   FLaporanStockSekarangCommand_Cache.DisposeOf;
   FLookUpPenerimaanCommand.DisposeOf;
   FLookUpPenerimaanCommand_Cache.DisposeOf;
+  FRetrieveTransferAntarGudangCommand.DisposeOf;
+  FRetrieveTransferAntarGudangCommand_Cache.DisposeOf;
   FRetriveMutasiBarangCommand.DisposeOf;
   FRetriveMutasiBarangCommand_Cache.DisposeOf;
   FRetrivePenjualanCommand.DisposeOf;

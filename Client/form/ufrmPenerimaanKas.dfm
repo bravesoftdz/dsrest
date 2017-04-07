@@ -1,9 +1,16 @@
 inherited frmPenerimaanKas: TfrmPenerimaanKas
   Caption = 'Penerimaan Kas'
+  ExplicitWidth = 733
+  ExplicitHeight = 385
   PixelsPerInch = 96
   TextHeight = 13
   inherited cxPCData: TcxPageControl
+    Properties.ActivePage = cxTSOverview
     inherited cxTSOverview: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 709
+      ExplicitHeight = 265
       inherited pnlListTransaksi: TPanel
         inherited cxGrid: TcxGrid
           inherited cxGridDBTableOverview: TcxGridDBTableView
@@ -13,6 +20,10 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
       end
     end
     inherited cxTSInputData: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 709
+      ExplicitHeight = 265
       object pnlHeader: TPanel
         Left = 0
         Top = 0
@@ -269,6 +280,12 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
       end
     end
   end
+  inherited pnlButton: TPanel
+    inherited chkKonsolidasi1: TcxCheckBox
+      ExplicitWidth = 76
+      ExplicitHeight = 31
+    end
+  end
   inherited ActionListForm: TActionList
     inherited ActionSimpan: TAction
       OnExecute = ActionSimpanExecute
@@ -294,7 +311,7 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
     Left = 584
     Top = 144
     Bitmap = {
-      494C010107000800F00018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800F40018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

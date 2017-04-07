@@ -284,7 +284,7 @@ object frmMain: TfrmMain
           ItemName = 'dxbrlrgbtnLaporanPenerimaanBarang'
         end>
       OneOnRow = False
-      Row = 1
+      Row = 0
       UseOwnFont = False
       Visible = True
       WholeRow = False
@@ -368,7 +368,7 @@ object frmMain: TfrmMain
           ItemName = 'dxbrlrgbtnPenjualanPOS'
         end>
       OneOnRow = False
-      Row = 1
+      Row = 0
       UseOwnFont = False
       Visible = True
       WholeRow = False
@@ -392,7 +392,7 @@ object frmMain: TfrmMain
           ItemName = 'dxbrlrgbtnPenerimaanKas'
         end>
       OneOnRow = False
-      Row = 1
+      Row = 0
       UseOwnFont = False
       Visible = True
       WholeRow = False
@@ -435,7 +435,7 @@ object frmMain: TfrmMain
           Visible = True
           ItemName = 'dxbrlrgbtnTAG'
         end>
-      OneOnRow = True
+      OneOnRow = False
       Row = 0
       UseOwnFont = False
       Visible = True
@@ -743,7 +743,7 @@ object frmMain: TfrmMain
     Left = 688
     Top = 128
     Bitmap = {
-      494C010112001800D80020002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010112001800DC0020002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000080000000A000000001002000000000000040
       0100000000000000000000000000000000000000000000000000131313224341
       3F7561605FAD797474D4878180ED8D8988F98A8685F8838181EC787574D3625E

@@ -16,104 +16,170 @@ inherited frmTransferAntarGudang: TfrmTransferAntarGudang
       ExplicitTop = 24
       ExplicitWidth = 709
       ExplicitHeight = 265
-      object lblNoBukti: TLabel
-        Left = 23
-        Top = 8
-        Width = 39
-        Height = 13
-        Caption = 'No Bukti'
-      end
-      object lblTglBukti: TLabel
-        Left = 22
-        Top = 32
-        Width = 40
-        Height = 13
-        Caption = 'Tgl Bukti'
-      end
-      object lblSupplier: TLabel
-        Left = 42
-        Top = 56
-        Width = 20
-        Height = 13
-        Caption = 'Asal'
-      end
-      object lblPembeli: TLabel
-        Left = 29
-        Top = 81
-        Width = 33
-        Height = 13
-        Caption = 'Tujuan'
-      end
-      object lblKeterangan: TLabel
-        Left = 314
-        Top = 32
-        Width = 56
-        Height = 13
-        Caption = 'Keterangan'
-      end
-      object lblPetugas: TLabel
-        Left = 327
-        Top = 7
-        Width = 39
-        Height = 13
-        Caption = 'No Bukti'
-      end
-      object edNoBukti: TcxTextEdit
-        Left = 72
-        Top = 3
-        Enabled = False
-        Properties.ReadOnly = True
+      object pnlHeader: TPanel
+        Left = 0
+        Top = 0
+        Width = 709
+        Height = 111
+        Align = alTop
         TabOrder = 0
-        Text = 'edNoBukti'
-        Width = 121
+        object lblNoBukti: TLabel
+          Left = 23
+          Top = 8
+          Width = 39
+          Height = 13
+          Caption = 'No Bukti'
+        end
+        object lblTglBukti: TLabel
+          Left = 22
+          Top = 32
+          Width = 40
+          Height = 13
+          Caption = 'Tgl Bukti'
+        end
+        object lblSupplier: TLabel
+          Left = 42
+          Top = 56
+          Width = 20
+          Height = 13
+          Caption = 'Asal'
+        end
+        object lblPembeli: TLabel
+          Left = 29
+          Top = 81
+          Width = 33
+          Height = 13
+          Caption = 'Tujuan'
+        end
+        object lblKeterangan: TLabel
+          Left = 314
+          Top = 32
+          Width = 56
+          Height = 13
+          Caption = 'Keterangan'
+        end
+        object lblPetugas: TLabel
+          Left = 327
+          Top = 7
+          Width = 39
+          Height = 13
+          Caption = 'No Bukti'
+        end
+        object edNoBukti: TcxTextEdit
+          Left = 72
+          Top = 3
+          Enabled = False
+          Properties.ReadOnly = True
+          TabOrder = 0
+          Text = 'edNoBukti'
+          Width = 121
+        end
+        object edTglBukti: TcxDateEdit
+          Left = 72
+          Top = 28
+          TabOrder = 1
+          Width = 121
+        end
+        object cbbGudangAsal: TcxExtLookupComboBox
+          Left = 72
+          Top = 53
+          Properties.DropDownAutoSize = True
+          Properties.FocusPopup = True
+          TabOrder = 2
+          Width = 192
+        end
+        object cbbGudangTujuan: TcxExtLookupComboBox
+          Left = 72
+          Top = 78
+          Properties.DropDownAutoSize = True
+          Properties.FocusPopup = True
+          TabOrder = 3
+          Width = 192
+        end
+        object memKeterangan: TcxMemo
+          Left = 376
+          Top = 28
+          Lines.Strings = (
+            'memKeterangan')
+          TabOrder = 4
+          Height = 71
+          Width = 217
+        end
+        object edPetugas: TcxTextEdit
+          Left = 376
+          Top = 3
+          Enabled = False
+          Properties.ReadOnly = True
+          TabOrder = 5
+          Text = 'edNoBukti'
+          Width = 121
+        end
       end
-      object edTglBukti: TcxDateEdit
-        Left = 72
-        Top = 28
+      object cxGridDBTAGDetail: TcxGrid
+        Left = 0
+        Top = 111
+        Width = 709
+        Height = 154
+        Align = alClient
         TabOrder = 1
-        Width = 121
-      end
-      object cbbGudangAsal: TcxExtLookupComboBox
-        Left = 72
-        Top = 53
-        Properties.DropDownAutoSize = True
-        Properties.FocusPopup = True
-        TabOrder = 2
-        Width = 192
-      end
-      object cbbGudangTujuan: TcxExtLookupComboBox
-        Left = 72
-        Top = 78
-        Properties.DropDownAutoSize = True
-        Properties.FocusPopup = True
-        TabOrder = 3
-        Width = 192
-      end
-      object memKeterangan: TcxMemo
-        Left = 376
-        Top = 28
-        Lines.Strings = (
-          'memKeterangan')
-        TabOrder = 4
-        Height = 71
-        Width = 217
-      end
-      object edPetugas: TcxTextEdit
-        Left = 376
-        Top = 3
-        Enabled = False
-        Properties.ReadOnly = True
-        TabOrder = 5
-        Text = 'edNoBukti'
-        Width = 121
+        RootLevelOptions.DetailTabsPosition = dtpTop
+        object cxGridTableTAGDetail: TcxGridTableView
+          Navigator.Buttons.CustomButtons = <>
+          DataController.Options = [dcoCaseInsensitive, dcoAssignGroupingValues, dcoAssignMasterDetailKeys, dcoSaveExpanding]
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.SummaryGroups = <>
+          OptionsBehavior.FocusFirstCellOnNewRecord = True
+          OptionsBehavior.GoToNextCellOnEnter = True
+          OptionsBehavior.FocusCellOnCycle = True
+          OptionsData.Appending = True
+          OptionsView.GroupByBox = False
+          Styles.ContentEven = ClientDataModule.cxstylGridEven
+          Styles.ContentOdd = ClientDataModule.cxstylGridOdd
+          Styles.Header = ClientDataModule.cxstylGridHeader
+          object cxgrdclmnTAGKodeBarang: TcxGridColumn
+            Caption = 'Kode'
+            PropertiesClassName = 'TcxExtLookupComboBoxProperties'
+            Properties.OnValidate = cxgrdclmnTAGKodeBarangPropertiesValidate
+            HeaderAlignmentHorz = taCenter
+          end
+          object cxgrdclmnTAGNamaBarang: TcxGridColumn
+            Caption = 'Nama'
+            PropertiesClassName = 'TcxExtLookupComboBoxProperties'
+            Properties.OnValidate = cxgrdclmnTAGNamaBarangPropertiesValidate
+            HeaderAlignmentHorz = taCenter
+            Width = 230
+          end
+          object cxgrdclmnTAGUOM: TcxGridColumn
+            Caption = 'UOM'
+            PropertiesClassName = 'TcxTextEditProperties'
+            Properties.ReadOnly = True
+            HeaderAlignmentHorz = taCenter
+            Width = 72
+          end
+          object cxgrdclmnTAGUOMID: TcxGridColumn
+            Caption = 'UOMID'
+          end
+          object cxgrdclmnTAGQty: TcxGridColumn
+            Caption = 'Qty'
+            PropertiesClassName = 'TcxCurrencyEditProperties'
+            Properties.Alignment.Horz = taRightJustify
+            Properties.DisplayFormat = ',0.00;(,0.00)'
+            HeaderAlignmentHorz = taCenter
+            Width = 91
+          end
+          object cxgrdclmnTAGKonversi: TcxGridColumn
+            Caption = 'Konversi'
+          end
+        end
+        object cxgrdlvlTAGDetail: TcxGridLevel
+          Caption = 'Detail Transfer'
+          GridView = cxGridTableTAGDetail
+        end
       end
     end
   end
   inherited pnlButton: TPanel
-    inherited btnBaru: TcxButton
-      ExplicitLeft = 611
-      ExplicitTop = 2
-    end
     inherited chkKonsolidasi1: TcxCheckBox
       ExplicitWidth = 76
       ExplicitHeight = 31
@@ -123,10 +189,13 @@ inherited frmTransferAntarGudang: TfrmTransferAntarGudang
     inherited ActionSimpan: TAction
       OnExecute = ActionSimpanExecute
     end
+    inherited ActionRefresh: TAction
+      OnExecute = ActionRefreshExecute
+    end
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010107000800D80018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800EC0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

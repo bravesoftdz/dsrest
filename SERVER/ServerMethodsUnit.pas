@@ -19,6 +19,8 @@ type
         AGudang : TGudang; ACabang : TCabang): TDataset;
     function LaporanStockSekarang(ACabang : TCabang): TDataset;
     function LookUpPenerimaan(ABulan, ATahun : Integer): TDataset;
+    function RetrieveTransferAntarGudang(ATglAwal , ATglAkhir : TDateTime;ACabang :
+        TCabang): TDataSet;
     function RetriveMutasiBarang(ATglAwal , ATglAtglAkhir : TDateTime) : TDataset;
     function RetrivePenjualan(ATglAwal , ATglAtglAkhir : TDateTime; ACabang :
         TCabang): TDataset;
@@ -980,6 +982,21 @@ begin
             ' AND extract(YEAR from TGLBUKTI) = ' + IntToStr(ATahun);
 
   Result := TDBUtils.OpenDataset(sSQL);
+end;
+
+function TServerLaporan.RetrieveTransferAntarGudang(ATglAwal , ATglAkhir :
+    TDateTime;ACabang : TCabang): TDataSet;
+var
+  sSQL: string;
+begin
+  sSQL := 'select * from vtransferantargudang a' +
+          ' where a.tglbukti between ' + TAppUtils.QuotDt(StartOfTheDay(ATglAwal))+
+          ' and ' + TAppUtils.QuotDt(EndOfTheDay(ATglAkhir));
+
+  if ACabang <> nil then
+    sSQL := sSQL + ' and a.cabangid = ' + QuotedStr(ACabang.ID);
+
+  Result   := TDBUtils.OpenDataset(sSQL);
 end;
 
 { TLaporan }
@@ -2150,6 +2167,7 @@ begin
 
   if SimpanStockSekarangOut(AAppObject, AIsMenghapus) then
     if SimpanStockSekarangIn(AAppObject, AIsMenghapus) then
+      Result := True;
 end;
 
 function TServerTransferAntarGudang.SimpanStockSekarangOut(AAppObject :
@@ -2195,12 +2213,15 @@ begin
         lStockSekarang.Rp        := lStockSekarang.Rp  - (lTAGOut.TransferAntarGudangItems[i].Qty *lTAGOut.TransferAntarGudangItems[i].Harga);
         lStockSekarang.UOM       := TUOM.CreateID(lStockSekarang.Barang.SatuanStock.ID);
 
-        Result := SaveNoCommit(lStockSekarang);
+        if not SaveNoCommit(lStockSekarang) then
+          Exit;
       end;
     finally
       Free;
     end;
   end;
+
+  Result := True;
 end;
 
 function TServerTransferAntarGudang.SimpanStockSekarangIn(AAppObject :
@@ -2246,12 +2267,15 @@ begin
         lStockSekarang.Rp        := lStockSekarang.Rp  + (lTAGIn.TransferAntarGudangItems[i].Qty *lTAGIn.TransferAntarGudangItems[i].Harga);
         lStockSekarang.UOM       := TUOM.CreateID(lStockSekarang.Barang.SatuanStock.ID);
 
-        Result := SaveNoCommit(lStockSekarang);
+        if not SaveNoCommit(lStockSekarang) then
+          Exit;
       end;
     finally
       Free;
     end;
   end;
+
+  Result := True;
 end;
 
 function TServerSettingApp.Retrieve(AID : String): TSettingApp;
