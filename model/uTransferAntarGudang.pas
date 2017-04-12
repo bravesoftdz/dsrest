@@ -39,6 +39,7 @@ type
   TTransferAntarGudangItem = class(TAppObjectItem)
   private
     FBarang: TBarang;
+    FBarangSatuangItemID: String;
     FHarga: Double;
     FKonversi: double;
     FQty: Double;
@@ -48,6 +49,8 @@ type
     destructor Destroy; override;
     function GetHeaderField: string; override;
     procedure SetHeaderProperty(AHeaderProperty : TAppObject); override;
+    property BarangSatuangItemID: String read FBarangSatuangItemID write
+        FBarangSatuangItemID;
   published
     property Barang: TBarang read FBarang write FBarang;
     property Harga: Double read FHarga write FHarga;
@@ -56,12 +59,6 @@ type
     property TransferAntarGudang: TTransferAntarGudang read FTransferAntarGudang
         write FTransferAntarGudang;
     property UOM: TUOM read FUOM write FUOM;
-  end;
-
-  TTransferAntarGudangOut = class(TTransferAntarGudang)
-  end;
-
-  TTransferAntarGudangIn = class(TTransferAntarGudang)
   end;
 
 implementation

@@ -281,6 +281,10 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
     end
   end
   inherited pnlButton: TPanel
+    inherited btnCetak: TcxButton
+      ExplicitLeft = -5
+      ExplicitTop = 2
+    end
     inherited chkKonsolidasi1: TcxCheckBox
       ExplicitWidth = 76
       ExplicitHeight = 31
@@ -311,7 +315,7 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
     Left = 584
     Top = 144
     Bitmap = {
-      494C010107000800F40018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800F80018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

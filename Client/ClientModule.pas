@@ -111,6 +111,8 @@ end;
 procedure TClientDataModule.DataModuleCreate(Sender: TObject);
 begin
   FreeAndNil(FCabang);
+
+  ClientDataModule.DSRestConnection.PreserveSessionID := False;
 end;
 
 destructor TClientDataModule.Destroy;

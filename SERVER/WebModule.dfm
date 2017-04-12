@@ -32,7 +32,6 @@ object WebModule2: TWebModule2
   object DSHTTPWebDispatcher1: TDSHTTPWebDispatcher
     Server = DSServer1
     Filters = <>
-    SessionTimeout = 120000
     WebDispatch.PathInfo = 'datasnap*'
     Left = 224
     Top = 8

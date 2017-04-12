@@ -343,7 +343,7 @@ end;
 
 class function TDBUtils.GenerateSQL(AObject : TAppObject): string;
 begin
-  if (AObject.ID = '') or (AObject.ObjectState = 1) then
+  if (AObject.ObjectState = 1) then
   begin
     Result := TDBUtils.GenerateSQLInsert(AObject)
   end else
@@ -593,7 +593,9 @@ begin
       end;
     end;
   finally
-    AOBject.ObjectState := 3;
+    if AOBject.ID <> '' then
+      AOBject.ObjectState := 3;
+
     Q.Free;
   end;
 end;

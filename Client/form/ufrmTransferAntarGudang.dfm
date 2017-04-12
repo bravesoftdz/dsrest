@@ -10,6 +10,14 @@ inherited frmTransferAntarGudang: TfrmTransferAntarGudang
       ExplicitTop = 24
       ExplicitWidth = 709
       ExplicitHeight = 265
+      inherited pnlListTransaksi: TPanel
+        inherited cxGrid: TcxGrid
+          inherited cxGridDBTableOverview: TcxGridDBTableView
+            Tag = 99
+            OnCellDblClick = cxGridDBTableOverviewCellDblClick
+          end
+        end
+      end
     end
     inherited cxTSInputData: TcxTabSheet
       ExplicitLeft = 4
@@ -59,13 +67,14 @@ inherited frmTransferAntarGudang: TfrmTransferAntarGudang
           Caption = 'Keterangan'
         end
         object lblPetugas: TLabel
-          Left = 327
+          Left = 331
           Top = 7
           Width = 39
           Height = 13
-          Caption = 'No Bukti'
+          Caption = 'Petugas'
         end
         object edNoBukti: TcxTextEdit
+          Tag = 1
           Left = 72
           Top = 3
           Enabled = False
@@ -75,12 +84,14 @@ inherited frmTransferAntarGudang: TfrmTransferAntarGudang
           Width = 121
         end
         object edTglBukti: TcxDateEdit
+          Tag = 1
           Left = 72
           Top = 28
           TabOrder = 1
           Width = 121
         end
         object cbbGudangAsal: TcxExtLookupComboBox
+          Tag = 1
           Left = 72
           Top = 53
           Properties.DropDownAutoSize = True
@@ -89,6 +100,7 @@ inherited frmTransferAntarGudang: TfrmTransferAntarGudang
           Width = 192
         end
         object cbbGudangTujuan: TcxExtLookupComboBox
+          Tag = 1
           Left = 72
           Top = 78
           Properties.DropDownAutoSize = True
@@ -106,6 +118,7 @@ inherited frmTransferAntarGudang: TfrmTransferAntarGudang
           Width = 217
         end
         object edPetugas: TcxTextEdit
+          Tag = 1
           Left = 376
           Top = 3
           Enabled = False
@@ -124,6 +137,7 @@ inherited frmTransferAntarGudang: TfrmTransferAntarGudang
         TabOrder = 1
         RootLevelOptions.DetailTabsPosition = dtpTop
         object cxGridTableTAGDetail: TcxGridTableView
+          Tag = 1
           Navigator.Buttons.CustomButtons = <>
           DataController.Options = [dcoCaseInsensitive, dcoAssignGroupingValues, dcoAssignMasterDetailKeys, dcoSaveExpanding]
           DataController.Summary.DefaultGroupSummaryItems = <>
@@ -137,12 +151,6 @@ inherited frmTransferAntarGudang: TfrmTransferAntarGudang
           Styles.ContentEven = ClientDataModule.cxstylGridEven
           Styles.ContentOdd = ClientDataModule.cxstylGridOdd
           Styles.Header = ClientDataModule.cxstylGridHeader
-          object cxgrdclmnTAGKodeBarang: TcxGridColumn
-            Caption = 'Kode'
-            PropertiesClassName = 'TcxExtLookupComboBoxProperties'
-            Properties.OnValidate = cxgrdclmnTAGKodeBarangPropertiesValidate
-            HeaderAlignmentHorz = taCenter
-          end
           object cxgrdclmnTAGNamaBarang: TcxGridColumn
             Caption = 'Nama'
             PropertiesClassName = 'TcxExtLookupComboBoxProperties'
@@ -150,15 +158,17 @@ inherited frmTransferAntarGudang: TfrmTransferAntarGudang
             HeaderAlignmentHorz = taCenter
             Width = 230
           end
+          object cxgrdclmnTAGKodeBarang: TcxGridColumn
+            Caption = 'Kode'
+            PropertiesClassName = 'TcxExtLookupComboBoxProperties'
+            Properties.OnValidate = cxgrdclmnTAGKodeBarangPropertiesValidate
+            HeaderAlignmentHorz = taCenter
+          end
           object cxgrdclmnTAGUOM: TcxGridColumn
             Caption = 'UOM'
-            PropertiesClassName = 'TcxTextEditProperties'
-            Properties.ReadOnly = True
+            PropertiesClassName = 'TcxExtLookupComboBoxProperties'
             HeaderAlignmentHorz = taCenter
             Width = 72
-          end
-          object cxgrdclmnTAGUOMID: TcxGridColumn
-            Caption = 'UOMID'
           end
           object cxgrdclmnTAGQty: TcxGridColumn
             Caption = 'Qty'
@@ -189,13 +199,16 @@ inherited frmTransferAntarGudang: TfrmTransferAntarGudang
     inherited ActionSimpan: TAction
       OnExecute = ActionSimpanExecute
     end
+    inherited actCetak: TAction
+      OnExecute = actCetakExecute
+    end
     inherited ActionRefresh: TAction
       OnExecute = ActionRefreshExecute
     end
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010107000800EC0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800FC0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

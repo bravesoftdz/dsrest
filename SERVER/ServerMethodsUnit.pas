@@ -273,6 +273,8 @@ type
     function BeforeSave(AOBject : TAppObject): Boolean; override;
   public
     function Retrieve(AID : String): TTransferAntarGudang;
+    function RetrieveCDSlip(ATglAwal , ATglAtglAkhir : TDateTime; ACabang :
+        TCabang; ANoBukti : String): TDataset;
     function RetrieveNoBukti(ANoBukti : String): TTransferAntarGudang;
     function SaveTransferAntarGudang(ATransferAntarGudang : TTransferAntarGudang):
         Boolean;
@@ -2030,9 +2032,36 @@ end;
 
 function TServerTransferAntarGudang.BeforeSave(AOBject : TAppObject): Boolean;
 var
+  I: Integer;
+  lQ: TClientDataSet;
+  lStockSekaran: TStockSekarang;
   lTAGLama: TTransferAntarGudang;
+  sSQL: string;
 begin
   Result := False;
+
+
+  if AOBject.ObjectState = 1 then
+  begin
+    with TTransferAntarGudang(AOBject) do
+    begin
+      sSQL := 'select * from tstocksekarang' +
+            ' where gudang = ' + QuotedStr(GudangAsal.ID);
+
+      lQ := TDBUtils.OpenDataset(sSQL);
+      try
+        for I := 0 to TransferAntarGudangItems.Count - 1 do
+        begin
+          lQ.Filter := 'barang = ' + QuotedStr(TransferAntarGudangItems[i].ID);
+          TransferAntarGudangItems[i].Harga := lQ.FieldByName('rp').AsFloat / lQ.FieldByName('qty').AsFloat * TransferAntarGudangItems[i].Konversi;
+
+        end;
+      finally
+        lQ.Free;
+      end;
+    end;
+  end;
+
 
   lTAGLama := Retrieve(AOBject.ID);
   try
@@ -2068,9 +2097,57 @@ end;
 
 function TServerTransferAntarGudang.Retrieve(AID : String):
     TTransferAntarGudang;
+var
+  I: Integer;
+  sSQL: string;
 begin
   Result := TTransferAntarGudang.Create;
   TDBUtils.LoadFromDB(Result, AID);
+
+  sSQL := 'select c.* from TTransferAntarGudang a' +
+          ' inner join TTransferAntarGudangitem b on a.id = b.TransferAntarGudang' +
+          ' inner join tbarangsatuanitem c on b.barang = c.barang and b.uom=c.uom' +
+          ' where a.id = ' + QuotedStr(AID);
+
+  with TDBUtils.OpenDataset(sSQL) do
+  begin
+    try
+      for I := 0 to Result.TransferAntarGudangItems.Count - 1 do
+      begin
+        First;
+        while not Eof do
+        begin
+          if FieldByName('barang').AsString = Result.TransferAntarGudangItems[i].Barang.ID then
+            if FieldByName('uom').AsString = Result.TransferAntarGudangItems[i].UOM.ID then
+            begin
+              Result.TransferAntarGudangItems[i].BarangSatuangItemID := FieldByName('ID').AsString;
+              Break;
+            end;
+
+          Next;
+        end;
+      end;
+    finally
+      Free;
+    end;
+  end;
+end;
+
+function TServerTransferAntarGudang.RetrieveCDSlip(ATglAwal , ATglAtglAkhir :
+    TDateTime; ACabang : TCabang; ANoBukti : String): TDataset;
+var
+  sSQL: string;
+begin
+  sSQL   := 'select * from vtransferantargudang_slip a ' +
+            ' where tglbukti between ' + TAppUtils.QuotDt(StartOfTheDay(ATglAwal)) +
+            ' and ' + TAppUtils.QuotDt(EndOfTheDay(ATglAtglAkhir)) +
+            ' and nobukti like ' + QuotedStr('%' + Trim(ANoBukti) + '%');
+
+  if ACabang <> nil then
+    sSQL := ' and cabangid = ' + QuotedStr(ACabang.ID);
+
+
+  Result := TDBUtils.OpenDataset(sSQL);
 end;
 
 function TServerTransferAntarGudang.RetrieveNoBukti(ANoBukti : String):
@@ -2100,8 +2177,7 @@ function TServerTransferAntarGudang.SaveTransferAntarGudang(
 begin
   Result := False;
 
-  if SaveNoCommit(TTransferAntarGudangOut(ATransferAntarGudang)) then
-    if Save(TTransferAntarGudangIn(ATransferAntarGudang)) then
+    if Save(ATransferAntarGudang) then
       Result := True;
 end;
 
@@ -2141,6 +2217,15 @@ begin
         if not SaveNoCommit(lMutasiStock) then
           Exit;
 
+        lMutasiStock            := TMutasiStock.Create;
+        lMutasiStock.Barang     := TBarang.CreateID(lTAG.TransferAntarGudangItems[i].Barang.ID);
+        lMutasiStock.Cabang     := TCabang.CreateID(lTAG.Cabang.ID);
+        lMutasiStock.Harga      := lTAG.TransferAntarGudangItems[i].Harga;
+        lMutasiStock.Keterangan := lTAG.Keterangan;
+        lMutasiStock.NoBukti    := lTAG.NoBukti;
+        lMutasiStock.TglBukti   := lTAG.TglBukti;
+        lMutasiStock.Konversi   := lTAG.TransferAntarGudangItems[i].Konversi;
+
         lMutasiStock.Gudang     := TGudang.CreateID(lTAG.GudangTujuan.ID);
         lMutasiStock.UOM        := TUOM.CreateID(lTAG.TransferAntarGudangItems[i].UOM.ID);
         lMutasiStock.QtyIn      := lTAG.TransferAntarGudangItems[i].Qty;
@@ -2162,8 +2247,21 @@ end;
 
 function TServerTransferAntarGudang.SimpanStockSekarang(AAppObject : TAppObject;
     AIsMenghapus : Boolean = False): Boolean;
+var
+  i: Integer;
 begin
   Result := False;
+
+  if AIsMenghapus then
+  begin
+    with TTransferAntarGudang(AAppObject) do
+    begin
+      for i := 0 to TransferAntarGudangItems.Count - 1 do
+      begin
+        TransferAntarGudangItems[i].Qty := -1 * TransferAntarGudangItems[i].Qty;
+      end;
+    end;
+  end;
 
   if SimpanStockSekarangOut(AAppObject, AIsMenghapus) then
     if SimpanStockSekarangIn(AAppObject, AIsMenghapus) then
@@ -2175,19 +2273,19 @@ function TServerTransferAntarGudang.SimpanStockSekarangOut(AAppObject :
 var
   dKonversi: Double;
   i: Integer;
-  lTAGOut: TTransferAntarGudangOut;
+  lTAGOut: TTransferAntarGudang;
   lStockSekarang: TStockSekarang;
 begin
   Result := False;
 
-  lTAGOut := TTransferAntarGudangOut(AAppObject);
-  if AIsMenghapus then
-  begin
-    for i := 0 to lTAGOut.TransferAntarGudangItems.Count - 1 do
-    begin
-      lTAGOut.TransferAntarGudangItems[i].Qty := -1 * lTAGOut.TransferAntarGudangItems[i].Qty;
-    end;
-  end;
+  lTAGOut := TTransferAntarGudang(AAppObject);
+//  if AIsMenghapus then
+//  begin
+//    for i := 0 to lTAGOut.TransferAntarGudangItems.Count - 1 do
+//    begin
+//      lTAGOut.TransferAntarGudangItems[i].Qty := -1 * lTAGOut.TransferAntarGudangItems[i].Qty;
+//    end;
+//  end;
 
   with TServerStockSekarang.Create do
   begin
@@ -2229,19 +2327,19 @@ function TServerTransferAntarGudang.SimpanStockSekarangIn(AAppObject :
 var
   dKonversi: Double;
   i: Integer;
-  lTAGIn: TTransferAntarGudangIn;
+  lTAGIn: TTransferAntarGudang;
   lStockSekarang: TStockSekarang;
 begin
   Result := False;
 
-  lTAGIn := TTransferAntarGudangIn(AAppObject);
-  if AIsMenghapus then
-  begin
-    for i := 0 to lTAGIn.TransferAntarGudangItems.Count - 1 do
-    begin
-      lTAGIn.TransferAntarGudangItems[i].Qty := -1 * lTAGIn.TransferAntarGudangItems[i].Qty;
-    end;
-  end;
+  lTAGIn := TTransferAntarGudang(AAppObject);
+//  if AIsMenghapus then
+//  begin
+//    for i := 0 to lTAGIn.TransferAntarGudangItems.Count - 1 do
+//    begin
+//      lTAGIn.TransferAntarGudangItems[i].Qty := -1 * lTAGIn.TransferAntarGudangItems[i].Qty;
+//    end;
+//  end;
 
   with TServerStockSekarang.Create do
   begin
