@@ -48,7 +48,9 @@ uses
   uTransferAntarGudang in '..\model\uTransferAntarGudang.pas',
   ufrmTransferAntarGudang in 'form\ufrmTransferAntarGudang.pas' {frmTransferAntarGudang},
   uTAGRequests in '..\model\uTAGRequests.pas',
-  ufrmTAGRequest in 'form\ufrmTAGRequest.pas' {frmTAGRequest};
+  ufrmTAGRequest in 'form\ufrmTAGRequest.pas' {frmTAGRequest},
+  uTAGKirim in '..\model\uTAGKirim.pas',
+  ufrmTAGKirim in 'form\ufrmTAGKirim.pas' {frmDefault1};
 
 {$R *.res}
 

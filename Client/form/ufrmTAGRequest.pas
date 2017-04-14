@@ -51,7 +51,7 @@ type
     procedure InisialisasiCBBCabangTujuan;
     procedure InisialisasiCBBSKU;
     procedure InisialisasiCBBUOM;
-    procedure SetUOM;
+//    procedure SetUOM;
     property CDSSKU: TClientDataSet read FCDSSKU write FCDSSKU;
     property TAGRequest: TTAGRequest read GetTAGRequest write FTAGRequest;
     { Private declarations }
@@ -260,10 +260,10 @@ begin
   end;
 end;
 
-procedure TfrmTAGRequest.SetUOM;
-begin
-  cxGridTableTAGDetail.SetValue(cxGridTableTAGDetail.DataController.FocusedRecordIndex, cxgrdclmnTAGKodeBarang.Index, CDSSKU.FieldByName('barang').AsString);
-  cxGridTableTAGDetail.SetValue(cxGridTableTAGDetail.DataController.FocusedRecordIndex, cxgrdclmnTAGUOM.Index, CDSSKU.FieldByName('uom').AsString);
-end;
+//procedure TfrmTAGRequest.SetUOM;
+//begin
+//  cxGridTableTAGDetail.SetValue(cxGridTableTAGDetail.DataController.FocusedRecordIndex, cxgrdclmnTAGKodeBarang.Index, CDSSKU.FieldByName('barang').AsString);
+//  cxGridTableTAGDetail.SetValue(cxGridTableTAGDetail.DataController.FocusedRecordIndex, cxgrdclmnTAGUOM.Index, CDSSKU.FieldByName('uom').AsString);
+//end;
 
 end.

@@ -3,7 +3,8 @@ unit uTAGKirim;
 interface
 
 uses
-  SysUtils, Windows, Messages, Classes, Graphics, Controls, Forms, Dialogs;
+  SysUtils, Windows, Messages, Classes, Graphics, Controls, Forms,
+  Dialogs,uModel, uAppUtils, System.Generics.Collections, uTAGRequests;
 
 type
   TAGTerimaItem = class(TAppObjectItem)
