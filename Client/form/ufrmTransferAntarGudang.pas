@@ -239,7 +239,6 @@ end;
 
 procedure TfrmTransferAntarGudang.InisialisasiCBBSKU;
 var
-  lCDSSKU: TClientDataSet;
   lCDSNama: TClientDataSet;
   sSQL: string;
 begin
@@ -252,9 +251,9 @@ begin
           ' inner join tbarang b on a.barang = b.id' +
           ' inner join tuom c on a.uom = c.id';
 
-  lCDSSKU := TDBUtils.OpenDataset(sSQL);
+  CDSSKU := TDBUtils.OpenDataset(sSQL);
 
-  TcxExtLookupComboBoxProperties(cxGridTableTAGDetail.Columns[cxgrdclmnTAGNamaBarang.Index].Properties).LoadFromCDS(lCDSSKU,'ID','Nama',['ID'],Self);
+  TcxExtLookupComboBoxProperties(cxGridTableTAGDetail.Columns[cxgrdclmnTAGNamaBarang.Index].Properties).LoadFromCDS(CDSSKU,'ID','Nama',['ID'],Self);
   TcxExtLookupComboBoxProperties(cxGridTableTAGDetail.Columns[cxgrdclmnTAGNamaBarang.Index].Properties).SetMultiPurposeLookup();
   TcxExtLookupComboBoxProperties(cxGridTableTAGDetail.Columns[cxgrdclmnTAGNamaBarang.Index].Properties).cxDBTableGrid.SetVisibleColumns(['barang','uom','id','KONVERSI'], FALSE);
   TcxExtLookupComboBoxProperties(cxGridTableTAGDetail.Columns[cxgrdclmnTAGNamaBarang.Index].Properties).cxDBTableGrid.ApplyBestFit();

@@ -3,7 +3,7 @@ unit uAppUtils;
 interface
 uses
   //AdvGrid,
-  cxGrid,cxGridDBTableView, cxTreeView,  Math, cxGridExportLink,
+  Rtti, cxGrid,cxGridDBTableView, cxTreeView,  Math, cxGridExportLink,
   cxExportPivotGridLink, cxGridDBBandedTableView, cxDBPivotGrid, cxCurrencyEdit,
   cxCustomPivotGrid, cxGridBandedTableView, cxDBExtLookupComboBox, cxCustomData,
   cxFilter, cxGridCustomTableView, cxDBTL, cxTLExportLink,cxCalendar, Dialogs,
@@ -17,10 +17,10 @@ uses
   ComCtrls,
    cxGridTableView,
   StrUtils,
-    SqlExpr, System.UITypes,
+    SqlExpr, System.UITypes,System.TypInfo,
 
 
-    cxDropDownEdit,  System.Contnrs, cxMemo;
+    cxDropDownEdit,  System.Contnrs, cxMemo, System.Generics.Collections, uModel;
 
 type
   TTag = set of byte;
@@ -146,7 +146,6 @@ type
 
   TcxGridTableViewHelper = class helper for TcxGridTableView
   private
-
   public
     procedure ClearRows;
     procedure SetValue(ARec, ACol : Integer; AValue : Variant);
@@ -155,6 +154,8 @@ type
     function GetString(ARec, ACol : Integer): string;
     function GetInteger(ARec, ACol : Integer): Integer;
     function GetDate(ARec, ACol : Integer): TDatetime;
+    procedure LoadObjectData(AObject : TAppObject; ARow : Integer);
+    procedure SetObjectData(AObject : TAppObject; ARow : Integer);
     procedure SetDouble(ARec, ACol : Integer; AValue : Double);
     function Summary(ACol : Integer): Double;
   end;
@@ -1573,6 +1574,96 @@ end;
 function TcxGridTableViewHelper.GetDate(ARec, ACol : Integer): TDatetime;
 begin
   Result := Self.DataController.Values[ARec, ACol];
+end;
+
+procedure TcxGridTableViewHelper.LoadObjectData(AObject : TAppObject; ARow :
+    Integer);
+var
+  ctx : TRttiContext;
+  rt : TRttiType;
+  prop : TRttiProperty;
+  meth : TRttiMethod;
+  I: Integer;
+  lAppObject: TAppObject;
+begin
+  ctx := TRttiContext.Create();
+  try
+    rt := ctx.GetType(AObject.ClassType);
+    for prop in rt.GetProperties() do
+    begin
+      for I := 0 to Self.ColumnCount - 1 do
+      begin
+        if UpperCase(prop.Name) = UpperCase(Self.Columns[i].AlternateCaption) then
+        begin
+          if prop.Visibility <> mvPublished then
+            Continue;
+
+          case prop.PropertyType.TypeKind of
+            tkInteger : prop.SetValue(AObject,Self.GetInteger(ARow,i));
+            tkFloat   : prop.SetValue(AObject,Self.GetDouble(ARow,i));
+            tkUString : prop.SetValue(AObject,Self.GetString(ARow,i));
+            tkClass   : begin
+                        meth := prop.PropertyType.GetMethod('ToArray');
+                        if Assigned(meth) then
+                        begin
+                          Continue;
+                        end else begin
+                          meth          := prop.PropertyType.GetMethod('Create');
+                          lAppObject    := TAppObject(meth.Invoke(prop.PropertyType.AsInstance.MetaclassType, []).AsObject);
+                          lAppObject.ID := Self.GetString(ARow,i);
+
+                          prop.SetValue(AOBject, lAppObject);
+                        end;
+                      end;
+          end;
+        end;
+      end;
+    end;
+  finally
+    ctx.Free();
+  end;
+
+end;
+
+procedure TcxGridTableViewHelper.SetObjectData(AObject : TAppObject; ARow :
+    Integer);
+var
+  ctx : TRttiContext;
+  rt : TRttiType;
+  prop : TRttiProperty;
+  j: Integer;
+
+begin
+  Self.ClearRows;
+
+  ctx := TRttiContext.Create();
+  try
+    rt := ctx.GetType(AObject.ClassType);
+    for j := 0 to Self.ColumnCount - 1 do
+    begin
+      for prop in rt.GetProperties() do
+      begin
+        if UpperCase(prop.Name) <> UpperCase(Self.Columns[j].AlternateCaption) then
+          Continue;
+
+        case prop.PropertyType.TypeKind of
+          tkClass   : begin
+                        Self.SetValue(ARow,j,TAppObject(prop.GetValue(AObject).AsObject).ID);
+                      end;
+          tkInteger : Self.SetValue(ARow,j,prop.GetValue(AObject).AsInteger);
+
+          tkFloat   : //if CompareText('TDateTime',prop.PropertyType.Name)=0 then
+//                          Self.SetValue(i,j,QuotedStr(FormatDateTime('MM/dd/yyyy hh:mm:ss',prop.GetValue(AObject).AsExtended)))
+//                        else
+                        Self.SetValue(ARow,j,prop.GetValue(AObject).AsExtended);
+
+          tkUString : Self.SetValue(ARow,j,QuotedStr(prop.GetValue(AObject).AsString));
+        end;
+      end;
+    end;
+  finally
+    ctx.Free;
+  end;
 end;
 
 procedure TcxGridTableViewHelper.SetValue(ARec, ACol : Integer; AValue :

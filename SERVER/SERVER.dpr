@@ -23,7 +23,8 @@ uses
   uRekBank in '..\model\uRekBank.pas',
   uAccount in '..\model\uAccount.pas',
   uTransferAntarGudang in '..\model\uTransferAntarGudang.pas',
-  uSettingApp in '..\model\uSettingApp.pas';
+  uSettingApp in '..\model\uSettingApp.pas',
+  uTAGRequests in '..\model\uTAGRequests.pas';
 
 {$R *.res}
 

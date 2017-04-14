@@ -46,7 +46,9 @@ uses
   uSettingApp in '..\model\uSettingApp.pas',
   uInterface in 'lib\uInterface.pas',
   uTransferAntarGudang in '..\model\uTransferAntarGudang.pas',
-  ufrmTransferAntarGudang in 'form\ufrmTransferAntarGudang.pas' {frmTransferAntarGudang};
+  ufrmTransferAntarGudang in 'form\ufrmTransferAntarGudang.pas' {frmTransferAntarGudang},
+  uTAGRequests in '..\model\uTAGRequests.pas',
+  ufrmTAGRequest in 'form\ufrmTAGRequest.pas' {frmTAGRequest};
 
 {$R *.res}
 

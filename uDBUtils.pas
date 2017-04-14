@@ -167,9 +167,9 @@ end;
 
 class function TDBUtils.GenerateSQLInsert(AObject : TAppObject): string;
 var
-  ctx : TRttiContext;
   i: Integer;
 //  lValue: TValue;
+  ctx : TRttiContext;
   rt : TRttiType;
   prop : TRttiProperty;
   ResultObjectList: string;

@@ -14,7 +14,7 @@ uses
   dxRibbonCustomizationForm, FireDAC.Phys.MSSQLDef, FireDAC.Phys.PGDef,
   System.ImageList, ufrmLapKartuStock, ufrmPenjualan, ufrmPenjualanPOS,
   ufrmCustomerInvoice,ufrmPenerimaanKas, ufrmRekBank, ufrmLaporanAR,
-  ufrmSettingAplikasi, ufrmTransferAntarGudang;
+  ufrmSettingAplikasi, ufrmTransferAntarGudang, ufrmTAGRequest;
 
 type
   TfrmMain = class(TForm)
@@ -115,6 +115,8 @@ type
     dxbrTAG: TdxBar;
     dxbrlrgbtnTAG: TdxBarLargeButton;
     actTAG: TAction;
+    dxbrlrgbtnTAGReq: TdxBarLargeButton;
+    actTAGGRequest: TAction;
     procedure actAlatGantiCabangExecute(Sender: TObject);
     procedure actApplicationExitExecute(Sender: TObject);
     procedure actClosingInventoryExecute(Sender: TObject);
@@ -136,6 +138,7 @@ type
     procedure actSettingAplikasiExecute(Sender: TObject);
     procedure actSettingKoneksiExecute(Sender: TObject);
     procedure actTAGExecute(Sender: TObject);
+    procedure actTAGGRequestExecute(Sender: TObject);
   private
     procedure UpdateStatusBar;
     { Private declarations }
@@ -281,6 +284,11 @@ end;
 procedure TfrmMain.actTAGExecute(Sender: TObject);
 begin
   frmTransferAntarGudang := TfrmTransferAntarGudang.Create(Self);
+end;
+
+procedure TfrmMain.actTAGGRequestExecute(Sender: TObject);
+begin
+  frmTAGRequest := TfrmTAGRequest.Create(Self);
 end;
 
 procedure TfrmMain.FormCreate(Sender: TObject);

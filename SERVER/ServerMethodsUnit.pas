@@ -6,7 +6,7 @@ uses
   SysUtils, Classes, DSServer, uModel, Windows, uDBUtils, Generics.Collections,
   DBXJSON, DBClient, DB, rtti, uInterface, uPenjualan,
   uCustomerInvoice, uAR, uPenerimaanKas, uAccount, uRekBank,
-  uTransferAntarGudang, uSettingApp;
+  uTransferAntarGudang, uSettingApp, uTAGRequests;
 
 type
   {$METHODINFO ON}
@@ -19,6 +19,10 @@ type
         AGudang : TGudang; ACabang : TCabang): TDataset;
     function LaporanStockSekarang(ACabang : TCabang): TDataset;
     function LookUpPenerimaan(ABulan, ATahun : Integer): TDataset;
+    function RetrieveCDSTAGRequestKepada(ATglAwal , ATglAkhir : TDateTime;ACabang :
+        TCabang): TDataSet;
+    function RetrieveCDSTAGRequestDari(ATglAwal , ATglAkhir : TDateTime;ACabang :
+        TCabang): TDataSet;
     function RetrieveTransferAntarGudang(ATglAwal , ATglAkhir : TDateTime;ACabang :
         TCabang): TDataSet;
     function RetriveMutasiBarang(ATglAwal , ATglAtglAkhir : TDateTime) : TDataset;
@@ -284,6 +288,12 @@ type
   public
     function Retrieve(AID : String): TSettingApp;
     function RetrieveByCabang(ACabangID : String): TSettingApp;
+  end;
+
+  TServerTAGRequest = class(TServerTransaction)
+  protected
+  public
+    function Retrieve(AID : String): TTAGRequest;
   end;
 
 
@@ -982,6 +992,37 @@ begin
   sSQL   := 'SELECT * FROM VLOOKUP_PENERIMAAN_BARANG' +
             ' WHERE extract(month from TGLBUKTI) = ' + IntToStr(ABulan) +
             ' AND extract(YEAR from TGLBUKTI) = ' + IntToStr(ATahun);
+
+  Result := TDBUtils.OpenDataset(sSQL);
+end;
+
+function TServerLaporan.RetrieveCDSTAGRequestKepada(ATglAwal , ATglAkhir :
+    TDateTime;ACabang : TCabang): TDataSet;
+var
+  sSQL: string;
+begin
+  sSQL := 'select * from vtagrequest a' +
+          ' where a.tglbukti between ' + TAppUtils.QuotDt(StartOfTheDay(ATglAwal))+
+          ' and ' + TAppUtils.QuotDt(EndOfTheDay(ATglAkhir));
+
+  if ACabang <> nil then
+    sSQL := sSQL + ' and a.cabangid = ' + QuotedStr(ACabang.ID);
+
+  Result := TDBUtils.OpenDataset(sSQL);
+
+end;
+
+function TServerLaporan.RetrieveCDSTAGRequestDari(ATglAwal , ATglAkhir :
+    TDateTime;ACabang : TCabang): TDataSet;
+var
+  sSQL: string;
+begin
+  sSQL := 'select * from vtagrequest a' +
+          ' where a.tglbukti between ' + TAppUtils.QuotDt(StartOfTheDay(ATglAwal))+
+          ' and ' + TAppUtils.QuotDt(EndOfTheDay(ATglAkhir));
+
+  if ACabang <> nil then
+    sSQL := sSQL + ' and a.tocabangid = ' + QuotedStr(ACabang.ID);
 
   Result := TDBUtils.OpenDataset(sSQL);
 end;
@@ -2393,6 +2434,12 @@ begin
           ' where cabang = ' + QuotedStr(ACabangID);
 
   TDBUtils.LoadFromDBSQL(Result, sSQL);
+end;
+
+function TServerTAGRequest.Retrieve(AID : String): TTAGRequest;
+begin
+  Result      := TTAGRequest.Create;
+  TDBUtils.LoadFromDB(Result, AID);
 end;
 
 
