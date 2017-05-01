@@ -17,7 +17,7 @@ uses
   FireDAC.Phys.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async,
   FireDAC.Comp.Client, FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf,
   FireDAC.Comp.DataSet, FireDAC.DApt, cxGraphics,
-  FireDAC.Phys.MSSQLDef, FireDAC.Phys.PGDef;
+  FireDAC.Phys.MSSQLDef, FireDAC.Phys.PGDef, uTransferAntarCabang;
 
 type
   TfrmServer = class(TForm)
@@ -52,8 +52,10 @@ type
     FDTransaction1: TFDTransaction;
     FDMemTable1: TFDMemTable;
     FDQuery1: TFDQuery;
+    btn1: TButton;
     procedure FormCreate(Sender: TObject);
     procedure ApplicationEvents1Idle(Sender: TObject; var Done: Boolean);
+    procedure btn1Click(Sender: TObject);
     procedure btnTestClick(Sender: TObject);
     procedure btnKonekDBClick(Sender: TObject);
     procedure ButtonStartClick(Sender: TObject);
@@ -107,6 +109,11 @@ procedure TerminateThreads;
 begin
 //  if TDSSessionManager.Instance <> nil then
 //    TDSSessionManager.Instance.TerminateAllSessions;
+end;
+
+procedure TfrmServer.btn1Click(Sender: TObject);
+begin
+  ShowMessage(TDBUtils.GenerateSQL(TTransferAntarCabangKirim.Create));
 end;
 
 procedure TfrmServer.btnTestClick(Sender: TObject);

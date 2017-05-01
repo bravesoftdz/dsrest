@@ -207,9 +207,11 @@
             <Form>frmTAGRequest</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="..\uDSRestLib.pas"/>
         <DCCReference Include="..\model\uTAGKirim.pas"/>
-        <DCCReference Include="form\ufrmTAGKirim.pas">
-            <Form>frmDefault1</Form>
+        <DCCReference Include="..\model\uTransferAntarCabang.pas"/>
+        <DCCReference Include="form\ufrmTACKirim.pas">
+            <Form>frmTACKirim</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <BuildConfiguration Include="Release">

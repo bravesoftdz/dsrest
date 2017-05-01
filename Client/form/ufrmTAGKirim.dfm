@@ -1,19 +1,253 @@
-inherited frmDefault1: TfrmDefault1
-  Caption = 'frmDefault1'
+inherited frmTACKirim: TfrmTACKirim
+  Caption = 'Kirim Transfer Antar Cabang'
+  ExplicitWidth = 733
+  ExplicitHeight = 385
   PixelsPerInch = 96
   TextHeight = 13
   inherited cxPCData: TcxPageControl
-    Properties.ActivePage = cxTSOverview
+    Properties.ActivePage = cxTSInputData
     inherited cxTSOverview: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
       ExplicitWidth = 709
       ExplicitHeight = 265
+      inherited pnlListTransaksi: TPanel
+        inherited pnlFilter: TPanel
+          inherited dtpAwal: TDateTimePicker
+            ExplicitLeft = 329
+            ExplicitTop = 4
+            ExplicitHeight = 23
+          end
+          inherited dtpAkhir: TDateTimePicker
+            ExplicitLeft = 478
+            ExplicitTop = 4
+            ExplicitHeight = 23
+          end
+          inherited btnRefresh: TcxButton
+            ExplicitLeft = 589
+            ExplicitTop = 4
+            ExplicitHeight = 23
+          end
+        end
+        inherited cxGrid: TcxGrid
+          ExplicitTop = 32
+          ExplicitHeight = 232
+        end
+      end
     end
+    inherited cxTSInputData: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 709
+      ExplicitHeight = 265
+      object pnlHeader: TPanel
+        Left = 0
+        Top = 0
+        Width = 709
+        Height = 113
+        Align = alTop
+        TabOrder = 0
+        object lblNoBukti: TLabel
+          Left = 51
+          Top = 11
+          Width = 39
+          Height = 13
+          Caption = 'No Bukti'
+        end
+        object lblTglBukti: TLabel
+          Left = 50
+          Top = 61
+          Width = 40
+          Height = 13
+          Caption = 'Tgl Bukti'
+        end
+        object lblPembeli: TLabel
+          Left = 54
+          Top = 86
+          Width = 36
+          Height = 13
+          Caption = 'Kepada'
+        end
+        object lblKeterangan: TLabel
+          Left = 337
+          Top = 61
+          Width = 56
+          Height = 13
+          Caption = 'Keterangan'
+        end
+        object lblPetugas: TLabel
+          Left = 354
+          Top = 36
+          Width = 39
+          Height = 13
+          Caption = 'Petugas'
+        end
+        object lblNoReq: TLabel
+          Left = 8
+          Top = 36
+          Width = 82
+          Height = 13
+          Caption = 'No Bukti Request'
+        end
+        object lblGudang: TLabel
+          Left = 356
+          Top = 11
+          Width = 37
+          Height = 13
+          Caption = 'Gudang'
+        end
+        object edNoBukti: TcxTextEdit
+          Tag = 1
+          Left = 95
+          Top = 7
+          Enabled = False
+          Properties.ReadOnly = True
+          TabOrder = 0
+          Text = 'edNoBukti'
+          Width = 121
+        end
+        object edTglBukti: TcxDateEdit
+          Tag = 1
+          Left = 95
+          Top = 57
+          TabOrder = 2
+          Width = 121
+        end
+        object cbbCabangTujuan: TcxExtLookupComboBox
+          Tag = 1
+          Left = 95
+          Top = 82
+          Properties.DropDownAutoSize = True
+          Properties.FocusPopup = True
+          TabOrder = 3
+          Width = 192
+        end
+        object memKeterangan: TcxMemo
+          Left = 399
+          Top = 57
+          Lines.Strings = (
+            'memKeterangan')
+          TabOrder = 6
+          Height = 46
+          Width = 192
+        end
+        object edPetugas: TcxTextEdit
+          Tag = 1
+          Left = 399
+          Top = 32
+          Enabled = False
+          Properties.ReadOnly = True
+          TabOrder = 5
+          Text = 'edNoBukti'
+          Width = 121
+        end
+        object edNoRequest: TcxTextEdit
+          Tag = 1
+          Left = 95
+          Top = 32
+          Properties.ReadOnly = False
+          TabOrder = 1
+          Text = 'edNoBukti'
+          OnKeyDown = edNoRequestKeyDown
+          Width = 121
+        end
+        object cbbGudang: TcxExtLookupComboBox
+          Tag = 1
+          Left = 399
+          Top = 7
+          Properties.DropDownAutoSize = True
+          Properties.FocusPopup = True
+          TabOrder = 4
+          Width = 192
+        end
+      end
+      object cxGridDBTAGDetail: TcxGrid
+        Left = 0
+        Top = 113
+        Width = 709
+        Height = 152
+        Align = alClient
+        TabOrder = 1
+        RootLevelOptions.DetailTabsPosition = dtpTop
+        object cxGridTableTAGDetail: TcxGridTableView
+          Tag = 1
+          Navigator.Buttons.CustomButtons = <>
+          DataController.Options = [dcoCaseInsensitive, dcoAssignGroupingValues, dcoAssignMasterDetailKeys, dcoSaveExpanding]
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.SummaryGroups = <>
+          OptionsBehavior.FocusFirstCellOnNewRecord = True
+          OptionsBehavior.GoToNextCellOnEnter = True
+          OptionsBehavior.FocusCellOnCycle = True
+          OptionsData.Appending = True
+          OptionsView.GroupByBox = False
+          Styles.ContentEven = ClientDataModule.cxstylGridEven
+          Styles.ContentOdd = ClientDataModule.cxstylGridOdd
+          Styles.Header = ClientDataModule.cxstylGridHeader
+          object cxgrdclmnTAGNamaBarang: TcxGridColumn
+            AlternateCaption = 'BarangSatuangItemID'
+            Caption = 'Nama'
+            PropertiesClassName = 'TcxExtLookupComboBoxProperties'
+            HeaderAlignmentHorz = taCenter
+            Width = 230
+          end
+          object cxgrdclmnTAGKodeBarang: TcxGridColumn
+            AlternateCaption = 'Barang'
+            Caption = 'Kode'
+            PropertiesClassName = 'TcxExtLookupComboBoxProperties'
+            Properties.ReadOnly = True
+            HeaderAlignmentHorz = taCenter
+          end
+          object cxgrdclmnTAGUOM: TcxGridColumn
+            AlternateCaption = 'UOM'
+            Caption = 'UOM'
+            PropertiesClassName = 'TcxExtLookupComboBoxProperties'
+            Properties.ReadOnly = True
+            HeaderAlignmentHorz = taCenter
+            Width = 72
+          end
+          object cxgrdclmnTAGQty: TcxGridColumn
+            AlternateCaption = 'Qty'
+            Caption = 'Qty'
+            PropertiesClassName = 'TcxCurrencyEditProperties'
+            Properties.Alignment.Horz = taRightJustify
+            Properties.DisplayFormat = ',0.00;(,0.00)'
+            HeaderAlignmentHorz = taCenter
+            Width = 91
+          end
+          object cxgrdclmnTAGKeterangan: TcxGridColumn
+            AlternateCaption = 'Keterangan'
+            Caption = 'Keterangan'
+          end
+        end
+        object cxgrdlvlTAGDetail: TcxGridLevel
+          Caption = 'Detail Transfer'
+          GridView = cxGridTableTAGDetail
+        end
+      end
+    end
+  end
+  inherited pnlButton: TPanel
+    inherited chkKonsolidasi1: TcxCheckBox
+      ExplicitWidth = 76
+      ExplicitHeight = 31
+    end
+  end
+  inherited ActionListForm: TActionList
+    inherited ActionSimpan: TAction
+      OnExecute = ActionSimpanExecute
+    end
+  end
+  inherited cdsCabang: TClientDataSet
+    Left = 624
+  end
+  inherited dlgSaveExportExcel: TSaveDialog
+    Left = 648
+    Top = 144
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010107000800D80018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800F80018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

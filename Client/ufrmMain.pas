@@ -14,7 +14,8 @@ uses
   dxRibbonCustomizationForm, FireDAC.Phys.MSSQLDef, FireDAC.Phys.PGDef,
   System.ImageList, ufrmLapKartuStock, ufrmPenjualan, ufrmPenjualanPOS,
   ufrmCustomerInvoice,ufrmPenerimaanKas, ufrmRekBank, ufrmLaporanAR,
-  ufrmSettingAplikasi, ufrmTransferAntarGudang, ufrmTAGRequest;
+  ufrmSettingAplikasi, ufrmTransferAntarGudang, ufrmTAGRequest,
+  Datasnap.DBClient, ufrmTACKirim;
 
 type
   TfrmMain = class(TForm)
@@ -117,6 +118,8 @@ type
     actTAG: TAction;
     dxbrlrgbtnTAGReq: TdxBarLargeButton;
     actTAGGRequest: TAction;
+    dxbrlrgbtnKirimBarang: TdxBarLargeButton;
+    actTAGKirim: TAction;
     procedure actAlatGantiCabangExecute(Sender: TObject);
     procedure actApplicationExitExecute(Sender: TObject);
     procedure actClosingInventoryExecute(Sender: TObject);
@@ -139,6 +142,8 @@ type
     procedure actSettingKoneksiExecute(Sender: TObject);
     procedure actTAGExecute(Sender: TObject);
     procedure actTAGGRequestExecute(Sender: TObject);
+    procedure actTAGKirimExecute(Sender: TObject);
+    procedure FormDblClick(Sender: TObject);
   private
     procedure UpdateStatusBar;
     { Private declarations }
@@ -154,7 +159,7 @@ uses
   ufrmSupplier, ufrmKoneksi,uAppUtils, ufrmBarang, ufrmPenerimaanBarang,
   ClientClassesUnit2, ClientModule, ufrmPilihCabang, ufrmLapMutasiBarangPerTransaksi,
   ufrmReturSupplier, udbutils, ufrmClosingInventory, ufrmLapStockSekarang,
-  ufrmGudang, ufrmAccount;
+  ufrmGudang, ufrmAccount, uReport;
 
 {$R *.dfm}
 
@@ -291,6 +296,11 @@ begin
   frmTAGRequest := TfrmTAGRequest.Create(Self);
 end;
 
+procedure TfrmMain.actTAGKirimExecute(Sender: TObject);
+begin
+  frmTACKirim := TfrmTACKirim.Create(Self);
+end;
+
 procedure TfrmMain.FormCreate(Sender: TObject);
 begin
   //  Caption := Caption + ' Ver : ' + TAppUtils.GetAppVersion;
@@ -330,6 +340,25 @@ begin
     UpdateStatusBar;
   finally
     frmKoneksi.Free;
+  end;
+end;
+
+procedure TfrmMain.FormDblClick(Sender: TObject);
+var
+  lcds: TClientDataSet;
+  lTSReport: TTSReport;
+begin
+  lTSReport := TTSReport.Create(self);
+  try
+    with ClientDataModule.ServerLaporanClient do
+    begin
+      lcds := TDBUtils.DSToCDS(RetrieveGaji(2017, 4), Self);
+
+      lTSReport.AddDataset(lcds, 'Mukafaah');
+      lTSReport.ShowReport('Mukafaah');
+    end;
+  finally
+    lTSReport.Free;
   end;
 end;
 

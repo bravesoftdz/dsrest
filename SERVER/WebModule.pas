@@ -307,6 +307,7 @@ begin
   TCustServerClass.Create(Self, DSServer1, TServerSettingApp, DSServerClass1.LifeCycle);
   TCustServerClass.Create(Self, DSServer1, TServerTransferAntarGudang, DSServerClass1.LifeCycle);
   TCustServerClass.Create(Self, DSServer1, TServerTAGRequest, DSServerClass1.LifeCycle);
+  TCustServerClass.Create(Self, DSServer1, TServerTransferAntarCabangKirim, DSServerClass1.LifeCycle);
 end;
 
 procedure TWebModule2.SetIP(const Value: string);

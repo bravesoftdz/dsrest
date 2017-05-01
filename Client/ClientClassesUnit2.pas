@@ -1,13 +1,13 @@
 //
 // Created by the DataSnap proxy generator.
-// 4/14/2017 10:01:33 AM
+// 4/27/2017 3:35:46 AM
 //
 
 unit ClientClassesUnit2;
 
 interface
 
-uses System.JSON, Datasnap.DSProxyRest, Datasnap.DSClientRest, Data.DBXCommon, Data.DBXClient, Data.DBXDataSnap, Data.DBXJSON, Datasnap.DSProxy, System.Classes, System.SysUtils, Data.DB, Data.SqlExpr, Data.DBXDBReaders, Data.DBXCDSReaders, uModel, uCustomerInvoice, uPenjualan, uAR, uAccount, uRekBank, uPenerimaanKas, uSettingApp, uTransferAntarGudang, uTAGRequests, Data.DBXJSONReflect;
+uses System.JSON, Datasnap.DSProxyRest, Datasnap.DSClientRest, Data.DBXCommon, Data.DBXClient, Data.DBXDataSnap, Data.DBXJSON, Datasnap.DSProxy, System.Classes, System.SysUtils, Data.DB, Data.SqlExpr, Data.DBXDBReaders, Data.DBXCDSReaders, uModel, uCustomerInvoice, uPenjualan, uAR, uAccount, uRekBank, uPenerimaanKas, uSettingApp, uTransferAntarGudang, uTAGRequests, uTransferAntarCabang, Data.DBXJSONReflect;
 
 type
 
@@ -29,6 +29,7 @@ type
   IDSRestCachedTAccount = interface;
   IDSRestCachedTTAGRequest = interface;
   IDSRestCachedTSupplier = interface;
+  IDSRestCachedTTransferAntarCabangKirim = interface;
   IDSRestCachedTReturSupplier = interface;
   IDSRestCachedTPenerimaanKas = interface;
 
@@ -46,6 +47,10 @@ type
     FRetrieveCDSTAGRequestKepadaCommand_Cache: TDSRestCommand;
     FRetrieveCDSTAGRequestDariCommand: TDSRestCommand;
     FRetrieveCDSTAGRequestDariCommand_Cache: TDSRestCommand;
+    FRetrieveTACKirimCommand: TDSRestCommand;
+    FRetrieveTACKirimCommand_Cache: TDSRestCommand;
+    FRetrieveGajiCommand: TDSRestCommand;
+    FRetrieveGajiCommand_Cache: TDSRestCommand;
     FRetrieveTransferAntarGudangCommand: TDSRestCommand;
     FRetrieveTransferAntarGudangCommand_Cache: TDSRestCommand;
     FRetriveMutasiBarangCommand: TDSRestCommand;
@@ -76,6 +81,10 @@ type
     function RetrieveCDSTAGRequestKepada_Cache(ATglAwal: TDateTime; ATglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function RetrieveCDSTAGRequestDari(ATglAwal: TDateTime; ATglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string = ''): TDataSet;
     function RetrieveCDSTAGRequestDari_Cache(ATglAwal: TDateTime; ATglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function RetrieveTACKirim(ATglAwal: TDateTime; ATglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string = ''): TDataSet;
+    function RetrieveTACKirim_Cache(ATglAwal: TDateTime; ATglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function RetrieveGaji(ATahun: Integer; ABulan: Integer; const ARequestFilter: string = ''): TDataSet;
+    function RetrieveGaji_Cache(ATahun: Integer; ABulan: Integer; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function RetrieveTransferAntarGudang(ATglAwal: TDateTime; ATglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string = ''): TDataSet;
     function RetrieveTransferAntarGudang_Cache(ATglAwal: TDateTime; ATglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function RetriveMutasiBarang(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; const ARequestFilter: string = ''): TDataSet;
@@ -600,6 +609,8 @@ type
   private
     FRetrieveCommand: TDSRestCommand;
     FRetrieveCommand_Cache: TDSRestCommand;
+    FRetrieveNoBuktiCommand: TDSRestCommand;
+    FRetrieveNoBuktiCommand_Cache: TDSRestCommand;
     FGenerateNoBuktiCommand: TDSRestCommand;
     FDeleteCommand: TDSRestCommand;
     FRetrieveCDSCommand: TDSRestCommand;
@@ -611,6 +622,34 @@ type
     destructor Destroy; override;
     function Retrieve(AID: string; const ARequestFilter: string = ''): TTAGRequest;
     function Retrieve_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedTTAGRequest;
+    function RetrieveNoBukti(ANoBukti: string; const ARequestFilter: string = ''): TTAGRequest;
+    function RetrieveNoBukti_Cache(ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedTTAGRequest;
+    function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
+    function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
+    function RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string = ''): TDataSet;
+    function RetrieveCDS_Cache(AAppObject: TAppObject; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function Save(AOBject: TAppObject; const ARequestFilter: string = ''): Boolean;
+  end;
+
+  TServerTransferAntarCabangKirimClient = class(TDSAdminRestClient)
+  private
+    FRetrieveCommand: TDSRestCommand;
+    FRetrieveCommand_Cache: TDSRestCommand;
+    FRetrieveNoBuktiCommand: TDSRestCommand;
+    FRetrieveNoBuktiCommand_Cache: TDSRestCommand;
+    FGenerateNoBuktiCommand: TDSRestCommand;
+    FDeleteCommand: TDSRestCommand;
+    FRetrieveCDSCommand: TDSRestCommand;
+    FRetrieveCDSCommand_Cache: TDSRestCommand;
+    FSaveCommand: TDSRestCommand;
+  public
+    constructor Create(ARestConnection: TDSRestConnection); overload;
+    constructor Create(ARestConnection: TDSRestConnection; AInstanceOwner: Boolean); overload;
+    destructor Destroy; override;
+    function Retrieve(AID: string; const ARequestFilter: string = ''): TTransferAntarCabangKirim;
+    function Retrieve_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedTTransferAntarCabangKirim;
+    function RetrieveNoBukti(ANoBukti: string; const ARequestFilter: string = ''): TTransferAntarCabangKirim;
+    function RetrieveNoBukti_Cache(ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedTTransferAntarCabangKirim;
     function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
     function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
     function RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string = ''): TDataSet;
@@ -707,6 +746,11 @@ type
   end;
 
   TDSRestCachedTSupplier = class(TDSRestCachedObject<TSupplier>, IDSRestCachedTSupplier, IDSRestCachedCommand)
+  end;
+  IDSRestCachedTTransferAntarCabangKirim = interface(IDSRestCachedObject<TTransferAntarCabangKirim>)
+  end;
+
+  TDSRestCachedTTransferAntarCabangKirim = class(TDSRestCachedObject<TTransferAntarCabangKirim>, IDSRestCachedTTransferAntarCabangKirim, IDSRestCachedCommand)
   end;
   IDSRestCachedTReturSupplier = interface(IDSRestCachedObject<TReturSupplier>)
   end;
@@ -805,6 +849,36 @@ const
     (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'ATglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerLaporan_RetrieveTACKirim: array [0..3] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ATglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TServerLaporan_RetrieveTACKirim_Cache: array [0..3] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ATglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerLaporan_RetrieveGaji: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATahun'; Direction: 1; DBXType: 6; TypeName: 'Integer'),
+    (Name: 'ABulan'; Direction: 1; DBXType: 6; TypeName: 'Integer'),
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TServerLaporan_RetrieveGaji_Cache: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATahun'; Direction: 1; DBXType: 6; TypeName: 'Integer'),
+    (Name: 'ABulan'; Direction: 1; DBXType: 6; TypeName: 'Integer'),
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
@@ -1955,6 +2029,18 @@ const
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
+  TServerTAGRequest_RetrieveNoBukti: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 37; TypeName: 'TTAGRequest')
+  );
+
+  TServerTAGRequest_RetrieveNoBukti_Cache: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
   TServerTAGRequest_GenerateNoBukti: array [0..2] of TDSRestParameterMetaData =
   (
     (Name: 'ATglBukti'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
@@ -1981,6 +2067,61 @@ const
   );
 
   TServerTAGRequest_Save: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AOBject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
+  TServerTransferAntarCabangKirim_Retrieve: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AID'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 37; TypeName: 'TTransferAntarCabangKirim')
+  );
+
+  TServerTransferAntarCabangKirim_Retrieve_Cache: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AID'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerTransferAntarCabangKirim_RetrieveNoBukti: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 37; TypeName: 'TTransferAntarCabangKirim')
+  );
+
+  TServerTransferAntarCabangKirim_RetrieveNoBukti_Cache: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerTransferAntarCabangKirim_GenerateNoBukti: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATglBukti'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APrefix'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'string')
+  );
+
+  TServerTransferAntarCabangKirim_Delete: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
+  TServerTransferAntarCabangKirim_RetrieveCDS: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TServerTransferAntarCabangKirim_RetrieveCDS_Cache: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerTransferAntarCabangKirim_Save: array [0..1] of TDSRestParameterMetaData =
   (
     (Name: 'AOBject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
@@ -2332,6 +2473,98 @@ begin
     end;
   FRetrieveCDSTAGRequestDariCommand_Cache.ExecuteCache(ARequestFilter);
   Result := TDSRestCachedDataSet.Create(FRetrieveCDSTAGRequestDariCommand_Cache.Parameters[3].Value.GetString);
+end;
+
+function TServerLaporanClient.RetrieveTACKirim(ATglAwal: TDateTime; ATglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string): TDataSet;
+begin
+  if FRetrieveTACKirimCommand = nil then
+  begin
+    FRetrieveTACKirimCommand := FConnection.CreateCommand;
+    FRetrieveTACKirimCommand.RequestType := 'POST';
+    FRetrieveTACKirimCommand.Text := 'TServerLaporan."RetrieveTACKirim"';
+    FRetrieveTACKirimCommand.Prepare(TServerLaporan_RetrieveTACKirim);
+  end;
+  FRetrieveTACKirimCommand.Parameters[0].Value.AsDateTime := ATglAwal;
+  FRetrieveTACKirimCommand.Parameters[1].Value.AsDateTime := ATglAkhir;
+  if not Assigned(ACabang) then
+    FRetrieveTACKirimCommand.Parameters[2].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FRetrieveTACKirimCommand.Parameters[2].ConnectionHandler).GetJSONMarshaler;
+    try
+      FRetrieveTACKirimCommand.Parameters[2].Value.SetJSONValue(FMarshal.Marshal(ACabang), True);
+      if FInstanceOwner then
+        ACabang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FRetrieveTACKirimCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FRetrieveTACKirimCommand.Parameters[3].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FRetrieveTACKirimCommand.FreeOnExecute(Result);
+end;
+
+function TServerLaporanClient.RetrieveTACKirim_Cache(ATglAwal: TDateTime; ATglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FRetrieveTACKirimCommand_Cache = nil then
+  begin
+    FRetrieveTACKirimCommand_Cache := FConnection.CreateCommand;
+    FRetrieveTACKirimCommand_Cache.RequestType := 'POST';
+    FRetrieveTACKirimCommand_Cache.Text := 'TServerLaporan."RetrieveTACKirim"';
+    FRetrieveTACKirimCommand_Cache.Prepare(TServerLaporan_RetrieveTACKirim_Cache);
+  end;
+  FRetrieveTACKirimCommand_Cache.Parameters[0].Value.AsDateTime := ATglAwal;
+  FRetrieveTACKirimCommand_Cache.Parameters[1].Value.AsDateTime := ATglAkhir;
+  if not Assigned(ACabang) then
+    FRetrieveTACKirimCommand_Cache.Parameters[2].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FRetrieveTACKirimCommand_Cache.Parameters[2].ConnectionHandler).GetJSONMarshaler;
+    try
+      FRetrieveTACKirimCommand_Cache.Parameters[2].Value.SetJSONValue(FMarshal.Marshal(ACabang), True);
+      if FInstanceOwner then
+        ACabang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FRetrieveTACKirimCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FRetrieveTACKirimCommand_Cache.Parameters[3].Value.GetString);
+end;
+
+function TServerLaporanClient.RetrieveGaji(ATahun: Integer; ABulan: Integer; const ARequestFilter: string): TDataSet;
+begin
+  if FRetrieveGajiCommand = nil then
+  begin
+    FRetrieveGajiCommand := FConnection.CreateCommand;
+    FRetrieveGajiCommand.RequestType := 'GET';
+    FRetrieveGajiCommand.Text := 'TServerLaporan.RetrieveGaji';
+    FRetrieveGajiCommand.Prepare(TServerLaporan_RetrieveGaji);
+  end;
+  FRetrieveGajiCommand.Parameters[0].Value.SetInt32(ATahun);
+  FRetrieveGajiCommand.Parameters[1].Value.SetInt32(ABulan);
+  FRetrieveGajiCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FRetrieveGajiCommand.Parameters[2].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FRetrieveGajiCommand.FreeOnExecute(Result);
+end;
+
+function TServerLaporanClient.RetrieveGaji_Cache(ATahun: Integer; ABulan: Integer; const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FRetrieveGajiCommand_Cache = nil then
+  begin
+    FRetrieveGajiCommand_Cache := FConnection.CreateCommand;
+    FRetrieveGajiCommand_Cache.RequestType := 'GET';
+    FRetrieveGajiCommand_Cache.Text := 'TServerLaporan.RetrieveGaji';
+    FRetrieveGajiCommand_Cache.Prepare(TServerLaporan_RetrieveGaji_Cache);
+  end;
+  FRetrieveGajiCommand_Cache.Parameters[0].Value.SetInt32(ATahun);
+  FRetrieveGajiCommand_Cache.Parameters[1].Value.SetInt32(ABulan);
+  FRetrieveGajiCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FRetrieveGajiCommand_Cache.Parameters[2].Value.GetString);
 end;
 
 function TServerLaporanClient.RetrieveTransferAntarGudang(ATglAwal: TDateTime; ATglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string): TDataSet;
@@ -2737,6 +2970,10 @@ begin
   FRetrieveCDSTAGRequestKepadaCommand_Cache.DisposeOf;
   FRetrieveCDSTAGRequestDariCommand.DisposeOf;
   FRetrieveCDSTAGRequestDariCommand_Cache.DisposeOf;
+  FRetrieveTACKirimCommand.DisposeOf;
+  FRetrieveTACKirimCommand_Cache.DisposeOf;
+  FRetrieveGajiCommand.DisposeOf;
+  FRetrieveGajiCommand_Cache.DisposeOf;
   FRetrieveTransferAntarGudangCommand.DisposeOf;
   FRetrieveTransferAntarGudangCommand_Cache.DisposeOf;
   FRetriveMutasiBarangCommand.DisposeOf;
@@ -7211,6 +7448,46 @@ begin
   Result := TDSRestCachedTTAGRequest.Create(FRetrieveCommand_Cache.Parameters[1].Value.GetString);
 end;
 
+function TServerTAGRequestClient.RetrieveNoBukti(ANoBukti: string; const ARequestFilter: string): TTAGRequest;
+begin
+  if FRetrieveNoBuktiCommand = nil then
+  begin
+    FRetrieveNoBuktiCommand := FConnection.CreateCommand;
+    FRetrieveNoBuktiCommand.RequestType := 'GET';
+    FRetrieveNoBuktiCommand.Text := 'TServerTAGRequest.RetrieveNoBukti';
+    FRetrieveNoBuktiCommand.Prepare(TServerTAGRequest_RetrieveNoBukti);
+  end;
+  FRetrieveNoBuktiCommand.Parameters[0].Value.SetWideString(ANoBukti);
+  FRetrieveNoBuktiCommand.Execute(ARequestFilter);
+  if not FRetrieveNoBuktiCommand.Parameters[1].Value.IsNull then
+  begin
+    FUnMarshal := TDSRestCommand(FRetrieveNoBuktiCommand.Parameters[1].ConnectionHandler).GetJSONUnMarshaler;
+    try
+      Result := TTAGRequest(FUnMarshal.UnMarshal(FRetrieveNoBuktiCommand.Parameters[1].Value.GetJSONValue(True)));
+      if FInstanceOwner then
+        FRetrieveNoBuktiCommand.FreeOnExecute(Result);
+    finally
+      FreeAndNil(FUnMarshal)
+    end
+  end
+  else
+    Result := nil;
+end;
+
+function TServerTAGRequestClient.RetrieveNoBukti_Cache(ANoBukti: string; const ARequestFilter: string): IDSRestCachedTTAGRequest;
+begin
+  if FRetrieveNoBuktiCommand_Cache = nil then
+  begin
+    FRetrieveNoBuktiCommand_Cache := FConnection.CreateCommand;
+    FRetrieveNoBuktiCommand_Cache.RequestType := 'GET';
+    FRetrieveNoBuktiCommand_Cache.Text := 'TServerTAGRequest.RetrieveNoBukti';
+    FRetrieveNoBuktiCommand_Cache.Prepare(TServerTAGRequest_RetrieveNoBukti_Cache);
+  end;
+  FRetrieveNoBuktiCommand_Cache.Parameters[0].Value.SetWideString(ANoBukti);
+  FRetrieveNoBuktiCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedTTAGRequest.Create(FRetrieveNoBuktiCommand_Cache.Parameters[1].Value.GetString);
+end;
+
 function TServerTAGRequestClient.GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string): string;
 begin
   if FGenerateNoBuktiCommand = nil then
@@ -7347,6 +7624,234 @@ destructor TServerTAGRequestClient.Destroy;
 begin
   FRetrieveCommand.DisposeOf;
   FRetrieveCommand_Cache.DisposeOf;
+  FRetrieveNoBuktiCommand.DisposeOf;
+  FRetrieveNoBuktiCommand_Cache.DisposeOf;
+  FGenerateNoBuktiCommand.DisposeOf;
+  FDeleteCommand.DisposeOf;
+  FRetrieveCDSCommand.DisposeOf;
+  FRetrieveCDSCommand_Cache.DisposeOf;
+  FSaveCommand.DisposeOf;
+  inherited;
+end;
+
+function TServerTransferAntarCabangKirimClient.Retrieve(AID: string; const ARequestFilter: string): TTransferAntarCabangKirim;
+begin
+  if FRetrieveCommand = nil then
+  begin
+    FRetrieveCommand := FConnection.CreateCommand;
+    FRetrieveCommand.RequestType := 'GET';
+    FRetrieveCommand.Text := 'TServerTransferAntarCabangKirim.Retrieve';
+    FRetrieveCommand.Prepare(TServerTransferAntarCabangKirim_Retrieve);
+  end;
+  FRetrieveCommand.Parameters[0].Value.SetWideString(AID);
+  FRetrieveCommand.Execute(ARequestFilter);
+  if not FRetrieveCommand.Parameters[1].Value.IsNull then
+  begin
+    FUnMarshal := TDSRestCommand(FRetrieveCommand.Parameters[1].ConnectionHandler).GetJSONUnMarshaler;
+    try
+      Result := TTransferAntarCabangKirim(FUnMarshal.UnMarshal(FRetrieveCommand.Parameters[1].Value.GetJSONValue(True)));
+      if FInstanceOwner then
+        FRetrieveCommand.FreeOnExecute(Result);
+    finally
+      FreeAndNil(FUnMarshal)
+    end
+  end
+  else
+    Result := nil;
+end;
+
+function TServerTransferAntarCabangKirimClient.Retrieve_Cache(AID: string; const ARequestFilter: string): IDSRestCachedTTransferAntarCabangKirim;
+begin
+  if FRetrieveCommand_Cache = nil then
+  begin
+    FRetrieveCommand_Cache := FConnection.CreateCommand;
+    FRetrieveCommand_Cache.RequestType := 'GET';
+    FRetrieveCommand_Cache.Text := 'TServerTransferAntarCabangKirim.Retrieve';
+    FRetrieveCommand_Cache.Prepare(TServerTransferAntarCabangKirim_Retrieve_Cache);
+  end;
+  FRetrieveCommand_Cache.Parameters[0].Value.SetWideString(AID);
+  FRetrieveCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedTTransferAntarCabangKirim.Create(FRetrieveCommand_Cache.Parameters[1].Value.GetString);
+end;
+
+function TServerTransferAntarCabangKirimClient.RetrieveNoBukti(ANoBukti: string; const ARequestFilter: string): TTransferAntarCabangKirim;
+begin
+  if FRetrieveNoBuktiCommand = nil then
+  begin
+    FRetrieveNoBuktiCommand := FConnection.CreateCommand;
+    FRetrieveNoBuktiCommand.RequestType := 'GET';
+    FRetrieveNoBuktiCommand.Text := 'TServerTransferAntarCabangKirim.RetrieveNoBukti';
+    FRetrieveNoBuktiCommand.Prepare(TServerTransferAntarCabangKirim_RetrieveNoBukti);
+  end;
+  FRetrieveNoBuktiCommand.Parameters[0].Value.SetWideString(ANoBukti);
+  FRetrieveNoBuktiCommand.Execute(ARequestFilter);
+  if not FRetrieveNoBuktiCommand.Parameters[1].Value.IsNull then
+  begin
+    FUnMarshal := TDSRestCommand(FRetrieveNoBuktiCommand.Parameters[1].ConnectionHandler).GetJSONUnMarshaler;
+    try
+      Result := TTransferAntarCabangKirim(FUnMarshal.UnMarshal(FRetrieveNoBuktiCommand.Parameters[1].Value.GetJSONValue(True)));
+      if FInstanceOwner then
+        FRetrieveNoBuktiCommand.FreeOnExecute(Result);
+    finally
+      FreeAndNil(FUnMarshal)
+    end
+  end
+  else
+    Result := nil;
+end;
+
+function TServerTransferAntarCabangKirimClient.RetrieveNoBukti_Cache(ANoBukti: string; const ARequestFilter: string): IDSRestCachedTTransferAntarCabangKirim;
+begin
+  if FRetrieveNoBuktiCommand_Cache = nil then
+  begin
+    FRetrieveNoBuktiCommand_Cache := FConnection.CreateCommand;
+    FRetrieveNoBuktiCommand_Cache.RequestType := 'GET';
+    FRetrieveNoBuktiCommand_Cache.Text := 'TServerTransferAntarCabangKirim.RetrieveNoBukti';
+    FRetrieveNoBuktiCommand_Cache.Prepare(TServerTransferAntarCabangKirim_RetrieveNoBukti_Cache);
+  end;
+  FRetrieveNoBuktiCommand_Cache.Parameters[0].Value.SetWideString(ANoBukti);
+  FRetrieveNoBuktiCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedTTransferAntarCabangKirim.Create(FRetrieveNoBuktiCommand_Cache.Parameters[1].Value.GetString);
+end;
+
+function TServerTransferAntarCabangKirimClient.GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string): string;
+begin
+  if FGenerateNoBuktiCommand = nil then
+  begin
+    FGenerateNoBuktiCommand := FConnection.CreateCommand;
+    FGenerateNoBuktiCommand.RequestType := 'GET';
+    FGenerateNoBuktiCommand.Text := 'TServerTransferAntarCabangKirim.GenerateNoBukti';
+    FGenerateNoBuktiCommand.Prepare(TServerTransferAntarCabangKirim_GenerateNoBukti);
+  end;
+  FGenerateNoBuktiCommand.Parameters[0].Value.AsDateTime := ATglBukti;
+  FGenerateNoBuktiCommand.Parameters[1].Value.SetWideString(APrefix);
+  FGenerateNoBuktiCommand.Execute(ARequestFilter);
+  Result := FGenerateNoBuktiCommand.Parameters[2].Value.GetWideString;
+end;
+
+function TServerTransferAntarCabangKirimClient.Delete(AAppObject: TAppObject; const ARequestFilter: string): Boolean;
+begin
+  if FDeleteCommand = nil then
+  begin
+    FDeleteCommand := FConnection.CreateCommand;
+    FDeleteCommand.RequestType := 'POST';
+    FDeleteCommand.Text := 'TServerTransferAntarCabangKirim."Delete"';
+    FDeleteCommand.Prepare(TServerTransferAntarCabangKirim_Delete);
+  end;
+  if not Assigned(AAppObject) then
+    FDeleteCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FDeleteCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FDeleteCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FDeleteCommand.Execute(ARequestFilter);
+  Result := FDeleteCommand.Parameters[1].Value.GetBoolean;
+end;
+
+function TServerTransferAntarCabangKirimClient.RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string): TDataSet;
+begin
+  if FRetrieveCDSCommand = nil then
+  begin
+    FRetrieveCDSCommand := FConnection.CreateCommand;
+    FRetrieveCDSCommand.RequestType := 'POST';
+    FRetrieveCDSCommand.Text := 'TServerTransferAntarCabangKirim."RetrieveCDS"';
+    FRetrieveCDSCommand.Prepare(TServerTransferAntarCabangKirim_RetrieveCDS);
+  end;
+  if not Assigned(AAppObject) then
+    FRetrieveCDSCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FRetrieveCDSCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FRetrieveCDSCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FRetrieveCDSCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FRetrieveCDSCommand.Parameters[1].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FRetrieveCDSCommand.FreeOnExecute(Result);
+end;
+
+function TServerTransferAntarCabangKirimClient.RetrieveCDS_Cache(AAppObject: TAppObject; const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FRetrieveCDSCommand_Cache = nil then
+  begin
+    FRetrieveCDSCommand_Cache := FConnection.CreateCommand;
+    FRetrieveCDSCommand_Cache.RequestType := 'POST';
+    FRetrieveCDSCommand_Cache.Text := 'TServerTransferAntarCabangKirim."RetrieveCDS"';
+    FRetrieveCDSCommand_Cache.Prepare(TServerTransferAntarCabangKirim_RetrieveCDS_Cache);
+  end;
+  if not Assigned(AAppObject) then
+    FRetrieveCDSCommand_Cache.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FRetrieveCDSCommand_Cache.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FRetrieveCDSCommand_Cache.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FRetrieveCDSCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FRetrieveCDSCommand_Cache.Parameters[1].Value.GetString);
+end;
+
+function TServerTransferAntarCabangKirimClient.Save(AOBject: TAppObject; const ARequestFilter: string): Boolean;
+begin
+  if FSaveCommand = nil then
+  begin
+    FSaveCommand := FConnection.CreateCommand;
+    FSaveCommand.RequestType := 'POST';
+    FSaveCommand.Text := 'TServerTransferAntarCabangKirim."Save"';
+    FSaveCommand.Prepare(TServerTransferAntarCabangKirim_Save);
+  end;
+  if not Assigned(AOBject) then
+    FSaveCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FSaveCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FSaveCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AOBject), True);
+      if FInstanceOwner then
+        AOBject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FSaveCommand.Execute(ARequestFilter);
+  Result := FSaveCommand.Parameters[1].Value.GetBoolean;
+end;
+
+constructor TServerTransferAntarCabangKirimClient.Create(ARestConnection: TDSRestConnection);
+begin
+  inherited Create(ARestConnection);
+end;
+
+constructor TServerTransferAntarCabangKirimClient.Create(ARestConnection: TDSRestConnection; AInstanceOwner: Boolean);
+begin
+  inherited Create(ARestConnection, AInstanceOwner);
+end;
+
+destructor TServerTransferAntarCabangKirimClient.Destroy;
+begin
+  FRetrieveCommand.DisposeOf;
+  FRetrieveCommand_Cache.DisposeOf;
+  FRetrieveNoBuktiCommand.DisposeOf;
+  FRetrieveNoBuktiCommand_Cache.DisposeOf;
   FGenerateNoBuktiCommand.DisposeOf;
   FDeleteCommand.DisposeOf;
   FRetrieveCDSCommand.DisposeOf;

@@ -20,6 +20,7 @@ type
     FToCabang: TCabang;
     function GetTAGRequestItems: tobjectlist<TTAGRequestItem>;
   public
+    destructor Destroy; override;
     property Status: string read FStatus write FStatus;
 
   published
@@ -36,13 +37,17 @@ type
   TTAGRequestItem = class(TAppObjectItem)
   private
     FBarang: TBarang;
+    FBarangSatuangItemID: string;
     FKeterangan: string;
     FQty: Double;
     FTAGRequest: TTAGRequest;
     FUOM: TUOM;
   public
+    destructor Destroy; override;
     function GetHeaderField: string; override;
     procedure SetHeaderProperty(AHeaderProperty : TAppObject); override;
+    property BarangSatuangItemID: string read FBarangSatuangItemID write
+        FBarangSatuangItemID;
   published
     property Barang: TBarang read FBarang write FBarang;
     property Keterangan: string read FKeterangan write FKeterangan;
@@ -54,6 +59,13 @@ type
 
 implementation
 
+destructor TTAGRequestItem.Destroy;
+begin
+  inherited;
+  FreeAndNil(FBarang);
+  FreeAndNil(FUOM);
+end;
+
 function TTAGRequestItem.GetHeaderField: string;
 begin
   Result := 'TAGRequest';
@@ -62,6 +74,22 @@ end;
 procedure TTAGRequestItem.SetHeaderProperty(AHeaderProperty : TAppObject);
 begin
   Self.TAGRequest := TTAGRequest(AHeaderProperty);
+end;
+
+destructor TTAGRequest.Destroy;
+var
+  I: Integer;
+begin
+  inherited;
+  FreeAndNil(FCabang);
+  FreeAndNil(FToCabang);
+
+  for I := 0 to TAGRequestItems.Count - 1 do
+  begin
+    TAGRequestItems[i].Free;
+  end;
+
+  FreeAndNil(FTAGRequestItems);
 end;
 
 function TTAGRequest.GetTAGRequestItems: tobjectlist<TTAGRequestItem>;

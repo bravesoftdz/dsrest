@@ -24,7 +24,10 @@ uses
   uAccount in '..\model\uAccount.pas',
   uTransferAntarGudang in '..\model\uTransferAntarGudang.pas',
   uSettingApp in '..\model\uSettingApp.pas',
-  uTAGRequests in '..\model\uTAGRequests.pas';
+  uTAGRequests in '..\model\uTAGRequests.pas',
+  uMukafaah in '..\model\uMukafaah.pas',
+  uPengurus in '..\model\uPengurus.pas',
+  uTransferAntarCabang in '..\model\uTransferAntarCabang.pas';
 
 {$R *.res}
 

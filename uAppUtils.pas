@@ -147,6 +147,7 @@ type
   TcxGridTableViewHelper = class helper for TcxGridTableView
   private
   public
+    procedure AddRow;
     procedure ClearRows;
     procedure SetValue(ARec, ACol : Integer; AValue : Variant);
 
@@ -1531,6 +1532,11 @@ begin
   end;
 end;
 
+procedure TcxGridTableViewHelper.AddRow;
+begin
+  Self.DataController.RecordCount := Self.DataController.RecordCount + 1;
+end;
+
 procedure TcxGridTableViewHelper.ClearRows;
 var
   I: Integer;
@@ -1634,33 +1640,32 @@ var
   j: Integer;
 
 begin
-  Self.ClearRows;
-
   ctx := TRttiContext.Create();
   try
     rt := ctx.GetType(AObject.ClassType);
-    for j := 0 to Self.ColumnCount - 1 do
-    begin
       for prop in rt.GetProperties() do
       begin
-        if UpperCase(prop.Name) <> UpperCase(Self.Columns[j].AlternateCaption) then
-          Continue;
+        for j := 0 to Self.ColumnCount - 1 do
+        begin
 
-        case prop.PropertyType.TypeKind of
-          tkClass   : begin
-                        Self.SetValue(ARow,j,TAppObject(prop.GetValue(AObject).AsObject).ID);
-                      end;
-          tkInteger : Self.SetValue(ARow,j,prop.GetValue(AObject).AsInteger);
+          if UpperCase(prop.Name) <> UpperCase(Self.Columns[j].AlternateCaption) then
+            Continue;
 
-          tkFloat   : //if CompareText('TDateTime',prop.PropertyType.Name)=0 then
-//                          Self.SetValue(i,j,QuotedStr(FormatDateTime('MM/dd/yyyy hh:mm:ss',prop.GetValue(AObject).AsExtended)))
-//                        else
-                        Self.SetValue(ARow,j,prop.GetValue(AObject).AsExtended);
+          case prop.PropertyType.TypeKind of
+            tkClass   : begin
+                          Self.SetValue(ARow,j,TAppObject(prop.GetValue(AObject).AsObject).ID);
+                        end;
+            tkInteger : Self.SetValue(ARow,j,prop.GetValue(AObject).AsInteger);
 
-          tkUString : Self.SetValue(ARow,j,QuotedStr(prop.GetValue(AObject).AsString));
+            tkFloat   : //if CompareText('TDateTime',prop.PropertyType.Name)=0 then
+  //                          Self.SetValue(i,j,QuotedStr(FormatDateTime('MM/dd/yyyy hh:mm:ss',prop.GetValue(AObject).AsExtended)))
+  //                        else
+                          Self.SetValue(ARow,j,prop.GetValue(AObject).AsExtended);
+
+            tkUString : Self.SetValue(ARow,j,prop.GetValue(AObject).AsString);
+          end;
         end;
       end;
-    end;
   finally
     ctx.Free;
   end;

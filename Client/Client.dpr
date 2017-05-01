@@ -49,8 +49,10 @@ uses
   ufrmTransferAntarGudang in 'form\ufrmTransferAntarGudang.pas' {frmTransferAntarGudang},
   uTAGRequests in '..\model\uTAGRequests.pas',
   ufrmTAGRequest in 'form\ufrmTAGRequest.pas' {frmTAGRequest},
+  uDSRestLib in '..\uDSRestLib.pas',
   uTAGKirim in '..\model\uTAGKirim.pas',
-  ufrmTAGKirim in 'form\ufrmTAGKirim.pas' {frmDefault1};
+  uTransferAntarCabang in '..\model\uTransferAntarCabang.pas',
+  ufrmTACKirim in 'form\ufrmTACKirim.pas' {frmTACKirim};
 
 {$R *.res}
 

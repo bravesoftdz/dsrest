@@ -26,12 +26,14 @@ object WebModule2: TWebModule2
     OnDisconnect = DSServer1Disconnect
     OnError = DSServer1Error
     AutoStart = False
+    ChannelResponseTimeout = 0
     Left = 264
     Top = 8
   end
   object DSHTTPWebDispatcher1: TDSHTTPWebDispatcher
     Server = DSServer1
     Filters = <>
+    SessionTimeout = 120000
     WebDispatch.PathInfo = 'datasnap*'
     Left = 224
     Top = 8

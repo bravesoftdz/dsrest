@@ -37,6 +37,7 @@ type
     FServerTAGRequestClient: TServerTAGRequestClient;
     FServerTransferAntarGudang: TServerTransferAntarGudangClient;
     FSettingApp: TSettingApp;
+    FServerTransferAntarCabangKirimClient: TServerTransferAntarCabangKirimClient;
     function GetCabang: tcabang;
     function GetServerUOMClient: TServerUOMClient;
     function GetServerSupplierClient: TServerSupplierClient;
@@ -58,6 +59,8 @@ type
     function GetServerTAGRequestClient: TServerTAGRequestClient;
     function GetServerTransferAntarGudang: TServerTransferAntarGudangClient;
     function GetSettingApp: TSettingApp;
+    function GetServerTransferAntarCabangKirimClient:
+        TServerTransferAntarCabangKirimClient;
     { Private declarations }
   public
     constructor Create(AOwner: TComponent); override;
@@ -95,6 +98,10 @@ type
     property ServerTransferAntarGudang: TServerTransferAntarGudangClient read
         GetServerTransferAntarGudang write FServerTransferAntarGudang;
     property SettingApp: TSettingApp read GetSettingApp write FSettingApp;
+    property ServerTransferAntarCabangKirimClient:
+        TServerTransferAntarCabangKirimClient read
+        GetServerTransferAntarCabangKirimClient write
+        FServerTransferAntarCabangKirimClient;
 end;
 
 var
@@ -121,24 +128,26 @@ end;
 
 destructor TClientDataModule.Destroy;
 begin
-  FCabang.Free;
-  FSettingApp.Free;
+  Cabang.Free;
+  SettingApp.Free;
 
-  FServerUOMClient.Free;
-  FServerSupplierClient.Free;
-  FServerBarangClient.Free;
-  FServerGroupBarangClient.Free;
-  FServerPenerimaanBarangClient.Free;
-  FServerCabangClient.Free;
-  FServerLogAppObjectClient.Free;
-  FServerUtilsClient.Free;
-  FServerReturSupplierClient.Free;
-  FServerLaporanClient.Free;
-  FServerPenjualanClient.Free;
-  FServerGudangClient.Free;
-  FServerAccountClient.Free;
-  FServerPenerimaanKasClient.Free;
-  FServerSettingAppClient.Free;
+  ServerUOMClient.Free;
+  ServerSupplierClient.Free;
+  ServerBarangClient.Free;
+  ServerGroupBarangClient.Free;
+  ServerPenerimaanBarangClient.Free;
+  ServerCabangClient.Free;
+  ServerLogAppObjectClient.Free;
+  ServerUtilsClient.Free;
+  ServerReturSupplierClient.Free;
+  ServerLaporanClient.Free;
+  ServerPenjualanClient.Free;
+  ServerGudangClient.Free;
+  ServerAccountClient.Free;
+  ServerPenerimaanKasClient.Free;
+  ServerSettingAppClient.Free;
+  ServerTransferAntarCabangKirimClient.Free;
+
   inherited;
 end;
 
@@ -326,6 +335,16 @@ begin
     FSettingApp := TSettingApp.Create;
 
   Result := FSettingApp;
+end;
+
+function TClientDataModule.GetServerTransferAntarCabangKirimClient:
+    TServerTransferAntarCabangKirimClient;
+begin
+  if FServerTransferAntarCabangKirimClient <> nil then
+    FreeAndNil(FServerTransferAntarCabangKirimClient);
+
+  FServerTransferAntarCabangKirimClient := TServerTransferAntarCabangKirimClient.Create(ClientDataModule.DSRestConnection, FInstanceOwner);
+  Result := FServerTransferAntarCabangKirimClient;
 end;
 
 end.

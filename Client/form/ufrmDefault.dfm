@@ -36,7 +36,7 @@ object frmDefault: TfrmDefault
     Height = 293
     Align = alClient
     TabOrder = 1
-    Properties.ActivePage = cxTSInputData
+    Properties.ActivePage = cxTSOverview
     Properties.CustomButtons.Buttons = <>
     OnChange = cxPCDataChange
     ClientRectBottom = 289
@@ -46,10 +46,6 @@ object frmDefault: TfrmDefault
     object cxTSOverview: TcxTabSheet
       Caption = 'Overview'
       ImageIndex = 0
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object splTransaksi: TSplitter
         Left = 0
         Top = 0
@@ -71,70 +67,86 @@ object frmDefault: TfrmDefault
           Left = 1
           Top = 1
           Width = 699
-          Height = 32
+          Height = 31
           Align = alTop
           TabOrder = 0
           object lblPeriode: TLabel
-            Left = 294
+            Left = 276
             Top = 1
             Width = 50
-            Height = 30
+            Height = 29
             Align = alRight
             AutoSize = False
             Caption = 'Periode'
             ExplicitLeft = 344
+            ExplicitHeight = 30
           end
           object lblSD: TLabel
-            Left = 449
+            Left = 437
             Top = 1
             Width = 38
-            Height = 30
+            Height = 29
             Align = alRight
             Alignment = taCenter
             AutoSize = False
             Caption = 's.d.'
             ExplicitLeft = 480
+            ExplicitHeight = 30
           end
           object dtpAwal: TDateTimePicker
-            Left = 344
-            Top = 1
+            AlignWithMargins = True
+            Left = 329
+            Top = 4
             Width = 105
-            Height = 30
+            Height = 23
             Align = alRight
             Date = 42812.000949421290000000
             Time = 42812.000949421290000000
             TabOrder = 0
+            ExplicitLeft = 344
+            ExplicitTop = 1
+            ExplicitHeight = 30
           end
           object dtpAkhir: TDateTimePicker
-            Left = 487
-            Top = 1
+            AlignWithMargins = True
+            Left = 478
+            Top = 4
             Width = 105
-            Height = 30
+            Height = 23
             Align = alRight
             Date = 42812.000949421290000000
             Time = 42812.000949421290000000
             TabOrder = 1
+            ExplicitLeft = 487
+            ExplicitTop = 1
+            ExplicitHeight = 30
           end
           object btnRefresh: TcxButton
-            Left = 592
-            Top = 1
+            AlignWithMargins = True
+            Left = 589
+            Top = 4
             Width = 106
-            Height = 30
+            Height = 23
             Align = alRight
             Action = ActionRefresh
             Caption = 'Refresh [F5]'
             TabOrder = 2
+            ExplicitLeft = 592
+            ExplicitTop = 1
+            ExplicitHeight = 30
           end
         end
         object cxGrid: TcxGrid
           Left = 1
-          Top = 33
+          Top = 32
           Width = 699
-          Height = 231
+          Height = 232
           Align = alClient
           TabOrder = 1
           LockedStateImageOptions.Text = 'Mohon ditunggu...'
           LookAndFeel.NativeStyle = False
+          ExplicitTop = 33
+          ExplicitHeight = 231
           object cxGridDBTableOverview: TcxGridDBTableView
             Navigator.Buttons.CustomButtons = <>
             FindPanel.DisplayMode = fpdmManual
@@ -165,10 +177,6 @@ object frmDefault: TfrmDefault
     object cxTSInputData: TcxTabSheet
       Caption = 'Input/Update/Delete'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
     end
   end
   object pnlButton: TPanel
@@ -337,7 +345,7 @@ object frmDefault: TfrmDefault
     Left = 216
     Top = 184
     Bitmap = {
-      494C010107000800CC0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800D40018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

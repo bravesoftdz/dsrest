@@ -5,7 +5,6 @@ inherited frmSettingAplikasi: TfrmSettingAplikasi
   PixelsPerInch = 96
   TextHeight = 13
   inherited cxPCData: TcxPageControl
-    Properties.ActivePage = cxTSOverview
     inherited cxTSOverview: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
@@ -21,12 +20,25 @@ inherited frmSettingAplikasi: TfrmSettingAplikasi
           end
           inherited dtpAwal: TDateTimePicker
             Enabled = False
+            ExplicitLeft = 329
+            ExplicitTop = 4
+            ExplicitHeight = 23
           end
           inherited dtpAkhir: TDateTimePicker
             Enabled = False
+            ExplicitLeft = 478
+            ExplicitTop = 4
+            ExplicitHeight = 23
+          end
+          inherited btnRefresh: TcxButton
+            ExplicitLeft = 589
+            ExplicitTop = 4
+            ExplicitHeight = 23
           end
         end
         inherited cxGrid: TcxGrid
+          ExplicitTop = 32
+          ExplicitHeight = 232
           inherited cxGridDBTableOverview: TcxGridDBTableView
             OnCellDblClick = cxGridDBTableOverviewCellDblClick
           end
@@ -52,6 +64,13 @@ inherited frmSettingAplikasi: TfrmSettingAplikasi
         Height = 13
         Caption = 'Cabang'
       end
+      object lblGudangTransit: TLabel
+        Left = 30
+        Top = 67
+        Width = 73
+        Height = 13
+        Caption = 'Gudang Transit'
+      end
       object cbbGudangPenjualan: TcxExtLookupComboBox
         Left = 109
         Top = 38
@@ -62,6 +81,12 @@ inherited frmSettingAplikasi: TfrmSettingAplikasi
         Left = 109
         Top = 13
         TabOrder = 0
+        Width = 145
+      end
+      object cbbGudangTransit: TcxExtLookupComboBox
+        Left = 109
+        Top = 63
+        TabOrder = 2
         Width = 145
       end
     end
@@ -85,7 +110,7 @@ inherited frmSettingAplikasi: TfrmSettingAplikasi
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010107000800D40018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800E00018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

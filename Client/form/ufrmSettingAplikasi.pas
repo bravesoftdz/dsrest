@@ -20,6 +20,8 @@ type
     cbbGudangPenjualan: TcxExtLookupComboBox;
     lblCabang: TLabel;
     cbbCabang: TcxExtLookupComboBox;
+    lblGudangTransit: TLabel;
+    cbbGudangTransit: TcxExtLookupComboBox;
     procedure ActionBaruExecute(Sender: TObject);
     procedure ActionRefreshExecute(Sender: TObject);
     procedure cxPCDataChange(Sender: TObject);
@@ -101,8 +103,9 @@ begin
   if not ValidateEmptyCtrl([1]) then
     Exit;
 
-  SettingApp.Cabang := TCabang.CreateID(cbbCabang.EditValue);
+  SettingApp.Cabang          := TCabang.CreateID(cbbCabang.EditValue);
   SettingApp.GudangPenjualan := TGudang.CreateID(cbbGudangPenjualan.EditValue);
+  SettingApp.GudangTransit   := TGudang.CreateID(cbbGudangTransit.EditValue);
 
   try
     if ClientDataModule.ServerSettingAppClient.Save(SettingApp) then
@@ -150,10 +153,17 @@ var
   lCDSGudang: TClientDataSet;
   sSQL: string;
 begin
+  // gudang penjualan
   sSQL := 'select Nama,Kode,ID from TGudang';
   lCDSGudang := TDBUtils.OpenDataset(sSQL);
   cbbGudangPenjualan.Properties.LoadFromCDS(lCDSGudang,'ID','Nama',['ID'],Self);
   cbbGudangPenjualan.Properties.SetMultiPurposeLookup;
+
+  //Gudang transit
+  sSQL := 'select Nama,Kode,ID from TGudang';
+  lCDSGudang := TDBUtils.OpenDataset(sSQL);
+  cbbGudangTransit.Properties.LoadFromCDS(lCDSGudang,'ID','Nama',['ID'],Self);
+  cbbGudangTransit.Properties.SetMultiPurposeLookup;
 end;
 
 procedure TfrmSettingAplikasi.InisialisasiCBBCabang;
@@ -184,6 +194,7 @@ begin
 
   cbbCabang.EditValue          := FSettingApp.Cabang.ID;
   cbbGudangPenjualan.EditValue := FSettingApp.GudangPenjualan.ID;
+  cbbGudangTransit.EditValue   := FSettingApp.GudangTransit.ID;
 
 
 

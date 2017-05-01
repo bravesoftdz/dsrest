@@ -124,7 +124,7 @@ begin
     Exit;
 
   if TAGRequest.ObjectState = 1 then
-    edNoBukti.Text := ClientDataModule.ServerTAGRequestClient.GenerateNoBukti(edTglBukti.Date,'TACR');
+    edNoBukti.Text := ClientDataModule.ServerTAGRequestClient.GenerateNoBukti(edTglBukti.Date,ClientDataModule.Cabang.Kode);
 
   TAGRequest.Cabang     := TCabang.CreateID(ClientDataModule.Cabang.ID);
   TAGRequest.Keterangan := memKeterangan.Text;
