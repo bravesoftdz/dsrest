@@ -4,7 +4,6 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
   ClientWidth = 984
   WindowState = wsMaximized
   OnShow = FormShow
-  ExplicitLeft = -233
   ExplicitWidth = 1000
   ExplicitHeight = 473
   PixelsPerInch = 96
@@ -42,41 +41,41 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
           TabOrder = 1
           ExplicitWidth = 966
           inherited lblPeriode: TLabel
-            Left = 561
+            Left = 543
             ExplicitLeft = 592
           end
           inherited lblSD: TLabel
-            Left = 716
+            Left = 704
             ExplicitLeft = 747
           end
           inherited dtpAwal: TDateTimePicker
-            Left = 611
-            ExplicitLeft = 611
+            Left = 596
+            ExplicitLeft = 596
           end
           inherited dtpAkhir: TDateTimePicker
-            Left = 754
-            ExplicitLeft = 754
+            Left = 745
+            ExplicitLeft = 745
           end
           inherited btnRefresh: TcxButton
-            Left = 859
-            ExplicitLeft = 859
+            Left = 856
+            ExplicitLeft = 856
           end
         end
         inherited cxGrid: TcxGrid
-          Top = 37
+          Top = 36
           Width = 966
-          Height = 315
+          Height = 316
           TabOrder = 2
-          ExplicitTop = 37
+          ExplicitTop = 36
           ExplicitWidth = 966
-          ExplicitHeight = 315
+          ExplicitHeight = 316
           inherited cxGridDBTableOverview: TcxGridDBTableView
             OnCellDblClick = cxGridDBTableOverviewCellDblClick
           end
         end
         object pnlFilterBarang: TPanel
           Left = 1
-          Top = 33
+          Top = 32
           Width = 966
           Height = 4
           Align = alTop
@@ -415,16 +414,16 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
     ExplicitTop = 381
     ExplicitWidth = 984
     inherited btnBaru: TcxButton
-      Left = 891
-      ExplicitLeft = 891
+      Left = 872
+      ExplicitLeft = 872
     end
     inherited btnHapus: TcxButton
-      Left = 767
-      ExplicitLeft = 767
+      Left = 748
+      ExplicitLeft = 748
     end
     inherited btnSave: TcxButton
-      Left = 651
-      ExplicitLeft = 651
+      Left = 632
+      ExplicitLeft = 632
     end
     inherited chkKonsolidasi1: TcxCheckBox
       ExplicitWidth = 76
@@ -434,9 +433,6 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
   inherited ActionListForm: TActionList
     inherited ActionSimpan: TAction
       OnExecute = ActionSimpanExecute
-    end
-    inherited actCetak: TAction
-      OnExecute = actCetakExecute
     end
     inherited ActionHapus: TAction
       OnExecute = ActionHapusExecute
@@ -549,7 +545,7 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010105000800A00018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010105000800A40018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

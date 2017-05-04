@@ -62,6 +62,7 @@ type
     btnSave: TcxButton;
     chkKonsolidasi1: TcxCheckBox;
     actNextTransaction: TAction;
+    procedure actCetakExecute(Sender: TObject);
     procedure actExportExecute(Sender: TObject);
     procedure ActionBaruExecute(Sender: TObject);
     procedure cxPCDataChange(Sender: TObject);
@@ -73,8 +74,10 @@ type
     procedure InisialisasiCDSCabang;
     { Private declarations }
   protected
+    FID: string;
     function User: string;
   public
+    procedure CetakSlip(AID: string); virtual;
     { Public declarations }
   end;
 
@@ -86,6 +89,17 @@ uses
   uAppUtils, uDBUtils, System.DateUtils;
 
 {$R *.dfm}
+
+procedure TfrmDefault.actCetakExecute(Sender: TObject);
+var
+  sID: string;
+begin
+  sID := FID;
+  if cxPCData.ActivePageIndex = 0 then
+    sID := cxGridDBTableOverview.DS.FieldByName('ID').AsString;
+
+  CetakSlip(sID);
+end;
 
 procedure TfrmDefault.actExportExecute(Sender: TObject);
 var
@@ -120,11 +134,16 @@ begin
 
 end;
 
+procedure TfrmDefault.CetakSlip(AID: string);
+begin
+  // TODO -cMM: TfrmDefault.CetakSlip default body inserted
+end;
+
 procedure TfrmDefault.cxPCDataChange(Sender: TObject);
 begin
   btnSave.Enabled    := cxPCData.ActivePageIndex = 1;
   btnHapus.Enabled   := cxPCData.ActivePageIndex = 1;
-  btnCetak.Enabled   := cxPCData.ActivePageIndex = 1;
+//  btnCetak.Enabled   := cxPCData.ActivePageIndex = 1;
 
   btnExport.Enabled  := cxPCData.ActivePageIndex = 0;
   btnRefresh.Enabled := cxPCData.ActivePageIndex = 0;

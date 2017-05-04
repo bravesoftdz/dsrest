@@ -38,12 +38,17 @@ type
     cxgrdclmnTAGQty: TcxGridColumn;
     cxgrdclmnTAGKeterangan: TcxGridColumn;
     cxgrdlvlTAGDetail: TcxGridLevel;
+    procedure actCetakExecute(Sender: TObject);
     procedure ActionBaruExecute(Sender: TObject);
+    procedure ActionHapusExecute(Sender: TObject);
     procedure ActionRefreshExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ActionSimpanExecute(Sender: TObject);
     procedure cxgrdclmnTAGNamaBarangPropertiesValidate(Sender: TObject;
       var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
+    procedure cxGridDBTableOverviewCellDblClick(Sender: TcxCustomGridTableView;
+        ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton; AShift:
+        TShiftState; var AHandled: Boolean);
   private
     FCDSSKU: TClientDataSet;
     FTAGRequest: TTAGRequest;
@@ -57,6 +62,7 @@ type
     { Private declarations }
   public
     destructor Destroy; override;
+    procedure CetakSlip(AID: string); override;
     function LoadData(AID : String): Boolean; stdcall;
     { Public declarations }
   end;
@@ -66,6 +72,9 @@ var
 
 implementation
 
+uses
+  uReport;
+
 {$R *.dfm}
 
 destructor TfrmTAGRequest.Destroy;
@@ -74,10 +83,32 @@ begin
   TAGRequest.Free;
 end;
 
+procedure TfrmTAGRequest.actCetakExecute(Sender: TObject);
+//var
+//  sID: string;
+begin
+  inherited;
+//  if cxPCData.ActivePageIndex = 0 then
+//    sID := cxGridDBTableOverview.DS.FieldByName('id').AsString;
+end;
+
 procedure TfrmTAGRequest.ActionBaruExecute(Sender: TObject);
 begin
   inherited;
   LoadData('')
+end;
+
+procedure TfrmTAGRequest.ActionHapusExecute(Sender: TObject);
+begin
+  inherited;
+  if not TAppUtils.ConfirmHapus then
+    Exit;
+
+  if ClientDataModule.ServerTAGRequestClient.Delete(FTAGRequest) then
+  begin
+    TAppUtils.InformationBerhasilHapus;
+    ActionBaruExecute(Sender);
+  end;
 end;
 
 procedure TfrmTAGRequest.ActionRefreshExecute(Sender: TObject);
@@ -134,6 +165,8 @@ begin
   TAGRequest.ToCabang   := TCabang.CreateID(cbbCabangTujuan.EditValue);
   TAGRequest.Status     := 'ORDER';
 
+
+  TAGRequest.TAGRequestItems.Clear;
   for I := 0 to cxGridTableTAGDetail.DataController.RecordCount - 1 do
   begin
     lTagRequestItem := TTAGRequestItem.Create;
@@ -146,6 +179,26 @@ begin
     TAppUtils.InformationBerhasilSimpan;
     ActionBaruExecute(Sender);
   end;
+end;
+
+procedure TfrmTAGRequest.CetakSlip(AID: string);
+var
+  lCDSSlip: TClientDataSet;
+  lReport: TTSReport;
+begin
+  inherited;
+
+  lReport := TTSReport.Create(Self);
+  try
+    lCDSSlip := TDBUtils.DSToCDS(ClientDataModule.ServerTAGRequestClient.RetrieveCDSSlip(ClientDataModule.Cabang.ID, AID),lReport);
+
+//    lReport.AddDataset(TDBUtils.OpenDataset('select * from tcabang'), 'QCabang');
+    lReport.AddDataset(lCDSSlip, 'QTAG');
+    lReport.ShowReport('SlipTAGRequest');
+  finally
+    lReport.Free;
+  end;
+
 end;
 
 procedure TfrmTAGRequest.cxgrdclmnTAGNamaBarangPropertiesValidate(
@@ -162,6 +215,15 @@ begin
   cxGridTableTAGDetail.SetValue(iBaris, cxgrdclmnTAGKodeBarang.Index,lDSt.FieldByName('barang').AsString);
   cxGridTableTAGDetail.SetValue(iBaris, cxgrdclmnTAGUOM.Index,lDSt.FieldByName('uom').AsString);
 
+end;
+
+procedure TfrmTAGRequest.cxGridDBTableOverviewCellDblClick(Sender:
+    TcxCustomGridTableView; ACellViewInfo: TcxGridTableDataCellViewInfo;
+    AButton: TMouseButton; AShift: TShiftState; var AHandled: Boolean);
+begin
+  inherited;
+  if  LoadData(cxGridDBTableOverview.DS.FieldByName('ID').AsString) then
+    cxPCData.ActivePageIndex := 1;
 end;
 
 function TfrmTAGRequest.GetTAGRequest: TTAGRequest;
@@ -253,11 +315,14 @@ begin
   memKeterangan.Text        := FTAGRequest.Keterangan;
   cbbCabangTujuan.EditValue := FTAGRequest.Cabang.ID;
 
+
   for I := 0 to FTAGRequest.TAGRequestItems.Count - 1 do
   begin
     cxGridTableTAGDetail.DataController.RecordCount := cxGridTableTAGDetail.DataController.RecordCount + 1;
     cxGridTableTAGDetail.SetObjectData(FTAGRequest.TAGRequestItems[i], i);
   end;
+
+  Result := True;
 end;
 
 //procedure TfrmTAGRequest.SetUOM;

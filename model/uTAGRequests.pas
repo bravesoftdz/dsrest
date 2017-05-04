@@ -39,7 +39,7 @@ type
     FBarang: TBarang;
     FBarangSatuangItemID: string;
     FKeterangan: string;
-    FQty: Double;
+    FQtyRequest: Double;
     FTAGRequest: TTAGRequest;
     FUOM: TUOM;
   public
@@ -51,7 +51,7 @@ type
   published
     property Barang: TBarang read FBarang write FBarang;
     property Keterangan: string read FKeterangan write FKeterangan;
-    property Qty: Double read FQty write FQty;
+    property QtyRequest: Double read FQtyRequest write FQtyRequest;
     property TAGRequest: TTAGRequest read FTAGRequest write FTAGRequest;
     property UOM: TUOM read FUOM write FUOM;
   end;

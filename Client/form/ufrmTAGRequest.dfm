@@ -5,34 +5,17 @@ inherited frmTAGRequest: TfrmTAGRequest
   PixelsPerInch = 96
   TextHeight = 13
   inherited cxPCData: TcxPageControl
-    Properties.ActivePage = cxTSInputData
     inherited cxTSOverview: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
       ExplicitWidth = 709
       ExplicitHeight = 265
       inherited pnlListTransaksi: TPanel
-        inherited pnlFilter: TPanel
-          inherited dtpAwal: TDateTimePicker
-            ExplicitLeft = 329
-            ExplicitTop = 4
-            ExplicitHeight = 23
-          end
-          inherited dtpAkhir: TDateTimePicker
-            ExplicitLeft = 478
-            ExplicitTop = 4
-            ExplicitHeight = 23
-          end
-          inherited btnRefresh: TcxButton
-            ExplicitLeft = 589
-            ExplicitTop = 4
-            ExplicitHeight = 23
-          end
-        end
         inherited cxGrid: TcxGrid
           RootLevelOptions.DetailTabsPosition = dtpTop
-          ExplicitTop = 32
-          ExplicitHeight = 232
+          inherited cxGridDBTableOverview: TcxGridDBTableView
+            OnCellDblClick = cxGridDBTableOverviewCellDblClick
+          end
           object cxGridDBTableTAGReqIn: TcxGridDBTableView [1]
             Navigator.Buttons.CustomButtons = <>
             DataController.Summary.DefaultGroupSummaryItems = <>
@@ -189,7 +172,7 @@ inherited frmTAGRequest: TfrmTAGRequest
             Width = 72
           end
           object cxgrdclmnTAGQty: TcxGridColumn
-            AlternateCaption = 'Qty'
+            AlternateCaption = 'QtyRequest'
             Caption = 'Qty'
             PropertiesClassName = 'TcxCurrencyEditProperties'
             Properties.Alignment.Horz = taRightJustify
@@ -219,6 +202,9 @@ inherited frmTAGRequest: TfrmTAGRequest
     inherited ActionSimpan: TAction
       OnExecute = ActionSimpanExecute
     end
+    inherited ActionHapus: TAction
+      OnExecute = ActionHapusExecute
+    end
     inherited ActionRefresh: TAction
       OnExecute = ActionRefreshExecute
     end
@@ -233,7 +219,7 @@ inherited frmTAGRequest: TfrmTAGRequest
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010107000800F40018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800000118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

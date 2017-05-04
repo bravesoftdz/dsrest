@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 4/27/2017 3:35:46 AM
+// 2017-05-02 3:53:19 AM
 //
 
 unit ClientClassesUnit2;
@@ -609,6 +609,8 @@ type
   private
     FRetrieveCommand: TDSRestCommand;
     FRetrieveCommand_Cache: TDSRestCommand;
+    FRetrieveCDSSlipCommand: TDSRestCommand;
+    FRetrieveCDSSlipCommand_Cache: TDSRestCommand;
     FRetrieveNoBuktiCommand: TDSRestCommand;
     FRetrieveNoBuktiCommand_Cache: TDSRestCommand;
     FGenerateNoBuktiCommand: TDSRestCommand;
@@ -622,6 +624,8 @@ type
     destructor Destroy; override;
     function Retrieve(AID: string; const ARequestFilter: string = ''): TTAGRequest;
     function Retrieve_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedTTAGRequest;
+    function RetrieveCDSSlip(ACabangID: string; AID: string; const ARequestFilter: string = ''): TDataSet;
+    function RetrieveCDSSlip_Cache(ACabangID: string; AID: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function RetrieveNoBukti(ANoBukti: string; const ARequestFilter: string = ''): TTAGRequest;
     function RetrieveNoBukti_Cache(ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedTTAGRequest;
     function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
@@ -2025,6 +2029,20 @@ const
 
   TServerTAGRequest_Retrieve_Cache: array [0..1] of TDSRestParameterMetaData =
   (
+    (Name: 'AID'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerTAGRequest_RetrieveCDSSlip: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'ACabangID'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'AID'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TServerTAGRequest_RetrieveCDSSlip_Cache: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'ACabangID'; Direction: 1; DBXType: 26; TypeName: 'string'),
     (Name: 'AID'; Direction: 1; DBXType: 26; TypeName: 'string'),
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
@@ -7448,6 +7466,39 @@ begin
   Result := TDSRestCachedTTAGRequest.Create(FRetrieveCommand_Cache.Parameters[1].Value.GetString);
 end;
 
+function TServerTAGRequestClient.RetrieveCDSSlip(ACabangID: string; AID: string; const ARequestFilter: string): TDataSet;
+begin
+  if FRetrieveCDSSlipCommand = nil then
+  begin
+    FRetrieveCDSSlipCommand := FConnection.CreateCommand;
+    FRetrieveCDSSlipCommand.RequestType := 'GET';
+    FRetrieveCDSSlipCommand.Text := 'TServerTAGRequest.RetrieveCDSSlip';
+    FRetrieveCDSSlipCommand.Prepare(TServerTAGRequest_RetrieveCDSSlip);
+  end;
+  FRetrieveCDSSlipCommand.Parameters[0].Value.SetWideString(ACabangID);
+  FRetrieveCDSSlipCommand.Parameters[1].Value.SetWideString(AID);
+  FRetrieveCDSSlipCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FRetrieveCDSSlipCommand.Parameters[2].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FRetrieveCDSSlipCommand.FreeOnExecute(Result);
+end;
+
+function TServerTAGRequestClient.RetrieveCDSSlip_Cache(ACabangID: string; AID: string; const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FRetrieveCDSSlipCommand_Cache = nil then
+  begin
+    FRetrieveCDSSlipCommand_Cache := FConnection.CreateCommand;
+    FRetrieveCDSSlipCommand_Cache.RequestType := 'GET';
+    FRetrieveCDSSlipCommand_Cache.Text := 'TServerTAGRequest.RetrieveCDSSlip';
+    FRetrieveCDSSlipCommand_Cache.Prepare(TServerTAGRequest_RetrieveCDSSlip_Cache);
+  end;
+  FRetrieveCDSSlipCommand_Cache.Parameters[0].Value.SetWideString(ACabangID);
+  FRetrieveCDSSlipCommand_Cache.Parameters[1].Value.SetWideString(AID);
+  FRetrieveCDSSlipCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FRetrieveCDSSlipCommand_Cache.Parameters[2].Value.GetString);
+end;
+
 function TServerTAGRequestClient.RetrieveNoBukti(ANoBukti: string; const ARequestFilter: string): TTAGRequest;
 begin
   if FRetrieveNoBuktiCommand = nil then
@@ -7624,6 +7675,8 @@ destructor TServerTAGRequestClient.Destroy;
 begin
   FRetrieveCommand.DisposeOf;
   FRetrieveCommand_Cache.DisposeOf;
+  FRetrieveCDSSlipCommand.DisposeOf;
+  FRetrieveCDSSlipCommand_Cache.DisposeOf;
   FRetrieveNoBuktiCommand.DisposeOf;
   FRetrieveNoBuktiCommand_Cache.DisposeOf;
   FGenerateNoBuktiCommand.DisposeOf;

@@ -1,9 +1,15 @@
 inherited frmGudang: TfrmGudang
   Caption = 'Gudang'
+  ExplicitWidth = 733
+  ExplicitHeight = 385
   PixelsPerInch = 96
   TextHeight = 13
   inherited cxPCData: TcxPageControl
     inherited cxTSOverview: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 709
+      ExplicitHeight = 265
       inherited pnlListTransaksi: TPanel
         inherited pnlFilter: TPanel
           TabOrder = 1
@@ -63,7 +69,15 @@ inherited frmGudang: TfrmGudang
       end
     end
   end
+  inherited pnlButton: TPanel
+    inherited chkKonsolidasi1: TcxCheckBox
+      ExplicitWidth = 76
+      ExplicitHeight = 31
+    end
+  end
   inherited ActionListForm: TActionList
+    Left = 608
+    Top = 104
     inherited ActionSimpan: TAction
       OnExecute = ActionSimpanExecute
     end
@@ -90,7 +104,7 @@ inherited frmGudang: TfrmGudang
     Left = 512
     Top = 88
     Bitmap = {
-      494C010105000800740018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010105000800780018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

@@ -297,18 +297,13 @@ type
   protected
   public
     function Retrieve(AID : String): TTAGRequest;
+    function RetrieveCDSSlip(ACabangID : String; AID : String): TDataSet;
     function RetrieveNoBukti(ANoBukti : String): TTAGRequest;
   end;
 
-  TServerTransferAntarCabangKirim = class(TServerTransaction, IBisaSimpanStock)
+  TServerTransferAntarCabangKirim = class(TServerTransaction)
   strict private
-    function HapusMutasi(ANoBukti : String): Boolean; stdcall;
-    function SimpanMutasiStock(AAppObject : TAppObject): Boolean; overload; stdcall;
-    function SimpanMutasiStock(AAppObject : TAppObject; AMutasiStock :
-        TMutasiStock;AIsOut : Boolean): Boolean; overload; stdcall;
   private
-    function SimpanStockSekarang(AAppObject : TAppObject; AIsMenghapus : Boolean =
-        False): Boolean; stdcall;
   protected
     function AfterDelete(AAppObject : TAppObject): Boolean; override;
     function AfterSave(AOBject : TAppObject): Boolean; override;
@@ -2522,6 +2517,22 @@ begin
 
 end;
 
+function TServerTAGRequest.RetrieveCDSSlip(ACabangID : String; AID : String):
+    TDataSet;
+var
+  sSQL: string;
+begin
+  sSQL := 'select * from vtagrequest_slip' +
+          ' where cabangid = ' + QuotedStr(ACabangID);
+
+  if AID <> '' then
+    sSQL := sSQL + ' and ID = ' + QuotedStr(AID);
+
+  sSQL := sSQL + ' order by nobukti';
+
+  Result := TDBUtils.OpenDataset(sSQL);
+end;
+
 function TServerTAGRequest.RetrieveNoBukti(ANoBukti : String): TTAGRequest;
 var
   sID: string;
@@ -2569,23 +2580,6 @@ end;
 function TServerTransferAntarCabangKirim.BeforeSave(AOBject : TAppObject):
     Boolean;
 begin
-  Result := True;
-end;
-
-function TServerTransferAntarCabangKirim.HapusMutasi(ANoBukti : String):
-    Boolean;
-begin
-  Result := False;
-
-  with TServerStockSekarang.Create do
-  begin
-    try
-      if not HapusMutasi(ANoBukti) then
-        Exit;
-    finally
-      Free;
-    end;
-  end;
   Result := True;
 end;
 
@@ -2653,153 +2647,6 @@ begin
   end;
 
   Result := Retrieve(sID);
-end;
-
-function TServerTransferAntarCabangKirim.SimpanMutasiStock(AAppObject :
-    TAppObject): Boolean;
-var
-  i: Integer;
-  lMutasiStock: TMutasiStock;
-  lTACKirim: TTransferAntarCabangKirim;
-begin
-  Result := False;
-
-  lTACKirim := TTransferAntarCabangKirim(AAppObject);
-  if not HapusMutasi(lTACKirim.NoBukti) then
-    Exit;
-
-  with TServerStockSekarang.Create do
-  begin
-    try
-      for i := 0 to lTACKirim.TransferAntarCabangKirimItems.Count - 1 do
-      begin
-        lMutasiStock            := TMutasiStock.Create;
-        lMutasiStock.Barang     := TBarang.CreateID(lTACKirim.TransferAntarCabangKirimItems[i].Barang.ID);
-        lMutasiStock.Cabang     := TCabang.CreateID(lTACKirim.Cabang.ID);
-        lMutasiStock.Gudang     := TGudang.CreateID(lTACKirim.GudangAsal.ID);
-        lMutasiStock.UOM        := TUOM.CreateID(lTACKirim.TransferAntarCabangKirimItems[i].UOM.ID);
-        lMutasiStock.Harga      := lTACKirim.TransferAntarCabangKirimItems[i].Harga;
-        lMutasiStock.QtyIn      := 0;
-        lMutasiStock.QtyOut     := lTACKirim.TransferAntarCabangKirimItems[i].Qty;
-        lMutasiStock.Keterangan := lTACKirim.NoBukti;
-        lMutasiStock.NoBukti    := lTACKirim.NoBukti;
-        lMutasiStock.Transaksi  := 'TAC Kirim';
-        lMutasiStock.TglBukti   := lTACKirim.TglBukti;
-        lMutasiStock.Konversi   := lTACKirim.TransferAntarCabangKirimItems[i].Konversi;
-
-        if not SaveNoCommit(lMutasiStock) then
-          Exit;
-      end;
-    finally
-      Free;
-    end;
-  end;
-
-  Result := True;
-end;
-
-function TServerTransferAntarCabangKirim.SimpanMutasiStock(AAppObject :
-    TAppObject; AMutasiStock : TMutasiStock;AIsOut : Boolean): Boolean;
-var
-  i: Integer;
-  lTACKirim: TTransferAntarCabangKirim;
-begin
-  Result := False;
-
-  lTACKirim := TTransferAntarCabangKirim(AAppObject);
-  if not HapusMutasi(lTACKirim.NoBukti) then
-    Exit;
-
-  with TServerStockSekarang.Create do
-  begin
-    try
-      for i := 0 to lTACKirim.TransferAntarCabangKirimItems.Count - 1 do
-      begin
-        AMutasiStock.Barang     := TBarang.CreateID(lTACKirim.TransferAntarCabangKirimItems[i].Barang.ID);
-        AMutasiStock.Cabang     := TCabang.CreateID(lTACKirim.Cabang.ID);
-        AMutasiStock.UOM        := TUOM.CreateID(lTACKirim.TransferAntarCabangKirimItems[i].UOM.ID);
-        AMutasiStock.Harga      := lTACKirim.TransferAntarCabangKirimItems[i].Harga;
-
-        if AIsOut then
-        begin
-          AMutasiStock.Gudang     := TGudang.CreateID(lTACKirim.GudangAsal.ID);
-          AMutasiStock.QtyIn      := 0;
-          AMutasiStock.QtyOut     := lTACKirim.TransferAntarCabangKirimItems[i].Qty;
-        end else begin
-          AMutasiStock.Gudang     := TGudang.CreateID(lTACKirim.GudangTujuan.ID);
-          AMutasiStock.QtyOut     := 0;
-          AMutasiStock.QtyIn      := lTACKirim.TransferAntarCabangKirimItems[i].Qty;
-        end;
-
-        AMutasiStock.Keterangan := lTACKirim.NoBukti;
-        AMutasiStock.NoBukti    := lTACKirim.NoBukti;
-        AMutasiStock.Transaksi  := 'TAC Kirim';
-        AMutasiStock.TglBukti   := lTACKirim.TglBukti;
-        AMutasiStock.Konversi   := lTACKirim.TransferAntarCabangKirimItems[i].Konversi;
-
-        if not SaveNoCommit(AMutasiStock) then
-          Exit;
-      end;
-    finally
-      Free;
-    end;
-  end;
-
-  Result := True;
-end;
-
-function TServerTransferAntarCabangKirim.SimpanStockSekarang(AAppObject :
-    TAppObject; AIsMenghapus : Boolean = False): Boolean;
-var
-  dKonversi: Double;
-  i: Integer;
-  lRSup: TReturSupplier;
-  lStockSekarang: TStockSekarang;
-begin
-  Result := False;
-
-  lRSup := TReturSupplier(AAppObject);
-  if AIsMenghapus then
-  begin
-    for i := 0 to lRSup.ReturSupplierItems.Count - 1 do
-    begin
-      lRSup.ReturSupplierItems[i].Qty := -1 * lRSup.ReturSupplierItems[i].Qty;
-    end;
-  end;
-
-  with TServerStockSekarang.Create do
-  begin
-    try
-      for i := 0 to lRSup.ReturSupplierItems.Count - 1 do
-      begin
-        lStockSekarang           := Retrieve(lRSup.ReturSupplierItems[i].Barang, lRSup.Gudang);
-        lStockSekarang.Cabang    := TCabang.CreateID(lRSup.Cabang.ID);
-        lStockSekarang.Gudang    := TGudang.CreateID(lRSup.Gudang.ID);
-
-        with TServerBarang.Create do
-        begin
-          try
-            lStockSekarang.Barang    := Retrieve(lRSup.ReturSupplierItems[i].Barang.ID);
-            dKonversi                := lStockSekarang.Barang.KonversiPC(lRSup.ReturSupplierItems[i].UOM);
-
-          finally
-            Free;
-          end;
-        end;
-
-        lStockSekarang.Qty       := lStockSekarang.Qty - (lRSup.ReturSupplierItems[i].Qty * dKonversi);
-        lStockSekarang.Rp        := lStockSekarang.Rp  - (lRSup.ReturSupplierItems[i].Qty *lRSup.ReturSupplierItems[i].HargaSetelahDiskon);
-        lStockSekarang.UOM       := TUOM.Create;
-        lStockSekarang.UOM.ID    := lStockSekarang.Barang.SatuanStock.ID;
-
-        Result := SaveNoCommit(lStockSekarang);
-      end;
-    finally
-      Free;
-    end;
-  end;
-
-
 end;
 
 

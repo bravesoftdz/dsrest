@@ -104,6 +104,7 @@ object frmServer: TfrmServer
         ItemIndex = 1
         TabOrder = 0
         Text = 'MSSQL'
+        OnExit = cbbEngineExit
         Items.Strings = (
           'PG'
           'MSSQL'

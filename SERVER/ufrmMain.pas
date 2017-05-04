@@ -61,6 +61,7 @@ type
     procedure ButtonStartClick(Sender: TObject);
     procedure ButtonStopClick(Sender: TObject);
     procedure ButtonOpenBrowserClick(Sender: TObject);
+    procedure cbbEngineExit(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure mmoLogsChange(Sender: TObject);
   private
@@ -159,6 +160,20 @@ begin
   FServer.Bindings.Clear;
 
   mmoLogs.Lines.Add('Rest Server dimatikan');
+end;
+
+procedure TfrmServer.cbbEngineExit(Sender: TObject);
+begin
+  if cbbEngine.Text = 'PG' then
+  begin
+    edPort.Text := '5432';
+    edUser.Text := 'postgres';
+  end else if cbbEngine.Text = 'SQLSERVER' then
+  begin
+    edPort.Text := '1433';
+    edUser.Text := 'sa';
+  end;
+
 end;
 
 procedure TfrmServer.FormCreate(Sender: TObject);

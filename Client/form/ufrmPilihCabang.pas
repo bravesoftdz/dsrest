@@ -55,7 +55,7 @@ procedure TfrmPilihCabang.InisialisasiDataCabang;
 var
   sSQL: string;
 begin
-  sSQL := 'select * from tcabang order by Nama';
+  sSQL := 'select id,kode,nama from tcabang order by Nama';
   cxGridDBTableCabang.SetDataset(sSQL);
 
 end;

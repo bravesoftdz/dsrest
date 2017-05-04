@@ -103,9 +103,6 @@ object frmDefault: TfrmDefault
             Date = 42812.000949421290000000
             Time = 42812.000949421290000000
             TabOrder = 0
-            ExplicitLeft = 344
-            ExplicitTop = 1
-            ExplicitHeight = 30
           end
           object dtpAkhir: TDateTimePicker
             AlignWithMargins = True
@@ -117,9 +114,6 @@ object frmDefault: TfrmDefault
             Date = 42812.000949421290000000
             Time = 42812.000949421290000000
             TabOrder = 1
-            ExplicitLeft = 487
-            ExplicitTop = 1
-            ExplicitHeight = 30
           end
           object btnRefresh: TcxButton
             AlignWithMargins = True
@@ -131,9 +125,6 @@ object frmDefault: TfrmDefault
             Action = ActionRefresh
             Caption = 'Refresh [F5]'
             TabOrder = 2
-            ExplicitLeft = 592
-            ExplicitTop = 1
-            ExplicitHeight = 30
           end
         end
         object cxGrid: TcxGrid
@@ -145,8 +136,6 @@ object frmDefault: TfrmDefault
           TabOrder = 1
           LockedStateImageOptions.Text = 'Mohon ditunggu...'
           LookAndFeel.NativeStyle = False
-          ExplicitTop = 33
-          ExplicitHeight = 231
           object cxGridDBTableOverview: TcxGridDBTableView
             Navigator.Buttons.CustomButtons = <>
             FindPanel.DisplayMode = fpdmManual
@@ -261,6 +250,7 @@ object frmDefault: TfrmDefault
       Caption = 'Cetak'
       ImageIndex = 3
       ShortCut = 16464
+      OnExecute = actCetakExecute
     end
     object ActionHapus: TAction
       Caption = 'Hapus [Ctrl+Del]'
@@ -345,7 +335,7 @@ object frmDefault: TfrmDefault
     Left = 216
     Top = 184
     Bitmap = {
-      494C010107000800D40018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800DC0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
