@@ -15,7 +15,8 @@ uses
   System.ImageList, ufrmLapKartuStock, ufrmPenjualan, ufrmPenjualanPOS,
   ufrmCustomerInvoice,ufrmPenerimaanKas, ufrmRekBank, ufrmLaporanAR,
   ufrmSettingAplikasi, ufrmTransferAntarGudang, ufrmTAGRequest,
-  Datasnap.DBClient, ufrmTACKirim;
+  Datasnap.DBClient, ufrmTACKirim, cxContainer, cxEdit, cxTextEdit, cxMaskEdit,
+  cxDropDownEdit;
 
 type
   TfrmMain = class(TForm)
@@ -120,6 +121,12 @@ type
     actTAGGRequest: TAction;
     dxbrlrgbtnKirimBarang: TdxBarLargeButton;
     actTAGKirim: TAction;
+    pnlGaji: TPanel;
+    lblTahun: TLabel;
+    lblBulan: TLabel;
+    cbbTahun: TcxComboBox;
+    cbbBulan: TcxComboBox;
+    btnCetak: TButton;
     procedure actAlatGantiCabangExecute(Sender: TObject);
     procedure actApplicationExitExecute(Sender: TObject);
     procedure actClosingInventoryExecute(Sender: TObject);
@@ -143,6 +150,7 @@ type
     procedure actTAGExecute(Sender: TObject);
     procedure actTAGGRequestExecute(Sender: TObject);
     procedure actTAGKirimExecute(Sender: TObject);
+    procedure btnCetakClick(Sender: TObject);
     procedure FormDblClick(Sender: TObject);
   private
     procedure UpdateStatusBar;
@@ -301,6 +309,30 @@ begin
   frmTACKirim := TfrmTACKirim.Create(Self);
 end;
 
+procedure TfrmMain.btnCetakClick(Sender: TObject);
+var
+  iBulan: Integer;
+  iTahun: Integer;
+  lcds: TClientDataSet;
+  lTSReport: TTSReport;
+begin
+  lTSReport := TTSReport.Create(self);
+  try
+    with ClientDataModule.ServerLaporanClient do
+    begin
+      iTahun := StrToInt(cbbTahun.Text);
+      iBulan := StrToInt(cbbBulan.Text);
+
+      lcds := TDBUtils.DSToCDS(RetrieveGaji(iTahun, iBulan), Self);
+
+      lTSReport.AddDataset(lcds, 'Mukafaah');
+      lTSReport.ShowReport('Mukafaah');
+    end;
+  finally
+    lTSReport.Free;
+  end;
+end;
+
 procedure TfrmMain.FormCreate(Sender: TObject);
 begin
   //  Caption := Caption + ' Ver : ' + TAppUtils.GetAppVersion;
@@ -344,22 +376,23 @@ begin
 end;
 
 procedure TfrmMain.FormDblClick(Sender: TObject);
-var
-  lcds: TClientDataSet;
-  lTSReport: TTSReport;
+//var
+//  lcds: TClientDataSet;
+//  lTSReport: TTSReport;
 begin
-  lTSReport := TTSReport.Create(self);
-  try
-    with ClientDataModule.ServerLaporanClient do
-    begin
-      lcds := TDBUtils.DSToCDS(RetrieveGaji(2017, 4), Self);
-
-      lTSReport.AddDataset(lcds, 'Mukafaah');
-      lTSReport.ShowReport('Mukafaah');
-    end;
-  finally
-    lTSReport.Free;
-  end;
+  pnlGaji.Visible := not pnlGaji.Visible;
+//  lTSReport := TTSReport.Create(self);
+//  try
+//    with ClientDataModule.ServerLaporanClient do
+//    begin
+//      lcds := TDBUtils.DSToCDS(RetrieveGaji(2017, 5), Self);
+//
+//      lTSReport.AddDataset(lcds, 'Mukafaah');
+//      lTSReport.ShowReport('Mukafaah');
+//    end;
+//  finally
+//    lTSReport.Free;
+//  end;
 end;
 
 procedure TfrmMain.UpdateStatusBar;

@@ -231,7 +231,7 @@ begin
                                                     + ' where ' + TAppObjectItem(GetArrayElement(i).AsObject).GetHeaderField + ' = ' + QuotedStr(AObject.ID) + ';';
 
                               end;
-
+                              TAppObjectItem(GetArrayElement(i).AsObject).Urutan := i;
                               TAppObjectItem(GetArrayElement(i).AsObject).SetHeaderProperty(AObject);
                               ResultObjectList := ResultObjectList + GenerateSQLInsert(TAppObject(GetArrayElement(i).AsObject));
                             end;
@@ -557,7 +557,8 @@ begin
                           if Assigned(meth) then
                           begin
                             sSQL := 'select id from ' + lAppObject.ClassName
-                                    + ' where ' + TAppObjectItem(lAppObject).GetHeaderField + ' = ' + QuotedStr(AID);
+                                    + ' where ' + TAppObjectItem(lAppObject).GetHeaderField + ' = ' + QuotedStr(AID)
+                                    + ' order by urutan';
 
                             QQ := TDBUtils.OpenDataset(sSQL);
                             try

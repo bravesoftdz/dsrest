@@ -52,9 +52,13 @@ type
   {$TYPEINFO ON}
   TAppObjectItem = class(TAppObject)
   {$TYPEINFO OFF}
+  private
+    FUrutan: Integer;
   public
     function GetHeaderField: string; virtual; abstract;
     procedure SetHeaderProperty(AHeaderProperty : TAppObject); virtual; abstract;
+  published
+    property Urutan: Integer read FUrutan write FUrutan;
   end;
 
   TGroupBarang = class(TAppObject)

@@ -304,6 +304,7 @@ type
   TServerTransferAntarCabangKirim = class(TServerTransaction)
   strict private
   private
+    function UpdateStatusTAGRequest(AOBject : TAppObject): Boolean;
   protected
     function AfterDelete(AAppObject : TAppObject): Boolean; override;
     function AfterSave(AOBject : TAppObject): Boolean; override;
@@ -312,6 +313,21 @@ type
   public
     function Retrieve(AID : String): TTransferAntarCabangKirim;
     function RetrieveNoBukti(ANoBukti : String): TTransferAntarCabangKirim;
+  end;
+
+type
+  TServerTransferAntarCabangTerima = class(TServerTransaction)
+  strict private
+  private
+    function UpdateStatusTACKirim(AOBject : TAppObject): Boolean;
+  protected
+    function AfterDelete(AAppObject : TAppObject): Boolean; override;
+    function AfterSave(AOBject : TAppObject): Boolean; override;
+    function BeforeDelete(AAppObject : TAppObject): Boolean; override;
+    function BeforeSave(AOBject : TAppObject): Boolean; override;
+  public
+    function Retrieve(AID : String): TTransferAntarCabangTerima;
+    function RetrieveNoBukti(ANoBukti : String): TTransferAntarCabangTerima;
   end;
 
 
@@ -2562,25 +2578,60 @@ end;
 function TServerTransferAntarCabangKirim.AfterDelete(AAppObject : TAppObject):
     Boolean;
 begin
-  Result := True;
+  inherited;
+
+  Result := False;
+
+  if UpdateStatusTAGRequest(AAppObject) then
+    Result := True;
 end;
 
 function TServerTransferAntarCabangKirim.AfterSave(AOBject : TAppObject):
     Boolean;
 begin
-  Result := True;
+  inherited;
+
+  Result := False;
+
+  if UpdateStatusTAGRequest(AOBject) then
+    Result := True;
+end;
+
+function TServerTransferAntarCabangKirim.UpdateStatusTAGRequest(AOBject :
+    TAppObject): Boolean;
+var
+  sSQL: string;
+begin
+  try
+    sSQL   := 'update a set a.status = ''REQUEST'' from ttagrequest a' +
+            ' LEFT JOIN ttransferantarcabangkirim b on a.id = b.tagrequest' +
+            ' where b.id is NULL';
+
+
+    TDBUtils.ExecuteSQL(sSQL);
+
+    sSQL   := 'update a set a.status = ''TERKIRIM'' from ttagrequest a' +
+              ' Inner JOIN ttransferantarcabangkirim b on a.id = b.tagrequest' +
+              ' where b.id = ' + QuotedStr(TTransferAntarCabangKirim(AOBject).ID);
+
+    TDBUtils.ExecuteSQL(sSQL);
+
+  except
+   Result := False;
+  end;
+
 end;
 
 function TServerTransferAntarCabangKirim.BeforeDelete(AAppObject : TAppObject):
     Boolean;
 begin
-  Result := True;
+  Result := inherited BeforeDelete(AAppObject);
 end;
 
 function TServerTransferAntarCabangKirim.BeforeSave(AOBject : TAppObject):
     Boolean;
 begin
-  Result := True;
+  Result := inherited BeforeSave(AOBject);
 end;
 
 function TServerTransferAntarCabangKirim.Retrieve(AID : String):
@@ -2624,6 +2675,132 @@ end;
 
 function TServerTransferAntarCabangKirim.RetrieveNoBukti(ANoBukti : String):
     TTransferAntarCabangKirim;
+var
+  sID: string;
+  sSQL: string;
+begin
+  sID := '';
+
+  sSQL := 'select id from ' + TTAGRequest.ClassName
+          + ' where nobukti = ' + QuotedStr(ANoBukti);
+
+  with TDBUtils.OpenDataset(sSQL) do
+  begin
+    try
+      while not Eof do
+      begin
+        sID := FieldByName('id').AsString;
+        Next;
+      end;
+    finally
+      Free;
+    end;
+  end;
+
+  Result := Retrieve(sID);
+end;
+
+function TServerTransferAntarCabangTerima.AfterDelete(AAppObject : TAppObject):
+    Boolean;
+begin
+  inherited;
+
+  Result := False;
+
+  if UpdateStatusTACKirim(AAppObject) then
+    Result := True;
+end;
+
+function TServerTransferAntarCabangTerima.AfterSave(AOBject : TAppObject):
+    Boolean;
+begin
+  inherited;
+
+  Result := False;
+
+  if UpdateStatusTACKirim(AOBject) then
+    Result := True;
+end;
+
+function TServerTransferAntarCabangTerima.UpdateStatusTACKirim(AOBject :
+    TAppObject): Boolean;
+var
+  sSQL: string;
+begin
+  try
+    sSQL   := 'update a set a.status = ''REQUEST'' from ttagrequest a' +
+            ' LEFT JOIN ttransferantarcabangkirim b on a.id = b.tagrequest' +
+            ' where b.id is NULL';
+
+
+    TDBUtils.ExecuteSQL(sSQL);
+
+    sSQL   := 'update a set a.status = ''TERKIRIM'' from ttagrequest a' +
+              ' Inner JOIN ttransferantarcabangkirim b on a.id = b.tagrequest' +
+              ' where b.id = ' + QuotedStr(TTransferAntarCabangKirim(AOBject).ID);
+
+    TDBUtils.ExecuteSQL(sSQL);
+
+  except
+   Result := False;
+  end;
+
+end;
+
+function TServerTransferAntarCabangTerima.BeforeDelete(AAppObject : TAppObject):
+    Boolean;
+begin
+  Result := inherited BeforeDelete(AAppObject);
+end;
+
+function TServerTransferAntarCabangTerima.BeforeSave(AOBject : TAppObject):
+    Boolean;
+begin
+  Result := inherited BeforeSave(AOBject);
+end;
+
+function TServerTransferAntarCabangTerima.Retrieve(AID : String):
+    TTransferAntarCabangTerima;
+var
+  I: Integer;
+  sSQL: string;
+begin
+  Result      := TTransferAntarCabangTerima.Create;
+
+  TDBUtils.LoadFromDB(Result, AID);
+
+  sSQL := 'select c.* from  TTransferAntarCabangTerima a' +
+          ' inner join TTransferAntarCabangTerimaItem b on a.id = b.TransferAntarCabangTerima' +
+          ' inner join tbarangsatuanitem c on b.barang = c.barang and b.uom=c.uom' +
+          ' where a.id = ' + QuotedStr(AID);
+
+  with TDBUtils.OpenDataset(sSQL) do
+  begin
+    try
+      for I := 0 to Result.TransferAntarCabangTerimaItems.Count - 1 do
+      begin
+        First;
+        while not Eof do
+        begin
+          if FieldByName('barang').AsString = Result.TransferAntarCabangTerimaItems[i].Barang.ID then
+            if FieldByName('uom').AsString = Result.TransferAntarCabangTerimaItems[i].UOM.ID then
+            begin
+              Result.TransferAntarCabangTerimaItems[i].BarangSatuangItemID := FieldByName('ID').AsString;
+              Break;
+            end;
+
+          Next;
+        end;
+      end;
+    finally
+      Free;
+    end;
+  end;
+
+end;
+
+function TServerTransferAntarCabangTerima.RetrieveNoBukti(ANoBukti : String):
+    TTransferAntarCabangTerima;
 var
   sID: string;
   sSQL: string;

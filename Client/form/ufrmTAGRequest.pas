@@ -313,7 +313,7 @@ begin
   edTglBukti.Date           := FTAGRequest.TglBukti;
   edPetugas.Text            := FTAGRequest.Petugas;
   memKeterangan.Text        := FTAGRequest.Keterangan;
-  cbbCabangTujuan.EditValue := FTAGRequest.Cabang.ID;
+  cbbCabangTujuan.EditValue := FTAGRequest.ToCabang.ID;
 
 
   for I := 0 to FTAGRequest.TAGRequestItems.Count - 1 do

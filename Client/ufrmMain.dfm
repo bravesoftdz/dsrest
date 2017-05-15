@@ -110,6 +110,69 @@ object frmMain: TfrmMain
         Width = 50
       end>
   end
+  object pnlGaji: TPanel
+    Left = 16
+    Top = 143
+    Width = 225
+    Height = 122
+    TabOrder = 6
+    Visible = False
+    object lblTahun: TLabel
+      Left = 24
+      Top = 17
+      Width = 30
+      Height = 13
+      Caption = 'Tahun'
+    end
+    object lblBulan: TLabel
+      Left = 28
+      Top = 44
+      Width = 26
+      Height = 13
+      Caption = 'Bulan'
+    end
+    object cbbTahun: TcxComboBox
+      Left = 72
+      Top = 13
+      Properties.DropDownListStyle = lsFixedList
+      Properties.Items.Strings = (
+        '2017'
+        '2018'
+        '2019'
+        '2020')
+      TabOrder = 0
+      Width = 121
+    end
+    object cbbBulan: TcxComboBox
+      Left = 72
+      Top = 40
+      Properties.DropDownListStyle = lsFixedList
+      Properties.Items.Strings = (
+        '1'
+        '2'
+        '3'
+        '4'
+        '5'
+        '6'
+        '7'
+        '8'
+        '9'
+        '10'
+        '11'
+        '12')
+      TabOrder = 1
+      Width = 121
+    end
+    object btnCetak: TButton
+      Left = 118
+      Top = 67
+      Width = 75
+      Height = 25
+      Caption = 'Cetak'
+      TabOrder = 2
+      OnClick = btnCetakClick
+    end
+  end
   object mm1: TMainMenu
     Left = 448
     Top = 128
@@ -772,7 +835,7 @@ object frmMain: TfrmMain
     Left = 688
     Top = 128
     Bitmap = {
-      494C010112001800000120002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C0101120018000C0120002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000080000000A000000001002000000000000040
       0100000000000000000000000000000000000000000000000000131313224341
       3F7561605FAD797474D4878180ED8D8988F98A8685F8838181EC787574D3625E
