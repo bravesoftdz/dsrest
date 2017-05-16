@@ -26,6 +26,8 @@ type
     function RetrieveTACKirim(ATglAwal , ATglAkhir : TDateTime;ACabang : TCabang):
         TDataSet;
     function RetrieveGaji(ATahun, ABulan : Integer): TDataSet;
+    function RetrieveTACTerima(ATglAwal , ATglAkhir : TDateTime;ACabang : TCabang):
+        TDataSet;
     function RetrieveTransferAntarGudang(ATglAwal , ATglAkhir : TDateTime;ACabang :
         TCabang): TDataSet;
     function RetriveMutasiBarang(ATglAwal , ATglAtglAkhir : TDateTime) : TDataset;
@@ -315,7 +317,6 @@ type
     function RetrieveNoBukti(ANoBukti : String): TTransferAntarCabangKirim;
   end;
 
-type
   TServerTransferAntarCabangTerima = class(TServerTransaction)
   strict private
   private
@@ -1083,6 +1084,21 @@ begin
   sSQL   := ' select * from vmukafaah' +
             ' where bulan = ' + IntToStr(ABulan) +
             ' and tahun = ' + IntToStr(ATahun);
+
+  Result := TDBUtils.OpenDataset(sSQL);
+end;
+
+function TServerLaporan.RetrieveTACTerima(ATglAwal , ATglAkhir : TDateTime;
+    ACabang : TCabang): TDataSet;
+var
+  sSQL: string;
+begin
+  sSQL := 'select * from vtacterima a' +
+          ' where a.tglbukti between ' + TAppUtils.QuotDt(StartOfTheDay(ATglAwal))+
+          ' and ' + TAppUtils.QuotDt(EndOfTheDay(ATglAkhir));
+
+  if ACabang <> nil then
+    sSQL := sSQL + ' and a.cabangid = ' + QuotedStr(ACabang.ID);
 
   Result := TDBUtils.OpenDataset(sSQL);
 end;
@@ -2728,16 +2744,16 @@ var
   sSQL: string;
 begin
   try
-    sSQL   := 'update a set a.status = ''REQUEST'' from ttagrequest a' +
-            ' LEFT JOIN ttransferantarcabangkirim b on a.id = b.tagrequest' +
+    sSQL   := 'update a set a.status = ''KIRIM'' from ttransferantarcabangkirim a' +
+            ' LEFT JOIN ttransferantarcabangterima b on a.id = b.transferantarcabangkirim' +
             ' where b.id is NULL';
 
 
     TDBUtils.ExecuteSQL(sSQL);
 
-    sSQL   := 'update a set a.status = ''TERKIRIM'' from ttagrequest a' +
-              ' Inner JOIN ttransferantarcabangkirim b on a.id = b.tagrequest' +
-              ' where b.id = ' + QuotedStr(TTransferAntarCabangKirim(AOBject).ID);
+    sSQL   := 'update a set a.status = ''TERIMA'' from ttransferantarcabangkirim a' +
+              ' Inner JOIN ttransferantarcabangterima b on a.id = b.transferantarcabangkirim' +
+              ' where b.id = ' + QuotedStr(TTransferAntarCabangTerima(AOBject).ID);
 
     TDBUtils.ExecuteSQL(sSQL);
 

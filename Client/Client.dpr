@@ -52,7 +52,8 @@ uses
   uDSRestLib in '..\uDSRestLib.pas',
   uTAGKirim in '..\model\uTAGKirim.pas',
   uTransferAntarCabang in '..\model\uTransferAntarCabang.pas',
-  ufrmTACKirim in 'form\ufrmTACKirim.pas' {frmTACKirim};
+  ufrmTACKirim in 'form\ufrmTACKirim.pas' {frmTACKirim},
+  ufrmTACTerima in 'form\ufrmTACTerima.pas' {frmTACTerima};
 
 {$R *.res}
 

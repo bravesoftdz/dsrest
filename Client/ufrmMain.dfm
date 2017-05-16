@@ -506,6 +506,10 @@ object frmMain: TfrmMain
         item
           Visible = True
           ItemName = 'dxbrlrgbtnKirimBarang'
+        end
+        item
+          Visible = True
+          ItemName = 'dxbrlrgbtnTACTerima'
         end>
       OneOnRow = False
       Row = 0
@@ -673,6 +677,11 @@ object frmMain: TfrmMain
       Category = 0
       LargeImageIndex = 8
     end
+    object dxbrlrgbtnTACTerima: TdxBarLargeButton
+      Action = actTACTerima
+      Category = 0
+      LargeImageIndex = 8
+    end
     object dxbrlrgbtnExit: TdxBarLargeButton
       Action = actApplicationExit
       Category = 1
@@ -827,6 +836,11 @@ object frmMain: TfrmMain
       Caption = 'Pengiriman Transfer'
       OnExecute = actTAGKirimExecute
     end
+    object actTACTerima: TAction
+      Category = 'TAG'
+      Caption = 'Penerimaan Transfer'
+      OnExecute = actTACTerimaExecute
+    end
   end
   object ImgListMainLarge: TImageList
     ColorDepth = cd32Bit
@@ -835,7 +849,7 @@ object frmMain: TfrmMain
     Left = 688
     Top = 128
     Bitmap = {
-      494C0101120018000C0120002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010112001800100120002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000080000000A000000001002000000000000040
       0100000000000000000000000000000000000000000000000000131313224341
       3F7561605FAD797474D4878180ED8D8988F98A8685F8838181EC787574D3625E

@@ -127,6 +127,8 @@ type
     cbbTahun: TcxComboBox;
     cbbBulan: TcxComboBox;
     btnCetak: TButton;
+    dxbrlrgbtnTACTerima: TdxBarLargeButton;
+    actTACTerima: TAction;
     procedure actAlatGantiCabangExecute(Sender: TObject);
     procedure actApplicationExitExecute(Sender: TObject);
     procedure actClosingInventoryExecute(Sender: TObject);
@@ -147,6 +149,7 @@ type
     procedure actReturSupplierExecute(Sender: TObject);
     procedure actSettingAplikasiExecute(Sender: TObject);
     procedure actSettingKoneksiExecute(Sender: TObject);
+    procedure actTACTerimaExecute(Sender: TObject);
     procedure actTAGExecute(Sender: TObject);
     procedure actTAGGRequestExecute(Sender: TObject);
     procedure actTAGKirimExecute(Sender: TObject);
@@ -167,7 +170,7 @@ uses
   ufrmSupplier, ufrmKoneksi,uAppUtils, ufrmBarang, ufrmPenerimaanBarang,
   ClientClassesUnit2, ClientModule, ufrmPilihCabang, ufrmLapMutasiBarangPerTransaksi,
   ufrmReturSupplier, udbutils, ufrmClosingInventory, ufrmLapStockSekarang,
-  ufrmGudang, ufrmAccount, uReport;
+  ufrmGudang, ufrmAccount, uReport, ufrmTACTerima;
 
 {$R *.dfm}
 
@@ -292,6 +295,11 @@ begin
     frmKoneksi := TfrmKoneksi.Create(Self);
     frmKoneksi.ShowModal;
   end;
+end;
+
+procedure TfrmMain.actTACTerimaExecute(Sender: TObject);
+begin
+  frmTACTerima := TfrmTACTerima.Create(Self);
 end;
 
 procedure TfrmMain.actTAGExecute(Sender: TObject);
