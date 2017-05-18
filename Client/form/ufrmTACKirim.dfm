@@ -201,7 +201,7 @@ inherited frmTACKirim: TfrmTACKirim
             HeaderAlignmentHorz = taCenter
           end
           object cxgrdclmnTAGQty: TcxGridColumn
-            AlternateCaption = 'Qty'
+            AlternateCaption = 'QtyKirim'
             Caption = 'Qty'
             PropertiesClassName = 'TcxCurrencyEditProperties'
             Properties.Alignment.Horz = taRightJustify
@@ -251,7 +251,7 @@ inherited frmTACKirim: TfrmTACKirim
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C0101070008001C0118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800200118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

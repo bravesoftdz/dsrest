@@ -17,7 +17,7 @@ type
     FHarga: Double;
     FKeterangan: string;
     FKonversi: Double;
-    FQty: Double;
+    FQtyTerima: Double;
     FTransferAntarCabangTerima: TTransferAntarCabangTerima;
     FUOM: TUOM;
   public
@@ -31,7 +31,7 @@ type
     property Harga: Double read FHarga write FHarga;
     property Keterangan: string read FKeterangan write FKeterangan;
     property Konversi: Double read FKonversi write FKonversi;
-    property Qty: Double read FQty write FQty;
+    property QtyTerima: Double read FQtyTerima write FQtyTerima;
     property TransferAntarCabangTerima: TTransferAntarCabangTerima read
         FTransferAntarCabangTerima write FTransferAntarCabangTerima;
     property UOM: TUOM read FUOM write FUOM;
@@ -44,7 +44,7 @@ type
     FHarga: Double;
     FKeterangan: string;
     FKonversi: Double;
-    FQty: Double;
+    FQtyKirim: Double;
     FQtyRequest: Double;
     FTransferAntarCabangKirim: TTransferAntarCabangKirim;
     FUOM: TUOM;
@@ -59,7 +59,7 @@ type
     property Harga: Double read FHarga write FHarga;
     property Keterangan: string read FKeterangan write FKeterangan;
     property Konversi: Double read FKonversi write FKonversi;
-    property Qty: Double read FQty write FQty;
+    property QtyKirim: Double read FQtyKirim write FQtyKirim;
     property QtyRequest: Double read FQtyRequest write FQtyRequest;
     property TransferAntarCabangKirim: TTransferAntarCabangKirim read
         FTransferAntarCabangKirim write FTransferAntarCabangKirim;
@@ -107,7 +107,7 @@ type
     FPetugas: string;
     FTransferAntarCabangKirim: TTransferAntarCabangKirim;
     FTglBukti: string;
-    FToCabang: TCabang;
+    FFromCabang: TCabang;
     function GetTransferAntarCabangTerimaItems:
         TObjectList<TTransferAntarCabangTerimaItem>;
   published
@@ -123,7 +123,7 @@ type
     property TransferAntarCabangKirim: TTransferAntarCabangKirim read
         FTransferAntarCabangKirim write FTransferAntarCabangKirim;
     property TglBukti: string read FTglBukti write FTglBukti;
-    property ToCabang: TCabang read FToCabang write FToCabang;
+    property FromCabang: TCabang read FFromCabang write FFromCabang;
   end;
 
 
