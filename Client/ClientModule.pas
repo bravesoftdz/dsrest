@@ -38,6 +38,7 @@ type
     FServerTransferAntarGudang: TServerTransferAntarGudangClient;
     FSettingApp: TSettingApp;
     FServerTransferAntarCabangKirimClient: TServerTransferAntarCabangKirimClient;
+    FServerTransferAntarCabangTerimaClient: TServerTransferAntarCabangTerimaClient;
     function GetCabang: tcabang;
     function GetServerUOMClient: TServerUOMClient;
     function GetServerSupplierClient: TServerSupplierClient;
@@ -61,6 +62,8 @@ type
     function GetSettingApp: TSettingApp;
     function GetServerTransferAntarCabangKirimClient:
         TServerTransferAntarCabangKirimClient;
+    function GetServerTransferAntarCabangTerimaClient:
+        TServerTransferAntarCabangTerimaClient;
     { Private declarations }
   public
     constructor Create(AOwner: TComponent); override;
@@ -102,6 +105,10 @@ type
         TServerTransferAntarCabangKirimClient read
         GetServerTransferAntarCabangKirimClient write
         FServerTransferAntarCabangKirimClient;
+    property ServerTransferAntarCabangTerimaClient:
+        TServerTransferAntarCabangTerimaClient read
+        GetServerTransferAntarCabangTerimaClient write
+        FServerTransferAntarCabangTerimaClient;
 end;
 
 var
@@ -345,6 +352,16 @@ begin
 
   FServerTransferAntarCabangKirimClient := TServerTransferAntarCabangKirimClient.Create(ClientDataModule.DSRestConnection, FInstanceOwner);
   Result := FServerTransferAntarCabangKirimClient;
+end;
+
+function TClientDataModule.GetServerTransferAntarCabangTerimaClient:
+    TServerTransferAntarCabangTerimaClient;
+begin
+  if FServerTransferAntarCabangTerimaClient <> nil then
+    FreeAndNil(FServerTransferAntarCabangTerimaClient);
+
+  FServerTransferAntarCabangTerimaClient := TServerTransferAntarCabangTerimaClient.Create(ClientDataModule.DSRestConnection, FInstanceOwner);
+  Result := FServerTransferAntarCabangTerimaClient;
 end;
 
 end.

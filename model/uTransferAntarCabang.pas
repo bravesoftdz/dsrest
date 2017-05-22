@@ -17,6 +17,7 @@ type
     FHarga: Double;
     FKeterangan: string;
     FKonversi: Double;
+    FQtyKirim: Double;
     FQtyTerima: Double;
     FTransferAntarCabangTerima: TTransferAntarCabangTerima;
     FUOM: TUOM;
@@ -31,6 +32,7 @@ type
     property Harga: Double read FHarga write FHarga;
     property Keterangan: string read FKeterangan write FKeterangan;
     property Konversi: Double read FKonversi write FKonversi;
+    property QtyKirim: Double read FQtyKirim write FQtyKirim;
     property QtyTerima: Double read FQtyTerima write FQtyTerima;
     property TransferAntarCabangTerima: TTransferAntarCabangTerima read
         FTransferAntarCabangTerima write FTransferAntarCabangTerima;
@@ -75,12 +77,14 @@ type
     FKeterangan: string;
     FNoBukti: string;
     FPetugas: string;
+    FStatus: string;
     FTAGRequest: TTAGRequest;
     FTglBukti: TDatetime;
     FToCabang: TCabang;
     function GetTransferAntarCabangKirimItems:
         TObjectList<TTransferAntarCabangKirimItem>;
   public
+    constructor Create;
   published
     property TransferAntarCabangKirimItems:
         TObjectList<TTransferAntarCabangKirimItem> read
@@ -91,6 +95,7 @@ type
     property Keterangan: string read FKeterangan write FKeterangan;
     property NoBukti: string read FNoBukti write FNoBukti;
     property Petugas: string read FPetugas write FPetugas;
+    property Status: string read FStatus write FStatus;
     property TAGRequest: TTAGRequest read FTAGRequest write FTAGRequest;
     property TglBukti: TDatetime read FTglBukti write FTglBukti;
     property ToCabang: TCabang read FToCabang write FToCabang;
@@ -106,10 +111,13 @@ type
     FNoBukti: string;
     FPetugas: string;
     FTransferAntarCabangKirim: TTransferAntarCabangKirim;
-    FTglBukti: string;
+    FTglBukti: TDatetime;
     FFromCabang: TCabang;
     function GetTransferAntarCabangTerimaItems:
         TObjectList<TTransferAntarCabangTerimaItem>;
+    procedure SetTransferAntarCabangKirim(const Value: TTransferAntarCabangKirim);
+  public
+    constructor Create;
   published
     property TransferAntarCabangTerimaItems:
         TObjectList<TTransferAntarCabangTerimaItem> read
@@ -121,13 +129,19 @@ type
     property NoBukti: string read FNoBukti write FNoBukti;
     property Petugas: string read FPetugas write FPetugas;
     property TransferAntarCabangKirim: TTransferAntarCabangKirim read
-        FTransferAntarCabangKirim write FTransferAntarCabangKirim;
-    property TglBukti: string read FTglBukti write FTglBukti;
+        FTransferAntarCabangKirim write SetTransferAntarCabangKirim;
+    property TglBukti: TDatetime read FTglBukti write FTglBukti;
     property FromCabang: TCabang read FFromCabang write FFromCabang;
   end;
 
 
 implementation
+
+constructor TTransferAntarCabangKirim.Create;
+begin
+  inherited;
+  Status := 'KIRIM';
+end;
 
 {
 ********************************** TTransferAntarCabangKirim ***********************************
@@ -141,6 +155,11 @@ begin
   Result := FTransferAntarCabangKirimItems;
 end;
 
+constructor TTransferAntarCabangTerima.Create;
+begin
+  inherited;
+end;
+
 {
 ********************************** TTransferAntarCabangTerima **********************************
 }
@@ -151,6 +170,16 @@ begin
     FTransferAntarCabangTerimaItems := TObjectList<TTransferAntarCabangTerimaItem>.Create();
 
   Result := FTransferAntarCabangTerimaItems;
+end;
+
+procedure TTransferAntarCabangTerima.SetTransferAntarCabangKirim(const Value:
+    TTransferAntarCabangKirim);
+begin
+  if FTransferAntarCabangKirim <> Value then
+  begin
+    FreeAndNil(FTransferAntarCabangKirim);
+    FTransferAntarCabangKirim := Value;
+  end;
 end;
 
 destructor TTransferAntarCabangKirimItem.Destroy;

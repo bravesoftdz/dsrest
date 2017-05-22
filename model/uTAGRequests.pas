@@ -20,9 +20,8 @@ type
     FToCabang: TCabang;
     function GetTAGRequestItems: tobjectlist<TTAGRequestItem>;
   public
+    constructor Create;
     destructor Destroy; override;
-    property Status: string read FStatus write FStatus;
-
   published
     property TAGRequestItems: tobjectlist<TTAGRequestItem> read GetTAGRequestItems
         write FTAGRequestItems;
@@ -30,6 +29,7 @@ type
     property Keterangan: string read FKeterangan write FKeterangan;
     property NoBukti: string read FNoBukti write FNoBukti;
     property Petugas: string read FPetugas write FPetugas;
+    property Status: string read FStatus write FStatus;
     property TglBukti: TDateTime read FTglBukti write FTglBukti;
     property ToCabang: TCabang read FToCabang write FToCabang;
   end;
@@ -74,6 +74,12 @@ end;
 procedure TTAGRequestItem.SetHeaderProperty(AHeaderProperty : TAppObject);
 begin
   Self.TAGRequest := TTAGRequest(AHeaderProperty);
+end;
+
+constructor TTAGRequest.Create;
+begin
+  inherited;
+  Status := 'MINTA'
 end;
 
 destructor TTAGRequest.Destroy;

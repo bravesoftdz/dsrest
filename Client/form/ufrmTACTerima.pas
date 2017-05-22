@@ -14,7 +14,7 @@ uses
   dxStatusBar, uModel, uDBUtils, ClientModule,  cxDBExtLookupComboBox,
   cxCurrencyEdit, dxCore, cxDateUtils, cxMemo, cxDropDownEdit, cxLookupEdit,
   cxDBLookupEdit, cxMaskEdit, cxCalendar, cxTextEdit,  uTransferAntarCabang, uAppUtils,
-  System.StrUtils;
+  System.StrUtils, uModelHelper;
 
 type
   TfrmTACTerima = class(TfrmDefault)
@@ -28,7 +28,7 @@ type
     lblGudang: TLabel;
     edNoBukti: TcxTextEdit;
     edTglBukti: TcxDateEdit;
-    cbbCabangTujuan: TcxExtLookupComboBox;
+    cbbCabangAsal: TcxExtLookupComboBox;
     memKeterangan: TcxMemo;
     edPetugas: TcxTextEdit;
     edNoKirim: TcxTextEdit;
@@ -43,21 +43,31 @@ type
     cxgrdclmnTAGKeterangan: TcxGridColumn;
     cxgrdlvlTAGDetail: TcxGridLevel;
     procedure ActionBaruExecute(Sender: TObject);
+    procedure ActionHapusExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ActionRefreshExecute(Sender: TObject);
+    procedure ActionSimpanExecute(Sender: TObject);
+    procedure cxGridDBTableOverviewCellDblClick(Sender: TcxCustomGridTableView;
+        ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton; AShift:
+        TShiftState; var AHandled: Boolean);
+    procedure cxGridTableTAGDetailEditing(Sender: TcxCustomGridTableView; AItem:
+        TcxCustomGridTableItem; var AAllow: Boolean);
     procedure edNoKirimKeyDown(Sender: TObject; var Key: Word; Shift:
         TShiftState);
-    procedure btnSaveClick(Sender: TObject);
   private
     FCDSSKU: TClientDataSet;
     FTACKirim: TTransferAntarCabangKirim;
     FTACTerima: TTransferAntarCabangTerima;
     function GetTACTerima: TTransferAntarCabangTerima;
-    procedure InisialisasiCBBCabangTujuan;
+    procedure InisialisasiCBBCabangAsal;
     procedure InisialisasiCBBGudang;
     procedure InisialisasiCBBSKU;
     procedure InisialisasiCBBUOM;
-    procedure LoadDataKirim(ANoBukti : String);
+    function LoadData(AID : String): Boolean;
+    procedure LoadDataKirim(ANoBukti : String); overload;
+    procedure LoadDataKirim(ATransferAntarCabangKirim : TTransferAntarCabangKirim);
+        overload;
+    procedure LoadDataKirimTerima;
     property TACTerima: TTransferAntarCabangTerima read GetTACTerima write
         FTACTerima;
     { Private declarations }
@@ -75,21 +85,31 @@ implementation
 procedure TfrmTACTerima.ActionBaruExecute(Sender: TObject);
 begin
   inherited;
-  ClearByTag([0,1]);
-  FreeAndNil(FTACTerima);
-  cxGridTableTAGDetail.ClearRows;
+  LoadData('');
+end;
 
-  edTglBukti.Date := Now;
-  cbbCabangTujuan.EditValue := ClientDataModule.SettingApp.Cabang.ID;
-  edPetugas.Text := 'AKU';
+procedure TfrmTACTerima.ActionHapusExecute(Sender: TObject);
+begin
+  inherited;
+  if not TAppUtils.ConfirmHapus then
+    Exit;
 
+  try
+    if ClientDataModule.ServerTransferAntarCabangTerimaClient.Delete(TACTerima) then
+    begin
+      TAppUtils.InformationBerhasilHapus;
+      ActionBaruExecute(Sender);
+    end;
+  except
+    raise
+  end;
 end;
 
 procedure TfrmTACTerima.FormCreate(Sender: TObject);
 begin
   inherited;
   InisialisasiCBBGudang;
-  InisialisasiCBBCabangTujuan;
+  InisialisasiCBBCabangAsal;
   InisialisasiCBBSKU;
   InisialisasiCBBUOM;
 
@@ -111,15 +131,20 @@ begin
   cxGridDBTableOverview.ApplyBestFit();
 end;
 
-procedure TfrmTACTerima.btnSaveClick(Sender: TObject);
+procedure TfrmTACTerima.ActionSimpanExecute(Sender: TObject);
+var
+  I: Integer;
+  lTACTerimaItem: TTransferAntarCabangTerimaItem;
 begin
+
   inherited;
+  if TACTerima.ObjectState = 1 then
+    edNoBukti.Text := ClientDataModule.ServerTransferAntarCabangTerimaClient.GenerateNoBukti(Now,
+    ClientDataModule.Cabang.Kode);
+
+
   if not ValidateEmptyCtrl([1]) then
     Exit;
-
-  if TACTerima.ObjectState = 1 then
-    edNoBukti.Text := ClientDataModule.ServerTransferAntarCabangKirimClient.GenerateNoBukti(Now,
-    ClientDataModule.Cabang.Kode);
 
 
   TACTerima.GudangAsal   := TGudang.CreateID(ClientDataModule.SettingApp.GudangTransit.ID);
@@ -130,21 +155,39 @@ begin
   TACTerima.Petugas      := edPetugas.Text;
   TACTerima.TransferAntarCabangKirim   := TTransferAntarCabangKirim.CreateID(FTACKirim.ID);
   TACTerima.TglBukti     := edTglBukti.Date;
-  TACTerima.ToCabang     := TCabang.CreateID(cbbCabangTujuan.EditValue);
+  TACTerima.FromCabang   := TCabang.CreateID(cbbCabangAsal.EditValue);
 
-  TACTerima.TransferAntarCabangKirimItems.Clear;
+  TACTerima.TransferAntarCabangTerimaItems.Clear;
   for I := 0 to cxGridTableTAGDetail.DataController.RecordCount - 1 do
   begin
-    lTACTerimaItem := TTransferAntarCabangKirimItem.Create;
+    lTACTerimaItem := TTransferAntarCabangTerimaItem.Create;
     cxGridTableTAGDetail.LoadObjectData(lTACTerimaItem, i);
-    TACTerima.TransferAntarCabangKirimItems.Add(lTACTerimaItem);
+    TACTerima.TransferAntarCabangTerimaItems.Add(lTACTerimaItem);
   end;
 
-  if ClientDataModule.ServerTransferAntarCabangKirimClient.Save(TACTerima) then
+  if ClientDataModule.ServerTransferAntarCabangTerimaClient.Save(TACTerima) then
   begin
     TAppUtils.InformationBerhasilSimpan;
     ActionBaruExecute(Sender);
   end;
+
+end;
+
+procedure TfrmTACTerima.cxGridDBTableOverviewCellDblClick(Sender:
+    TcxCustomGridTableView; ACellViewInfo: TcxGridTableDataCellViewInfo;
+    AButton: TMouseButton; AShift: TShiftState; var AHandled: Boolean);
+begin
+  inherited;
+  if LoadData(cxGridDBTableOverview.DS.FieldByName('ID').AsString) then
+    cxPCData.ActivePageIndex := 1;
+
+end;
+
+procedure TfrmTACTerima.cxGridTableTAGDetailEditing(Sender:
+    TcxCustomGridTableView; AItem: TcxCustomGridTableItem; var AAllow: Boolean);
+begin
+  inherited;
+  AAllow := AItem.Index in [cxgrdclmnTAGQty.Index];
 end;
 
 procedure TfrmTACTerima.edNoKirimKeyDown(Sender: TObject; var Key: Word;
@@ -173,15 +216,15 @@ begin
   Result := FTACTerima;
 end;
 
-procedure TfrmTACTerima.InisialisasiCBBCabangTujuan;
+procedure TfrmTACTerima.InisialisasiCBBCabangAsal;
 var
   lCDSCabangTujuan: TClientDataSet;
   sSQL: string;
 begin
   sSQL := 'select ID,Nama,Kode from tcabang order by Nama';
   lCDSCabangTujuan := TDBUtils.OpenDataset(sSQL);
-  cbbCabangTujuan.Properties.LoadFromCDS(lCDSCabangTujuan,'ID','Nama',['ID'],Self);
-  cbbCabangTujuan.Properties.SetMultiPurposeLookup;
+  cbbCabangAsal.Properties.LoadFromCDS(lCDSCabangTujuan,'ID','Nama',['ID'],Self);
+  cbbCabangAsal.Properties.SetMultiPurposeLookup;
 end;
 
 procedure TfrmTACTerima.InisialisasiCBBGudang;
@@ -238,6 +281,51 @@ begin
 
 end;
 
+function TfrmTACTerima.LoadData(AID : String): Boolean;
+begin
+  try
+    ClearByTag([0,1]);
+    FreeAndNil(FTACKirim);
+    FreeAndNil(FTACTerima);
+
+
+    cxGridTableTAGDetail.ClearRows;
+
+    edTglBukti.Date         := Now;
+    edPetugas.Text          := 'AKU';
+
+    if AID = '' then
+    begin
+      Result := True;
+      Exit;
+    end;
+
+    FTACTerima := ClientDataModule.ServerTransferAntarCabangTerimaClient.Retrieve(AID);
+    if FTACTerima = nil then
+      Exit;
+
+    if FTACTerima.ID = '' then
+      Exit;
+
+    cbbGudang.EditValue := FTACTerima.Gudang.ID;
+    edNoBukti.Text := FTACTerima.NoBukti;
+    edTglBukti.Date:= FTACTerima.TglBukti;
+    edPetugas.Text := FTACTerima.Petugas;
+    memKeterangan.Text := FTACTerima.Keterangan;
+    cbbCabangAsal.EditValue := FTACTerima.FromCabang.ID;
+
+
+    FTACKirim := ClientDataModule.ServerTransferAntarCabangKirimClient.Retrieve(FTACTerima.TransferAntarCabangKirim.ID);
+    edNoKirim.Text := FTACKirim.NoBukti;
+    LoadDataKirimTerima;
+
+    Result := True;
+  except
+    Result := False;
+    raise;
+  end;
+end;
+
 procedure TfrmTACTerima.LoadDataKirim(ANoBukti : String);
 var
   i: Integer;
@@ -252,20 +340,40 @@ begin
     Exit;
 
 
-  if FTACKirim.Cabang.ID = ClientDataModule.Cabang.ID then
+  LoadDataKirim(FTACKirim);
+end;
+
+procedure TfrmTACTerima.LoadDataKirim(ATransferAntarCabangKirim :
+    TTransferAntarCabangKirim);
+var
+  i: Integer;
+begin
+  if ATransferAntarCabangKirim.Cabang.ID = ClientDataModule.Cabang.ID then
   begin
     TAppUtils.Error('Transfer Barang Tidak Ditujukan Untuk Cabang Ini');
     Exit;
   end;
 
-  cbbCabangTujuan.EditValue := FTACKirim.Cabang.ID;
+  cbbCabangAsal.EditValue := FTACKirim.Cabang.ID;
 
   cxGridTableTAGDetail.ClearRows;
-  for I := 0 to FTACKirim.TransferAntarCabangKirimItems.Count - 1 do
+  for I := 0 to ATransferAntarCabangKirim.TransferAntarCabangKirimItems.Count - 1 do
   begin
     cxGridTableTAGDetail.AddRow;
-    cxGridTableTAGDetail.SetObjectData(FTACKirim.TransferAntarCabangKirimItems[i], i);
+    cxGridTableTAGDetail.SetObjectData(ATransferAntarCabangKirim.TransferAntarCabangKirimItems[i], i);
     cxGridTableTAGDetail.SetDouble(i, cxgrdclmnTAGQty.Index,cxGridTableTAGDetail.GetDouble(i, cxgrdclmnTAGQtyRequest.Index));
+  end;
+end;
+
+procedure TfrmTACTerima.LoadDataKirimTerima;
+var
+  I: Integer;
+begin
+  cxGridTableTAGDetail.ClearRows;
+  for I := 0 to FTACTerima.TransferAntarCabangTerimaItems.Count - 1 do
+  begin
+    cxGridTableTAGDetail.AddRow;
+    cxGridTableTAGDetail.SetObjectData(FTACTerima.TransferAntarCabangTerimaItems[i], i);
   end;
 end;
 

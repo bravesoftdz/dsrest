@@ -53,7 +53,8 @@ uses
   uTAGKirim in '..\model\uTAGKirim.pas',
   uTransferAntarCabang in '..\model\uTransferAntarCabang.pas',
   ufrmTACKirim in 'form\ufrmTACKirim.pas' {frmTACKirim},
-  ufrmTACTerima in 'form\ufrmTACTerima.pas' {frmTACTerima};
+  ufrmTACTerima in 'form\ufrmTACTerima.pas' {frmTACTerima},
+  uModelHelper in '..\model\uModelHelper.pas';
 
 {$R *.res}
 

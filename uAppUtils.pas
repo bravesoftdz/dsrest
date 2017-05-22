@@ -149,6 +149,7 @@ type
   public
     procedure AddRow;
     procedure ClearRows;
+    function FocusedIndex: Integer;
     procedure SetValue(ARec, ACol : Integer; AValue : Variant);
 
     function GetDouble(ARec, ACol : Integer): Double;
@@ -1551,6 +1552,11 @@ begin
   finally
     EndUpdate;
   end;
+end;
+
+function TcxGridTableViewHelper.FocusedIndex: Integer;
+begin
+  Result := Self.DataController.FocusedRecordIndex;
 end;
 
 function TcxGridTableViewHelper.GetDouble(ARec, ACol : Integer): Double;

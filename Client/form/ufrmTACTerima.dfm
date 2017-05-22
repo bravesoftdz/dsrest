@@ -11,6 +11,13 @@ inherited frmTACTerima: TfrmTACTerima
       ExplicitTop = 24
       ExplicitWidth = 709
       ExplicitHeight = 265
+      inherited pnlListTransaksi: TPanel
+        inherited cxGrid: TcxGrid
+          inherited cxGridDBTableOverview: TcxGridDBTableView
+            OnCellDblClick = cxGridDBTableOverviewCellDblClick
+          end
+        end
+      end
     end
     inherited cxTSInputData: TcxTabSheet
       ExplicitLeft = 4
@@ -41,9 +48,9 @@ inherited frmTACTerima: TfrmTACTerima
         object lblPembeli: TLabel
           Left = 54
           Top = 86
-          Width = 36
+          Width = 60
           Height = 13
-          Caption = 'Kepada'
+          Caption = 'Cabang Asal'
         end
         object lblKeterangan: TLabel
           Left = 337
@@ -60,18 +67,18 @@ inherited frmTACTerima: TfrmTACTerima
           Caption = 'Petugas'
         end
         object lblNoReq: TLabel
-          Left = 8
+          Left = 26
           Top = 36
-          Width = 82
+          Width = 64
           Height = 13
-          Caption = 'No Bukti Request'
+          Caption = 'No Bukti Kirim'
         end
         object lblGudang: TLabel
-          Left = 333
+          Left = 356
           Top = 11
-          Width = 60
+          Width = 37
           Height = 13
-          Caption = 'Gudang Asal'
+          Caption = 'Gudang'
         end
         object edNoBukti: TcxTextEdit
           Tag = 1
@@ -90,10 +97,11 @@ inherited frmTACTerima: TfrmTACTerima
           TabOrder = 2
           Width = 121
         end
-        object cbbCabangTujuan: TcxExtLookupComboBox
+        object cbbCabangAsal: TcxExtLookupComboBox
           Tag = 1
           Left = 95
           Top = 82
+          Enabled = False
           Properties.DropDownAutoSize = True
           Properties.FocusPopup = True
           TabOrder = 3
@@ -150,6 +158,7 @@ inherited frmTACTerima: TfrmTACTerima
         object cxGridTableTAGDetail: TcxGridTableView
           Tag = 1
           Navigator.Buttons.CustomButtons = <>
+          OnEditing = cxGridTableTAGDetailEditing
           DataController.Options = [dcoCaseInsensitive, dcoAssignGroupingValues, dcoAssignMasterDetailKeys, dcoSaveExpanding]
           DataController.Summary.DefaultGroupSummaryItems = <>
           DataController.Summary.FooterSummaryItems = <>
@@ -193,7 +202,7 @@ inherited frmTACTerima: TfrmTACTerima
             HeaderAlignmentHorz = taCenter
           end
           object cxgrdclmnTAGQty: TcxGridColumn
-            AlternateCaption = 'Qty'
+            AlternateCaption = 'QtyTerima'
             Caption = 'Qty'
             PropertiesClassName = 'TcxCurrencyEditProperties'
             Properties.Alignment.Horz = taRightJustify
@@ -214,9 +223,6 @@ inherited frmTACTerima: TfrmTACTerima
     end
   end
   inherited pnlButton: TPanel
-    inherited btnSave: TcxButton
-      OnClick = btnSaveClick
-    end
     inherited chkKonsolidasi1: TcxCheckBox
       ExplicitWidth = 76
       ExplicitHeight = 31
@@ -225,6 +231,12 @@ inherited frmTACTerima: TfrmTACTerima
   inherited ActionListForm: TActionList
     Left = 536
     Top = 72
+    inherited ActionSimpan: TAction
+      OnExecute = ActionSimpanExecute
+    end
+    inherited ActionHapus: TAction
+      OnExecute = ActionHapusExecute
+    end
     inherited ActionRefresh: TAction
       OnExecute = ActionRefreshExecute
     end
@@ -234,7 +246,7 @@ inherited frmTACTerima: TfrmTACTerima
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010107000800F40018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800080118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

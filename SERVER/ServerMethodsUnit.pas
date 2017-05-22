@@ -49,6 +49,7 @@ type
     function BeforeDelete(AAppObject : TAppObject): Boolean; virtual;
     function BeforeSave(AOBject : TAppObject): Boolean; virtual;
     function GetTableName: string; virtual;
+    function IsBisaHapus(AOBject : TAppObject): Boolean; virtual;
     function SaveNoCommit(AOBject : TAppObject): Boolean; virtual;
   public
     function Delete(AAppObject : TAppObject): Boolean; virtual;
@@ -312,6 +313,7 @@ type
     function AfterSave(AOBject : TAppObject): Boolean; override;
     function BeforeDelete(AAppObject : TAppObject): Boolean; override;
     function BeforeSave(AOBject : TAppObject): Boolean; override;
+    function IsBisaHapus(AOBject : TAppObject): Boolean; override;
   public
     function Retrieve(AID : String): TTransferAntarCabangKirim;
     function RetrieveNoBukti(ANoBukti : String): TTransferAntarCabangKirim;
@@ -413,7 +415,10 @@ end;
 
 function TCRUD.BeforeDelete(AAppObject : TAppObject): Boolean;
 begin
-  Result := True;
+  if IsBisaHapus(AAppObject) then
+    Result := True
+  else
+    Result := False;
 end;
 
 function TCRUD.Delete(AAppObject : TAppObject): Boolean;
@@ -493,6 +498,11 @@ end;
 function TCRUD.GetTableName: string;
 begin
   Result := StringReplace(Self.ClassName,'Server','', [rfIgnoreCase]);
+end;
+
+function TCRUD.IsBisaHapus(AOBject : TAppObject): Boolean;
+begin
+  Result := True;
 end;
 
 //function TCRUD.RetrieveCDSJSON: TJSONArray;
@@ -2272,6 +2282,8 @@ var
   sID: string;
   sSQL: string;
 begin
+  Result := nil;
+
   sSQL := 'select * from ' + GetTableName
           + ' where nobukti = ' + QuotedStr(ANoBukti);
 
@@ -2279,7 +2291,8 @@ begin
   begin
     try
       sID := FieldByName('ID').AsString;
-      Result := Retrieve(sID);
+      if sID <> '' then
+        Result := Retrieve(sID);
     finally
       Free;
     end;
@@ -2626,7 +2639,7 @@ begin
 
     TDBUtils.ExecuteSQL(sSQL);
 
-    sSQL   := 'update a set a.status = ''TERKIRIM'' from ttagrequest a' +
+    sSQL   := 'update a set a.status = ''KIRIM'' from ttagrequest a' +
               ' Inner JOIN ttransferantarcabangkirim b on a.id = b.tagrequest' +
               ' where b.id = ' + QuotedStr(TTransferAntarCabangKirim(AOBject).ID);
 
@@ -2648,6 +2661,18 @@ function TServerTransferAntarCabangKirim.BeforeSave(AOBject : TAppObject):
     Boolean;
 begin
   Result := inherited BeforeSave(AOBject);
+end;
+
+function TServerTransferAntarCabangKirim.IsBisaHapus(AOBject : TAppObject):
+    Boolean;
+begin
+  if inherited IsBisaHapus(AOBject) = False then
+    Exit;
+
+  with AOBject as TTransferAntarCabangKirim do
+  begin
+    Result := STATUS <> 'TERIMA'
+  end;
 end;
 
 function TServerTransferAntarCabangKirim.Retrieve(AID : String):
@@ -2695,9 +2720,9 @@ var
   sID: string;
   sSQL: string;
 begin
-  sID := '';
+  Result := nil;
 
-  sSQL := 'select id from ' + TTAGRequest.ClassName
+  sSQL := 'select id from ' + TTransferAntarCabangKirim.ClassName
           + ' where nobukti = ' + QuotedStr(ANoBukti);
 
   with TDBUtils.OpenDataset(sSQL) do
@@ -2706,6 +2731,9 @@ begin
       while not Eof do
       begin
         sID := FieldByName('id').AsString;
+        if sID <> '' then
+          Result := Retrieve(sID);
+
         Next;
       end;
     finally
@@ -2713,7 +2741,7 @@ begin
     end;
   end;
 
-  Result := Retrieve(sID);
+
 end;
 
 function TServerTransferAntarCabangTerima.AfterDelete(AAppObject : TAppObject):
@@ -2756,9 +2784,11 @@ begin
               ' where b.id = ' + QuotedStr(TTransferAntarCabangTerima(AOBject).ID);
 
     TDBUtils.ExecuteSQL(sSQL);
+    Result := True;
 
   except
-   Result := False;
+    raise;
+    Result := False;
   end;
 
 end;
@@ -2821,7 +2851,7 @@ var
   sID: string;
   sSQL: string;
 begin
-  sID := '';
+  Result := nil;
 
   sSQL := 'select id from ' + TTAGRequest.ClassName
           + ' where nobukti = ' + QuotedStr(ANoBukti);
@@ -2832,14 +2862,15 @@ begin
       while not Eof do
       begin
         sID := FieldByName('id').AsString;
+        if sID <> '' then
+          Result := Retrieve(sID);
+
         Next;
       end;
     finally
       Free;
     end;
   end;
-
-  Result := Retrieve(sID);
 end;
 
 
