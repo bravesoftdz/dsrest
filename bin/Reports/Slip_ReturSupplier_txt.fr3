@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<TfrxReport Version="5.3.16" DotMatrixReport="True" IniFile="\Software\Fast Reports" PreviewOptions.Buttons="4095" PreviewOptions.Modal="False" PreviewOptions.Zoom="1" PrintOptions.Printer="Default" PrintOptions.PrintOnSheet="0" ReportOptions.CreateDate="42851.6618599421" ReportOptions.Description.Text="" ReportOptions.LastChange="42882.9879801042" ScriptLanguage="PascalScript" ScriptText.Text="begin&#13;&#10;&#13;&#10;end.">
+  <Datasets>
+    <item DataSet="IBQ1" DataSetName="IBQ1"/>
+  </Datasets>
+  <TfrxDataPage Name="Data" Height="1000" Left="0" Top="0" Width="1000"/>
+  <TfrxDMPPage Name="Page1" PaperWidth="256.539834318024" PaperHeight="179.916550470561" PaperSize="256" LeftMargin="2.53999835958439" RightMargin="2.53999835958439" TopMargin="4.49791376176403" BottomMargin="4.49791376176403" ColumnWidth="0" ColumnPositions.Text="" HGuides.Text="" VGuides.Text="" FontStyle="0">
+    <TfrxMasterData Name="MasterData1" FillType="ftBrush" FillGap.Top="0" FillGap.Left="0" FillGap.Bottom="0" FillGap.Right="0" Height="17" Left="0" Top="221" Width="950.4" ColumnWidth="0" ColumnGap="0" DataSet="IBQ1" DataSetName="IBQ1" RowCount="0">
+      <TfrxDMPMemoView Name="IBQ1Barang" Left="0" Top="0" Width="278.4" Height="17" DataField="Barang" DataSet="IBQ1" DataSetName="IBQ1" TruncOutboundText="False" Text="[IBQ1.&#34;Barang&#34;]"/>
+      <TfrxDMPMemoView Name="Memo1" Left="278.4" Top="0" Width="48" Height="17" DataField="uom" DataSet="IBQ1" DataSetName="IBQ1" TruncOutboundText="False" Text="[IBQ1.&#34;uom&#34;]"/>
+      <TfrxDMPMemoView Name="Memo2" Left="326.4" Top="0" Width="76.8" Height="17" DataField="qty" DataSet="IBQ1" DataSetName="IBQ1" DisplayFormat.FormatStr=",#.##" DisplayFormat.Kind="fkNumeric" HAlign="haRight" TruncOutboundText="False" Text="[IBQ1.&#34;qty&#34;]"/>
+      <TfrxDMPMemoView Name="IBQ1hargabeli" Left="412.8" Top="0" Width="76.8" Height="17" DataField="hargabeli" DataSet="IBQ1" DataSetName="IBQ1" DisplayFormat.FormatStr=",#.##" DisplayFormat.Kind="fkNumeric" HAlign="haRight" TruncOutboundText="False" Text="[IBQ1.&#34;hargabeli&#34;]"/>
+      <TfrxDMPMemoView Name="IBQ1diskon" Left="499.2" Top="0" Width="67.2" Height="17" DataField="diskon" DataSet="IBQ1" DataSetName="IBQ1" DisplayFormat.FormatStr=",#.##" DisplayFormat.Kind="fkNumeric" HAlign="haRight" TruncOutboundText="False" Text="[IBQ1.&#34;diskon&#34;]"/>
+      <TfrxDMPMemoView Name="Memo3" Left="576" Top="0" Width="48" Height="17" DataField="ppn" DataSet="IBQ1" DataSetName="IBQ1" DisplayFormat.FormatStr=",#.##" DisplayFormat.Kind="fkNumeric" HAlign="haRight" TruncOutboundText="False" Text="[IBQ1.&#34;ppn&#34;]"/>
+      <TfrxDMPMemoView Name="DMPMemo24" Left="633.6" Top="0" Width="144" Height="17" DataSet="IBQ1" DataSetName="IBQ1" DisplayFormat.FormatStr=",#.##" DisplayFormat.Kind="fkNumeric" HAlign="haRight" TruncOutboundText="False" Text="[IBQ1.&#34;TOTAL&#34;]"/>
+    </TfrxMasterData>
+    <TfrxGroupHeader Name="GroupHeader1" FillType="ftBrush" FillGap.Top="0" FillGap.Left="0" FillGap.Bottom="0" FillGap.Right="0" Height="187" Left="0" Top="17" Width="950.4" Condition="IBQ1.&#34;nobukti&#34;" StartNewPage="True">
+      <TfrxDMPMemoView Name="IBQ1cabang" Left="0" Top="0" Width="499.2" Height="17" DataSet="IBQ1" DataSetName="IBQ1" FontStyle="256" ParentFont="False" TruncOutboundText="False" Text="MOTOROLI - [IBQ1.&#34;cabang&#34;]"/>
+      <TfrxDMPMemoView Name="DMPMemo1" Left="0" Top="153" Width="278.4" Height="17" TruncOutboundText="False" Text="BARANG"/>
+      <TfrxDMPMemoView Name="DMPMemo2" Left="278.4" Top="153" Width="48" Height="17" TruncOutboundText="False" Text="UOM"/>
+      <TfrxDMPMemoView Name="DMPMemo3" Left="326.4" Top="153" Width="76.8" Height="17" HAlign="haRight" TruncOutboundText="False" Text="QTY"/>
+      <TfrxDMPMemoView Name="DMPMemo4" Left="412.8" Top="153" Width="76.8" Height="17" HAlign="haRight" TruncOutboundText="False" Text="HARGA"/>
+      <TfrxDMPMemoView Name="DMPMemo5" Left="499.2" Top="153" Width="67.2" Height="17" HAlign="haRight" TruncOutboundText="False" Text="DISKON"/>
+      <TfrxDMPMemoView Name="DMPMemo6" Left="0" Top="170" Width="940.8" Height="17" TruncOutboundText="False" Text="---------------------------------------------------------------------------------------------------"/>
+      <TfrxDMPMemoView Name="DMPMemo7" Left="0" Top="136" Width="940.8" Height="17" TruncOutboundText="False" Text="---------------------------------------------------------------------------------------------------"/>
+      <TfrxDMPMemoView Name="IBQ1supplier" Left="134.4" Top="85" Width="182.4" Height="17" DataSet="IBQ1" DataSetName="IBQ1" TruncOutboundText="False" Text="[IBQ1.&#34;nobukti&#34;]"/>
+      <TfrxDMPMemoView Name="DMPMemo8" Left="0" Top="85" Width="124.8" Height="17" TruncOutboundText="False" Text="NOMOR"/>
+      <TfrxDMPMemoView Name="IBQ1tglbukti" Left="134.4" Top="102" Width="182.4" Height="17" DataField="tglbukti" DataSet="IBQ1" DataSetName="IBQ1" TruncOutboundText="False" Text="[IBQ1.&#34;tglbukti&#34;]"/>
+      <TfrxDMPMemoView Name="DMPMemo9" Left="0" Top="102" Width="124.8" Height="17" DisplayFormat.FormatStr="dd mmm yyyy" DisplayFormat.Kind="fkDateTime" TruncOutboundText="False" Text="TANGGAL"/>
+      <TfrxDMPMemoView Name="IBQ1supplier1" Left="134.4" Top="119" Width="182.4" Height="17" DataField="supplier" DataSet="IBQ1" DataSetName="IBQ1" TruncOutboundText="False" Text="[IBQ1.&#34;supplier&#34;]"/>
+      <TfrxDMPMemoView Name="DMPMemo10" Left="0" Top="119" Width="124.8" Height="17" TruncOutboundText="False" Text="SUPPLIER"/>
+      <TfrxDMPMemoView Name="DMPMemo11" Left="499.2" Top="85" Width="182.4" Height="17" DataSet="IBQ1" DataSetName="IBQ1" TruncOutboundText="False" Text="[IBQ1.&#34;gudang&#34;]"/>
+      <TfrxDMPMemoView Name="DMPMemo12" Left="364.8" Top="85" Width="124.8" Height="17" TruncOutboundText="False" Text="GUDANG"/>
+      <TfrxDMPMemoView Name="DMPMemo13" Left="499.2" Top="102" Width="182.4" Height="17" DataSet="IBQ1" DataSetName="IBQ1" TruncOutboundText="False" Text="[IBQ1.&#34;penerimaan_barang&#34;]">
+        <Formats>
+          <item/>
+          <item/>
+        </Formats>
+      </TfrxDMPMemoView>
+      <TfrxDMPMemoView Name="DMPMemo14" Left="364.8" Top="102" Width="124.8" Height="17" DisplayFormat.FormatStr="dd mmm yyyy" DisplayFormat.Kind="fkDateTime" TruncOutboundText="False" Text="NO PENERIMAAN"/>
+      <TfrxDMPMemoView Name="DMPMemo15" Left="499.2" Top="119" Width="182.4" Height="17" DataSet="IBQ1" DataSetName="IBQ1" TruncOutboundText="False" Text="[IBQ1.&#34;keterangan&#34;]"/>
+      <TfrxDMPMemoView Name="DMPMemo16" Left="364.8" Top="119" Width="124.8" Height="17" TruncOutboundText="False" Text="KETERANGAN"/>
+      <TfrxDMPMemoView Name="DMPMemo17" Left="124.8" Top="85" Width="9.6" Height="17" HAlign="haCenter" TruncOutboundText="False" Text=":"/>
+      <TfrxDMPMemoView Name="DMPMemo18" Left="124.8" Top="102" Width="9.6" Height="17" DisplayFormat.FormatStr="dd mmm yyyy" DisplayFormat.Kind="fkDateTime" HAlign="haCenter" TruncOutboundText="False" Text=":"/>
+      <TfrxDMPMemoView Name="DMPMemo19" Left="124.8" Top="119" Width="9.6" Height="17" HAlign="haCenter" TruncOutboundText="False" Text=":"/>
+      <TfrxDMPMemoView Name="DMPMemo20" Left="489.6" Top="85" Width="9.6" Height="17" HAlign="haCenter" TruncOutboundText="False" Text=":"/>
+      <TfrxDMPMemoView Name="DMPMemo21" Left="489.6" Top="102" Width="9.6" Height="17" DisplayFormat.FormatStr="dd mmm yyyy" DisplayFormat.Kind="fkDateTime" HAlign="haCenter" TruncOutboundText="False" Text=":"/>
+      <TfrxDMPMemoView Name="DMPMemo22" Left="489.6" Top="119" Width="9.6" Height="17" HAlign="haCenter" TruncOutboundText="False" Text=":"/>
+      <TfrxDMPMemoView Name="DMPMemo23" Left="576" Top="153" Width="48" Height="17" HAlign="haRight" TruncOutboundText="False" Text="PPN"/>
+      <TfrxDMPMemoView Name="DMPMemo25" Left="633.6" Top="153" Width="144" Height="17" HAlign="haRight" TruncOutboundText="False" Text="TOTAL"/>
+      <TfrxDMPMemoView Name="IBQ1CABANGALAMAT" Left="0" Top="17" Width="499.2" Height="17" DataField="CABANGALAMAT" DataSet="IBQ1" DataSetName="IBQ1" TruncOutboundText="False" Text="[IBQ1.&#34;CABANGALAMAT&#34;]"/>
+      <TfrxDMPMemoView Name="IBQ1CABANGFAX" Left="0" Top="34" Width="499.2" Height="17" DataSet="IBQ1" DataSetName="IBQ1" TruncOutboundText="False" Text="TELP : [IBQ1.&#34;cabangTELP&#34;] FAX : [IBQ1.&#34;CABANGFAX&#34;]"/>
+      <TfrxDMPMemoView Name="DMPMemo33" Left="777.6" Top="0" Width="163.2" Height="17" HAlign="haRight" TruncOutboundText="False" Text="RETUR SUPPLIER"/>
+      <TfrxDMPMemoView Name="DMPMemo34" Left="777.6" Top="17" Width="163.2" Height="17" HAlign="haRight" TruncOutboundText="False" Text="[DATE][TIME]"/>
+      <TfrxDMPMemoView Name="DMPMemo35" Left="777.6" Top="34" Width="163.2" Height="17" HAlign="haRight" TruncOutboundText="False" Text="[USERCETAK]"/>
+    </TfrxGroupHeader>
+    <TfrxGroupFooter Name="GroupFooter1" FillType="ftBrush" FillGap.Top="0" FillGap.Left="0" FillGap.Bottom="0" FillGap.Right="0" Height="51" Left="0" Top="255" Width="950.4">
+      <TfrxDMPMemoView Name="DMPMemo28" Left="0" Top="0" Width="940.8" Height="17" TruncOutboundText="False" Text="---------------------------------------------------------------------------------------------------"/>
+      <TfrxDMPMemoView Name="DMPMemo29" Left="633.6" Top="17" Width="144" Height="17" DataSet="IBQ1" DataSetName="IBQ1" DisplayFormat.FormatStr=",#.##" DisplayFormat.Kind="fkNumeric" HAlign="haRight" TruncOutboundText="False" Text="[SUM(&#60;IBQ1.&#34;TOTAL&#34;&#62;,MasterData1)]"/>
+      <TfrxDMPMemoView Name="DMPMemo30" Left="547.2" Top="17" Width="76.8" Height="17" HAlign="haRight" TruncOutboundText="False" Text="TOTAL :"/>
+      <TfrxDMPMemoView Name="DMPMemo31" Left="326.4" Top="17" Width="76.8" Height="17" DataSet="IBQ1" DataSetName="IBQ1" DisplayFormat.FormatStr=",#.##" DisplayFormat.Kind="fkNumeric" HAlign="haRight" TruncOutboundText="False" Text="[SUM(&#60;IBQ1.&#34;qty&#34;&#62;,MasterData1)]"/>
+      <TfrxDMPMemoView Name="DMPMemo32" Left="278.4" Top="17" Width="48" Height="17" HAlign="haRight" TruncOutboundText="False" Text="UOM :"/>
+    </TfrxGroupFooter>
+    <TfrxPageFooter Name="PageFooter1" FillType="ftBrush" FillGap.Top="0" FillGap.Left="0" FillGap.Bottom="0" FillGap.Right="0" Height="51" Left="0" Top="340" Width="950.4">
+      <TfrxDMPMemoView Name="DMPMemo26" Left="0" Top="17" Width="940.8" Height="17" TruncOutboundText="False" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo27" Left="0" Top="34" Width="940.8" Height="17" TruncOutboundText="False" Text=""/>
+    </TfrxPageFooter>
+  </TfrxDMPPage>
+</TfrxReport>
