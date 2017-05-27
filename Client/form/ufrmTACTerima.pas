@@ -283,6 +283,8 @@ end;
 
 function TfrmTACTerima.LoadData(AID : String): Boolean;
 begin
+  Result := False;
+
   try
     ClearByTag([0,1]);
     FreeAndNil(FTACKirim);
@@ -321,14 +323,11 @@ begin
 
     Result := True;
   except
-    Result := False;
     raise;
   end;
 end;
 
 procedure TfrmTACTerima.LoadDataKirim(ANoBukti : String);
-var
-  i: Integer;
 begin
   FreeAndNil(FTACKirim);
   FTACKirim := ClientDataModule.ServerTransferAntarCabangKirimClient.RetrieveNoBukti(ANoBukti);

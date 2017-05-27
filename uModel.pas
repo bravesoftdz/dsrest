@@ -161,7 +161,7 @@ type
     FPeriode: Integer;
     FSupplier: TSupplier;
     FTglBukti: TDatetime;
-    FTOP: Integer;
+    FTempo: Integer;
     function GetPenerimaanBarangItems: TObjectList<TPenerimaanBarangItem>;
     procedure SetKeterangan(const Value: string);
     procedure SetTglBukti(const Value: TDatetime);
@@ -177,7 +177,7 @@ type
     property Periode: Integer read FPeriode write FPeriode;
     property Supplier: TSupplier read FSupplier write FSupplier;
     property TglBukti: TDatetime read FTglBukti write SetTglBukti;
-    property TOP: Integer read FTOP write FTOP;
+    property Tempo: Integer read FTempo write FTempo;
   end;
 
 

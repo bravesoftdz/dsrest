@@ -267,4 +267,8 @@ object frmServer: TfrmServer
     Left = 384
     Top = 144
   end
+  object fdstnstrgbnlnkMotoroli: TFDStanStorageBinLink
+    Left = 297
+    Top = 113
+  end
 end

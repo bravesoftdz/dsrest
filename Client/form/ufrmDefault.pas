@@ -75,9 +75,10 @@ type
     { Private declarations }
   protected
     FID: string;
+    procedure CetakSlip; virtual;
+    function PanjangNoBukti: Integer;
     function User: string;
   public
-    procedure CetakSlip(AID: string); virtual;
     { Public declarations }
   end;
 
@@ -91,14 +92,8 @@ uses
 {$R *.dfm}
 
 procedure TfrmDefault.actCetakExecute(Sender: TObject);
-var
-  sID: string;
 begin
-  sID := FID;
-  if cxPCData.ActivePageIndex = 0 then
-    sID := cxGridDBTableOverview.DS.FieldByName('ID').AsString;
-
-  CetakSlip(sID);
+  CetakSlip;
 end;
 
 procedure TfrmDefault.actExportExecute(Sender: TObject);
@@ -134,7 +129,7 @@ begin
 
 end;
 
-procedure TfrmDefault.CetakSlip(AID: string);
+procedure TfrmDefault.CetakSlip;
 begin
   // TODO -cMM: TfrmDefault.CetakSlip default body inserted
 end;
@@ -188,6 +183,11 @@ begin
 //  cbbLUCabang.Enabled := ClientDataModule.Cabang.IsHO = 1;
 //  chkKonsolidasi.EditValue := False;
 //  chkKonsolidasi.Enabled := ClientDataModule.Cabang.IsHO = 1;
+end;
+
+function TfrmDefault.PanjangNoBukti: Integer;
+begin
+  Result := 10;
 end;
 
 function TfrmDefault.User: string;

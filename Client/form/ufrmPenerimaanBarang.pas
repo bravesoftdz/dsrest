@@ -13,7 +13,8 @@ uses
   ImgList, uModel, ClientClassesUnit2, DB, cxDBData, cxGridDBTableView,
   cxDBExtLookupComboBox, Provider, DBClient, cxNavigator, dxCore, cxDateUtils,
   System.Actions, dxBarExtDBItems, cxCheckBox, cxBarEditItem, System.ImageList,
-  dxBarExtItems, cxCalc, dxBarBuiltInMenu, Vcl.Menus, cxButtons, cxPC;
+  dxBarExtItems, cxCalc, dxBarBuiltInMenu, Vcl.Menus, cxButtons, cxPC,uDMReport,
+  Data.FireDACJSONReflect;
 
 type
   TfrmPenerimaanBarang = class(TfrmDefault)
@@ -114,6 +115,7 @@ type
     function IsDetailValid: Boolean;
     { Private declarations }
   protected
+    procedure CetakSlip; override;
     property PenerimaanBarang: TPenerimaanBarang read GetPenerimaanBarang write
         FPenerimaanBarang;
   public
@@ -132,26 +134,30 @@ uses
 {$R *.dfm}
 
 procedure TfrmPenerimaanBarang.actCetakExecute(Sender: TObject);
-var
-  lReport: TTSReport;
+//var
+//  lReport: TTSReport;
 begin
   inherited;
-
-  lReport := TTSReport.Create(Self);
-  try
-    DSPSlip.DataSet := ClientDataModule.ServerPenerimaanBarangClient.RetrieveCDSlip(PenerimaanBarang.ID);
-    cdsSlip := TClientDataSet.Create(lReport);
-    cdsSlip.SetProvider(DSPSlip);
-    cdsSlip.Open;
-
-
-  //  cxGridDBTableDaftarPB.SetDataset(cdsSlip);
-    lReport.AddDataset(TDBUtils.OpenDataset('select * from tcabang'));
-    lReport.AddDataset(cdsSlip);
-    lReport.ShowReport('SlipPenerimaanBarang');
-  finally
-    lReport.Free;
-  end;
+  CetakSlip;
+//  lReport := TTSReport.Create(Self);
+//  try
+//    if cxPCData.ActivePageIndex = 0 then
+//      DSPSlip.DataSet := ClientDataModule.ServerPenerimaanBarangClient.RetrieveCDSlip(cxGridDBTableOverview.DS.FieldByName('ID').AsString)
+//    else
+//      DSPSlip.DataSet := ClientDataModule.ServerPenerimaanBarangClient.RetrieveCDSlip(PenerimaanBarang.ID);
+//
+//    cdsSlip := TClientDataSet.Create(lReport);
+//    cdsSlip.SetProvider(DSPSlip);
+//    cdsSlip.Open;
+//
+//
+//  //  cxGridDBTableDaftarPB.SetDataset(cdsSlip);
+//    lReport.AddDataset(TDBUtils.OpenDataset('select * from tcabang'));
+//    lReport.AddDataset(cdsSlip);
+//    lReport.ShowReport('SlipPenerimaanBarang');
+//  finally
+//    lReport.Free;
+//  end;
 
 
 end;
@@ -163,10 +169,11 @@ begin
   begin
     try
 //      FID                          := '';
-      edNoBukti.Text               := GenerateNoBukti(edTglBukti.Date, ClientDataModule.Cabang.Kode + '/PB');
+      edNoBukti.Text               := GenerateNoBukti(edTglBukti.Date, ClientDataModule.Cabang.Kode);
       cbbJenisPembayaran.ItemIndex := 0;
       edTempo.Value                := 0;
       edTempo.Visible              := False;
+      lblTempo.Visible             := False;
 
       cxGridTablePenerimaanBarang.ClearRows;
       memKeterangan.Clear;
@@ -200,10 +207,14 @@ var
   lcds: TClientDataSet;
 begin
   inherited;
-  lcds := TDBUtils.DSToCDS(ClientDataModule.ServerPenerimaanBarangClient.RetrieveCDS(PenerimaanBarang), Self);
+  if chkKonsolidasi1.Checked then
+    lcds := TDBUtils.DSToCDS(ClientDataModule.ServerPenerimaanBarangClient.RetrievePenerimaan(dtpAwal.DateTime, dtpAkhir.DateTime, ''), Self)
+  else
+    lcds := TDBUtils.DSToCDS(ClientDataModule.ServerPenerimaanBarangClient.RetrievePenerimaan(dtpAwal.DateTime, dtpAkhir.DateTime, ClientDataModule.Cabang.ID), Self);
+
   cxGridDBTableOverview.SetDataset(lcds, True);
   cxGridDBTableOverview.ApplyBestFit();
-  cxGridDBTableOverview.SetVisibleColumns(['ID'], False);
+  cxGridDBTableOverview.SetVisibleColumns(['ID', 'CABANGID'], False);
 
 end;
 
@@ -229,9 +240,9 @@ begin
       PenerimaanBarang.JenisPembayaran := cbbJenisPembayaran.Text;
 
       if PenerimaanBarang.JenisPembayaran = 'CASH' then
-        PenerimaanBarang.TOP           := 0
+        PenerimaanBarang.Tempo           := 0
       else
-        PenerimaanBarang.TOP           := Floor(EdTempo.Value);
+        PenerimaanBarang.Tempo           := Floor(EdTempo.Value);
 
       PenerimaanBarang.Cabang          := TCabang.CreateID(ClientDataModule.Cabang.ID);
 
@@ -281,6 +292,30 @@ begin
   inherited;
   edTempo.Visible := cbbJenisPembayaran.ItemIndex = 1;
   lblTempo.Visible:= cbbJenisPembayaran.ItemIndex = 1;
+end;
+
+procedure TfrmPenerimaanBarang.CetakSlip;
+var
+  lcds: TFDJSONDataSets;
+//  lcds: TClientDataSet;
+begin
+  inherited;
+
+  with dmReport do
+  begin
+    AddReportVariable('UserCetak', User);
+
+    if cxPCData.ActivePageIndex = 0 then
+      lcds := ClientDataModule.ServerPenerimaanBarangClient.RetrieveCDSlip(cxGridDBTableOverview.DS.FieldByName('ID').AsString)
+    else
+      lcds := ClientDataModule.ServerPenerimaanBarangClient.RetrieveCDSlip(PenerimaanBarang.ID);
+
+
+    ExecuteReport( 'Reports/Slip_PenerimaanBarang' ,
+      lcds
+
+    );
+  end;
 end;
 
 procedure TfrmPenerimaanBarang.cxGridDBTableDaftarPBEditing(
@@ -600,7 +635,7 @@ begin
           cbbGudang.EditValue := PenerimaanBarang.Gudang.ID;
 
         memKeterangan.Lines.Text     := PenerimaanBarang.Keterangan;
-        edTempo.Value                := PenerimaanBarang.TOP;
+        edTempo.Value                := PenerimaanBarang.Tempo;
         cbbJenisPembayaran.ItemIndex := cbbJenisPembayaran.Properties.Items.IndexOf(PenerimaanBarang.JenisPembayaran);
 
         cxGridTablePenerimaanBarang.ClearRows;

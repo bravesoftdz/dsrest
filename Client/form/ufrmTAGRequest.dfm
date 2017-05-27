@@ -1,15 +1,9 @@
 inherited frmTAGRequest: TfrmTAGRequest
   Caption = 'Permintaan Transfer Barang Antar Cabang'
-  ExplicitWidth = 733
-  ExplicitHeight = 385
   PixelsPerInch = 96
   TextHeight = 13
   inherited cxPCData: TcxPageControl
     inherited cxTSOverview: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 709
-      ExplicitHeight = 265
       inherited pnlListTransaksi: TPanel
         inherited cxGrid: TcxGrid
           RootLevelOptions.DetailTabsPosition = dtpTop
@@ -33,10 +27,6 @@ inherited frmTAGRequest: TfrmTAGRequest
       end
     end
     inherited cxTSInputData: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 709
-      ExplicitHeight = 265
       object pnlHeader: TPanel
         Left = 0
         Top = 0
@@ -192,12 +182,6 @@ inherited frmTAGRequest: TfrmTAGRequest
       end
     end
   end
-  inherited pnlButton: TPanel
-    inherited chkKonsolidasi1: TcxCheckBox
-      ExplicitWidth = 76
-      ExplicitHeight = 31
-    end
-  end
   inherited ActionListForm: TActionList
     inherited ActionSimpan: TAction
       OnExecute = ActionSimpanExecute
@@ -219,7 +203,7 @@ inherited frmTAGRequest: TfrmTAGRequest
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010107000800000118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C0101070008000C0118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

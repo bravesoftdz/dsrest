@@ -18,8 +18,6 @@ implementation
 
 class function TDSRestLib.FormatNoBukti(APrefix : String; ACounter : Integer):
     string;
-var
-  I: Integer;
 begin
   Result := APrefix + '.' + TAppUtils.TambahkanKarakterNol(ACounter, _PANJANG_NOBUKTI_ANGKA);
 end;

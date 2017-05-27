@@ -4,7 +4,7 @@ interface
 
 uses
   SysUtils, Classes, DSServer, uModel, Windows, uDBUtils, Generics.Collections,
-  DBXJSON, DBClient, DB, rtti, uInterface, uPenjualan,
+  DBXJSON, DBClient, DB, rtti, uInterface, uPenjualan,Data.FireDACJSONReflect,
   uCustomerInvoice, uAR, uPenerimaanKas, uAccount, uRekBank,
   uTransferAntarGudang, uSettingApp, uTAGRequests, uTransferAntarCabang;
 
@@ -12,6 +12,12 @@ type
   {$METHODINFO ON}
 
 //  TServerAR = class;
+  TDSReport = class(TInterfacedPersistent)
+
+  public
+    function GetNamaku: string;
+  end;
+
   TServerLaporan = class(TInterfacedPersistent)
   public
     function DS_OverviewAccount: TDataset;
@@ -65,8 +71,13 @@ type
   end;
 
   TServerTransaction = class(TCRUD)
+  protected
   public
     function GenerateNoBukti(ATglBukti : TdateTime; APrefix : String): string;
+    function RetrieveData(aPeriodeAwal, APeriodeAkhir : TDateTime; AIDCabang :
+        String): TDataSet; virtual;
+    function RetrieveDataSlip(aPeriodeAwal, APeriodeAkhir : TDateTime; AIDCabang :
+        String; AID : String): TFDJSONDataSets; virtual;
   end;
 
   TServerMethods1 = class(TComponent)
@@ -122,7 +133,9 @@ type
     function BeforeSave(AOBject : TAppObject): Boolean; override;
   public
     function Retrieve(AID : String): TPenerimaanBarang;
-    function RetrieveCDSlip(AID : String): TDataset;
+    function RetrievePenerimaan(APeriodeAwal, APeriodeAkhir : TDateTime; AIDCabang
+        : String): TDataSet;
+    function RetrieveCDSlip(AID : String): TFDJSONDataSets;
     function RetrieveNoBukti(ANoBukti : String): TPenerimaanBarang;
   end;
 
@@ -434,7 +447,7 @@ begin
 
     sSQL := TDBUtils.GenerateSQLDelete(AAppObject, AAppObject.ID);
 
-    if not TDBUtils.ExecuteSQL(sSQL) > 0 then
+    if not TDBUtils.ExecuteSQL(sSQL) then
       Exit;
 
     if AfterDelete(AAppObject) then
@@ -471,7 +484,7 @@ begin
     if not BeforeSave(AOBject) then
       Exit;
 
-    if not TDBUtils.ExecuteSQL(TDBUtils.GenerateSQL(AOBject)) > 0 then
+    if not TDBUtils.ExecuteSQL(TDBUtils.GenerateSQL(AOBject)) then
       Exit;
 
     if AfterSave(AOBject) then
@@ -538,7 +551,7 @@ begin
   if not BeforeSave(AOBject) then
     Exit;
 
-  if not TDBUtils.ExecuteSQL(TDBUtils.GenerateSQL(AOBject)) > 0 then
+  if not TDBUtils.ExecuteSQL(TDBUtils.GenerateSQL(AOBject)) then
     Exit;
 
   if AfterSave(AOBject) then
@@ -642,22 +655,39 @@ begin
   TDBUtils.LoadFromDB(Result, AID);
 end;
 
-function TServerPenerimaanBarang.RetrieveCDSlip(AID : String): TDataset;
+function TServerPenerimaanBarang.RetrievePenerimaan(APeriodeAwal, APeriodeAkhir
+    : TDateTime; AIDCabang : String): TDataSet;
+var
+  lcds: TClientDataSet;
+  sSQL: string;
+begin
+  sSQL := 'select * from vpenerimaanbarang' +
+          ' where tglbukti between ' + TAppUtils.QuotDt(StartOfTheDay(APeriodeAwal)) +
+          ' and ' + TAppUtils.QuotDt(EndOfTheDay(APeriodeAkhir));
+
+  if AIDCabang <> '' then
+    sSQL := sSQL + ' and cabangid = ' + QuotedStr(AIDCabang);
+
+  lcds   := TDBUtils.OpenDataset(sSQL);
+  Result := lcds;
+end;
+
+function TServerPenerimaanBarang.RetrieveCDSlip(AID : String): TFDJSONDataSets;
 var
   sSQL: string;
 begin
-  sSQL   := 'select a.nobukti, a.tglbukti, f.nama as supplier, a.keterangan,' +
-            ' e.nama as cabang, c.sku, c.nama as Barang, d.uom as uom,' +
-            ' b.hargabeli, b.qty, b.diskon, b.ppn, b.konversi' +
-            ' from tpenerimaanbarang a' +
-            ' INNER JOIN tpenerimaanbarangitem b on a.id = b.penerimaanbarang' +
-            ' INNER JOIN tbarang c on b.barang = c.id' +
-            ' INNER JOIN tuom d on b.uom = d.id' +
-            ' INNER JOIN tcabang e on a.cabang = e.id' +
-            ' INNER JOIN tsupplier f on a.supplier = f.id ' +
-            ' where a.id = ' + QuotedStr(AID);
+  Result := TFDJSONDataSets.Create;
 
-  Result := TDBUtils.OpenDataset(sSQL);
+  sSQL   := ' select * from vpenerimaanbarang_slip ' +
+            ' where 1 = 1 ';
+
+  if AID <> '' then
+    sSQL := sSQL + ' and id = ' + QuotedStr(AID)
+  else
+    sSQL := sSQL + ' and id = newid()';
+
+
+  TFDJSONDataSetsWriter.ListAdd(Result, TDBUtils.OpenQuery(sSQL));
 end;
 
 function TServerPenerimaanBarang.RetrieveNoBukti(ANoBukti : String):
@@ -808,6 +838,52 @@ begin
       Free;
     end;
   end;
+end;
+
+function TServerTransaction.RetrieveData(aPeriodeAwal, APeriodeAkhir :
+    TDateTime; AIDCabang : String): TDataSet;
+var
+  lcds: TClientDataSet;
+  sNamaView: string;
+  sSQL: string;
+begin
+  sNamaView := StringReplace(Self.ClassName,'TServer', 'v', [rfReplaceAll]);
+
+  sSQL := 'select * from ' + sNamaView +
+          ' where tglbukti between ' + TAppUtils.QuotDt(StartOfTheDay(APeriodeAwal)) +
+          ' and ' + TAppUtils.QuotDt(EndOfTheDay(APeriodeAkhir));
+
+  if AIDCabang <> '' then
+    sSQL := sSQL + ' and cabangid = ' + QuotedStr(AIDCabang);
+
+  lcds   := TDBUtils.OpenDataset(sSQL);
+  Result := lcds;
+end;
+
+function TServerTransaction.RetrieveDataSlip(aPeriodeAwal, APeriodeAkhir :
+    TDateTime; AIDCabang : String; AID : String): TFDJSONDataSets;
+var
+  sNamaView: string;
+  sSQL: string;
+begin
+  Result := TFDJSONDataSets.Create;
+
+  sNamaView := StringReplace(Self.ClassName,'TServer', 'v', [rfReplaceAll]);
+  sNamaView := sNamaView + '_slip';
+
+  sSQL := 'select * from ' + sNamaView +
+          ' where tglbukti between ' + TAppUtils.QuotDt(StartOfTheDay(APeriodeAwal)) +
+          ' and ' + TAppUtils.QuotDt(EndOfTheDay(APeriodeAkhir));
+
+  if AIDCabang <> '' then
+    sSQL := sSQL + ' and cabangid = ' + QuotedStr(AIDCabang);
+
+  if AID <> '' then
+    sSQL := sSQL + ' and id = ' + QuotedStr(AIDCabang);
+
+  sSQL := sSQL + ' order by nobukti,urutan';
+
+  TFDJSONDataSetsWriter.ListAdd(Result, TDBUtils.OpenQuery(sSQL));
 end;
 
 function TServerCabang.Retrieve(AID : String): TCabang;
@@ -1035,8 +1111,8 @@ var
   sSQL: string;
 begin
   sSQL   := 'SELECT * FROM VLOOKUP_PENERIMAAN_BARANG' +
-            ' WHERE extract(month from TGLBUKTI) = ' + IntToStr(ABulan) +
-            ' AND extract(YEAR from TGLBUKTI) = ' + IntToStr(ATahun);
+            ' WHERE TGLBUKTI BETWEEN ' + TAppUtils.QuotDt(StartOfAMonth(ATahun,ABulan)) +
+            ' AND ' + TAppUtils.QuotDt(EndOfAMonth(ATahun,ABulan));
 
   Result := TDBUtils.OpenDataset(sSQL);
 end;
@@ -2644,7 +2720,7 @@ begin
               ' where b.id = ' + QuotedStr(TTransferAntarCabangKirim(AOBject).ID);
 
     TDBUtils.ExecuteSQL(sSQL);
-
+    Result := True;
   except
    Result := False;
   end;
@@ -2666,6 +2742,8 @@ end;
 function TServerTransferAntarCabangKirim.IsBisaHapus(AOBject : TAppObject):
     Boolean;
 begin
+  Result := False;
+
   if inherited IsBisaHapus(AOBject) = False then
     Exit;
 
@@ -2871,6 +2949,11 @@ begin
       Free;
     end;
   end;
+end;
+
+function TDSReport.GetNamaku: string;
+begin
+  Result := 'BP';
 end;
 
 

@@ -14,7 +14,7 @@ uses
   cxDBExtLookupComboBox, Provider, DBClient, cxNavigator, dxCore, cxDateUtils,
   System.Actions, dxBarExtDBItems, cxCheckBox, cxBarEditItem, System.ImageList,
   dxBarExtItems, ufrmLookUpTransaksi, dxBarBuiltInMenu, Vcl.Menus, cxButtons,
-  cxPC;
+  cxPC,uAppUtils,System.StrUtils, Data.FireDACJSONReflect,uDMReport;
 
 type
   TfrmReturSupplier = class(TfrmDefault)
@@ -105,6 +105,7 @@ type
     procedure LoadDataPenerimaanBarang(ANoPB : String);
     { Private declarations }
   protected
+    procedure CetakSlip; override;
     property ReturSupplier: TReturSupplier read GetReturSupplier write
         FReturSupplier;
   public
@@ -118,7 +119,7 @@ var
 
 implementation
 uses
-  ClientModule, uDBUtils, uAppUtils, uBarangUtils;
+  ClientModule, uDBUtils, uBarangUtils;
 
 {$R *.dfm}
 
@@ -135,10 +136,9 @@ begin
   begin
     try
       edTglBukti.Date       := Now;
-      edNoBukti.Text        := GenerateNoBukti(edTglBukti.Date, 'RS');
+      edNoBukti.Text        := GenerateNoBukti(edTglBukti.Date, ClientDataModule.Cabang.Kode);
       edNoPB.Text           := '';
       cbbSupplier.EditValue := Null;
-//      FID                   := '';
 
       cxGridTableReturSupplier.ClearRows;
       memKeterangan.Clear;
@@ -159,17 +159,29 @@ begin
   inherited;
   if not IsBisaHapus then
     Exit;
+
+  if ClientDataModule.ServerReturSupplierClient.Delete(ReturSupplier) then
+  begin
+    ActionRefreshExecute(Sender);
+    ActionBaruExecute(Sender);
+  end;
 end;
 
 procedure TfrmReturSupplier.ActionRefreshExecute(Sender: TObject);
 var
   lcds: TClientDataSet;
+  sIDCabang: string;
 begin
   inherited;
-  lcds := TDBUtils.DSToCDS(ClientDataModule.ServerReturSupplierClient.RetrieveCDS(ReturSupplier), Self);
+  if chkKonsolidasi1.Checked then
+    sIDCabang := ''
+  else
+    sIDCabang := ClientDataModule.Cabang.ID;
+
+  lcds := TDBUtils.DSToCDS(ClientDataModule.ServerReturSupplierClient.RetrieveData(dtpAwal.DateTime, dtpAkhir.DateTime, sIDCabang), Self);
   cxGridDBTableOverview.SetDataset(lcds, True);
   cxGridDBTableOverview.ApplyBestFit();
-  cxGridDBTableOverview.SetVisibleColumns(['ID'], False);
+  cxGridDBTableOverview.SetVisibleColumns(['ID', 'CABANGID'], False);
 end;
 
 procedure TfrmReturSupplier.ActionSimpanExecute(Sender: TObject);
@@ -237,10 +249,41 @@ begin
   begin
     lPB   := ClientDataModule.ServerPenerimaanBarangClient.Retrieve(sIDPB);
     try
+      edNoPB.Text := lPB.NoBukti;
       LoadDataPenerimaanBarang(lPB.NoBukti);
     finally
       FreeAndNil(lPB);
     end;
+  end;
+end;
+
+procedure TfrmReturSupplier.CetakSlip;
+var
+  lcds: TFDJSONDataSets;
+  sID: string;
+  sIDCabang: string;
+//  lcds: TClientDataSet;
+begin
+  with dmReport do
+  begin
+    AddReportVariable('UserCetak', User);
+    if cxPCData.ActivePageIndex = 0 then
+    begin
+      sID := '';
+      if not chkKonsolidasi1.Checked then
+        sIDCabang := ClientDataModule.Cabang.ID;
+    end else begin
+      sID := ReturSupplier.ID;
+      sIDCabang := '';
+    end;
+
+    lcds := ClientDataModule.ServerReturSupplierClient.RetrieveDataSlip(dtpAwal.DateTime, dtpAkhir.DateTime, sIDCabang, sID);
+
+
+    ExecuteReport( 'Reports/Slip_ReturSupplier' ,
+      lcds
+
+    );
   end;
 end;
 
@@ -329,10 +372,18 @@ end;
 
 procedure TfrmReturSupplier.edNoPBKeyDown(Sender: TObject; var Key: Word;
     Shift: TShiftState);
+var
+  sAngka: string;
 begin
   inherited;
   if Key = VK_RETURN then
   begin
+    sAngka := RightStr(edNoPB.Text, Length(edNoPB.Text) - Pos('/', edNoPB.Text));
+    TAppUtils.TambahkanKarakterNol(StrToIntDef(sAngka,0),PanjangNoBukti);
+
+    edNoPB.Text := StringReplace(edNoPB.Text,sAngka,'',[rfReplaceAll]);
+    edNoPB.Text := edNoPB.Text + TAppUtils.TambahkanKarakterNol(StrToIntDef(sAngka,0),PanjangNoBukti);
+
     LoadDataPenerimaanBarang(edNoPB.Text);
   end;
 end;

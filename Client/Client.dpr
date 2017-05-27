@@ -54,7 +54,8 @@ uses
   uTransferAntarCabang in '..\model\uTransferAntarCabang.pas',
   ufrmTACKirim in 'form\ufrmTACKirim.pas' {frmTACKirim},
   ufrmTACTerima in 'form\ufrmTACTerima.pas' {frmTACTerima},
-  uModelHelper in '..\model\uModelHelper.pas';
+  uModelHelper in '..\model\uModelHelper.pas',
+  uDMReport in '..\uDMReport.pas' {DMReport};
 
 {$R *.res}
 
@@ -63,5 +64,6 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TClientDataModule, ClientDataModule);
   Application.CreateForm(TfrmMain, frmMain);
+  Application.CreateForm(TDMReport, DMReport);
   Application.Run;
 end.

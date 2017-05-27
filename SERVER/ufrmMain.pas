@@ -17,7 +17,8 @@ uses
   FireDAC.Phys.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async,
   FireDAC.Comp.Client, FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf,
   FireDAC.Comp.DataSet, FireDAC.DApt, cxGraphics,
-  FireDAC.Phys.MSSQLDef, FireDAC.Phys.PGDef, uTransferAntarCabang;
+  FireDAC.Phys.MSSQLDef, FireDAC.Phys.PGDef, uTransferAntarCabang,
+  FireDAC.Stan.StorageBin;
 
 type
   TfrmServer = class(TForm)
@@ -53,6 +54,7 @@ type
     FDMemTable1: TFDMemTable;
     FDQuery1: TFDQuery;
     btn1: TButton;
+    fdstnstrgbnlnkMotoroli: TFDStanStorageBinLink;
     procedure FormCreate(Sender: TObject);
     procedure ApplicationEvents1Idle(Sender: TObject; var Done: Boolean);
     procedure btn1Click(Sender: TObject);

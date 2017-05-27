@@ -62,7 +62,7 @@ type
     { Private declarations }
   public
     destructor Destroy; override;
-    procedure CetakSlip(AID: string); override;
+    procedure CetakSlipSaya(AID: string);
     function LoadData(AID : String): Boolean; stdcall;
     { Public declarations }
   end;
@@ -181,7 +181,7 @@ begin
   end;
 end;
 
-procedure TfrmTAGRequest.CetakSlip(AID: string);
+procedure TfrmTAGRequest.CetakSlipSaya(AID: string);
 var
   lCDSSlip: TClientDataSet;
   lReport: TTSReport;

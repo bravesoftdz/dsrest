@@ -25,7 +25,7 @@ type
         TcxGridDBTableView; AutoCreateFields : Boolean = False);
     class function DSToCDS(aDataset: TDataSet; aOwner: TComponent): TClientDataset;
         overload;
-    class function ExecuteSQL(ASQL : String): LongInt;
+    class function ExecuteSQL(ASQL : String): Boolean;
     class function OpenDataset(ASQL : String; AOwner : TComponent = nil):
         TClientDataSet; overload;
     class function GenerateSQL(AObject : TAppObject): string;
@@ -134,12 +134,17 @@ begin
   end;
 end;
 
-class function TDBUtils.ExecuteSQL(ASQL : String): LongInt;
+class function TDBUtils.ExecuteSQL(ASQL : String): Boolean;
 begin
-  if mmoLogs <> nil then
-    mmoLogs.Lines.Add(ASQL);
+  try
+    if mmoLogs <> nil then
+      mmoLogs.Lines.Add(ASQL);
 
-  Result := ADConnection.ExecSQL(ASQL);
+    ADConnection.ExecSQL(ASQL);
+    Result := True;
+  except
+    raise
+  end;
 end;
 
 class function TDBUtils.OpenDataset(ASQL : String; AOwner : TComponent = nil):
