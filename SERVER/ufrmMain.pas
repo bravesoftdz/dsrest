@@ -116,7 +116,7 @@ end;
 
 procedure TfrmServer.btn1Click(Sender: TObject);
 begin
-  ShowMessage(TDBUtils.GenerateSQL(TTransferAntarCabangKirim.Create));
+  mmoLogs.Clear;
 end;
 
 procedure TfrmServer.btnTestClick(Sender: TObject);

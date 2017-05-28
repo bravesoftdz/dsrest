@@ -151,6 +151,8 @@ object frmServer: TfrmServer
       Caption = 'Rest Server'
       Enabled = False
       TabOrder = 1
+      ExplicitLeft = 279
+      ExplicitTop = -4
       object Label1: TLabel
         Left = 18
         Top = 56
@@ -187,18 +189,18 @@ object frmServer: TfrmServer
       object ButtonOpenBrowser: TButton
         Left = 18
         Top = 76
-        Width = 156
+        Width = 75
         Height = 25
         Caption = 'Open Browser'
         TabOrder = 3
         OnClick = ButtonOpenBrowserClick
       end
       object btn1: TButton
-        Left = 152
-        Top = 107
+        Left = 99
+        Top = 76
         Width = 75
         Height = 25
-        Caption = 'btn1'
+        Caption = 'Clear Logs'
         TabOrder = 4
         OnClick = btn1Click
       end

@@ -518,7 +518,12 @@ var
 begin
 
   sSQL := 'select * from ' + AOBject.ClassName
-          + ' where id = ' + QuotedStr(AID);
+          + ' where 1 = 1';
+
+  if AID = '' then
+    sSQL := sSQL + ' and id = newid()'
+  else
+    sSQL := sSQL + ' and id = ' + QuotedStr(AID);
 
   ctx := TRttiContext.Create();
   Q := TDBUtils.OpenQuery(sSQL);

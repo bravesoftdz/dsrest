@@ -59,6 +59,7 @@ type
     function SaveNoCommit(AOBject : TAppObject): Boolean; virtual;
   public
     function Delete(AAppObject : TAppObject): Boolean; virtual;
+    function DeleteNoCommit(AAppObject : TAppObject): Boolean; virtual;
     function RetrieveCDS(AAppObject : TAppObject): TDataSet; virtual;
 //    function RetrieveCDSJSON: TJSONArray;
     function Save(AOBject : TAppObject): Boolean; virtual;
@@ -124,6 +125,7 @@ type
   strict private
     function HapusMutasi(ANoBukti : String): Boolean; stdcall;
   private
+    function HapusAP(AOBject: TAppObject): Boolean;
     function SimpanMutasiStock(AAppObject : TAppObject): Boolean; stdcall;
     function SimpanStockSekarang(AAppObject : TAppObject; AIsMenghapus : Boolean =
         False): Boolean; stdcall;
@@ -131,6 +133,7 @@ type
     function AfterSave(AOBject : TAppObject): Boolean; override;
     function AfterDelete(AOBject : TAppObject): Boolean; override;
     function BeforeSave(AOBject : TAppObject): Boolean; override;
+    function SimpanAP(AOBject: TAppObject): Boolean;
   public
     function Retrieve(AID : String): TPenerimaanBarang;
     function RetrievePenerimaan(APeriodeAwal, APeriodeAkhir : TDateTime; AIDCabang
@@ -167,12 +170,14 @@ type
     function HapusMutasi(ANoBukti : String): Boolean; stdcall;
     function SimpanMutasiStock(AAppObject : TAppObject): Boolean; stdcall;
   private
+    function HapusAR(AOBject: TAppObject): Boolean;
     function SimpanStockSekarang(AAppObject : TAppObject; AIsMenghapus : Boolean =
         False): Boolean; stdcall;
   protected
     function AfterDelete(AOBject : TAppObject): Boolean; override;
     function AfterSave(AOBject : TAppObject): Boolean; override;
     function BeforeSave(AOBject : TAppObject): Boolean; override;
+    function SimpanAR(AOBject: TAppObject): Boolean;
   public
     function Retrieve(AID : String): TReturSupplier;
     function RetrieveNoBukti(ANoBukti : String): TReturSupplier;
@@ -221,6 +226,7 @@ type
     function Retrieve(AID : String): TAR;
     function RetrieveCDSlip(AID : String): TDataset;
     function RetrieveNoBukti(ANoBukti : String): TAR;
+    function RetrieveTransaksi(ATransaksi : String; AIDTransaksi : String): TAR;
   end;
 
   TServerCustomerInvoice = class(TServerTransaction)
@@ -346,6 +352,12 @@ type
     function RetrieveNoBukti(ANoBukti : String): TTransferAntarCabangTerima;
   end;
 
+  TServerAP = class(TServerTransaction)
+  public
+    function Retrieve(AID : String): TAP;
+    function RetrieveTransaksi(ATransaksi : String; AIDTransaksi : String): TAP;
+  end;
+
 
 
 
@@ -455,8 +467,9 @@ begin
       ADConnection.Commit;
       Result := True;
     end;
-  finally
+  except
     ADConnection.Rollback;
+    raise;
   end;
 
 
@@ -492,8 +505,9 @@ begin
       ADConnection.Commit;
       Result := True;
     end;
-  finally
+  except
     ADConnection.Rollback;
+    raise
   end;
 
 end;
@@ -506,6 +520,34 @@ end;
 function TCRUD.AfterSave(AOBject : TAppObject): Boolean;
 begin
   Result := True;
+end;
+
+function TCRUD.DeleteNoCommit(AAppObject : TAppObject): Boolean;
+var
+  sSQL: string;
+begin
+  Result := False;
+
+  try
+    if not BeforeDelete(AAppObject) then
+      Exit;
+
+    sSQL := TDBUtils.GenerateSQLDelete(AAppObject, AAppObject.ID);
+
+    if not TDBUtils.ExecuteSQL(sSQL) then
+      Exit;
+
+    if AfterDelete(AAppObject) then
+    begin
+//      ADConnection.Commit;
+      Result := True;
+    end;
+  except
+    ADConnection.Rollback;
+    raise
+  end;
+
+
 end;
 
 function TCRUD.GetTableName: string;
@@ -597,18 +639,18 @@ begin
 
   if SimpanStockSekarang(AOBject) then
     if SimpanMutasiStock(AOBject) then
-      Result := True;
+      if SimpanAP(AOBject) then
+        Result := True;
 end;
 
 function TServerPenerimaanBarang.AfterDelete(AOBject : TAppObject): Boolean;
 begin
   Result := False;
 
-  if SimpanStockSekarang(AOBject, True) then
-  begin
-    if HapusMutasi(TPenerimaanBarang(AOBject).NoBukti) then
-      Result := True;
-  end;
+  if HapusAP(AOBject) then
+    if SimpanStockSekarang(AOBject, True) then
+      if HapusMutasi(TPenerimaanBarang(AOBject).NoBukti) then
+        Result := True;
 end;
 
 function TServerPenerimaanBarang.BeforeSave(AOBject : TAppObject): Boolean;
@@ -631,6 +673,25 @@ begin
   
   Result := True;
 
+end;
+
+function TServerPenerimaanBarang.HapusAP(AOBject: TAppObject): Boolean;
+var
+  lAP: TAP;
+  lPB: TPenerimaanBarang;
+  lServerAP: TServerAP;
+begin
+  Result := False;
+
+  lPB       := TPenerimaanBarang(AOBject);
+  lServerAP := TServerAP.Create;
+  try
+    lAP := lServerAP.RetrieveTransaksi(lPB.ClassName, AOBject.ID);
+    if lServerAP.DeleteNoCommit(lAP) then
+      Result := True;
+  finally
+    lServerAP.Free;
+  end;
 end;
 
 function TServerPenerimaanBarang.HapusMutasi(ANoBukti : String): Boolean;
@@ -709,6 +770,36 @@ begin
     end;
   end;
 
+
+end;
+
+function TServerPenerimaanBarang.SimpanAP(AOBject: TAppObject): Boolean;
+var
+  lAP: TAP;
+  lPB: TPenerimaanBarang;
+  lServerAP: TServerAP;
+begin
+  Result := False;
+
+  lPB       := TPenerimaanBarang(AOBject);
+  lServerAP := TServerAP.Create;
+  try
+    lAP := lServerAP.RetrieveTransaksi(lPB.ClassName, AOBject.ID);
+    lAP.Cabang := TCabang.CreateID(lPB.Cabang.ID);
+    lAP.Supplier := TSupplier.CreateID(lPB.Supplier.ID);
+    lAP.IDTransaksi := lPB.ID;
+    lAP.NoBukti := lPB.NoBukti;
+    lAP.Nominal := lPB.Total;
+    lAP.Transaksi := lPB.ClassName;
+    lAP.JatuhTempo:= lPB.TglBukti + lPB.Tempo;
+    lAP.NoBuktiTransaksi := lPB.NoBukti;
+    lAP.TglBukti := lPB.TglBukti;
+
+    if lServerAP.SaveNoCommit(lAP) then
+      Result := True;
+  finally
+    lServerAP.Free;
+  end;
 
 end;
 
@@ -1309,21 +1400,20 @@ function TServerReturSupplier.AfterDelete(AOBject : TAppObject): Boolean;
 begin
   Result := False;
 
-  if SimpanStockSekarang(AOBject, True) then
-  begin
-    if HapusMutasi(TReturSupplier(AOBject).NoBukti) then
-      Result := True;
-  end;
+  if HapusAR(AOBject) then
+    if SimpanStockSekarang(AOBject, True) then
+      if HapusMutasi(TReturSupplier(AOBject).NoBukti) then
+        Result := True;
 end;
 
 function TServerReturSupplier.AfterSave(AOBject : TAppObject): Boolean;
 begin
   Result := False;
 
-  if SimpanStockSekarang(AOBject) then
-    if SimpanMutasiStock(AOBject) then
-      Result := True;
-
+  if SimpanAR(AOBject) then
+    if SimpanStockSekarang(AOBject) then
+      if SimpanMutasiStock(AOBject) then
+        Result := True;
 end;
 
 function TServerReturSupplier.BeforeSave(AOBject : TAppObject): Boolean;
@@ -1346,6 +1436,25 @@ begin
 
   Result := True;
 
+end;
+
+function TServerReturSupplier.HapusAR(AOBject: TAppObject): Boolean;
+var
+  lAR: TAR;
+  lRS: TReturSupplier;
+  lServerAR: TServerAR;
+begin
+  Result := False;
+
+  lRS       := TReturSupplier(AOBject);
+  lServerAR := TServerAR.Create;
+  try
+    lAR := lServerAR.RetrieveTransaksi(lRS.ClassName, AOBject.ID);
+    if lServerAR.DeleteNoCommit(lAR) then
+      Result := True;
+  finally
+    lServerAR.Free;
+  end;
 end;
 
 function TServerReturSupplier.HapusMutasi(ANoBukti : String): Boolean;
@@ -1389,6 +1498,36 @@ begin
     end;
   end;
 
+
+end;
+
+function TServerReturSupplier.SimpanAR(AOBject: TAppObject): Boolean;
+var
+  lAR: TAR;
+  lRS: TReturSupplier;
+  lServerAR: TServerAR;
+begin
+  Result := False;
+
+  lRS       := TReturSupplier(AOBject);
+  lServerAR := TServerAR.Create;
+  try
+    lAR := lServerAR.RetrieveTransaksi(lRS.ClassName, AOBject.ID);
+    lAR.Cabang := TCabang.CreateID(lRS.Cabang.ID);
+    lAR.Customer := TSupplier.CreateID(lRS.Supplier.ID);
+    lAR.IDTransaksi := lRS.ID;
+    lAR.NoBukti := lRS.NoBukti;
+    lAR.Nominal := lRS.Total;
+    lAR.Transaksi := lRS.ClassName;
+    lAR.JatuhTempo:= lRS.TglBukti;
+    lAR.NoBuktiTransaksi := lRS.NoBukti;
+    lAR.TglBukti := lRS.TglBukti;
+
+    if lServerAR.SaveNoCommit(lAR) then
+      Result := True;
+  finally
+    lServerAR.Free;
+  end;
 
 end;
 
@@ -1556,11 +1695,11 @@ begin
     end;
 
     ADConnection.Commit;
-
-  finally
-    ADConnection.Rollback;
     lCDS.Free;
     lServerClosingInventory.Free;
+  except
+    ADConnection.Rollback;
+    raise
   end;
 
   Result := True;
@@ -2027,6 +2166,40 @@ begin
   end;
 
 
+end;
+
+function TServerAR.RetrieveTransaksi(ATransaksi : String; AIDTransaksi :
+    String): TAR;
+var
+  sID: string;
+  sSQL: string;
+begin
+  sSQL   := 'select ID from tar' +
+            ' where transaksi = ' + QuotedStr(ATransaksi) +
+            ' and idtransaksi = ' + QuotedStr(AIDTransaksi);
+
+  sID := '';
+  with TDBUtils.OpenDataset(sSQL) do
+  begin
+    try
+      while not Eof do
+      begin
+        sID := FieldByName('id').AsString;
+        Next;
+      end;
+    finally
+      Free;
+    end;
+  end;
+
+  with TServerAR.Create do
+  begin
+    try
+      Result := Retrieve(sID);
+    finally
+      Free;
+    end;
+  end;
 end;
 
 function TServerBarangSatuanItem.RetirveBySKUUOM(ASKU : TBarang; AUOM : TUOM):
@@ -2954,6 +3127,46 @@ end;
 function TDSReport.GetNamaku: string;
 begin
   Result := 'BP';
+end;
+
+function TServerAP.Retrieve(AID : String): TAP;
+begin
+  Result := TAP.Create;
+  TDBUtils.LoadFromDB(Result, AID);
+end;
+
+function TServerAP.RetrieveTransaksi(ATransaksi : String; AIDTransaksi :
+    String): TAP;
+var
+  sID: string;
+  sSQL: string;
+begin
+  sSQL   := 'select ID from tap' +
+            ' where transaksi = ' + QuotedStr(ATransaksi) +
+            ' and idtransaksi = ' + QuotedStr(AIDTransaksi);
+
+  sID := '';
+  with TDBUtils.OpenDataset(sSQL) do
+  begin
+    try
+      while not Eof do
+      begin
+        sID := FieldByName('id').AsString;
+        Next;
+      end;
+    finally
+      Free;
+    end;
+  end;
+
+  with TServerAP.Create do
+  begin
+    try
+      Result := Retrieve(sID);
+    finally
+      Free;
+    end;
+  end;
 end;
 
 

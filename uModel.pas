@@ -163,9 +163,11 @@ type
     FTglBukti: TDatetime;
     FTempo: Integer;
     function GetPenerimaanBarangItems: TObjectList<TPenerimaanBarangItem>;
+    function GetTotal: Double;
     procedure SetKeterangan(const Value: string);
     procedure SetTglBukti(const Value: TDatetime);
   public
+    property Total: Double read GetTotal;
   published
     property Cabang: TCabang read FCabang write FCabang;
     property Gudang: TGudang read FGudang write FGudang;
@@ -288,9 +290,11 @@ type
     FSupplier: TSupplier;
     FTglBukti: TDatetime;
     function GetReturSupplierItems: TObjectList<TReturSupplierItem>;
+    function GetTotal: Double;
     procedure SetKeterangan(const Value: string);
     procedure SetTglBukti(const Value: TDatetime);
   public
+    property Total: Double read GetTotal;
   published
     property Cabang: TCabang read FCabang write FCabang;
     property Gudang: TGudang read FGudang write FGudang;
@@ -434,6 +438,23 @@ begin
   Result := FPenerimaanBarangItems;
 end;
 
+function TPenerimaanBarang.GetTotal: Double;
+var
+  dLinePrice: Double;
+  I: Integer;
+begin
+  Result := 0;
+
+  for I := 0 to PenerimaanBarangItems.Count - 1 do
+  begin
+    dLinePrice := PenerimaanBarangItems[i].Qty *
+                  PenerimaanBarangItems[i].HargaSetelahDiskon;
+
+    dLinePrice := (100 + PenerimaanBarangItems[i].PPN) / 100 * dLinePrice;
+    Result := Result + dLinePrice;
+  end;
+end;
+
 procedure TPenerimaanBarang.SetKeterangan(const Value: string);
 begin
   FKeterangan := Value;
@@ -532,6 +553,23 @@ begin
     FReturSupplierItems := TObjectList<TReturSupplierItem>.Create(True);
 
   Result := FReturSupplierItems;
+end;
+
+function TReturSupplier.GetTotal: Double;
+var
+  dLinePrice: Double;
+  I: Integer;
+begin
+  Result := 0;
+
+  for I := 0 to ReturSupplierItems.Count - 1 do
+  begin
+    dLinePrice := ReturSupplierItems[i].Qty *
+                  ReturSupplierItems[i].HargaSetelahDiskon;
+
+    dLinePrice := (100 + ReturSupplierItems[i].PPN) / 100 * dLinePrice;
+    Result := Result + dLinePrice;
+  end;
 end;
 
 procedure TReturSupplier.SetKeterangan(const Value: string);
