@@ -36,7 +36,7 @@ uses
   uRekBank in '..\model\uRekBank.pas',
   uPengeluaranKas in '..\model\uPengeluaranKas.pas',
   uPenerimaanKas in '..\model\uPenerimaanKas.pas',
-  ufrmPenerimaanKas in 'form\ufrmPenerimaanKas.pas' {frmPenerimaanKas},
+  ufrmPengeluaranKas in 'form\ufrmPengeluaranKas.pas' {frmPengeluaranKas},
   ufrmAccount in 'form\ufrmAccount.pas' {frmAccount},
   uAccount in '..\model\uAccount.pas',
   ufrmRekBank in 'form\ufrmRekBank.pas' {frmRekBank},
@@ -55,7 +55,8 @@ uses
   ufrmTACKirim in 'form\ufrmTACKirim.pas' {frmTACKirim},
   ufrmTACTerima in 'form\ufrmTACTerima.pas' {frmTACTerima},
   uModelHelper in '..\model\uModelHelper.pas',
-  uDMReport in '..\uDMReport.pas' {DMReport};
+  uDMReport in '..\uDMReport.pas' {DMReport},
+  ufrmPenerimaanKas in 'form\ufrmPenerimaanKas.pas' {frmPenerimaanKas};
 
 {$R *.res}
 

@@ -16,7 +16,7 @@ uses
   ufrmCustomerInvoice,ufrmPenerimaanKas, ufrmRekBank, ufrmLaporanAR,
   ufrmSettingAplikasi, ufrmTransferAntarGudang, ufrmTAGRequest,
   Datasnap.DBClient, ufrmTACKirim, cxContainer, cxEdit, cxTextEdit, cxMaskEdit,
-  cxDropDownEdit;
+  cxDropDownEdit, ufrmPengeluaranKas;
 
 type
   TfrmMain = class(TForm)
@@ -129,6 +129,8 @@ type
     btnCetak: TButton;
     dxbrlrgbtnTACTerima: TdxBarLargeButton;
     actTACTerima: TAction;
+    dxbrlrgbtnPengeluaranKas: TdxBarLargeButton;
+    actPengeluaranKas: TAction;
     procedure actAlatGantiCabangExecute(Sender: TObject);
     procedure actApplicationExitExecute(Sender: TObject);
     procedure actClosingInventoryExecute(Sender: TObject);
@@ -155,6 +157,7 @@ type
     procedure actTAGKirimExecute(Sender: TObject);
     procedure btnCetakClick(Sender: TObject);
     procedure FormDblClick(Sender: TObject);
+    procedure actPengeluaranKasExecute(Sender: TObject);
   private
     procedure UpdateStatusBar;
     { Private declarations }
@@ -257,6 +260,11 @@ end;
 procedure TfrmMain.actPenerimaanKasExecute(Sender: TObject);
 begin
   frmPenerimaanKas := TfrmPenerimaanKas.Create(Self);
+end;
+
+procedure TfrmMain.actPengeluaranKasExecute(Sender: TObject);
+begin
+  frmPengeluaranKas := TfrmPengeluaranKas.Create(Self);
 end;
 
 procedure TfrmMain.actPenjualanPOSExecute(Sender: TObject);

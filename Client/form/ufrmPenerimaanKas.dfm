@@ -1,18 +1,53 @@
 inherited frmPenerimaanKas: TfrmPenerimaanKas
   Caption = 'Penerimaan Kas'
-  ExplicitWidth = 733
-  ExplicitHeight = 385
+  ClientHeight = 366
+  ClientWidth = 735
+  ExplicitWidth = 751
+  ExplicitHeight = 405
   PixelsPerInch = 96
   TextHeight = 13
+  inherited cxSBTransaksi: TdxStatusBar
+    Top = 346
+    Width = 735
+  end
   inherited cxPCData: TcxPageControl
-    Properties.ActivePage = cxTSOverview
+    Width = 735
+    Height = 313
+    Properties.ActivePage = cxTSInputData
+    ClientRectBottom = 309
+    ClientRectRight = 731
     inherited cxTSOverview: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
       ExplicitWidth = 709
       ExplicitHeight = 265
+      inherited splTransaksi: TSplitter
+        Height = 285
+      end
       inherited pnlListTransaksi: TPanel
+        Width = 719
+        Height = 285
+        inherited pnlFilter: TPanel
+          Width = 717
+          inherited lblPeriode: TLabel
+            Left = 294
+          end
+          inherited lblSD: TLabel
+            Left = 455
+          end
+          inherited dtpAwal: TDateTimePicker
+            Left = 347
+          end
+          inherited dtpAkhir: TDateTimePicker
+            Left = 496
+          end
+          inherited btnRefresh: TcxButton
+            Left = 607
+          end
+        end
         inherited cxGrid: TcxGrid
+          Width = 717
+          Height = 252
           inherited cxGridDBTableOverview: TcxGridDBTableView
             OnCellDblClick = cxGridDBTableOverviewCellDblClick
           end
@@ -27,10 +62,11 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
       object pnlHeader: TPanel
         Left = 0
         Top = 0
-        Width = 709
+        Width = 727
         Height = 161
         Align = alTop
         TabOrder = 0
+        ExplicitWidth = 709
         object lblNoBukti: TLabel
           Left = 38
           Top = 9
@@ -60,11 +96,11 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
           Caption = 'Penerima'
         end
         object lblCustomer: TLabel
-          Left = 260
+          Left = 294
           Top = 34
-          Width = 95
+          Width = 61
           Height = 13
-          Caption = 'Customer/Salesman'
+          Caption = 'Diterima Dari'
         end
         object lblKeterangan: TLabel
           Left = 299
@@ -182,11 +218,13 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
       object cxGridDBAR: TcxGrid
         Left = 0
         Top = 161
-        Width = 709
-        Height = 104
+        Width = 727
+        Height = 124
         Align = alClient
         TabOrder = 1
         RootLevelOptions.DetailTabsPosition = dtpTop
+        ExplicitWidth = 709
+        ExplicitHeight = 104
         object cxGridTableAR: TcxGridTableView
           Navigator.Buttons.CustomButtons = <>
           OnEditing = cxGridTableAREditing
@@ -281,9 +319,16 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
     end
   end
   inherited pnlButton: TPanel
-    inherited btnCetak: TcxButton
-      ExplicitLeft = -5
-      ExplicitTop = 2
+    Top = 313
+    Width = 735
+    inherited btnBaru: TcxButton
+      Left = 623
+    end
+    inherited btnHapus: TcxButton
+      Left = 499
+    end
+    inherited btnSave: TcxButton
+      Left = 383
     end
     inherited chkKonsolidasi1: TcxCheckBox
       ExplicitWidth = 76
@@ -293,9 +338,6 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
   inherited ActionListForm: TActionList
     inherited ActionSimpan: TAction
       OnExecute = ActionSimpanExecute
-    end
-    inherited actCetak: TAction
-      OnExecute = actCetakExecute
     end
     inherited ActionHapus: TAction
       OnExecute = ActionHapusExecute
@@ -315,7 +357,7 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
     Left = 584
     Top = 144
     Bitmap = {
-      494C010107000800F80018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800FC0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

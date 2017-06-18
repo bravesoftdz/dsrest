@@ -181,7 +181,7 @@ begin
   lcds := TDBUtils.DSToCDS(ClientDataModule.ServerReturSupplierClient.RetrieveData(dtpAwal.DateTime, dtpAkhir.DateTime, sIDCabang), Self);
   cxGridDBTableOverview.SetDataset(lcds, True);
   cxGridDBTableOverview.ApplyBestFit();
-  cxGridDBTableOverview.SetVisibleColumns(['ID', 'CABANGID'], False);
+  cxGridDBTableOverview.SetVisibleColumns([{'ID',} 'CABANGID'], False);
 end;
 
 procedure TfrmReturSupplier.ActionSimpanExecute(Sender: TObject);
@@ -269,12 +269,12 @@ begin
     AddReportVariable('UserCetak', User);
     if cxPCData.ActivePageIndex = 0 then
     begin
-      sID := '';
+      sID := 'XXX';
       if not chkKonsolidasi1.Checked then
         sIDCabang := ClientDataModule.Cabang.ID;
     end else begin
       sID := ReturSupplier.ID;
-      sIDCabang := '';
+      sIDCabang := 'XXX';
     end;
 
     lcds := ClientDataModule.ServerReturSupplierClient.RetrieveDataSlip(dtpAwal.DateTime, dtpAkhir.DateTime, sIDCabang, sID);

@@ -27,7 +27,8 @@ uses
   uTAGRequests in '..\model\uTAGRequests.pas',
   uMukafaah in '..\model\uMukafaah.pas',
   uPengurus in '..\model\uPengurus.pas',
-  uTransferAntarCabang in '..\model\uTransferAntarCabang.pas';
+  uTransferAntarCabang in '..\model\uTransferAntarCabang.pas',
+  uPengeluaranKas in '..\model\uPengeluaranKas.pas';
 
 {$R *.res}
 

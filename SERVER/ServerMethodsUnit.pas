@@ -966,11 +966,11 @@ begin
           ' where tglbukti between ' + TAppUtils.QuotDt(StartOfTheDay(APeriodeAwal)) +
           ' and ' + TAppUtils.QuotDt(EndOfTheDay(APeriodeAkhir));
 
-  if AIDCabang <> '' then
+  if AIDCabang <> 'XXX' then
     sSQL := sSQL + ' and cabangid = ' + QuotedStr(AIDCabang);
 
-  if AID <> '' then
-    sSQL := sSQL + ' and id = ' + QuotedStr(AIDCabang);
+  if AID <> 'XXX' then
+    sSQL := sSQL + ' and id = ' + QuotedStr(AID);
 
   sSQL := sSQL + ' order by nobukti,urutan';
 

@@ -151,8 +151,6 @@ object frmServer: TfrmServer
       Caption = 'Rest Server'
       Enabled = False
       TabOrder = 1
-      ExplicitLeft = 279
-      ExplicitTop = -4
       object Label1: TLabel
         Left = 18
         Top = 56
