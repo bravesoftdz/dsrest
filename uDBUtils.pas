@@ -232,7 +232,7 @@ begin
                             begin
                               if i = 0 then
                               begin
-                                ResultObjectList := 'delete from ' + GetArrayElement(i).AsObject.ClassName
+                                ResultObjectList := ResultObjectList + ' delete from ' + GetArrayElement(i).AsObject.ClassName
                                                     + ' where ' + TAppObjectItem(GetArrayElement(i).AsObject).GetHeaderField + ' = ' + QuotedStr(AObject.ID) + ';';
 
                               end;
@@ -281,7 +281,7 @@ var
   meth : TRttiMethod;
   ResultObjectList: string;
 begin
-
+  ResultObjectList := '';
   Result := '';
   ctx := TRttiContext.Create();
   try
@@ -312,7 +312,7 @@ begin
                               begin
                                 if i = 0 then
                                 begin
-                                  ResultObjectList := 'delete from ' + GetArrayElement(i).AsObject.ClassName
+                                  ResultObjectList := ResultObjectList + 'delete from ' + GetArrayElement(i).AsObject.ClassName
                                                       + ' where ' + TAppObjectItem(GetArrayElement(i).AsObject).GetHeaderField + ' = ' + QuotedStr(AObject.ID) + ';';
 
                                 end;

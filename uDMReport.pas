@@ -57,6 +57,8 @@ type
     FDMemTable2: TFDMemTable;
     FDStanStorageBinLink1: TFDStanStorageBinLink;
     FDStanStorageJSONLink1: TFDStanStorageJSONLink;
+    FDMemTable3: TFDMemTable;
+    IBQ3: TfrxDBDataset;
     procedure actCloseExecute(Sender: TObject);
     procedure actPrintCloseExecute(Sender: TObject);
     procedure actPrintDlgExecute(Sender: TObject);
@@ -86,7 +88,7 @@ type
   private
     FBisaDesignReport: Boolean;
     FRealName: string;
-    FReportClient: TDSReportClient;
+    FReportClient: TDSDataClient;
     FReportName: string;
     FReportPath: string;
     FTanggalCetak: string;
@@ -95,7 +97,7 @@ type
     FUserName: string;
     function FocusedPreview: TfrxPreview;
     function FocusedReport: TfrxReport;
-    function GetReportClient: TDSReportClient;
+    function GetReportClient: TDSDataClient;
     procedure PrintReport(WithDialog: Boolean);
     procedure SetCBZoom;
     procedure SetReportPath(const Value: string);
@@ -107,7 +109,7 @@ type
     property BisaDesignReport: Boolean read FBisaDesignReport write
         FBisaDesignReport;
     property RealName: string read FRealName write FRealName;
-    property ReportClient: TDSReportClient read GetReportClient write FReportClient;
+    property ReportClient: TDSDataClient read GetReportClient write FReportClient;
     property ReportPath: string read FReportPath write SetReportPath;
     property TanggalCetak: string read FTanggalCetak write FTanggalCetak;
     property UserName: string read FUserName write FUserName;
@@ -252,7 +254,7 @@ begin
 
   FDMemTable1.Close;
   FDMemTable2.Close;
-
+  FDMemTable3.Close;
 
   FDMemTable1.AppendData(TFDJSONDataSetsReader.GetListValue(aListDataSet, 0));
   FDMemTable1.Open;
@@ -261,6 +263,12 @@ begin
   begin
     FDMemTable2.AppendData(TFDJSONDataSetsReader.GetListValue(aListDataSet, 1));
     FDMemTable2.Open;
+  end;
+
+  if dsCount > 2 then   //sementara 3 dataset dulu gan..
+  begin
+    FDMemTable3.AppendData(TFDJSONDataSetsReader.GetListValue(aListDataSet, 2));
+    FDMemTable3.Open;
   end;
 
   frxReport1.FileName := sReportFile;
@@ -369,10 +377,10 @@ begin
 
 end;
 
-function TDMReport.GetReportClient: TDSReportClient;
+function TDMReport.GetReportClient: TDSDataClient;
 begin
   if not Assigned(FReportClient) then
-    FReportClient := TDSReportClient.Create(ClientDataModule.DSRestConnection, False);
+    FReportClient := TDSDataClient.Create(ClientDataModule.DSRestConnection, False);
   Result := FReportClient;
 end;
 
@@ -436,11 +444,3 @@ begin
 end;
 
 end.
-
-
-
-
-
-
-
-

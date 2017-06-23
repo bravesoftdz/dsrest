@@ -279,7 +279,6 @@ object DMReport: TDMReport
       StyleHot.LookAndFeel.NativeStyle = False
       TabOrder = 4
       Text = 'PDF'
-      ExplicitHeight = 21
       Width = 78
     end
     object btnPrev: TcxButton
@@ -616,7 +615,6 @@ object DMReport: TDMReport
       StyleHot.LookAndFeel.NativeStyle = False
       TabOrder = 10
       Text = '100%'
-      ExplicitHeight = 21
       Width = 60
     end
     object btnFastPrint: TcxButton
@@ -1014,5 +1012,24 @@ object DMReport: TDMReport
   object FDStanStorageJSONLink1: TFDStanStorageJSONLink
     Left = 728
     Top = 251
+  end
+  object FDMemTable3: TFDMemTable
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
+    UpdateOptions.CheckRequired = False
+    UpdateOptions.AutoCommitUpdates = True
+    Left = 264
+    Top = 283
+  end
+  object IBQ3: TfrxDBDataset
+    UserName = 'IBQ3'
+    CloseDataSource = False
+    DataSet = FDMemTable3
+    BCDToCurrency = False
+    Left = 208
+    Top = 152
   end
 end

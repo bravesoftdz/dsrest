@@ -459,7 +459,7 @@ var
   lCDSSalesman: TClientDataSet;
   sSQL: string;
 begin
-  sSQL := 'select Nama,Kode,ID from TSupplier where issalesman = 1';
+  sSQL := 'select Nama,Kode,ID from vbusinesspartner where is_salesman = 1';
   lCDSSalesman := TDBUtils.OpenDataset(sSQL);
   cbbSalesman.Properties.LoadFromCDS(lCDSSalesman,'ID','Nama',['ID'],Self);
   cbbSalesman.Properties.SetMultiPurposeLookup;
@@ -470,7 +470,7 @@ var
   lCDSPembeli: TClientDataSet;
   sSQL: string;
 begin
-  sSQL := 'select * from vpembeli';
+  sSQL := 'select * from vbusinesspartner where is_pembeli = 1';
   lCDSPembeli := TDBUtils.OpenDataset(sSQL, Self);
   cbbPembeli.Properties.LoadFromCDS(lCDSPembeli,'ID','Nama',['ID'],Self);
   cbbPembeli.Properties.SetMultiPurposeLookup;

@@ -1,39 +1,41 @@
 //
 // Created by the DataSnap proxy generator.
-// 5/27/2017 11:30:59 PM
+// 6/23/2017 8:30:34 PM
 //
 
 unit ClientClassesUnit2;
 
 interface
 
-uses System.JSON, Datasnap.DSProxyRest, Datasnap.DSClientRest, Data.DBXCommon, Data.DBXClient, Data.DBXDataSnap, Data.DBXJSON, Datasnap.DSProxy, System.Classes, System.SysUtils, Data.DB, Data.SqlExpr, Data.DBXDBReaders, Data.DBXCDSReaders, uModel, uCustomerInvoice, Data.FireDACJSONReflect, uPenjualan, uAR, uAccount, uRekBank, uPenerimaanKas, uSettingApp, uTransferAntarGudang, uTAGRequests, uTransferAntarCabang, Data.DBXJSONReflect;
+uses System.JSON, Datasnap.DSProxyRest, Datasnap.DSClientRest, Data.DBXCommon, Data.DBXClient, Data.DBXDataSnap, Data.DBXJSON, Datasnap.DSProxy, System.Classes, System.SysUtils, Data.DB, Data.SqlExpr, Data.DBXDBReaders, Data.DBXCDSReaders, uModel, uCustomerInvoice, Data.FireDACJSONReflect, uPenjualan, uAR, uAccount, uRekBank, uPenerimaanKas, uPengeluaranKas, uSettingApp, uTransferAntarGudang, uTAGRequests, uTransferAntarCabang, Data.DBXJSONReflect;
 
 type
 
-  IDSRestCachedTCustomerInvoice = interface;
-  IDSRestCachedTCabang = interface;
   IDSRestCachedTGudang = interface;
-  IDSRestCachedTAR = interface;
   IDSRestCachedTGroupBarang = interface;
   IDSRestCachedTPenerimaanBarang = interface;
   IDSRestCachedTRekBank = interface;
   IDSRestCachedTLogAppObject = interface;
   IDSRestCachedTSettingApp = interface;
   IDSRestCachedTPembayaranSupplier = interface;
-  IDSRestCachedTStockSekarang = interface;
   IDSRestCachedTBarang = interface;
   IDSRestCachedTPenjualan = interface;
+  IDSRestCachedTTransferAntarCabangKirim = interface;
+  IDSRestCachedTTransferAntarCabangTerima = interface;
+  IDSRestCachedTReturSupplier = interface;
+  IDSRestCachedTPenerimaanKas = interface;
+  IDSRestCachedTCustomerInvoice = interface;
+  IDSRestCachedTCabang = interface;
+  IDSRestCachedTAR = interface;
   IDSRestCachedTTransferAntarGudang = interface;
+  IDSRestCachedTStockSekarang = interface;
+  IDSRestCachedTAP = interface;
   IDSRestCachedTUOM = interface;
   IDSRestCachedTAccount = interface;
   IDSRestCachedTTAGRequest = interface;
   IDSRestCachedTSupplier = interface;
-  IDSRestCachedTTransferAntarCabangKirim = interface;
-  IDSRestCachedTTransferAntarCabangTerima = interface;
-  IDSRestCachedTReturSupplier = interface;
   IDSRestCachedTFDJSONDataSets = interface;
-  IDSRestCachedTPenerimaanKas = interface;
+  IDSRestCachedTPengeluaranKas = interface;
 
   TServerLaporanClient = class(TDSAdminRestClient)
   private
@@ -67,6 +69,8 @@ type
     FRetrivePenerimaanKasCommand_Cache: TDSRestCommand;
     FRetriveARCommand: TDSRestCommand;
     FRetriveARCommand_Cache: TDSRestCommand;
+    FRetrivePengeluaranKasCommand: TDSRestCommand;
+    FRetrivePengeluaranKasCommand_Cache: TDSRestCommand;
     FRetriveSettingAppCommand: TDSRestCommand;
     FRetriveSettingAppCommand_Cache: TDSRestCommand;
   public
@@ -103,6 +107,8 @@ type
     function RetrivePenerimaanKas_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function RetriveAR(ASupplier: TSupplier; const ARequestFilter: string = ''): TDataSet;
     function RetriveAR_Cache(ASupplier: TSupplier; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function RetrivePengeluaranKas(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string = ''): TDataSet;
+    function RetrivePengeluaranKas_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function RetriveSettingApp(ACabang: TCabang; const ARequestFilter: string = ''): TDataSet;
     function RetriveSettingApp_Cache(ACabang: TCabang; const ARequestFilter: string = ''): IDSRestCachedDataSet;
   end;
@@ -114,6 +120,7 @@ type
     FRetrieveKodeCommand: TDSRestCommand;
     FRetrieveKodeCommand_Cache: TDSRestCommand;
     FDeleteCommand: TDSRestCommand;
+    FDeleteNoCommitCommand: TDSRestCommand;
     FRetrieveCDSCommand: TDSRestCommand;
     FRetrieveCDSCommand_Cache: TDSRestCommand;
     FSaveCommand: TDSRestCommand;
@@ -126,6 +133,7 @@ type
     function RetrieveKode(AKode: string; const ARequestFilter: string = ''): TBarang;
     function RetrieveKode_Cache(AKode: string; const ARequestFilter: string = ''): IDSRestCachedTBarang;
     function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
+    function DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
     function RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string = ''): TDataSet;
     function RetrieveCDS_Cache(AAppObject: TAppObject; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function Save(AOBject: TAppObject; const ARequestFilter: string = ''): Boolean;
@@ -147,6 +155,7 @@ type
     FRetrieveDataSlipCommand: TDSRestCommand;
     FRetrieveDataSlipCommand_Cache: TDSRestCommand;
     FDeleteCommand: TDSRestCommand;
+    FDeleteNoCommitCommand: TDSRestCommand;
     FRetrieveCDSCommand: TDSRestCommand;
     FRetrieveCDSCommand_Cache: TDSRestCommand;
     FSaveCommand: TDSRestCommand;
@@ -168,6 +177,7 @@ type
     function RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): TFDJSONDataSets;
     function RetrieveDataSlip_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
     function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
+    function DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
     function RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string = ''): TDataSet;
     function RetrieveCDS_Cache(AAppObject: TAppObject; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function Save(AOBject: TAppObject; const ARequestFilter: string = ''): Boolean;
@@ -194,6 +204,7 @@ type
     FRetrieveCommand: TDSRestCommand;
     FRetrieveCommand_Cache: TDSRestCommand;
     FDeleteCommand: TDSRestCommand;
+    FDeleteNoCommitCommand: TDSRestCommand;
     FRetrieveCDSCommand: TDSRestCommand;
     FRetrieveCDSCommand_Cache: TDSRestCommand;
     FSaveCommand: TDSRestCommand;
@@ -204,6 +215,7 @@ type
     function Retrieve(AID: string; const ARequestFilter: string = ''): TSupplier;
     function Retrieve_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedTSupplier;
     function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
+    function DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
     function RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string = ''): TDataSet;
     function RetrieveCDS_Cache(AAppObject: TAppObject; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function Save(AOBject: TAppObject; const ARequestFilter: string = ''): Boolean;
@@ -214,6 +226,7 @@ type
     FRetrieveCommand: TDSRestCommand;
     FRetrieveCommand_Cache: TDSRestCommand;
     FDeleteCommand: TDSRestCommand;
+    FDeleteNoCommitCommand: TDSRestCommand;
     FRetrieveCDSCommand: TDSRestCommand;
     FRetrieveCDSCommand_Cache: TDSRestCommand;
     FSaveCommand: TDSRestCommand;
@@ -224,6 +237,7 @@ type
     function Retrieve(AID: string; const ARequestFilter: string = ''): TGroupBarang;
     function Retrieve_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedTGroupBarang;
     function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
+    function DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
     function RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string = ''): TDataSet;
     function RetrieveCDS_Cache(AAppObject: TAppObject; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function Save(AOBject: TAppObject; const ARequestFilter: string = ''): Boolean;
@@ -245,6 +259,7 @@ type
     FRetrieveDataSlipCommand: TDSRestCommand;
     FRetrieveDataSlipCommand_Cache: TDSRestCommand;
     FDeleteCommand: TDSRestCommand;
+    FDeleteNoCommitCommand: TDSRestCommand;
     FRetrieveCDSCommand: TDSRestCommand;
     FRetrieveCDSCommand_Cache: TDSRestCommand;
     FSaveCommand: TDSRestCommand;
@@ -266,6 +281,7 @@ type
     function RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): TFDJSONDataSets;
     function RetrieveDataSlip_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
     function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
+    function DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
     function RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string = ''): TDataSet;
     function RetrieveCDS_Cache(AAppObject: TAppObject; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function Save(AOBject: TAppObject; const ARequestFilter: string = ''): Boolean;
@@ -276,6 +292,7 @@ type
     FRetrieveCommand: TDSRestCommand;
     FRetrieveCommand_Cache: TDSRestCommand;
     FDeleteCommand: TDSRestCommand;
+    FDeleteNoCommitCommand: TDSRestCommand;
     FRetrieveCDSCommand: TDSRestCommand;
     FRetrieveCDSCommand_Cache: TDSRestCommand;
     FSaveCommand: TDSRestCommand;
@@ -286,6 +303,7 @@ type
     function Retrieve(AID: string; const ARequestFilter: string = ''): TCabang;
     function Retrieve_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedTCabang;
     function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
+    function DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
     function RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string = ''): TDataSet;
     function RetrieveCDS_Cache(AAppObject: TAppObject; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function Save(AOBject: TAppObject; const ARequestFilter: string = ''): Boolean;
@@ -296,6 +314,7 @@ type
     FRetrieveCommand: TDSRestCommand;
     FRetrieveCommand_Cache: TDSRestCommand;
     FDeleteCommand: TDSRestCommand;
+    FDeleteNoCommitCommand: TDSRestCommand;
     FRetrieveCDSCommand: TDSRestCommand;
     FRetrieveCDSCommand_Cache: TDSRestCommand;
     FSaveCommand: TDSRestCommand;
@@ -306,6 +325,7 @@ type
     function Retrieve(AID: string; const ARequestFilter: string = ''): TLogAppObject;
     function Retrieve_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedTLogAppObject;
     function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
+    function DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
     function RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string = ''): TDataSet;
     function RetrieveCDS_Cache(AAppObject: TAppObject; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function Save(AOBject: TAppObject; const ARequestFilter: string = ''): Boolean;
@@ -327,6 +347,7 @@ type
     FRetrieveCommand: TDSRestCommand;
     FRetrieveCommand_Cache: TDSRestCommand;
     FDeleteCommand: TDSRestCommand;
+    FDeleteNoCommitCommand: TDSRestCommand;
     FRetrieveCDSCommand: TDSRestCommand;
     FRetrieveCDSCommand_Cache: TDSRestCommand;
     FSaveCommand: TDSRestCommand;
@@ -338,6 +359,7 @@ type
     function Retrieve(ABarang: TBarang; AGudang: TGudang; const ARequestFilter: string = ''): TStockSekarang;
     function Retrieve_Cache(ABarang: TBarang; AGudang: TGudang; const ARequestFilter: string = ''): IDSRestCachedTStockSekarang;
     function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
+    function DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
     function RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string = ''): TDataSet;
     function RetrieveCDS_Cache(AAppObject: TAppObject; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function Save(AOBject: TAppObject; const ARequestFilter: string = ''): Boolean;
@@ -355,6 +377,7 @@ type
     FRetrieveDataSlipCommand: TDSRestCommand;
     FRetrieveDataSlipCommand_Cache: TDSRestCommand;
     FDeleteCommand: TDSRestCommand;
+    FDeleteNoCommitCommand: TDSRestCommand;
     FRetrieveCDSCommand: TDSRestCommand;
     FRetrieveCDSCommand_Cache: TDSRestCommand;
     FSaveCommand: TDSRestCommand;
@@ -372,6 +395,7 @@ type
     function RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): TFDJSONDataSets;
     function RetrieveDataSlip_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
     function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
+    function DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
     function RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string = ''): TDataSet;
     function RetrieveCDS_Cache(AAppObject: TAppObject; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function Save(AOBject: TAppObject; const ARequestFilter: string = ''): Boolean;
@@ -381,6 +405,7 @@ type
   private
     FCloseCommand: TDSRestCommand;
     FDeleteCommand: TDSRestCommand;
+    FDeleteNoCommitCommand: TDSRestCommand;
     FRetrieveCDSCommand: TDSRestCommand;
     FRetrieveCDSCommand_Cache: TDSRestCommand;
     FSaveCommand: TDSRestCommand;
@@ -390,6 +415,7 @@ type
     destructor Destroy; override;
     function Close(APeriode: Integer; ACabang: TCabang; const ARequestFilter: string = ''): Boolean;
     function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
+    function DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
     function RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string = ''): TDataSet;
     function RetrieveCDS_Cache(AAppObject: TAppObject; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function Save(AOBject: TAppObject; const ARequestFilter: string = ''): Boolean;
@@ -402,6 +428,7 @@ type
     FRetrieveCDS2Command: TDSRestCommand;
     FRetrieveCDS2Command_Cache: TDSRestCommand;
     FDeleteCommand: TDSRestCommand;
+    FDeleteNoCommitCommand: TDSRestCommand;
     FRetrieveCDSCommand: TDSRestCommand;
     FRetrieveCDSCommand_Cache: TDSRestCommand;
     FSaveCommand: TDSRestCommand;
@@ -414,6 +441,7 @@ type
     function RetrieveCDS2(const ARequestFilter: string = ''): TDataSet;
     function RetrieveCDS2_Cache(const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
+    function DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
     function RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string = ''): TDataSet;
     function RetrieveCDS_Cache(AAppObject: TAppObject; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function Save(AOBject: TAppObject; const ARequestFilter: string = ''): Boolean;
@@ -426,6 +454,7 @@ type
     FRetrieveKodeCommand: TDSRestCommand;
     FRetrieveKodeCommand_Cache: TDSRestCommand;
     FDeleteCommand: TDSRestCommand;
+    FDeleteNoCommitCommand: TDSRestCommand;
     FRetrieveCDSCommand: TDSRestCommand;
     FRetrieveCDSCommand_Cache: TDSRestCommand;
     FSaveCommand: TDSRestCommand;
@@ -438,6 +467,7 @@ type
     function RetrieveKode(AKode: string; const ARequestFilter: string = ''): TGudang;
     function RetrieveKode_Cache(AKode: string; const ARequestFilter: string = ''): IDSRestCachedTGudang;
     function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
+    function DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
     function RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string = ''): TDataSet;
     function RetrieveCDS_Cache(AAppObject: TAppObject; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function Save(AOBject: TAppObject; const ARequestFilter: string = ''): Boolean;
@@ -457,6 +487,7 @@ type
     FRetrieveDataSlipCommand: TDSRestCommand;
     FRetrieveDataSlipCommand_Cache: TDSRestCommand;
     FDeleteCommand: TDSRestCommand;
+    FDeleteNoCommitCommand: TDSRestCommand;
     FRetrieveCDSCommand: TDSRestCommand;
     FRetrieveCDSCommand_Cache: TDSRestCommand;
     FSaveCommand: TDSRestCommand;
@@ -476,6 +507,7 @@ type
     function RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): TFDJSONDataSets;
     function RetrieveDataSlip_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
     function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
+    function DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
     function RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string = ''): TDataSet;
     function RetrieveCDS_Cache(AAppObject: TAppObject; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function Save(AOBject: TAppObject; const ARequestFilter: string = ''): Boolean;
@@ -489,12 +521,15 @@ type
     FRetrieveCDSlipCommand_Cache: TDSRestCommand;
     FRetrieveNoBuktiCommand: TDSRestCommand;
     FRetrieveNoBuktiCommand_Cache: TDSRestCommand;
+    FRetrieveTransaksiCommand: TDSRestCommand;
+    FRetrieveTransaksiCommand_Cache: TDSRestCommand;
     FGenerateNoBuktiCommand: TDSRestCommand;
     FRetrieveDataCommand: TDSRestCommand;
     FRetrieveDataCommand_Cache: TDSRestCommand;
     FRetrieveDataSlipCommand: TDSRestCommand;
     FRetrieveDataSlipCommand_Cache: TDSRestCommand;
     FDeleteCommand: TDSRestCommand;
+    FDeleteNoCommitCommand: TDSRestCommand;
     FRetrieveCDSCommand: TDSRestCommand;
     FRetrieveCDSCommand_Cache: TDSRestCommand;
     FSaveCommand: TDSRestCommand;
@@ -508,12 +543,51 @@ type
     function RetrieveCDSlip_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function RetrieveNoBukti(ANoBukti: string; const ARequestFilter: string = ''): TAR;
     function RetrieveNoBukti_Cache(ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedTAR;
+    function RetrieveTransaksi(ATransaksi: string; AIDTransaksi: string; const ARequestFilter: string = ''): TAR;
+    function RetrieveTransaksi_Cache(ATransaksi: string; AIDTransaksi: string; const ARequestFilter: string = ''): IDSRestCachedTAR;
     function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
     function RetrieveData(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): TDataSet;
     function RetrieveData_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): TFDJSONDataSets;
     function RetrieveDataSlip_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
     function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
+    function DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
+    function RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string = ''): TDataSet;
+    function RetrieveCDS_Cache(AAppObject: TAppObject; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function Save(AOBject: TAppObject; const ARequestFilter: string = ''): Boolean;
+  end;
+
+  TServerAPClient = class(TDSAdminRestClient)
+  private
+    FRetrieveCommand: TDSRestCommand;
+    FRetrieveCommand_Cache: TDSRestCommand;
+    FRetrieveTransaksiCommand: TDSRestCommand;
+    FRetrieveTransaksiCommand_Cache: TDSRestCommand;
+    FGenerateNoBuktiCommand: TDSRestCommand;
+    FRetrieveDataCommand: TDSRestCommand;
+    FRetrieveDataCommand_Cache: TDSRestCommand;
+    FRetrieveDataSlipCommand: TDSRestCommand;
+    FRetrieveDataSlipCommand_Cache: TDSRestCommand;
+    FDeleteCommand: TDSRestCommand;
+    FDeleteNoCommitCommand: TDSRestCommand;
+    FRetrieveCDSCommand: TDSRestCommand;
+    FRetrieveCDSCommand_Cache: TDSRestCommand;
+    FSaveCommand: TDSRestCommand;
+  public
+    constructor Create(ARestConnection: TDSRestConnection); overload;
+    constructor Create(ARestConnection: TDSRestConnection; AInstanceOwner: Boolean); overload;
+    destructor Destroy; override;
+    function Retrieve(AID: string; const ARequestFilter: string = ''): TAP;
+    function Retrieve_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedTAP;
+    function RetrieveTransaksi(ATransaksi: string; AIDTransaksi: string; const ARequestFilter: string = ''): TAP;
+    function RetrieveTransaksi_Cache(ATransaksi: string; AIDTransaksi: string; const ARequestFilter: string = ''): IDSRestCachedTAP;
+    function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
+    function RetrieveData(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): TDataSet;
+    function RetrieveData_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): TFDJSONDataSets;
+    function RetrieveDataSlip_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
+    function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
+    function DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
     function RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string = ''): TDataSet;
     function RetrieveCDS_Cache(AAppObject: TAppObject; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function Save(AOBject: TAppObject; const ARequestFilter: string = ''): Boolean;
@@ -524,6 +598,7 @@ type
     FRetrieveCommand: TDSRestCommand;
     FRetrieveCommand_Cache: TDSRestCommand;
     FDeleteCommand: TDSRestCommand;
+    FDeleteNoCommitCommand: TDSRestCommand;
     FRetrieveCDSCommand: TDSRestCommand;
     FRetrieveCDSCommand_Cache: TDSRestCommand;
     FSaveCommand: TDSRestCommand;
@@ -534,6 +609,7 @@ type
     function Retrieve(AID: string; const ARequestFilter: string = ''): TAccount;
     function Retrieve_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedTAccount;
     function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
+    function DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
     function RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string = ''): TDataSet;
     function RetrieveCDS_Cache(AAppObject: TAppObject; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function Save(AOBject: TAppObject; const ARequestFilter: string = ''): Boolean;
@@ -544,6 +620,7 @@ type
     FRetrieveCommand: TDSRestCommand;
     FRetrieveCommand_Cache: TDSRestCommand;
     FDeleteCommand: TDSRestCommand;
+    FDeleteNoCommitCommand: TDSRestCommand;
     FRetrieveCDSCommand: TDSRestCommand;
     FRetrieveCDSCommand_Cache: TDSRestCommand;
     FSaveCommand: TDSRestCommand;
@@ -554,6 +631,7 @@ type
     function Retrieve(AID: string; const ARequestFilter: string = ''): TRekBank;
     function Retrieve_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedTRekBank;
     function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
+    function DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
     function RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string = ''): TDataSet;
     function RetrieveCDS_Cache(AAppObject: TAppObject; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function Save(AOBject: TAppObject; const ARequestFilter: string = ''): Boolean;
@@ -578,6 +656,7 @@ type
     FRetrieveDataSlipCommand: TDSRestCommand;
     FRetrieveDataSlipCommand_Cache: TDSRestCommand;
     FDeleteCommand: TDSRestCommand;
+    FDeleteNoCommitCommand: TDSRestCommand;
     FRetrieveCDSCommand: TDSRestCommand;
     FRetrieveCDSCommand_Cache: TDSRestCommand;
     FSaveCommand: TDSRestCommand;
@@ -602,6 +681,57 @@ type
     function RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): TFDJSONDataSets;
     function RetrieveDataSlip_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
     function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
+    function DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
+    function RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string = ''): TDataSet;
+    function RetrieveCDS_Cache(AAppObject: TAppObject; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function Save(AOBject: TAppObject; const ARequestFilter: string = ''): Boolean;
+  end;
+
+  TServerPengeluaranKasClient = class(TDSAdminRestClient)
+  private
+    FAfterSaveCommand: TDSRestCommand;
+    FBeforeDeleteCommand: TDSRestCommand;
+    FBeforeSaveCommand: TDSRestCommand;
+    FRetrieveCommand: TDSRestCommand;
+    FRetrieveCommand_Cache: TDSRestCommand;
+    FRetrievePenerimaanAPsCommand: TDSRestCommand;
+    FRetrievePenerimaanAPsCommand_Cache: TDSRestCommand;
+    FRetrieveCDSlipCommand: TDSRestCommand;
+    FRetrieveCDSlipCommand_Cache: TDSRestCommand;
+    FRetrieveNoBuktiCommand: TDSRestCommand;
+    FRetrieveNoBuktiCommand_Cache: TDSRestCommand;
+    FGenerateNoBuktiCommand: TDSRestCommand;
+    FRetrieveDataCommand: TDSRestCommand;
+    FRetrieveDataCommand_Cache: TDSRestCommand;
+    FRetrieveDataSlipCommand: TDSRestCommand;
+    FRetrieveDataSlipCommand_Cache: TDSRestCommand;
+    FDeleteCommand: TDSRestCommand;
+    FDeleteNoCommitCommand: TDSRestCommand;
+    FRetrieveCDSCommand: TDSRestCommand;
+    FRetrieveCDSCommand_Cache: TDSRestCommand;
+    FSaveCommand: TDSRestCommand;
+  public
+    constructor Create(ARestConnection: TDSRestConnection); overload;
+    constructor Create(ARestConnection: TDSRestConnection; AInstanceOwner: Boolean); overload;
+    destructor Destroy; override;
+    function AfterSave(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
+    function BeforeDelete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
+    function BeforeSave(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
+    function Retrieve(AID: string; const ARequestFilter: string = ''): TPengeluaranKas;
+    function Retrieve_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedTPengeluaranKas;
+    function RetrievePenerimaanAPs(AID: string; const ARequestFilter: string = ''): TDataSet;
+    function RetrievePenerimaanAPs_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function RetrieveCDSlip(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; ANoBukti: string; const ARequestFilter: string = ''): TFDJSONDataSets;
+    function RetrieveCDSlip_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
+    function RetrieveNoBukti(ANoBukti: string; const ARequestFilter: string = ''): TPengeluaranKas;
+    function RetrieveNoBukti_Cache(ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedTPengeluaranKas;
+    function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
+    function RetrieveData(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): TDataSet;
+    function RetrieveData_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): TFDJSONDataSets;
+    function RetrieveDataSlip_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
+    function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
+    function DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
     function RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string = ''): TDataSet;
     function RetrieveCDS_Cache(AAppObject: TAppObject; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function Save(AOBject: TAppObject; const ARequestFilter: string = ''): Boolean;
@@ -614,6 +744,7 @@ type
     FRetrieveByCabangCommand: TDSRestCommand;
     FRetrieveByCabangCommand_Cache: TDSRestCommand;
     FDeleteCommand: TDSRestCommand;
+    FDeleteNoCommitCommand: TDSRestCommand;
     FRetrieveCDSCommand: TDSRestCommand;
     FRetrieveCDSCommand_Cache: TDSRestCommand;
     FSaveCommand: TDSRestCommand;
@@ -626,6 +757,7 @@ type
     function RetrieveByCabang(ACabangID: string; const ARequestFilter: string = ''): TSettingApp;
     function RetrieveByCabang_Cache(ACabangID: string; const ARequestFilter: string = ''): IDSRestCachedTSettingApp;
     function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
+    function DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
     function RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string = ''): TDataSet;
     function RetrieveCDS_Cache(AAppObject: TAppObject; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function Save(AOBject: TAppObject; const ARequestFilter: string = ''): Boolean;
@@ -646,6 +778,7 @@ type
     FRetrieveDataSlipCommand: TDSRestCommand;
     FRetrieveDataSlipCommand_Cache: TDSRestCommand;
     FDeleteCommand: TDSRestCommand;
+    FDeleteNoCommitCommand: TDSRestCommand;
     FRetrieveCDSCommand: TDSRestCommand;
     FRetrieveCDSCommand_Cache: TDSRestCommand;
     FSaveCommand: TDSRestCommand;
@@ -666,6 +799,7 @@ type
     function RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): TFDJSONDataSets;
     function RetrieveDataSlip_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
     function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
+    function DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
     function RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string = ''): TDataSet;
     function RetrieveCDS_Cache(AAppObject: TAppObject; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function Save(AOBject: TAppObject; const ARequestFilter: string = ''): Boolean;
@@ -685,6 +819,7 @@ type
     FRetrieveDataSlipCommand: TDSRestCommand;
     FRetrieveDataSlipCommand_Cache: TDSRestCommand;
     FDeleteCommand: TDSRestCommand;
+    FDeleteNoCommitCommand: TDSRestCommand;
     FRetrieveCDSCommand: TDSRestCommand;
     FRetrieveCDSCommand_Cache: TDSRestCommand;
     FSaveCommand: TDSRestCommand;
@@ -704,6 +839,7 @@ type
     function RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): TFDJSONDataSets;
     function RetrieveDataSlip_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
     function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
+    function DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
     function RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string = ''): TDataSet;
     function RetrieveCDS_Cache(AAppObject: TAppObject; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function Save(AOBject: TAppObject; const ARequestFilter: string = ''): Boolean;
@@ -721,6 +857,7 @@ type
     FRetrieveDataSlipCommand: TDSRestCommand;
     FRetrieveDataSlipCommand_Cache: TDSRestCommand;
     FDeleteCommand: TDSRestCommand;
+    FDeleteNoCommitCommand: TDSRestCommand;
     FRetrieveCDSCommand: TDSRestCommand;
     FRetrieveCDSCommand_Cache: TDSRestCommand;
     FSaveCommand: TDSRestCommand;
@@ -738,6 +875,7 @@ type
     function RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): TFDJSONDataSets;
     function RetrieveDataSlip_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
     function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
+    function DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
     function RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string = ''): TDataSet;
     function RetrieveCDS_Cache(AAppObject: TAppObject; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function Save(AOBject: TAppObject; const ARequestFilter: string = ''): Boolean;
@@ -755,6 +893,7 @@ type
     FRetrieveDataSlipCommand: TDSRestCommand;
     FRetrieveDataSlipCommand_Cache: TDSRestCommand;
     FDeleteCommand: TDSRestCommand;
+    FDeleteNoCommitCommand: TDSRestCommand;
     FRetrieveCDSCommand: TDSRestCommand;
     FRetrieveCDSCommand_Cache: TDSRestCommand;
     FSaveCommand: TDSRestCommand;
@@ -772,40 +911,34 @@ type
     function RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): TFDJSONDataSets;
     function RetrieveDataSlip_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
     function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
+    function DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
     function RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string = ''): TDataSet;
     function RetrieveCDS_Cache(AAppObject: TAppObject; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function Save(AOBject: TAppObject; const ARequestFilter: string = ''): Boolean;
   end;
 
-  TDSReportClient = class(TDSAdminRestClient)
+  TDSDataClient = class(TDSAdminRestClient)
   private
     FGetNamakuCommand: TDSRestCommand;
+    FLoadAccountPengeluaranKasLainCommand: TDSRestCommand;
+    FLoadAccountPengeluaranKasLainCommand_Cache: TDSRestCommand;
+    FLoadAPCommand: TDSRestCommand;
+    FLoadAPCommand_Cache: TDSRestCommand;
   public
     constructor Create(ARestConnection: TDSRestConnection); overload;
     constructor Create(ARestConnection: TDSRestConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
     function GetNamaku(const ARequestFilter: string = ''): string;
+    function LoadAccountPengeluaranKasLain(const ARequestFilter: string = ''): TDataSet;
+    function LoadAccountPengeluaranKasLain_Cache(const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function LoadAP(ASupplier: TSupplier; const ARequestFilter: string = ''): TDataSet;
+    function LoadAP_Cache(ASupplier: TSupplier; const ARequestFilter: string = ''): IDSRestCachedDataSet;
   end;
 
-  IDSRestCachedTCustomerInvoice = interface(IDSRestCachedObject<TCustomerInvoice>)
-  end;
-
-  TDSRestCachedTCustomerInvoice = class(TDSRestCachedObject<TCustomerInvoice>, IDSRestCachedTCustomerInvoice, IDSRestCachedCommand)
-  end;
-  IDSRestCachedTCabang = interface(IDSRestCachedObject<TCabang>)
-  end;
-
-  TDSRestCachedTCabang = class(TDSRestCachedObject<TCabang>, IDSRestCachedTCabang, IDSRestCachedCommand)
-  end;
   IDSRestCachedTGudang = interface(IDSRestCachedObject<TGudang>)
   end;
 
   TDSRestCachedTGudang = class(TDSRestCachedObject<TGudang>, IDSRestCachedTGudang, IDSRestCachedCommand)
-  end;
-  IDSRestCachedTAR = interface(IDSRestCachedObject<TAR>)
-  end;
-
-  TDSRestCachedTAR = class(TDSRestCachedObject<TAR>, IDSRestCachedTAR, IDSRestCachedCommand)
   end;
   IDSRestCachedTGroupBarang = interface(IDSRestCachedObject<TGroupBarang>)
   end;
@@ -837,11 +970,6 @@ type
 
   TDSRestCachedTPembayaranSupplier = class(TDSRestCachedObject<TPembayaranSupplier>, IDSRestCachedTPembayaranSupplier, IDSRestCachedCommand)
   end;
-  IDSRestCachedTStockSekarang = interface(IDSRestCachedObject<TStockSekarang>)
-  end;
-
-  TDSRestCachedTStockSekarang = class(TDSRestCachedObject<TStockSekarang>, IDSRestCachedTStockSekarang, IDSRestCachedCommand)
-  end;
   IDSRestCachedTBarang = interface(IDSRestCachedObject<TBarang>)
   end;
 
@@ -852,10 +980,55 @@ type
 
   TDSRestCachedTPenjualan = class(TDSRestCachedObject<TPenjualan>, IDSRestCachedTPenjualan, IDSRestCachedCommand)
   end;
+  IDSRestCachedTTransferAntarCabangKirim = interface(IDSRestCachedObject<TTransferAntarCabangKirim>)
+  end;
+
+  TDSRestCachedTTransferAntarCabangKirim = class(TDSRestCachedObject<TTransferAntarCabangKirim>, IDSRestCachedTTransferAntarCabangKirim, IDSRestCachedCommand)
+  end;
+  IDSRestCachedTTransferAntarCabangTerima = interface(IDSRestCachedObject<TTransferAntarCabangTerima>)
+  end;
+
+  TDSRestCachedTTransferAntarCabangTerima = class(TDSRestCachedObject<TTransferAntarCabangTerima>, IDSRestCachedTTransferAntarCabangTerima, IDSRestCachedCommand)
+  end;
+  IDSRestCachedTReturSupplier = interface(IDSRestCachedObject<TReturSupplier>)
+  end;
+
+  TDSRestCachedTReturSupplier = class(TDSRestCachedObject<TReturSupplier>, IDSRestCachedTReturSupplier, IDSRestCachedCommand)
+  end;
+  IDSRestCachedTPenerimaanKas = interface(IDSRestCachedObject<TPenerimaanKas>)
+  end;
+
+  TDSRestCachedTPenerimaanKas = class(TDSRestCachedObject<TPenerimaanKas>, IDSRestCachedTPenerimaanKas, IDSRestCachedCommand)
+  end;
+  IDSRestCachedTCustomerInvoice = interface(IDSRestCachedObject<TCustomerInvoice>)
+  end;
+
+  TDSRestCachedTCustomerInvoice = class(TDSRestCachedObject<TCustomerInvoice>, IDSRestCachedTCustomerInvoice, IDSRestCachedCommand)
+  end;
+  IDSRestCachedTCabang = interface(IDSRestCachedObject<TCabang>)
+  end;
+
+  TDSRestCachedTCabang = class(TDSRestCachedObject<TCabang>, IDSRestCachedTCabang, IDSRestCachedCommand)
+  end;
+  IDSRestCachedTAR = interface(IDSRestCachedObject<TAR>)
+  end;
+
+  TDSRestCachedTAR = class(TDSRestCachedObject<TAR>, IDSRestCachedTAR, IDSRestCachedCommand)
+  end;
   IDSRestCachedTTransferAntarGudang = interface(IDSRestCachedObject<TTransferAntarGudang>)
   end;
 
   TDSRestCachedTTransferAntarGudang = class(TDSRestCachedObject<TTransferAntarGudang>, IDSRestCachedTTransferAntarGudang, IDSRestCachedCommand)
+  end;
+  IDSRestCachedTStockSekarang = interface(IDSRestCachedObject<TStockSekarang>)
+  end;
+
+  TDSRestCachedTStockSekarang = class(TDSRestCachedObject<TStockSekarang>, IDSRestCachedTStockSekarang, IDSRestCachedCommand)
+  end;
+  IDSRestCachedTAP = interface(IDSRestCachedObject<TAP>)
+  end;
+
+  TDSRestCachedTAP = class(TDSRestCachedObject<TAP>, IDSRestCachedTAP, IDSRestCachedCommand)
   end;
   IDSRestCachedTUOM = interface(IDSRestCachedObject<TUOM>)
   end;
@@ -877,30 +1050,15 @@ type
 
   TDSRestCachedTSupplier = class(TDSRestCachedObject<TSupplier>, IDSRestCachedTSupplier, IDSRestCachedCommand)
   end;
-  IDSRestCachedTTransferAntarCabangKirim = interface(IDSRestCachedObject<TTransferAntarCabangKirim>)
-  end;
-
-  TDSRestCachedTTransferAntarCabangKirim = class(TDSRestCachedObject<TTransferAntarCabangKirim>, IDSRestCachedTTransferAntarCabangKirim, IDSRestCachedCommand)
-  end;
-  IDSRestCachedTTransferAntarCabangTerima = interface(IDSRestCachedObject<TTransferAntarCabangTerima>)
-  end;
-
-  TDSRestCachedTTransferAntarCabangTerima = class(TDSRestCachedObject<TTransferAntarCabangTerima>, IDSRestCachedTTransferAntarCabangTerima, IDSRestCachedCommand)
-  end;
-  IDSRestCachedTReturSupplier = interface(IDSRestCachedObject<TReturSupplier>)
-  end;
-
-  TDSRestCachedTReturSupplier = class(TDSRestCachedObject<TReturSupplier>, IDSRestCachedTReturSupplier, IDSRestCachedCommand)
-  end;
   IDSRestCachedTFDJSONDataSets = interface(IDSRestCachedObject<TFDJSONDataSets>)
   end;
 
   TDSRestCachedTFDJSONDataSets = class(TDSRestCachedObject<TFDJSONDataSets>, IDSRestCachedTFDJSONDataSets, IDSRestCachedCommand)
   end;
-  IDSRestCachedTPenerimaanKas = interface(IDSRestCachedObject<TPenerimaanKas>)
+  IDSRestCachedTPengeluaranKas = interface(IDSRestCachedObject<TPengeluaranKas>)
   end;
 
-  TDSRestCachedTPenerimaanKas = class(TDSRestCachedObject<TPenerimaanKas>, IDSRestCachedTPenerimaanKas, IDSRestCachedCommand)
+  TDSRestCachedTPengeluaranKas = class(TDSRestCachedObject<TPengeluaranKas>, IDSRestCachedTPengeluaranKas, IDSRestCachedCommand)
   end;
 
 const
@@ -1128,6 +1286,22 @@ const
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
+  TServerLaporan_RetrivePengeluaranKas: array [0..3] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ATglAtglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TServerLaporan_RetrivePengeluaranKas_Cache: array [0..3] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ATglAtglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
   TServerLaporan_RetriveSettingApp: array [0..1] of TDSRestParameterMetaData =
   (
     (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
@@ -1165,6 +1339,12 @@ const
   );
 
   TServerBarang_Delete: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
+  TServerBarang_DeleteNoCommit: array [0..1] of TDSRestParameterMetaData =
   (
     (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
@@ -1283,6 +1463,12 @@ const
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
   );
 
+  TServerCustomerInvoice_DeleteNoCommit: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
   TServerCustomerInvoice_RetrieveCDS: array [0..1] of TDSRestParameterMetaData =
   (
     (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
@@ -1343,6 +1529,12 @@ const
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
   );
 
+  TServerSupplier_DeleteNoCommit: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
   TServerSupplier_RetrieveCDS: array [0..1] of TDSRestParameterMetaData =
   (
     (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
@@ -1374,6 +1566,12 @@ const
   );
 
   TServerGroupBarang_Delete: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
+  TServerGroupBarang_DeleteNoCommit: array [0..1] of TDSRestParameterMetaData =
   (
     (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
@@ -1496,6 +1694,12 @@ const
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
   );
 
+  TServerPenerimaanBarang_DeleteNoCommit: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
   TServerPenerimaanBarang_RetrieveCDS: array [0..1] of TDSRestParameterMetaData =
   (
     (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
@@ -1532,6 +1736,12 @@ const
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
   );
 
+  TServerCabang_DeleteNoCommit: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
   TServerCabang_RetrieveCDS: array [0..1] of TDSRestParameterMetaData =
   (
     (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
@@ -1563,6 +1773,12 @@ const
   );
 
   TServerLogAppObject_Delete: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
+  TServerLogAppObject_DeleteNoCommit: array [0..1] of TDSRestParameterMetaData =
   (
     (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
@@ -1612,6 +1828,12 @@ const
   );
 
   TServerStockSekarang_Delete: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
+  TServerStockSekarang_DeleteNoCommit: array [0..1] of TDSRestParameterMetaData =
   (
     (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
@@ -1706,6 +1928,12 @@ const
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
   );
 
+  TServerReturSupplier_DeleteNoCommit: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
   TServerReturSupplier_RetrieveCDS: array [0..1] of TDSRestParameterMetaData =
   (
     (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
@@ -1732,6 +1960,12 @@ const
   );
 
   TServerClosingInventory_Delete: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
+  TServerClosingInventory_DeleteNoCommit: array [0..1] of TDSRestParameterMetaData =
   (
     (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
@@ -1783,6 +2017,12 @@ const
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
   );
 
+  TServerPembayaranSupplier_DeleteNoCommit: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
   TServerPembayaranSupplier_RetrieveCDS: array [0..1] of TDSRestParameterMetaData =
   (
     (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
@@ -1826,6 +2066,12 @@ const
   );
 
   TServerGudang_Delete: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
+  TServerGudang_DeleteNoCommit: array [0..1] of TDSRestParameterMetaData =
   (
     (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
@@ -1938,6 +2184,12 @@ const
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
   );
 
+  TServerPenjualan_DeleteNoCommit: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
   TServerPenjualan_RetrieveCDS: array [0..1] of TDSRestParameterMetaData =
   (
     (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
@@ -1992,6 +2244,20 @@ const
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
+  TServerAR_RetrieveTransaksi: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATransaksi'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'AIDTransaksi'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 37; TypeName: 'TAR')
+  );
+
+  TServerAR_RetrieveTransaksi_Cache: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATransaksi'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'AIDTransaksi'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
   TServerAR_GenerateNoBukti: array [0..2] of TDSRestParameterMetaData =
   (
     (Name: 'ATglBukti'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
@@ -2039,6 +2305,12 @@ const
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
   );
 
+  TServerAR_DeleteNoCommit: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
   TServerAR_RetrieveCDS: array [0..1] of TDSRestParameterMetaData =
   (
     (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
@@ -2057,6 +2329,103 @@ const
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
   );
 
+  TServerAP_Retrieve: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AID'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 37; TypeName: 'TAP')
+  );
+
+  TServerAP_Retrieve_Cache: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AID'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerAP_RetrieveTransaksi: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATransaksi'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'AIDTransaksi'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 37; TypeName: 'TAP')
+  );
+
+  TServerAP_RetrieveTransaksi_Cache: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATransaksi'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'AIDTransaksi'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerAP_GenerateNoBukti: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATglBukti'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APrefix'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'string')
+  );
+
+  TServerAP_RetrieveData: array [0..3] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'AIDCabang'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TServerAP_RetrieveData_Cache: array [0..3] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'AIDCabang'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerAP_RetrieveDataSlip: array [0..4] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'AIDCabang'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'AID'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 37; TypeName: 'TFDJSONDataSets')
+  );
+
+  TServerAP_RetrieveDataSlip_Cache: array [0..4] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'AIDCabang'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'AID'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerAP_Delete: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
+  TServerAP_DeleteNoCommit: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
+  TServerAP_RetrieveCDS: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TServerAP_RetrieveCDS_Cache: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerAP_Save: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AOBject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
   TServerAccount_Retrieve: array [0..1] of TDSRestParameterMetaData =
   (
     (Name: 'AID'; Direction: 1; DBXType: 26; TypeName: 'string'),
@@ -2070,6 +2439,12 @@ const
   );
 
   TServerAccount_Delete: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
+  TServerAccount_DeleteNoCommit: array [0..1] of TDSRestParameterMetaData =
   (
     (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
@@ -2106,6 +2481,12 @@ const
   );
 
   TServerRekBank_Delete: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
+  TServerRekBank_DeleteNoCommit: array [0..1] of TDSRestParameterMetaData =
   (
     (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
@@ -2248,6 +2629,12 @@ const
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
   );
 
+  TServerPenerimaanKas_DeleteNoCommit: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
   TServerPenerimaanKas_RetrieveCDS: array [0..1] of TDSRestParameterMetaData =
   (
     (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
@@ -2261,6 +2648,149 @@ const
   );
 
   TServerPenerimaanKas_Save: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AOBject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
+  TServerPengeluaranKas_AfterSave: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
+  TServerPengeluaranKas_BeforeDelete: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
+  TServerPengeluaranKas_BeforeSave: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
+  TServerPengeluaranKas_Retrieve: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AID'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 37; TypeName: 'TPengeluaranKas')
+  );
+
+  TServerPengeluaranKas_Retrieve_Cache: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AID'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerPengeluaranKas_RetrievePenerimaanAPs: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AID'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TServerPengeluaranKas_RetrievePenerimaanAPs_Cache: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AID'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerPengeluaranKas_RetrieveCDSlip: array [0..4] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ATglAtglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
+    (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 37; TypeName: 'TFDJSONDataSets')
+  );
+
+  TServerPengeluaranKas_RetrieveCDSlip_Cache: array [0..4] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ATglAtglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
+    (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerPengeluaranKas_RetrieveNoBukti: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 37; TypeName: 'TPengeluaranKas')
+  );
+
+  TServerPengeluaranKas_RetrieveNoBukti_Cache: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerPengeluaranKas_GenerateNoBukti: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATglBukti'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APrefix'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'string')
+  );
+
+  TServerPengeluaranKas_RetrieveData: array [0..3] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'AIDCabang'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TServerPengeluaranKas_RetrieveData_Cache: array [0..3] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'AIDCabang'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerPengeluaranKas_RetrieveDataSlip: array [0..4] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'AIDCabang'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'AID'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 37; TypeName: 'TFDJSONDataSets')
+  );
+
+  TServerPengeluaranKas_RetrieveDataSlip_Cache: array [0..4] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'AIDCabang'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'AID'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerPengeluaranKas_Delete: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
+  TServerPengeluaranKas_DeleteNoCommit: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
+  TServerPengeluaranKas_RetrieveCDS: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TServerPengeluaranKas_RetrieveCDS_Cache: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerPengeluaranKas_Save: array [0..1] of TDSRestParameterMetaData =
   (
     (Name: 'AOBject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
@@ -2291,6 +2821,12 @@ const
   );
 
   TServerSettingApp_Delete: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
+  TServerSettingApp_DeleteNoCommit: array [0..1] of TDSRestParameterMetaData =
   (
     (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
@@ -2409,6 +2945,12 @@ const
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
   );
 
+  TServerTransferAntarGudang_DeleteNoCommit: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
   TServerTransferAntarGudang_RetrieveCDS: array [0..1] of TDSRestParameterMetaData =
   (
     (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
@@ -2512,6 +3054,12 @@ const
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
   );
 
+  TServerTAGRequest_DeleteNoCommit: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
   TServerTAGRequest_RetrieveCDS: array [0..1] of TDSRestParameterMetaData =
   (
     (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
@@ -2596,6 +3144,12 @@ const
   );
 
   TServerTransferAntarCabangKirim_Delete: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
+  TServerTransferAntarCabangKirim_DeleteNoCommit: array [0..1] of TDSRestParameterMetaData =
   (
     (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
@@ -2690,6 +3244,12 @@ const
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
   );
 
+  TServerTransferAntarCabangTerima_DeleteNoCommit: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
   TServerTransferAntarCabangTerima_RetrieveCDS: array [0..1] of TDSRestParameterMetaData =
   (
     (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
@@ -2708,9 +3268,31 @@ const
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
   );
 
-  TDSReport_GetNamaku: array [0..0] of TDSRestParameterMetaData =
+  TDSData_GetNamaku: array [0..0] of TDSRestParameterMetaData =
   (
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'string')
+  );
+
+  TDSData_LoadAccountPengeluaranKasLain: array [0..0] of TDSRestParameterMetaData =
+  (
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TDSData_LoadAccountPengeluaranKasLain_Cache: array [0..0] of TDSRestParameterMetaData =
+  (
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TDSData_LoadAP: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'ASupplier'; Direction: 1; DBXType: 37; TypeName: 'TSupplier'),
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TDSData_LoadAP_Cache: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'ASupplier'; Direction: 1; DBXType: 37; TypeName: 'TSupplier'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
 implementation
@@ -3536,6 +4118,65 @@ begin
   Result := TDSRestCachedDataSet.Create(FRetriveARCommand_Cache.Parameters[1].Value.GetString);
 end;
 
+function TServerLaporanClient.RetrivePengeluaranKas(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string): TDataSet;
+begin
+  if FRetrivePengeluaranKasCommand = nil then
+  begin
+    FRetrivePengeluaranKasCommand := FConnection.CreateCommand;
+    FRetrivePengeluaranKasCommand.RequestType := 'POST';
+    FRetrivePengeluaranKasCommand.Text := 'TServerLaporan."RetrivePengeluaranKas"';
+    FRetrivePengeluaranKasCommand.Prepare(TServerLaporan_RetrivePengeluaranKas);
+  end;
+  FRetrivePengeluaranKasCommand.Parameters[0].Value.AsDateTime := ATglAwal;
+  FRetrivePengeluaranKasCommand.Parameters[1].Value.AsDateTime := ATglAtglAkhir;
+  if not Assigned(ACabang) then
+    FRetrivePengeluaranKasCommand.Parameters[2].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FRetrivePengeluaranKasCommand.Parameters[2].ConnectionHandler).GetJSONMarshaler;
+    try
+      FRetrivePengeluaranKasCommand.Parameters[2].Value.SetJSONValue(FMarshal.Marshal(ACabang), True);
+      if FInstanceOwner then
+        ACabang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FRetrivePengeluaranKasCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FRetrivePengeluaranKasCommand.Parameters[3].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FRetrivePengeluaranKasCommand.FreeOnExecute(Result);
+end;
+
+function TServerLaporanClient.RetrivePengeluaranKas_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FRetrivePengeluaranKasCommand_Cache = nil then
+  begin
+    FRetrivePengeluaranKasCommand_Cache := FConnection.CreateCommand;
+    FRetrivePengeluaranKasCommand_Cache.RequestType := 'POST';
+    FRetrivePengeluaranKasCommand_Cache.Text := 'TServerLaporan."RetrivePengeluaranKas"';
+    FRetrivePengeluaranKasCommand_Cache.Prepare(TServerLaporan_RetrivePengeluaranKas_Cache);
+  end;
+  FRetrivePengeluaranKasCommand_Cache.Parameters[0].Value.AsDateTime := ATglAwal;
+  FRetrivePengeluaranKasCommand_Cache.Parameters[1].Value.AsDateTime := ATglAtglAkhir;
+  if not Assigned(ACabang) then
+    FRetrivePengeluaranKasCommand_Cache.Parameters[2].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FRetrivePengeluaranKasCommand_Cache.Parameters[2].ConnectionHandler).GetJSONMarshaler;
+    try
+      FRetrivePengeluaranKasCommand_Cache.Parameters[2].Value.SetJSONValue(FMarshal.Marshal(ACabang), True);
+      if FInstanceOwner then
+        ACabang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FRetrivePengeluaranKasCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FRetrivePengeluaranKasCommand_Cache.Parameters[3].Value.GetString);
+end;
+
 function TServerLaporanClient.RetriveSettingApp(ACabang: TCabang; const ARequestFilter: string): TDataSet;
 begin
   if FRetriveSettingAppCommand = nil then
@@ -3633,6 +4274,8 @@ begin
   FRetrivePenerimaanKasCommand_Cache.DisposeOf;
   FRetriveARCommand.DisposeOf;
   FRetriveARCommand_Cache.DisposeOf;
+  FRetrivePengeluaranKasCommand.DisposeOf;
+  FRetrivePengeluaranKasCommand_Cache.DisposeOf;
   FRetriveSettingAppCommand.DisposeOf;
   FRetriveSettingAppCommand_Cache.DisposeOf;
   inherited;
@@ -3744,6 +4387,32 @@ begin
   Result := FDeleteCommand.Parameters[1].Value.GetBoolean;
 end;
 
+function TServerBarangClient.DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string): Boolean;
+begin
+  if FDeleteNoCommitCommand = nil then
+  begin
+    FDeleteNoCommitCommand := FConnection.CreateCommand;
+    FDeleteNoCommitCommand.RequestType := 'POST';
+    FDeleteNoCommitCommand.Text := 'TServerBarang."DeleteNoCommit"';
+    FDeleteNoCommitCommand.Prepare(TServerBarang_DeleteNoCommit);
+  end;
+  if not Assigned(AAppObject) then
+    FDeleteNoCommitCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FDeleteNoCommitCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FDeleteNoCommitCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FDeleteNoCommitCommand.Execute(ARequestFilter);
+  Result := FDeleteNoCommitCommand.Parameters[1].Value.GetBoolean;
+end;
+
 function TServerBarangClient.RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string): TDataSet;
 begin
   if FRetrieveCDSCommand = nil then
@@ -3842,6 +4511,7 @@ begin
   FRetrieveKodeCommand.DisposeOf;
   FRetrieveKodeCommand_Cache.DisposeOf;
   FDeleteCommand.DisposeOf;
+  FDeleteNoCommitCommand.DisposeOf;
   FRetrieveCDSCommand.DisposeOf;
   FRetrieveCDSCommand_Cache.DisposeOf;
   FSaveCommand.DisposeOf;
@@ -4133,6 +4803,32 @@ begin
   Result := FDeleteCommand.Parameters[1].Value.GetBoolean;
 end;
 
+function TServerCustomerInvoiceClient.DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string): Boolean;
+begin
+  if FDeleteNoCommitCommand = nil then
+  begin
+    FDeleteNoCommitCommand := FConnection.CreateCommand;
+    FDeleteNoCommitCommand.RequestType := 'POST';
+    FDeleteNoCommitCommand.Text := 'TServerCustomerInvoice."DeleteNoCommit"';
+    FDeleteNoCommitCommand.Prepare(TServerCustomerInvoice_DeleteNoCommit);
+  end;
+  if not Assigned(AAppObject) then
+    FDeleteNoCommitCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FDeleteNoCommitCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FDeleteNoCommitCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FDeleteNoCommitCommand.Execute(ARequestFilter);
+  Result := FDeleteNoCommitCommand.Parameters[1].Value.GetBoolean;
+end;
+
 function TServerCustomerInvoiceClient.RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string): TDataSet;
 begin
   if FRetrieveCDSCommand = nil then
@@ -4240,6 +4936,7 @@ begin
   FRetrieveDataSlipCommand.DisposeOf;
   FRetrieveDataSlipCommand_Cache.DisposeOf;
   FDeleteCommand.DisposeOf;
+  FDeleteNoCommitCommand.DisposeOf;
   FRetrieveCDSCommand.DisposeOf;
   FRetrieveCDSCommand_Cache.DisposeOf;
   FSaveCommand.DisposeOf;
@@ -4411,6 +5108,32 @@ begin
   Result := FDeleteCommand.Parameters[1].Value.GetBoolean;
 end;
 
+function TServerSupplierClient.DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string): Boolean;
+begin
+  if FDeleteNoCommitCommand = nil then
+  begin
+    FDeleteNoCommitCommand := FConnection.CreateCommand;
+    FDeleteNoCommitCommand.RequestType := 'POST';
+    FDeleteNoCommitCommand.Text := 'TServerSupplier."DeleteNoCommit"';
+    FDeleteNoCommitCommand.Prepare(TServerSupplier_DeleteNoCommit);
+  end;
+  if not Assigned(AAppObject) then
+    FDeleteNoCommitCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FDeleteNoCommitCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FDeleteNoCommitCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FDeleteNoCommitCommand.Execute(ARequestFilter);
+  Result := FDeleteNoCommitCommand.Parameters[1].Value.GetBoolean;
+end;
+
 function TServerSupplierClient.RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string): TDataSet;
 begin
   if FRetrieveCDSCommand = nil then
@@ -4507,6 +5230,7 @@ begin
   FRetrieveCommand.DisposeOf;
   FRetrieveCommand_Cache.DisposeOf;
   FDeleteCommand.DisposeOf;
+  FDeleteNoCommitCommand.DisposeOf;
   FRetrieveCDSCommand.DisposeOf;
   FRetrieveCDSCommand_Cache.DisposeOf;
   FSaveCommand.DisposeOf;
@@ -4577,6 +5301,32 @@ begin
     end;
   FDeleteCommand.Execute(ARequestFilter);
   Result := FDeleteCommand.Parameters[1].Value.GetBoolean;
+end;
+
+function TServerGroupBarangClient.DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string): Boolean;
+begin
+  if FDeleteNoCommitCommand = nil then
+  begin
+    FDeleteNoCommitCommand := FConnection.CreateCommand;
+    FDeleteNoCommitCommand.RequestType := 'POST';
+    FDeleteNoCommitCommand.Text := 'TServerGroupBarang."DeleteNoCommit"';
+    FDeleteNoCommitCommand.Prepare(TServerGroupBarang_DeleteNoCommit);
+  end;
+  if not Assigned(AAppObject) then
+    FDeleteNoCommitCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FDeleteNoCommitCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FDeleteNoCommitCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FDeleteNoCommitCommand.Execute(ARequestFilter);
+  Result := FDeleteNoCommitCommand.Parameters[1].Value.GetBoolean;
 end;
 
 function TServerGroupBarangClient.RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string): TDataSet;
@@ -4675,6 +5425,7 @@ begin
   FRetrieveCommand.DisposeOf;
   FRetrieveCommand_Cache.DisposeOf;
   FDeleteCommand.DisposeOf;
+  FDeleteNoCommitCommand.DisposeOf;
   FRetrieveCDSCommand.DisposeOf;
   FRetrieveCDSCommand_Cache.DisposeOf;
   FSaveCommand.DisposeOf;
@@ -4958,6 +5709,32 @@ begin
   Result := FDeleteCommand.Parameters[1].Value.GetBoolean;
 end;
 
+function TServerPenerimaanBarangClient.DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string): Boolean;
+begin
+  if FDeleteNoCommitCommand = nil then
+  begin
+    FDeleteNoCommitCommand := FConnection.CreateCommand;
+    FDeleteNoCommitCommand.RequestType := 'POST';
+    FDeleteNoCommitCommand.Text := 'TServerPenerimaanBarang."DeleteNoCommit"';
+    FDeleteNoCommitCommand.Prepare(TServerPenerimaanBarang_DeleteNoCommit);
+  end;
+  if not Assigned(AAppObject) then
+    FDeleteNoCommitCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FDeleteNoCommitCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FDeleteNoCommitCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FDeleteNoCommitCommand.Execute(ARequestFilter);
+  Result := FDeleteNoCommitCommand.Parameters[1].Value.GetBoolean;
+end;
+
 function TServerPenerimaanBarangClient.RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string): TDataSet;
 begin
   if FRetrieveCDSCommand = nil then
@@ -5065,6 +5842,7 @@ begin
   FRetrieveDataSlipCommand.DisposeOf;
   FRetrieveDataSlipCommand_Cache.DisposeOf;
   FDeleteCommand.DisposeOf;
+  FDeleteNoCommitCommand.DisposeOf;
   FRetrieveCDSCommand.DisposeOf;
   FRetrieveCDSCommand_Cache.DisposeOf;
   FSaveCommand.DisposeOf;
@@ -5135,6 +5913,32 @@ begin
     end;
   FDeleteCommand.Execute(ARequestFilter);
   Result := FDeleteCommand.Parameters[1].Value.GetBoolean;
+end;
+
+function TServerCabangClient.DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string): Boolean;
+begin
+  if FDeleteNoCommitCommand = nil then
+  begin
+    FDeleteNoCommitCommand := FConnection.CreateCommand;
+    FDeleteNoCommitCommand.RequestType := 'POST';
+    FDeleteNoCommitCommand.Text := 'TServerCabang."DeleteNoCommit"';
+    FDeleteNoCommitCommand.Prepare(TServerCabang_DeleteNoCommit);
+  end;
+  if not Assigned(AAppObject) then
+    FDeleteNoCommitCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FDeleteNoCommitCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FDeleteNoCommitCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FDeleteNoCommitCommand.Execute(ARequestFilter);
+  Result := FDeleteNoCommitCommand.Parameters[1].Value.GetBoolean;
 end;
 
 function TServerCabangClient.RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string): TDataSet;
@@ -5233,6 +6037,7 @@ begin
   FRetrieveCommand.DisposeOf;
   FRetrieveCommand_Cache.DisposeOf;
   FDeleteCommand.DisposeOf;
+  FDeleteNoCommitCommand.DisposeOf;
   FRetrieveCDSCommand.DisposeOf;
   FRetrieveCDSCommand_Cache.DisposeOf;
   FSaveCommand.DisposeOf;
@@ -5303,6 +6108,32 @@ begin
     end;
   FDeleteCommand.Execute(ARequestFilter);
   Result := FDeleteCommand.Parameters[1].Value.GetBoolean;
+end;
+
+function TServerLogAppObjectClient.DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string): Boolean;
+begin
+  if FDeleteNoCommitCommand = nil then
+  begin
+    FDeleteNoCommitCommand := FConnection.CreateCommand;
+    FDeleteNoCommitCommand.RequestType := 'POST';
+    FDeleteNoCommitCommand.Text := 'TServerLogAppObject."DeleteNoCommit"';
+    FDeleteNoCommitCommand.Prepare(TServerLogAppObject_DeleteNoCommit);
+  end;
+  if not Assigned(AAppObject) then
+    FDeleteNoCommitCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FDeleteNoCommitCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FDeleteNoCommitCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FDeleteNoCommitCommand.Execute(ARequestFilter);
+  Result := FDeleteNoCommitCommand.Parameters[1].Value.GetBoolean;
 end;
 
 function TServerLogAppObjectClient.RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string): TDataSet;
@@ -5401,6 +6232,7 @@ begin
   FRetrieveCommand.DisposeOf;
   FRetrieveCommand_Cache.DisposeOf;
   FDeleteCommand.DisposeOf;
+  FDeleteNoCommitCommand.DisposeOf;
   FRetrieveCDSCommand.DisposeOf;
   FRetrieveCDSCommand_Cache.DisposeOf;
   FSaveCommand.DisposeOf;
@@ -5566,6 +6398,32 @@ begin
   Result := FDeleteCommand.Parameters[1].Value.GetBoolean;
 end;
 
+function TServerStockSekarangClient.DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string): Boolean;
+begin
+  if FDeleteNoCommitCommand = nil then
+  begin
+    FDeleteNoCommitCommand := FConnection.CreateCommand;
+    FDeleteNoCommitCommand.RequestType := 'POST';
+    FDeleteNoCommitCommand.Text := 'TServerStockSekarang."DeleteNoCommit"';
+    FDeleteNoCommitCommand.Prepare(TServerStockSekarang_DeleteNoCommit);
+  end;
+  if not Assigned(AAppObject) then
+    FDeleteNoCommitCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FDeleteNoCommitCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FDeleteNoCommitCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FDeleteNoCommitCommand.Execute(ARequestFilter);
+  Result := FDeleteNoCommitCommand.Parameters[1].Value.GetBoolean;
+end;
+
 function TServerStockSekarangClient.RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string): TDataSet;
 begin
   if FRetrieveCDSCommand = nil then
@@ -5663,6 +6521,7 @@ begin
   FRetrieveCommand.DisposeOf;
   FRetrieveCommand_Cache.DisposeOf;
   FDeleteCommand.DisposeOf;
+  FDeleteNoCommitCommand.DisposeOf;
   FRetrieveCDSCommand.DisposeOf;
   FRetrieveCDSCommand_Cache.DisposeOf;
   FSaveCommand.DisposeOf;
@@ -5871,6 +6730,32 @@ begin
   Result := FDeleteCommand.Parameters[1].Value.GetBoolean;
 end;
 
+function TServerReturSupplierClient.DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string): Boolean;
+begin
+  if FDeleteNoCommitCommand = nil then
+  begin
+    FDeleteNoCommitCommand := FConnection.CreateCommand;
+    FDeleteNoCommitCommand.RequestType := 'POST';
+    FDeleteNoCommitCommand.Text := 'TServerReturSupplier."DeleteNoCommit"';
+    FDeleteNoCommitCommand.Prepare(TServerReturSupplier_DeleteNoCommit);
+  end;
+  if not Assigned(AAppObject) then
+    FDeleteNoCommitCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FDeleteNoCommitCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FDeleteNoCommitCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FDeleteNoCommitCommand.Execute(ARequestFilter);
+  Result := FDeleteNoCommitCommand.Parameters[1].Value.GetBoolean;
+end;
+
 function TServerReturSupplierClient.RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string): TDataSet;
 begin
   if FRetrieveCDSCommand = nil then
@@ -5974,6 +6859,7 @@ begin
   FRetrieveDataSlipCommand.DisposeOf;
   FRetrieveDataSlipCommand_Cache.DisposeOf;
   FDeleteCommand.DisposeOf;
+  FDeleteNoCommitCommand.DisposeOf;
   FRetrieveCDSCommand.DisposeOf;
   FRetrieveCDSCommand_Cache.DisposeOf;
   FSaveCommand.DisposeOf;
@@ -6031,6 +6917,32 @@ begin
     end;
   FDeleteCommand.Execute(ARequestFilter);
   Result := FDeleteCommand.Parameters[1].Value.GetBoolean;
+end;
+
+function TServerClosingInventoryClient.DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string): Boolean;
+begin
+  if FDeleteNoCommitCommand = nil then
+  begin
+    FDeleteNoCommitCommand := FConnection.CreateCommand;
+    FDeleteNoCommitCommand.RequestType := 'POST';
+    FDeleteNoCommitCommand.Text := 'TServerClosingInventory."DeleteNoCommit"';
+    FDeleteNoCommitCommand.Prepare(TServerClosingInventory_DeleteNoCommit);
+  end;
+  if not Assigned(AAppObject) then
+    FDeleteNoCommitCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FDeleteNoCommitCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FDeleteNoCommitCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FDeleteNoCommitCommand.Execute(ARequestFilter);
+  Result := FDeleteNoCommitCommand.Parameters[1].Value.GetBoolean;
 end;
 
 function TServerClosingInventoryClient.RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string): TDataSet;
@@ -6128,6 +7040,7 @@ destructor TServerClosingInventoryClient.Destroy;
 begin
   FCloseCommand.DisposeOf;
   FDeleteCommand.DisposeOf;
+  FDeleteNoCommitCommand.DisposeOf;
   FRetrieveCDSCommand.DisposeOf;
   FRetrieveCDSCommand_Cache.DisposeOf;
   FSaveCommand.DisposeOf;
@@ -6229,6 +7142,32 @@ begin
   Result := FDeleteCommand.Parameters[1].Value.GetBoolean;
 end;
 
+function TServerPembayaranSupplierClient.DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string): Boolean;
+begin
+  if FDeleteNoCommitCommand = nil then
+  begin
+    FDeleteNoCommitCommand := FConnection.CreateCommand;
+    FDeleteNoCommitCommand.RequestType := 'POST';
+    FDeleteNoCommitCommand.Text := 'TServerPembayaranSupplier."DeleteNoCommit"';
+    FDeleteNoCommitCommand.Prepare(TServerPembayaranSupplier_DeleteNoCommit);
+  end;
+  if not Assigned(AAppObject) then
+    FDeleteNoCommitCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FDeleteNoCommitCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FDeleteNoCommitCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FDeleteNoCommitCommand.Execute(ARequestFilter);
+  Result := FDeleteNoCommitCommand.Parameters[1].Value.GetBoolean;
+end;
+
 function TServerPembayaranSupplierClient.RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string): TDataSet;
 begin
   if FRetrieveCDSCommand = nil then
@@ -6327,6 +7266,7 @@ begin
   FRetrieveCDS2Command.DisposeOf;
   FRetrieveCDS2Command_Cache.DisposeOf;
   FDeleteCommand.DisposeOf;
+  FDeleteNoCommitCommand.DisposeOf;
   FRetrieveCDSCommand.DisposeOf;
   FRetrieveCDSCommand_Cache.DisposeOf;
   FSaveCommand.DisposeOf;
@@ -6439,6 +7379,32 @@ begin
   Result := FDeleteCommand.Parameters[1].Value.GetBoolean;
 end;
 
+function TServerGudangClient.DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string): Boolean;
+begin
+  if FDeleteNoCommitCommand = nil then
+  begin
+    FDeleteNoCommitCommand := FConnection.CreateCommand;
+    FDeleteNoCommitCommand.RequestType := 'POST';
+    FDeleteNoCommitCommand.Text := 'TServerGudang."DeleteNoCommit"';
+    FDeleteNoCommitCommand.Prepare(TServerGudang_DeleteNoCommit);
+  end;
+  if not Assigned(AAppObject) then
+    FDeleteNoCommitCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FDeleteNoCommitCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FDeleteNoCommitCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FDeleteNoCommitCommand.Execute(ARequestFilter);
+  Result := FDeleteNoCommitCommand.Parameters[1].Value.GetBoolean;
+end;
+
 function TServerGudangClient.RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string): TDataSet;
 begin
   if FRetrieveCDSCommand = nil then
@@ -6537,6 +7503,7 @@ begin
   FRetrieveKodeCommand.DisposeOf;
   FRetrieveKodeCommand_Cache.DisposeOf;
   FDeleteCommand.DisposeOf;
+  FDeleteNoCommitCommand.DisposeOf;
   FRetrieveCDSCommand.DisposeOf;
   FRetrieveCDSCommand_Cache.DisposeOf;
   FSaveCommand.DisposeOf;
@@ -6806,6 +7773,32 @@ begin
   Result := FDeleteCommand.Parameters[1].Value.GetBoolean;
 end;
 
+function TServerPenjualanClient.DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string): Boolean;
+begin
+  if FDeleteNoCommitCommand = nil then
+  begin
+    FDeleteNoCommitCommand := FConnection.CreateCommand;
+    FDeleteNoCommitCommand.RequestType := 'POST';
+    FDeleteNoCommitCommand.Text := 'TServerPenjualan."DeleteNoCommit"';
+    FDeleteNoCommitCommand.Prepare(TServerPenjualan_DeleteNoCommit);
+  end;
+  if not Assigned(AAppObject) then
+    FDeleteNoCommitCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FDeleteNoCommitCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FDeleteNoCommitCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FDeleteNoCommitCommand.Execute(ARequestFilter);
+  Result := FDeleteNoCommitCommand.Parameters[1].Value.GetBoolean;
+end;
+
 function TServerPenjualanClient.RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string): TDataSet;
 begin
   if FRetrieveCDSCommand = nil then
@@ -6911,6 +7904,7 @@ begin
   FRetrieveDataSlipCommand.DisposeOf;
   FRetrieveDataSlipCommand_Cache.DisposeOf;
   FDeleteCommand.DisposeOf;
+  FDeleteNoCommitCommand.DisposeOf;
   FRetrieveCDSCommand.DisposeOf;
   FRetrieveCDSCommand_Cache.DisposeOf;
   FSaveCommand.DisposeOf;
@@ -7026,6 +8020,48 @@ begin
   FRetrieveNoBuktiCommand_Cache.Parameters[0].Value.SetWideString(ANoBukti);
   FRetrieveNoBuktiCommand_Cache.ExecuteCache(ARequestFilter);
   Result := TDSRestCachedTAR.Create(FRetrieveNoBuktiCommand_Cache.Parameters[1].Value.GetString);
+end;
+
+function TServerARClient.RetrieveTransaksi(ATransaksi: string; AIDTransaksi: string; const ARequestFilter: string): TAR;
+begin
+  if FRetrieveTransaksiCommand = nil then
+  begin
+    FRetrieveTransaksiCommand := FConnection.CreateCommand;
+    FRetrieveTransaksiCommand.RequestType := 'GET';
+    FRetrieveTransaksiCommand.Text := 'TServerAR.RetrieveTransaksi';
+    FRetrieveTransaksiCommand.Prepare(TServerAR_RetrieveTransaksi);
+  end;
+  FRetrieveTransaksiCommand.Parameters[0].Value.SetWideString(ATransaksi);
+  FRetrieveTransaksiCommand.Parameters[1].Value.SetWideString(AIDTransaksi);
+  FRetrieveTransaksiCommand.Execute(ARequestFilter);
+  if not FRetrieveTransaksiCommand.Parameters[2].Value.IsNull then
+  begin
+    FUnMarshal := TDSRestCommand(FRetrieveTransaksiCommand.Parameters[2].ConnectionHandler).GetJSONUnMarshaler;
+    try
+      Result := TAR(FUnMarshal.UnMarshal(FRetrieveTransaksiCommand.Parameters[2].Value.GetJSONValue(True)));
+      if FInstanceOwner then
+        FRetrieveTransaksiCommand.FreeOnExecute(Result);
+    finally
+      FreeAndNil(FUnMarshal)
+    end
+  end
+  else
+    Result := nil;
+end;
+
+function TServerARClient.RetrieveTransaksi_Cache(ATransaksi: string; AIDTransaksi: string; const ARequestFilter: string): IDSRestCachedTAR;
+begin
+  if FRetrieveTransaksiCommand_Cache = nil then
+  begin
+    FRetrieveTransaksiCommand_Cache := FConnection.CreateCommand;
+    FRetrieveTransaksiCommand_Cache.RequestType := 'GET';
+    FRetrieveTransaksiCommand_Cache.Text := 'TServerAR.RetrieveTransaksi';
+    FRetrieveTransaksiCommand_Cache.Prepare(TServerAR_RetrieveTransaksi_Cache);
+  end;
+  FRetrieveTransaksiCommand_Cache.Parameters[0].Value.SetWideString(ATransaksi);
+  FRetrieveTransaksiCommand_Cache.Parameters[1].Value.SetWideString(AIDTransaksi);
+  FRetrieveTransaksiCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedTAR.Create(FRetrieveTransaksiCommand_Cache.Parameters[2].Value.GetString);
 end;
 
 function TServerARClient.GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string): string;
@@ -7150,6 +8186,32 @@ begin
   Result := FDeleteCommand.Parameters[1].Value.GetBoolean;
 end;
 
+function TServerARClient.DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string): Boolean;
+begin
+  if FDeleteNoCommitCommand = nil then
+  begin
+    FDeleteNoCommitCommand := FConnection.CreateCommand;
+    FDeleteNoCommitCommand.RequestType := 'POST';
+    FDeleteNoCommitCommand.Text := 'TServerAR."DeleteNoCommit"';
+    FDeleteNoCommitCommand.Prepare(TServerAR_DeleteNoCommit);
+  end;
+  if not Assigned(AAppObject) then
+    FDeleteNoCommitCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FDeleteNoCommitCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FDeleteNoCommitCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FDeleteNoCommitCommand.Execute(ARequestFilter);
+  Result := FDeleteNoCommitCommand.Parameters[1].Value.GetBoolean;
+end;
+
 function TServerARClient.RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string): TDataSet;
 begin
   if FRetrieveCDSCommand = nil then
@@ -7249,12 +8311,355 @@ begin
   FRetrieveCDSlipCommand_Cache.DisposeOf;
   FRetrieveNoBuktiCommand.DisposeOf;
   FRetrieveNoBuktiCommand_Cache.DisposeOf;
+  FRetrieveTransaksiCommand.DisposeOf;
+  FRetrieveTransaksiCommand_Cache.DisposeOf;
   FGenerateNoBuktiCommand.DisposeOf;
   FRetrieveDataCommand.DisposeOf;
   FRetrieveDataCommand_Cache.DisposeOf;
   FRetrieveDataSlipCommand.DisposeOf;
   FRetrieveDataSlipCommand_Cache.DisposeOf;
   FDeleteCommand.DisposeOf;
+  FDeleteNoCommitCommand.DisposeOf;
+  FRetrieveCDSCommand.DisposeOf;
+  FRetrieveCDSCommand_Cache.DisposeOf;
+  FSaveCommand.DisposeOf;
+  inherited;
+end;
+
+function TServerAPClient.Retrieve(AID: string; const ARequestFilter: string): TAP;
+begin
+  if FRetrieveCommand = nil then
+  begin
+    FRetrieveCommand := FConnection.CreateCommand;
+    FRetrieveCommand.RequestType := 'GET';
+    FRetrieveCommand.Text := 'TServerAP.Retrieve';
+    FRetrieveCommand.Prepare(TServerAP_Retrieve);
+  end;
+  FRetrieveCommand.Parameters[0].Value.SetWideString(AID);
+  FRetrieveCommand.Execute(ARequestFilter);
+  if not FRetrieveCommand.Parameters[1].Value.IsNull then
+  begin
+    FUnMarshal := TDSRestCommand(FRetrieveCommand.Parameters[1].ConnectionHandler).GetJSONUnMarshaler;
+    try
+      Result := TAP(FUnMarshal.UnMarshal(FRetrieveCommand.Parameters[1].Value.GetJSONValue(True)));
+      if FInstanceOwner then
+        FRetrieveCommand.FreeOnExecute(Result);
+    finally
+      FreeAndNil(FUnMarshal)
+    end
+  end
+  else
+    Result := nil;
+end;
+
+function TServerAPClient.Retrieve_Cache(AID: string; const ARequestFilter: string): IDSRestCachedTAP;
+begin
+  if FRetrieveCommand_Cache = nil then
+  begin
+    FRetrieveCommand_Cache := FConnection.CreateCommand;
+    FRetrieveCommand_Cache.RequestType := 'GET';
+    FRetrieveCommand_Cache.Text := 'TServerAP.Retrieve';
+    FRetrieveCommand_Cache.Prepare(TServerAP_Retrieve_Cache);
+  end;
+  FRetrieveCommand_Cache.Parameters[0].Value.SetWideString(AID);
+  FRetrieveCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedTAP.Create(FRetrieveCommand_Cache.Parameters[1].Value.GetString);
+end;
+
+function TServerAPClient.RetrieveTransaksi(ATransaksi: string; AIDTransaksi: string; const ARequestFilter: string): TAP;
+begin
+  if FRetrieveTransaksiCommand = nil then
+  begin
+    FRetrieveTransaksiCommand := FConnection.CreateCommand;
+    FRetrieveTransaksiCommand.RequestType := 'GET';
+    FRetrieveTransaksiCommand.Text := 'TServerAP.RetrieveTransaksi';
+    FRetrieveTransaksiCommand.Prepare(TServerAP_RetrieveTransaksi);
+  end;
+  FRetrieveTransaksiCommand.Parameters[0].Value.SetWideString(ATransaksi);
+  FRetrieveTransaksiCommand.Parameters[1].Value.SetWideString(AIDTransaksi);
+  FRetrieveTransaksiCommand.Execute(ARequestFilter);
+  if not FRetrieveTransaksiCommand.Parameters[2].Value.IsNull then
+  begin
+    FUnMarshal := TDSRestCommand(FRetrieveTransaksiCommand.Parameters[2].ConnectionHandler).GetJSONUnMarshaler;
+    try
+      Result := TAP(FUnMarshal.UnMarshal(FRetrieveTransaksiCommand.Parameters[2].Value.GetJSONValue(True)));
+      if FInstanceOwner then
+        FRetrieveTransaksiCommand.FreeOnExecute(Result);
+    finally
+      FreeAndNil(FUnMarshal)
+    end
+  end
+  else
+    Result := nil;
+end;
+
+function TServerAPClient.RetrieveTransaksi_Cache(ATransaksi: string; AIDTransaksi: string; const ARequestFilter: string): IDSRestCachedTAP;
+begin
+  if FRetrieveTransaksiCommand_Cache = nil then
+  begin
+    FRetrieveTransaksiCommand_Cache := FConnection.CreateCommand;
+    FRetrieveTransaksiCommand_Cache.RequestType := 'GET';
+    FRetrieveTransaksiCommand_Cache.Text := 'TServerAP.RetrieveTransaksi';
+    FRetrieveTransaksiCommand_Cache.Prepare(TServerAP_RetrieveTransaksi_Cache);
+  end;
+  FRetrieveTransaksiCommand_Cache.Parameters[0].Value.SetWideString(ATransaksi);
+  FRetrieveTransaksiCommand_Cache.Parameters[1].Value.SetWideString(AIDTransaksi);
+  FRetrieveTransaksiCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedTAP.Create(FRetrieveTransaksiCommand_Cache.Parameters[2].Value.GetString);
+end;
+
+function TServerAPClient.GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string): string;
+begin
+  if FGenerateNoBuktiCommand = nil then
+  begin
+    FGenerateNoBuktiCommand := FConnection.CreateCommand;
+    FGenerateNoBuktiCommand.RequestType := 'GET';
+    FGenerateNoBuktiCommand.Text := 'TServerAP.GenerateNoBukti';
+    FGenerateNoBuktiCommand.Prepare(TServerAP_GenerateNoBukti);
+  end;
+  FGenerateNoBuktiCommand.Parameters[0].Value.AsDateTime := ATglBukti;
+  FGenerateNoBuktiCommand.Parameters[1].Value.SetWideString(APrefix);
+  FGenerateNoBuktiCommand.Execute(ARequestFilter);
+  Result := FGenerateNoBuktiCommand.Parameters[2].Value.GetWideString;
+end;
+
+function TServerAPClient.RetrieveData(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string): TDataSet;
+begin
+  if FRetrieveDataCommand = nil then
+  begin
+    FRetrieveDataCommand := FConnection.CreateCommand;
+    FRetrieveDataCommand.RequestType := 'GET';
+    FRetrieveDataCommand.Text := 'TServerAP.RetrieveData';
+    FRetrieveDataCommand.Prepare(TServerAP_RetrieveData);
+  end;
+  FRetrieveDataCommand.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataCommand.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataCommand.Parameters[2].Value.SetWideString(AIDCabang);
+  FRetrieveDataCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FRetrieveDataCommand.Parameters[3].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FRetrieveDataCommand.FreeOnExecute(Result);
+end;
+
+function TServerAPClient.RetrieveData_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FRetrieveDataCommand_Cache = nil then
+  begin
+    FRetrieveDataCommand_Cache := FConnection.CreateCommand;
+    FRetrieveDataCommand_Cache.RequestType := 'GET';
+    FRetrieveDataCommand_Cache.Text := 'TServerAP.RetrieveData';
+    FRetrieveDataCommand_Cache.Prepare(TServerAP_RetrieveData_Cache);
+  end;
+  FRetrieveDataCommand_Cache.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataCommand_Cache.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataCommand_Cache.Parameters[2].Value.SetWideString(AIDCabang);
+  FRetrieveDataCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FRetrieveDataCommand_Cache.Parameters[3].Value.GetString);
+end;
+
+function TServerAPClient.RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string): TFDJSONDataSets;
+begin
+  if FRetrieveDataSlipCommand = nil then
+  begin
+    FRetrieveDataSlipCommand := FConnection.CreateCommand;
+    FRetrieveDataSlipCommand.RequestType := 'GET';
+    FRetrieveDataSlipCommand.Text := 'TServerAP.RetrieveDataSlip';
+    FRetrieveDataSlipCommand.Prepare(TServerAP_RetrieveDataSlip);
+  end;
+  FRetrieveDataSlipCommand.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataSlipCommand.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataSlipCommand.Parameters[2].Value.SetWideString(AIDCabang);
+  FRetrieveDataSlipCommand.Parameters[3].Value.SetWideString(AID);
+  FRetrieveDataSlipCommand.Execute(ARequestFilter);
+  if not FRetrieveDataSlipCommand.Parameters[4].Value.IsNull then
+  begin
+    FUnMarshal := TDSRestCommand(FRetrieveDataSlipCommand.Parameters[4].ConnectionHandler).GetJSONUnMarshaler;
+    try
+      Result := TFDJSONDataSets(FUnMarshal.UnMarshal(FRetrieveDataSlipCommand.Parameters[4].Value.GetJSONValue(True)));
+      if FInstanceOwner then
+        FRetrieveDataSlipCommand.FreeOnExecute(Result);
+    finally
+      FreeAndNil(FUnMarshal)
+    end
+  end
+  else
+    Result := nil;
+end;
+
+function TServerAPClient.RetrieveDataSlip_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string): IDSRestCachedTFDJSONDataSets;
+begin
+  if FRetrieveDataSlipCommand_Cache = nil then
+  begin
+    FRetrieveDataSlipCommand_Cache := FConnection.CreateCommand;
+    FRetrieveDataSlipCommand_Cache.RequestType := 'GET';
+    FRetrieveDataSlipCommand_Cache.Text := 'TServerAP.RetrieveDataSlip';
+    FRetrieveDataSlipCommand_Cache.Prepare(TServerAP_RetrieveDataSlip_Cache);
+  end;
+  FRetrieveDataSlipCommand_Cache.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataSlipCommand_Cache.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataSlipCommand_Cache.Parameters[2].Value.SetWideString(AIDCabang);
+  FRetrieveDataSlipCommand_Cache.Parameters[3].Value.SetWideString(AID);
+  FRetrieveDataSlipCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedTFDJSONDataSets.Create(FRetrieveDataSlipCommand_Cache.Parameters[4].Value.GetString);
+end;
+
+function TServerAPClient.Delete(AAppObject: TAppObject; const ARequestFilter: string): Boolean;
+begin
+  if FDeleteCommand = nil then
+  begin
+    FDeleteCommand := FConnection.CreateCommand;
+    FDeleteCommand.RequestType := 'POST';
+    FDeleteCommand.Text := 'TServerAP."Delete"';
+    FDeleteCommand.Prepare(TServerAP_Delete);
+  end;
+  if not Assigned(AAppObject) then
+    FDeleteCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FDeleteCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FDeleteCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FDeleteCommand.Execute(ARequestFilter);
+  Result := FDeleteCommand.Parameters[1].Value.GetBoolean;
+end;
+
+function TServerAPClient.DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string): Boolean;
+begin
+  if FDeleteNoCommitCommand = nil then
+  begin
+    FDeleteNoCommitCommand := FConnection.CreateCommand;
+    FDeleteNoCommitCommand.RequestType := 'POST';
+    FDeleteNoCommitCommand.Text := 'TServerAP."DeleteNoCommit"';
+    FDeleteNoCommitCommand.Prepare(TServerAP_DeleteNoCommit);
+  end;
+  if not Assigned(AAppObject) then
+    FDeleteNoCommitCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FDeleteNoCommitCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FDeleteNoCommitCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FDeleteNoCommitCommand.Execute(ARequestFilter);
+  Result := FDeleteNoCommitCommand.Parameters[1].Value.GetBoolean;
+end;
+
+function TServerAPClient.RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string): TDataSet;
+begin
+  if FRetrieveCDSCommand = nil then
+  begin
+    FRetrieveCDSCommand := FConnection.CreateCommand;
+    FRetrieveCDSCommand.RequestType := 'POST';
+    FRetrieveCDSCommand.Text := 'TServerAP."RetrieveCDS"';
+    FRetrieveCDSCommand.Prepare(TServerAP_RetrieveCDS);
+  end;
+  if not Assigned(AAppObject) then
+    FRetrieveCDSCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FRetrieveCDSCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FRetrieveCDSCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FRetrieveCDSCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FRetrieveCDSCommand.Parameters[1].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FRetrieveCDSCommand.FreeOnExecute(Result);
+end;
+
+function TServerAPClient.RetrieveCDS_Cache(AAppObject: TAppObject; const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FRetrieveCDSCommand_Cache = nil then
+  begin
+    FRetrieveCDSCommand_Cache := FConnection.CreateCommand;
+    FRetrieveCDSCommand_Cache.RequestType := 'POST';
+    FRetrieveCDSCommand_Cache.Text := 'TServerAP."RetrieveCDS"';
+    FRetrieveCDSCommand_Cache.Prepare(TServerAP_RetrieveCDS_Cache);
+  end;
+  if not Assigned(AAppObject) then
+    FRetrieveCDSCommand_Cache.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FRetrieveCDSCommand_Cache.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FRetrieveCDSCommand_Cache.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FRetrieveCDSCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FRetrieveCDSCommand_Cache.Parameters[1].Value.GetString);
+end;
+
+function TServerAPClient.Save(AOBject: TAppObject; const ARequestFilter: string): Boolean;
+begin
+  if FSaveCommand = nil then
+  begin
+    FSaveCommand := FConnection.CreateCommand;
+    FSaveCommand.RequestType := 'POST';
+    FSaveCommand.Text := 'TServerAP."Save"';
+    FSaveCommand.Prepare(TServerAP_Save);
+  end;
+  if not Assigned(AOBject) then
+    FSaveCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FSaveCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FSaveCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AOBject), True);
+      if FInstanceOwner then
+        AOBject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FSaveCommand.Execute(ARequestFilter);
+  Result := FSaveCommand.Parameters[1].Value.GetBoolean;
+end;
+
+constructor TServerAPClient.Create(ARestConnection: TDSRestConnection);
+begin
+  inherited Create(ARestConnection);
+end;
+
+constructor TServerAPClient.Create(ARestConnection: TDSRestConnection; AInstanceOwner: Boolean);
+begin
+  inherited Create(ARestConnection, AInstanceOwner);
+end;
+
+destructor TServerAPClient.Destroy;
+begin
+  FRetrieveCommand.DisposeOf;
+  FRetrieveCommand_Cache.DisposeOf;
+  FRetrieveTransaksiCommand.DisposeOf;
+  FRetrieveTransaksiCommand_Cache.DisposeOf;
+  FGenerateNoBuktiCommand.DisposeOf;
+  FRetrieveDataCommand.DisposeOf;
+  FRetrieveDataCommand_Cache.DisposeOf;
+  FRetrieveDataSlipCommand.DisposeOf;
+  FRetrieveDataSlipCommand_Cache.DisposeOf;
+  FDeleteCommand.DisposeOf;
+  FDeleteNoCommitCommand.DisposeOf;
   FRetrieveCDSCommand.DisposeOf;
   FRetrieveCDSCommand_Cache.DisposeOf;
   FSaveCommand.DisposeOf;
@@ -7325,6 +8730,32 @@ begin
     end;
   FDeleteCommand.Execute(ARequestFilter);
   Result := FDeleteCommand.Parameters[1].Value.GetBoolean;
+end;
+
+function TServerAccountClient.DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string): Boolean;
+begin
+  if FDeleteNoCommitCommand = nil then
+  begin
+    FDeleteNoCommitCommand := FConnection.CreateCommand;
+    FDeleteNoCommitCommand.RequestType := 'POST';
+    FDeleteNoCommitCommand.Text := 'TServerAccount."DeleteNoCommit"';
+    FDeleteNoCommitCommand.Prepare(TServerAccount_DeleteNoCommit);
+  end;
+  if not Assigned(AAppObject) then
+    FDeleteNoCommitCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FDeleteNoCommitCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FDeleteNoCommitCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FDeleteNoCommitCommand.Execute(ARequestFilter);
+  Result := FDeleteNoCommitCommand.Parameters[1].Value.GetBoolean;
 end;
 
 function TServerAccountClient.RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string): TDataSet;
@@ -7423,6 +8854,7 @@ begin
   FRetrieveCommand.DisposeOf;
   FRetrieveCommand_Cache.DisposeOf;
   FDeleteCommand.DisposeOf;
+  FDeleteNoCommitCommand.DisposeOf;
   FRetrieveCDSCommand.DisposeOf;
   FRetrieveCDSCommand_Cache.DisposeOf;
   FSaveCommand.DisposeOf;
@@ -7493,6 +8925,32 @@ begin
     end;
   FDeleteCommand.Execute(ARequestFilter);
   Result := FDeleteCommand.Parameters[1].Value.GetBoolean;
+end;
+
+function TServerRekBankClient.DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string): Boolean;
+begin
+  if FDeleteNoCommitCommand = nil then
+  begin
+    FDeleteNoCommitCommand := FConnection.CreateCommand;
+    FDeleteNoCommitCommand.RequestType := 'POST';
+    FDeleteNoCommitCommand.Text := 'TServerRekBank."DeleteNoCommit"';
+    FDeleteNoCommitCommand.Prepare(TServerRekBank_DeleteNoCommit);
+  end;
+  if not Assigned(AAppObject) then
+    FDeleteNoCommitCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FDeleteNoCommitCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FDeleteNoCommitCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FDeleteNoCommitCommand.Execute(ARequestFilter);
+  Result := FDeleteNoCommitCommand.Parameters[1].Value.GetBoolean;
 end;
 
 function TServerRekBankClient.RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string): TDataSet;
@@ -7591,6 +9049,7 @@ begin
   FRetrieveCommand.DisposeOf;
   FRetrieveCommand_Cache.DisposeOf;
   FDeleteCommand.DisposeOf;
+  FDeleteNoCommitCommand.DisposeOf;
   FRetrieveCDSCommand.DisposeOf;
   FRetrieveCDSCommand_Cache.DisposeOf;
   FSaveCommand.DisposeOf;
@@ -7969,6 +9428,32 @@ begin
   Result := FDeleteCommand.Parameters[1].Value.GetBoolean;
 end;
 
+function TServerPenerimaanKasClient.DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string): Boolean;
+begin
+  if FDeleteNoCommitCommand = nil then
+  begin
+    FDeleteNoCommitCommand := FConnection.CreateCommand;
+    FDeleteNoCommitCommand.RequestType := 'POST';
+    FDeleteNoCommitCommand.Text := 'TServerPenerimaanKas."DeleteNoCommit"';
+    FDeleteNoCommitCommand.Prepare(TServerPenerimaanKas_DeleteNoCommit);
+  end;
+  if not Assigned(AAppObject) then
+    FDeleteNoCommitCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FDeleteNoCommitCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FDeleteNoCommitCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FDeleteNoCommitCommand.Execute(ARequestFilter);
+  Result := FDeleteNoCommitCommand.Parameters[1].Value.GetBoolean;
+end;
+
 function TServerPenerimaanKasClient.RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string): TDataSet;
 begin
   if FRetrieveCDSCommand = nil then
@@ -8079,6 +9564,531 @@ begin
   FRetrieveDataSlipCommand.DisposeOf;
   FRetrieveDataSlipCommand_Cache.DisposeOf;
   FDeleteCommand.DisposeOf;
+  FDeleteNoCommitCommand.DisposeOf;
+  FRetrieveCDSCommand.DisposeOf;
+  FRetrieveCDSCommand_Cache.DisposeOf;
+  FSaveCommand.DisposeOf;
+  inherited;
+end;
+
+function TServerPengeluaranKasClient.AfterSave(AAppObject: TAppObject; const ARequestFilter: string): Boolean;
+begin
+  if FAfterSaveCommand = nil then
+  begin
+    FAfterSaveCommand := FConnection.CreateCommand;
+    FAfterSaveCommand.RequestType := 'POST';
+    FAfterSaveCommand.Text := 'TServerPengeluaranKas."AfterSave"';
+    FAfterSaveCommand.Prepare(TServerPengeluaranKas_AfterSave);
+  end;
+  if not Assigned(AAppObject) then
+    FAfterSaveCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FAfterSaveCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FAfterSaveCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FAfterSaveCommand.Execute(ARequestFilter);
+  Result := FAfterSaveCommand.Parameters[1].Value.GetBoolean;
+end;
+
+function TServerPengeluaranKasClient.BeforeDelete(AAppObject: TAppObject; const ARequestFilter: string): Boolean;
+begin
+  if FBeforeDeleteCommand = nil then
+  begin
+    FBeforeDeleteCommand := FConnection.CreateCommand;
+    FBeforeDeleteCommand.RequestType := 'POST';
+    FBeforeDeleteCommand.Text := 'TServerPengeluaranKas."BeforeDelete"';
+    FBeforeDeleteCommand.Prepare(TServerPengeluaranKas_BeforeDelete);
+  end;
+  if not Assigned(AAppObject) then
+    FBeforeDeleteCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FBeforeDeleteCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FBeforeDeleteCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FBeforeDeleteCommand.Execute(ARequestFilter);
+  Result := FBeforeDeleteCommand.Parameters[1].Value.GetBoolean;
+end;
+
+function TServerPengeluaranKasClient.BeforeSave(AAppObject: TAppObject; const ARequestFilter: string): Boolean;
+begin
+  if FBeforeSaveCommand = nil then
+  begin
+    FBeforeSaveCommand := FConnection.CreateCommand;
+    FBeforeSaveCommand.RequestType := 'POST';
+    FBeforeSaveCommand.Text := 'TServerPengeluaranKas."BeforeSave"';
+    FBeforeSaveCommand.Prepare(TServerPengeluaranKas_BeforeSave);
+  end;
+  if not Assigned(AAppObject) then
+    FBeforeSaveCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FBeforeSaveCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FBeforeSaveCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FBeforeSaveCommand.Execute(ARequestFilter);
+  Result := FBeforeSaveCommand.Parameters[1].Value.GetBoolean;
+end;
+
+function TServerPengeluaranKasClient.Retrieve(AID: string; const ARequestFilter: string): TPengeluaranKas;
+begin
+  if FRetrieveCommand = nil then
+  begin
+    FRetrieveCommand := FConnection.CreateCommand;
+    FRetrieveCommand.RequestType := 'GET';
+    FRetrieveCommand.Text := 'TServerPengeluaranKas.Retrieve';
+    FRetrieveCommand.Prepare(TServerPengeluaranKas_Retrieve);
+  end;
+  FRetrieveCommand.Parameters[0].Value.SetWideString(AID);
+  FRetrieveCommand.Execute(ARequestFilter);
+  if not FRetrieveCommand.Parameters[1].Value.IsNull then
+  begin
+    FUnMarshal := TDSRestCommand(FRetrieveCommand.Parameters[1].ConnectionHandler).GetJSONUnMarshaler;
+    try
+      Result := TPengeluaranKas(FUnMarshal.UnMarshal(FRetrieveCommand.Parameters[1].Value.GetJSONValue(True)));
+      if FInstanceOwner then
+        FRetrieveCommand.FreeOnExecute(Result);
+    finally
+      FreeAndNil(FUnMarshal)
+    end
+  end
+  else
+    Result := nil;
+end;
+
+function TServerPengeluaranKasClient.Retrieve_Cache(AID: string; const ARequestFilter: string): IDSRestCachedTPengeluaranKas;
+begin
+  if FRetrieveCommand_Cache = nil then
+  begin
+    FRetrieveCommand_Cache := FConnection.CreateCommand;
+    FRetrieveCommand_Cache.RequestType := 'GET';
+    FRetrieveCommand_Cache.Text := 'TServerPengeluaranKas.Retrieve';
+    FRetrieveCommand_Cache.Prepare(TServerPengeluaranKas_Retrieve_Cache);
+  end;
+  FRetrieveCommand_Cache.Parameters[0].Value.SetWideString(AID);
+  FRetrieveCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedTPengeluaranKas.Create(FRetrieveCommand_Cache.Parameters[1].Value.GetString);
+end;
+
+function TServerPengeluaranKasClient.RetrievePenerimaanAPs(AID: string; const ARequestFilter: string): TDataSet;
+begin
+  if FRetrievePenerimaanAPsCommand = nil then
+  begin
+    FRetrievePenerimaanAPsCommand := FConnection.CreateCommand;
+    FRetrievePenerimaanAPsCommand.RequestType := 'GET';
+    FRetrievePenerimaanAPsCommand.Text := 'TServerPengeluaranKas.RetrievePenerimaanAPs';
+    FRetrievePenerimaanAPsCommand.Prepare(TServerPengeluaranKas_RetrievePenerimaanAPs);
+  end;
+  FRetrievePenerimaanAPsCommand.Parameters[0].Value.SetWideString(AID);
+  FRetrievePenerimaanAPsCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FRetrievePenerimaanAPsCommand.Parameters[1].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FRetrievePenerimaanAPsCommand.FreeOnExecute(Result);
+end;
+
+function TServerPengeluaranKasClient.RetrievePenerimaanAPs_Cache(AID: string; const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FRetrievePenerimaanAPsCommand_Cache = nil then
+  begin
+    FRetrievePenerimaanAPsCommand_Cache := FConnection.CreateCommand;
+    FRetrievePenerimaanAPsCommand_Cache.RequestType := 'GET';
+    FRetrievePenerimaanAPsCommand_Cache.Text := 'TServerPengeluaranKas.RetrievePenerimaanAPs';
+    FRetrievePenerimaanAPsCommand_Cache.Prepare(TServerPengeluaranKas_RetrievePenerimaanAPs_Cache);
+  end;
+  FRetrievePenerimaanAPsCommand_Cache.Parameters[0].Value.SetWideString(AID);
+  FRetrievePenerimaanAPsCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FRetrievePenerimaanAPsCommand_Cache.Parameters[1].Value.GetString);
+end;
+
+function TServerPengeluaranKasClient.RetrieveCDSlip(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; ANoBukti: string; const ARequestFilter: string): TFDJSONDataSets;
+begin
+  if FRetrieveCDSlipCommand = nil then
+  begin
+    FRetrieveCDSlipCommand := FConnection.CreateCommand;
+    FRetrieveCDSlipCommand.RequestType := 'POST';
+    FRetrieveCDSlipCommand.Text := 'TServerPengeluaranKas."RetrieveCDSlip"';
+    FRetrieveCDSlipCommand.Prepare(TServerPengeluaranKas_RetrieveCDSlip);
+  end;
+  FRetrieveCDSlipCommand.Parameters[0].Value.AsDateTime := ATglAwal;
+  FRetrieveCDSlipCommand.Parameters[1].Value.AsDateTime := ATglAtglAkhir;
+  if not Assigned(ACabang) then
+    FRetrieveCDSlipCommand.Parameters[2].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FRetrieveCDSlipCommand.Parameters[2].ConnectionHandler).GetJSONMarshaler;
+    try
+      FRetrieveCDSlipCommand.Parameters[2].Value.SetJSONValue(FMarshal.Marshal(ACabang), True);
+      if FInstanceOwner then
+        ACabang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FRetrieveCDSlipCommand.Parameters[3].Value.SetWideString(ANoBukti);
+  FRetrieveCDSlipCommand.Execute(ARequestFilter);
+  if not FRetrieveCDSlipCommand.Parameters[4].Value.IsNull then
+  begin
+    FUnMarshal := TDSRestCommand(FRetrieveCDSlipCommand.Parameters[4].ConnectionHandler).GetJSONUnMarshaler;
+    try
+      Result := TFDJSONDataSets(FUnMarshal.UnMarshal(FRetrieveCDSlipCommand.Parameters[4].Value.GetJSONValue(True)));
+      if FInstanceOwner then
+        FRetrieveCDSlipCommand.FreeOnExecute(Result);
+    finally
+      FreeAndNil(FUnMarshal)
+    end
+  end
+  else
+    Result := nil;
+end;
+
+function TServerPengeluaranKasClient.RetrieveCDSlip_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; ANoBukti: string; const ARequestFilter: string): IDSRestCachedTFDJSONDataSets;
+begin
+  if FRetrieveCDSlipCommand_Cache = nil then
+  begin
+    FRetrieveCDSlipCommand_Cache := FConnection.CreateCommand;
+    FRetrieveCDSlipCommand_Cache.RequestType := 'POST';
+    FRetrieveCDSlipCommand_Cache.Text := 'TServerPengeluaranKas."RetrieveCDSlip"';
+    FRetrieveCDSlipCommand_Cache.Prepare(TServerPengeluaranKas_RetrieveCDSlip_Cache);
+  end;
+  FRetrieveCDSlipCommand_Cache.Parameters[0].Value.AsDateTime := ATglAwal;
+  FRetrieveCDSlipCommand_Cache.Parameters[1].Value.AsDateTime := ATglAtglAkhir;
+  if not Assigned(ACabang) then
+    FRetrieveCDSlipCommand_Cache.Parameters[2].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FRetrieveCDSlipCommand_Cache.Parameters[2].ConnectionHandler).GetJSONMarshaler;
+    try
+      FRetrieveCDSlipCommand_Cache.Parameters[2].Value.SetJSONValue(FMarshal.Marshal(ACabang), True);
+      if FInstanceOwner then
+        ACabang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FRetrieveCDSlipCommand_Cache.Parameters[3].Value.SetWideString(ANoBukti);
+  FRetrieveCDSlipCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedTFDJSONDataSets.Create(FRetrieveCDSlipCommand_Cache.Parameters[4].Value.GetString);
+end;
+
+function TServerPengeluaranKasClient.RetrieveNoBukti(ANoBukti: string; const ARequestFilter: string): TPengeluaranKas;
+begin
+  if FRetrieveNoBuktiCommand = nil then
+  begin
+    FRetrieveNoBuktiCommand := FConnection.CreateCommand;
+    FRetrieveNoBuktiCommand.RequestType := 'GET';
+    FRetrieveNoBuktiCommand.Text := 'TServerPengeluaranKas.RetrieveNoBukti';
+    FRetrieveNoBuktiCommand.Prepare(TServerPengeluaranKas_RetrieveNoBukti);
+  end;
+  FRetrieveNoBuktiCommand.Parameters[0].Value.SetWideString(ANoBukti);
+  FRetrieveNoBuktiCommand.Execute(ARequestFilter);
+  if not FRetrieveNoBuktiCommand.Parameters[1].Value.IsNull then
+  begin
+    FUnMarshal := TDSRestCommand(FRetrieveNoBuktiCommand.Parameters[1].ConnectionHandler).GetJSONUnMarshaler;
+    try
+      Result := TPengeluaranKas(FUnMarshal.UnMarshal(FRetrieveNoBuktiCommand.Parameters[1].Value.GetJSONValue(True)));
+      if FInstanceOwner then
+        FRetrieveNoBuktiCommand.FreeOnExecute(Result);
+    finally
+      FreeAndNil(FUnMarshal)
+    end
+  end
+  else
+    Result := nil;
+end;
+
+function TServerPengeluaranKasClient.RetrieveNoBukti_Cache(ANoBukti: string; const ARequestFilter: string): IDSRestCachedTPengeluaranKas;
+begin
+  if FRetrieveNoBuktiCommand_Cache = nil then
+  begin
+    FRetrieveNoBuktiCommand_Cache := FConnection.CreateCommand;
+    FRetrieveNoBuktiCommand_Cache.RequestType := 'GET';
+    FRetrieveNoBuktiCommand_Cache.Text := 'TServerPengeluaranKas.RetrieveNoBukti';
+    FRetrieveNoBuktiCommand_Cache.Prepare(TServerPengeluaranKas_RetrieveNoBukti_Cache);
+  end;
+  FRetrieveNoBuktiCommand_Cache.Parameters[0].Value.SetWideString(ANoBukti);
+  FRetrieveNoBuktiCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedTPengeluaranKas.Create(FRetrieveNoBuktiCommand_Cache.Parameters[1].Value.GetString);
+end;
+
+function TServerPengeluaranKasClient.GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string): string;
+begin
+  if FGenerateNoBuktiCommand = nil then
+  begin
+    FGenerateNoBuktiCommand := FConnection.CreateCommand;
+    FGenerateNoBuktiCommand.RequestType := 'GET';
+    FGenerateNoBuktiCommand.Text := 'TServerPengeluaranKas.GenerateNoBukti';
+    FGenerateNoBuktiCommand.Prepare(TServerPengeluaranKas_GenerateNoBukti);
+  end;
+  FGenerateNoBuktiCommand.Parameters[0].Value.AsDateTime := ATglBukti;
+  FGenerateNoBuktiCommand.Parameters[1].Value.SetWideString(APrefix);
+  FGenerateNoBuktiCommand.Execute(ARequestFilter);
+  Result := FGenerateNoBuktiCommand.Parameters[2].Value.GetWideString;
+end;
+
+function TServerPengeluaranKasClient.RetrieveData(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string): TDataSet;
+begin
+  if FRetrieveDataCommand = nil then
+  begin
+    FRetrieveDataCommand := FConnection.CreateCommand;
+    FRetrieveDataCommand.RequestType := 'GET';
+    FRetrieveDataCommand.Text := 'TServerPengeluaranKas.RetrieveData';
+    FRetrieveDataCommand.Prepare(TServerPengeluaranKas_RetrieveData);
+  end;
+  FRetrieveDataCommand.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataCommand.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataCommand.Parameters[2].Value.SetWideString(AIDCabang);
+  FRetrieveDataCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FRetrieveDataCommand.Parameters[3].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FRetrieveDataCommand.FreeOnExecute(Result);
+end;
+
+function TServerPengeluaranKasClient.RetrieveData_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FRetrieveDataCommand_Cache = nil then
+  begin
+    FRetrieveDataCommand_Cache := FConnection.CreateCommand;
+    FRetrieveDataCommand_Cache.RequestType := 'GET';
+    FRetrieveDataCommand_Cache.Text := 'TServerPengeluaranKas.RetrieveData';
+    FRetrieveDataCommand_Cache.Prepare(TServerPengeluaranKas_RetrieveData_Cache);
+  end;
+  FRetrieveDataCommand_Cache.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataCommand_Cache.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataCommand_Cache.Parameters[2].Value.SetWideString(AIDCabang);
+  FRetrieveDataCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FRetrieveDataCommand_Cache.Parameters[3].Value.GetString);
+end;
+
+function TServerPengeluaranKasClient.RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string): TFDJSONDataSets;
+begin
+  if FRetrieveDataSlipCommand = nil then
+  begin
+    FRetrieveDataSlipCommand := FConnection.CreateCommand;
+    FRetrieveDataSlipCommand.RequestType := 'GET';
+    FRetrieveDataSlipCommand.Text := 'TServerPengeluaranKas.RetrieveDataSlip';
+    FRetrieveDataSlipCommand.Prepare(TServerPengeluaranKas_RetrieveDataSlip);
+  end;
+  FRetrieveDataSlipCommand.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataSlipCommand.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataSlipCommand.Parameters[2].Value.SetWideString(AIDCabang);
+  FRetrieveDataSlipCommand.Parameters[3].Value.SetWideString(AID);
+  FRetrieveDataSlipCommand.Execute(ARequestFilter);
+  if not FRetrieveDataSlipCommand.Parameters[4].Value.IsNull then
+  begin
+    FUnMarshal := TDSRestCommand(FRetrieveDataSlipCommand.Parameters[4].ConnectionHandler).GetJSONUnMarshaler;
+    try
+      Result := TFDJSONDataSets(FUnMarshal.UnMarshal(FRetrieveDataSlipCommand.Parameters[4].Value.GetJSONValue(True)));
+      if FInstanceOwner then
+        FRetrieveDataSlipCommand.FreeOnExecute(Result);
+    finally
+      FreeAndNil(FUnMarshal)
+    end
+  end
+  else
+    Result := nil;
+end;
+
+function TServerPengeluaranKasClient.RetrieveDataSlip_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string): IDSRestCachedTFDJSONDataSets;
+begin
+  if FRetrieveDataSlipCommand_Cache = nil then
+  begin
+    FRetrieveDataSlipCommand_Cache := FConnection.CreateCommand;
+    FRetrieveDataSlipCommand_Cache.RequestType := 'GET';
+    FRetrieveDataSlipCommand_Cache.Text := 'TServerPengeluaranKas.RetrieveDataSlip';
+    FRetrieveDataSlipCommand_Cache.Prepare(TServerPengeluaranKas_RetrieveDataSlip_Cache);
+  end;
+  FRetrieveDataSlipCommand_Cache.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataSlipCommand_Cache.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataSlipCommand_Cache.Parameters[2].Value.SetWideString(AIDCabang);
+  FRetrieveDataSlipCommand_Cache.Parameters[3].Value.SetWideString(AID);
+  FRetrieveDataSlipCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedTFDJSONDataSets.Create(FRetrieveDataSlipCommand_Cache.Parameters[4].Value.GetString);
+end;
+
+function TServerPengeluaranKasClient.Delete(AAppObject: TAppObject; const ARequestFilter: string): Boolean;
+begin
+  if FDeleteCommand = nil then
+  begin
+    FDeleteCommand := FConnection.CreateCommand;
+    FDeleteCommand.RequestType := 'POST';
+    FDeleteCommand.Text := 'TServerPengeluaranKas."Delete"';
+    FDeleteCommand.Prepare(TServerPengeluaranKas_Delete);
+  end;
+  if not Assigned(AAppObject) then
+    FDeleteCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FDeleteCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FDeleteCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FDeleteCommand.Execute(ARequestFilter);
+  Result := FDeleteCommand.Parameters[1].Value.GetBoolean;
+end;
+
+function TServerPengeluaranKasClient.DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string): Boolean;
+begin
+  if FDeleteNoCommitCommand = nil then
+  begin
+    FDeleteNoCommitCommand := FConnection.CreateCommand;
+    FDeleteNoCommitCommand.RequestType := 'POST';
+    FDeleteNoCommitCommand.Text := 'TServerPengeluaranKas."DeleteNoCommit"';
+    FDeleteNoCommitCommand.Prepare(TServerPengeluaranKas_DeleteNoCommit);
+  end;
+  if not Assigned(AAppObject) then
+    FDeleteNoCommitCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FDeleteNoCommitCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FDeleteNoCommitCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FDeleteNoCommitCommand.Execute(ARequestFilter);
+  Result := FDeleteNoCommitCommand.Parameters[1].Value.GetBoolean;
+end;
+
+function TServerPengeluaranKasClient.RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string): TDataSet;
+begin
+  if FRetrieveCDSCommand = nil then
+  begin
+    FRetrieveCDSCommand := FConnection.CreateCommand;
+    FRetrieveCDSCommand.RequestType := 'POST';
+    FRetrieveCDSCommand.Text := 'TServerPengeluaranKas."RetrieveCDS"';
+    FRetrieveCDSCommand.Prepare(TServerPengeluaranKas_RetrieveCDS);
+  end;
+  if not Assigned(AAppObject) then
+    FRetrieveCDSCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FRetrieveCDSCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FRetrieveCDSCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FRetrieveCDSCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FRetrieveCDSCommand.Parameters[1].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FRetrieveCDSCommand.FreeOnExecute(Result);
+end;
+
+function TServerPengeluaranKasClient.RetrieveCDS_Cache(AAppObject: TAppObject; const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FRetrieveCDSCommand_Cache = nil then
+  begin
+    FRetrieveCDSCommand_Cache := FConnection.CreateCommand;
+    FRetrieveCDSCommand_Cache.RequestType := 'POST';
+    FRetrieveCDSCommand_Cache.Text := 'TServerPengeluaranKas."RetrieveCDS"';
+    FRetrieveCDSCommand_Cache.Prepare(TServerPengeluaranKas_RetrieveCDS_Cache);
+  end;
+  if not Assigned(AAppObject) then
+    FRetrieveCDSCommand_Cache.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FRetrieveCDSCommand_Cache.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FRetrieveCDSCommand_Cache.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FRetrieveCDSCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FRetrieveCDSCommand_Cache.Parameters[1].Value.GetString);
+end;
+
+function TServerPengeluaranKasClient.Save(AOBject: TAppObject; const ARequestFilter: string): Boolean;
+begin
+  if FSaveCommand = nil then
+  begin
+    FSaveCommand := FConnection.CreateCommand;
+    FSaveCommand.RequestType := 'POST';
+    FSaveCommand.Text := 'TServerPengeluaranKas."Save"';
+    FSaveCommand.Prepare(TServerPengeluaranKas_Save);
+  end;
+  if not Assigned(AOBject) then
+    FSaveCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FSaveCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FSaveCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AOBject), True);
+      if FInstanceOwner then
+        AOBject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FSaveCommand.Execute(ARequestFilter);
+  Result := FSaveCommand.Parameters[1].Value.GetBoolean;
+end;
+
+constructor TServerPengeluaranKasClient.Create(ARestConnection: TDSRestConnection);
+begin
+  inherited Create(ARestConnection);
+end;
+
+constructor TServerPengeluaranKasClient.Create(ARestConnection: TDSRestConnection; AInstanceOwner: Boolean);
+begin
+  inherited Create(ARestConnection, AInstanceOwner);
+end;
+
+destructor TServerPengeluaranKasClient.Destroy;
+begin
+  FAfterSaveCommand.DisposeOf;
+  FBeforeDeleteCommand.DisposeOf;
+  FBeforeSaveCommand.DisposeOf;
+  FRetrieveCommand.DisposeOf;
+  FRetrieveCommand_Cache.DisposeOf;
+  FRetrievePenerimaanAPsCommand.DisposeOf;
+  FRetrievePenerimaanAPsCommand_Cache.DisposeOf;
+  FRetrieveCDSlipCommand.DisposeOf;
+  FRetrieveCDSlipCommand_Cache.DisposeOf;
+  FRetrieveNoBuktiCommand.DisposeOf;
+  FRetrieveNoBuktiCommand_Cache.DisposeOf;
+  FGenerateNoBuktiCommand.DisposeOf;
+  FRetrieveDataCommand.DisposeOf;
+  FRetrieveDataCommand_Cache.DisposeOf;
+  FRetrieveDataSlipCommand.DisposeOf;
+  FRetrieveDataSlipCommand_Cache.DisposeOf;
+  FDeleteCommand.DisposeOf;
+  FDeleteNoCommitCommand.DisposeOf;
   FRetrieveCDSCommand.DisposeOf;
   FRetrieveCDSCommand_Cache.DisposeOf;
   FSaveCommand.DisposeOf;
@@ -8191,6 +10201,32 @@ begin
   Result := FDeleteCommand.Parameters[1].Value.GetBoolean;
 end;
 
+function TServerSettingAppClient.DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string): Boolean;
+begin
+  if FDeleteNoCommitCommand = nil then
+  begin
+    FDeleteNoCommitCommand := FConnection.CreateCommand;
+    FDeleteNoCommitCommand.RequestType := 'POST';
+    FDeleteNoCommitCommand.Text := 'TServerSettingApp."DeleteNoCommit"';
+    FDeleteNoCommitCommand.Prepare(TServerSettingApp_DeleteNoCommit);
+  end;
+  if not Assigned(AAppObject) then
+    FDeleteNoCommitCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FDeleteNoCommitCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FDeleteNoCommitCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FDeleteNoCommitCommand.Execute(ARequestFilter);
+  Result := FDeleteNoCommitCommand.Parameters[1].Value.GetBoolean;
+end;
+
 function TServerSettingAppClient.RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string): TDataSet;
 begin
   if FRetrieveCDSCommand = nil then
@@ -8289,6 +10325,7 @@ begin
   FRetrieveByCabangCommand.DisposeOf;
   FRetrieveByCabangCommand_Cache.DisposeOf;
   FDeleteCommand.DisposeOf;
+  FDeleteNoCommitCommand.DisposeOf;
   FRetrieveCDSCommand.DisposeOf;
   FRetrieveCDSCommand_Cache.DisposeOf;
   FSaveCommand.DisposeOf;
@@ -8584,6 +10621,32 @@ begin
   Result := FDeleteCommand.Parameters[1].Value.GetBoolean;
 end;
 
+function TServerTransferAntarGudangClient.DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string): Boolean;
+begin
+  if FDeleteNoCommitCommand = nil then
+  begin
+    FDeleteNoCommitCommand := FConnection.CreateCommand;
+    FDeleteNoCommitCommand.RequestType := 'POST';
+    FDeleteNoCommitCommand.Text := 'TServerTransferAntarGudang."DeleteNoCommit"';
+    FDeleteNoCommitCommand.Prepare(TServerTransferAntarGudang_DeleteNoCommit);
+  end;
+  if not Assigned(AAppObject) then
+    FDeleteNoCommitCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FDeleteNoCommitCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FDeleteNoCommitCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FDeleteNoCommitCommand.Execute(ARequestFilter);
+  Result := FDeleteNoCommitCommand.Parameters[1].Value.GetBoolean;
+end;
+
 function TServerTransferAntarGudangClient.RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string): TDataSet;
 begin
   if FRetrieveCDSCommand = nil then
@@ -8690,6 +10753,7 @@ begin
   FRetrieveDataSlipCommand.DisposeOf;
   FRetrieveDataSlipCommand_Cache.DisposeOf;
   FDeleteCommand.DisposeOf;
+  FDeleteNoCommitCommand.DisposeOf;
   FRetrieveCDSCommand.DisposeOf;
   FRetrieveCDSCommand_Cache.DisposeOf;
   FSaveCommand.DisposeOf;
@@ -8931,6 +10995,32 @@ begin
   Result := FDeleteCommand.Parameters[1].Value.GetBoolean;
 end;
 
+function TServerTAGRequestClient.DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string): Boolean;
+begin
+  if FDeleteNoCommitCommand = nil then
+  begin
+    FDeleteNoCommitCommand := FConnection.CreateCommand;
+    FDeleteNoCommitCommand.RequestType := 'POST';
+    FDeleteNoCommitCommand.Text := 'TServerTAGRequest."DeleteNoCommit"';
+    FDeleteNoCommitCommand.Prepare(TServerTAGRequest_DeleteNoCommit);
+  end;
+  if not Assigned(AAppObject) then
+    FDeleteNoCommitCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FDeleteNoCommitCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FDeleteNoCommitCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FDeleteNoCommitCommand.Execute(ARequestFilter);
+  Result := FDeleteNoCommitCommand.Parameters[1].Value.GetBoolean;
+end;
+
 function TServerTAGRequestClient.RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string): TDataSet;
 begin
   if FRetrieveCDSCommand = nil then
@@ -9036,6 +11126,7 @@ begin
   FRetrieveDataSlipCommand.DisposeOf;
   FRetrieveDataSlipCommand_Cache.DisposeOf;
   FDeleteCommand.DisposeOf;
+  FDeleteNoCommitCommand.DisposeOf;
   FRetrieveCDSCommand.DisposeOf;
   FRetrieveCDSCommand_Cache.DisposeOf;
   FSaveCommand.DisposeOf;
@@ -9244,6 +11335,32 @@ begin
   Result := FDeleteCommand.Parameters[1].Value.GetBoolean;
 end;
 
+function TServerTransferAntarCabangKirimClient.DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string): Boolean;
+begin
+  if FDeleteNoCommitCommand = nil then
+  begin
+    FDeleteNoCommitCommand := FConnection.CreateCommand;
+    FDeleteNoCommitCommand.RequestType := 'POST';
+    FDeleteNoCommitCommand.Text := 'TServerTransferAntarCabangKirim."DeleteNoCommit"';
+    FDeleteNoCommitCommand.Prepare(TServerTransferAntarCabangKirim_DeleteNoCommit);
+  end;
+  if not Assigned(AAppObject) then
+    FDeleteNoCommitCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FDeleteNoCommitCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FDeleteNoCommitCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FDeleteNoCommitCommand.Execute(ARequestFilter);
+  Result := FDeleteNoCommitCommand.Parameters[1].Value.GetBoolean;
+end;
+
 function TServerTransferAntarCabangKirimClient.RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string): TDataSet;
 begin
   if FRetrieveCDSCommand = nil then
@@ -9347,6 +11464,7 @@ begin
   FRetrieveDataSlipCommand.DisposeOf;
   FRetrieveDataSlipCommand_Cache.DisposeOf;
   FDeleteCommand.DisposeOf;
+  FDeleteNoCommitCommand.DisposeOf;
   FRetrieveCDSCommand.DisposeOf;
   FRetrieveCDSCommand_Cache.DisposeOf;
   FSaveCommand.DisposeOf;
@@ -9555,6 +11673,32 @@ begin
   Result := FDeleteCommand.Parameters[1].Value.GetBoolean;
 end;
 
+function TServerTransferAntarCabangTerimaClient.DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string): Boolean;
+begin
+  if FDeleteNoCommitCommand = nil then
+  begin
+    FDeleteNoCommitCommand := FConnection.CreateCommand;
+    FDeleteNoCommitCommand.RequestType := 'POST';
+    FDeleteNoCommitCommand.Text := 'TServerTransferAntarCabangTerima."DeleteNoCommit"';
+    FDeleteNoCommitCommand.Prepare(TServerTransferAntarCabangTerima_DeleteNoCommit);
+  end;
+  if not Assigned(AAppObject) then
+    FDeleteNoCommitCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FDeleteNoCommitCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FDeleteNoCommitCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FDeleteNoCommitCommand.Execute(ARequestFilter);
+  Result := FDeleteNoCommitCommand.Parameters[1].Value.GetBoolean;
+end;
+
 function TServerTransferAntarCabangTerimaClient.RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string): TDataSet;
 begin
   if FRetrieveCDSCommand = nil then
@@ -9658,38 +11802,127 @@ begin
   FRetrieveDataSlipCommand.DisposeOf;
   FRetrieveDataSlipCommand_Cache.DisposeOf;
   FDeleteCommand.DisposeOf;
+  FDeleteNoCommitCommand.DisposeOf;
   FRetrieveCDSCommand.DisposeOf;
   FRetrieveCDSCommand_Cache.DisposeOf;
   FSaveCommand.DisposeOf;
   inherited;
 end;
 
-function TDSReportClient.GetNamaku(const ARequestFilter: string): string;
+function TDSDataClient.GetNamaku(const ARequestFilter: string): string;
 begin
   if FGetNamakuCommand = nil then
   begin
     FGetNamakuCommand := FConnection.CreateCommand;
     FGetNamakuCommand.RequestType := 'GET';
-    FGetNamakuCommand.Text := 'TDSReport.GetNamaku';
-    FGetNamakuCommand.Prepare(TDSReport_GetNamaku);
+    FGetNamakuCommand.Text := 'TDSData.GetNamaku';
+    FGetNamakuCommand.Prepare(TDSData_GetNamaku);
   end;
   FGetNamakuCommand.Execute(ARequestFilter);
   Result := FGetNamakuCommand.Parameters[0].Value.GetWideString;
 end;
 
-constructor TDSReportClient.Create(ARestConnection: TDSRestConnection);
+function TDSDataClient.LoadAccountPengeluaranKasLain(const ARequestFilter: string): TDataSet;
+begin
+  if FLoadAccountPengeluaranKasLainCommand = nil then
+  begin
+    FLoadAccountPengeluaranKasLainCommand := FConnection.CreateCommand;
+    FLoadAccountPengeluaranKasLainCommand.RequestType := 'GET';
+    FLoadAccountPengeluaranKasLainCommand.Text := 'TDSData.LoadAccountPengeluaranKasLain';
+    FLoadAccountPengeluaranKasLainCommand.Prepare(TDSData_LoadAccountPengeluaranKasLain);
+  end;
+  FLoadAccountPengeluaranKasLainCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FLoadAccountPengeluaranKasLainCommand.Parameters[0].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FLoadAccountPengeluaranKasLainCommand.FreeOnExecute(Result);
+end;
+
+function TDSDataClient.LoadAccountPengeluaranKasLain_Cache(const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FLoadAccountPengeluaranKasLainCommand_Cache = nil then
+  begin
+    FLoadAccountPengeluaranKasLainCommand_Cache := FConnection.CreateCommand;
+    FLoadAccountPengeluaranKasLainCommand_Cache.RequestType := 'GET';
+    FLoadAccountPengeluaranKasLainCommand_Cache.Text := 'TDSData.LoadAccountPengeluaranKasLain';
+    FLoadAccountPengeluaranKasLainCommand_Cache.Prepare(TDSData_LoadAccountPengeluaranKasLain_Cache);
+  end;
+  FLoadAccountPengeluaranKasLainCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FLoadAccountPengeluaranKasLainCommand_Cache.Parameters[0].Value.GetString);
+end;
+
+function TDSDataClient.LoadAP(ASupplier: TSupplier; const ARequestFilter: string): TDataSet;
+begin
+  if FLoadAPCommand = nil then
+  begin
+    FLoadAPCommand := FConnection.CreateCommand;
+    FLoadAPCommand.RequestType := 'POST';
+    FLoadAPCommand.Text := 'TDSData."LoadAP"';
+    FLoadAPCommand.Prepare(TDSData_LoadAP);
+  end;
+  if not Assigned(ASupplier) then
+    FLoadAPCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FLoadAPCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FLoadAPCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(ASupplier), True);
+      if FInstanceOwner then
+        ASupplier.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FLoadAPCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FLoadAPCommand.Parameters[1].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FLoadAPCommand.FreeOnExecute(Result);
+end;
+
+function TDSDataClient.LoadAP_Cache(ASupplier: TSupplier; const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FLoadAPCommand_Cache = nil then
+  begin
+    FLoadAPCommand_Cache := FConnection.CreateCommand;
+    FLoadAPCommand_Cache.RequestType := 'POST';
+    FLoadAPCommand_Cache.Text := 'TDSData."LoadAP"';
+    FLoadAPCommand_Cache.Prepare(TDSData_LoadAP_Cache);
+  end;
+  if not Assigned(ASupplier) then
+    FLoadAPCommand_Cache.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FLoadAPCommand_Cache.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FLoadAPCommand_Cache.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(ASupplier), True);
+      if FInstanceOwner then
+        ASupplier.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FLoadAPCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FLoadAPCommand_Cache.Parameters[1].Value.GetString);
+end;
+
+constructor TDSDataClient.Create(ARestConnection: TDSRestConnection);
 begin
   inherited Create(ARestConnection);
 end;
 
-constructor TDSReportClient.Create(ARestConnection: TDSRestConnection; AInstanceOwner: Boolean);
+constructor TDSDataClient.Create(ARestConnection: TDSRestConnection; AInstanceOwner: Boolean);
 begin
   inherited Create(ARestConnection, AInstanceOwner);
 end;
 
-destructor TDSReportClient.Destroy;
+destructor TDSDataClient.Destroy;
 begin
   FGetNamakuCommand.DisposeOf;
+  FLoadAccountPengeluaranKasLainCommand.DisposeOf;
+  FLoadAccountPengeluaranKasLainCommand_Cache.DisposeOf;
+  FLoadAPCommand.DisposeOf;
+  FLoadAPCommand_Cache.DisposeOf;
   inherited;
 end;
 

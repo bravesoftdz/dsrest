@@ -6,16 +6,19 @@ uses
   SysUtils, Classes, DSServer, uModel, Windows, uDBUtils, Generics.Collections,
   DBXJSON, DBClient, DB, rtti, uInterface, uPenjualan,Data.FireDACJSONReflect,
   uCustomerInvoice, uAR, uPenerimaanKas, uAccount, uRekBank,
-  uTransferAntarGudang, uSettingApp, uTAGRequests, uTransferAntarCabang;
+  uTransferAntarGudang, uSettingApp, uTAGRequests, uTransferAntarCabang,
+  uPengeluaranKas, FireDAC.Comp.Client;
 
 type
   {$METHODINFO ON}
 
 //  TServerAR = class;
-  TDSReport = class(TInterfacedPersistent)
+  TDSData = class(TInterfacedPersistent)
 
   public
     function GetNamaku: string;
+    function LoadAccountPengeluaranKasLain: TDataset;
+    function LoadAP(ASupplier : TSupplier): TDataSet;
   end;
 
   TServerLaporan = class(TInterfacedPersistent)
@@ -44,6 +47,8 @@ type
     function RetrivePenerimaanKas(ATglAwal , ATglAtglAkhir : TDateTime; ACabang :
         TCabang): TDataset;
     function RetriveAR(ASupplier : TSupplier): TDataset;
+    function RetrivePengeluaranKas(ATglAwal , ATglAtglAkhir : TDateTime; ACabang :
+        TCabang): TDataset;
     function RetriveSettingApp(ACabang : TCabang): TDataset;
 
   end;
@@ -356,6 +361,33 @@ type
   public
     function Retrieve(AID : String): TAP;
     function RetrieveTransaksi(ATransaksi : String; AIDTransaksi : String): TAP;
+  end;
+
+type
+  TServerPengeluaranKas = class(TServerTransaction)
+  private
+    FServerAP: TServerAP;
+    function GetServerAP: TServerAP;
+    function RetrieveCDSlipPengeluaranKas(ATglAwal , ATglAtglAkhir : TDateTime;
+        ACabang : TCabang; ANoBukti : String): TFDQuery;
+    function RetrieveCDSlipPengeluaranKasNonAP(ATglAwal , ATglAtglAkhir :
+        TDateTime; ACabang : TCabang; ANoBukti : String): TFDQuery;
+    function RetrieveCDSlipPengeluaranKasAP(ATglAwal , ATglAtglAkhir : TDateTime;
+        ACabang : TCabang; ANoBukti : String): TFDQuery;
+    function UpdateAPTerbayar(APengeluaranKas : TPengeluaranKas; AIsBayar :
+        Boolean): Boolean;
+    property ServerAP: TServerAP read GetServerAP write FServerAP;
+  protected
+  public
+    destructor Destroy; override;
+    function AfterSave(AAppObject : TAppObject): Boolean; override;
+    function BeforeDelete(AAppObject : TAppObject): Boolean; override;
+    function BeforeSave(AAppObject : TAppObject): Boolean; override;
+    function Retrieve(AID : String): TPengeluaranKas;
+    function RetrievePenerimaanAPs(AID : String): TDataSet;
+    function RetrieveCDSlip(ATglAwal , ATglAtglAkhir : TDateTime; ACabang :
+        TCabang; ANoBukti : String): TFDJSONDataSets;
+    function RetrieveNoBukti(ANoBukti : String): TPengeluaranKas;
   end;
 
 
@@ -1377,6 +1409,23 @@ var
 begin
   sSQL := 'select * from tar ' +
           ' where customer = ' + QuotedStr(ASupplier.ID);
+
+  Result   := TDBUtils.OpenDataset(sSQL);
+end;
+
+{ TLaporan }
+
+function TServerLaporan.RetrivePengeluaranKas(ATglAwal , ATglAtglAkhir :
+    TDateTime; ACabang : TCabang): TDataset;
+var
+  sSQL : String;
+begin
+  sSQL := 'SELECT * FROM vpengeluaran_kas A' +
+          ' where a.tglbukti between ' + TAppUtils.QuotDt(StartOfTheDay(ATglAwal))+
+          ' and ' + TAppUtils.QuotDt(EndOfTheDay(ATglAtglAkhir));
+
+  if ACabang <> nil then
+    sSQL := sSQL + ' and a.cabangID = ' + QuotedStr(ACabang.ID);
 
   Result   := TDBUtils.OpenDataset(sSQL);
 end;
@@ -3124,9 +3173,35 @@ begin
   end;
 end;
 
-function TDSReport.GetNamaku: string;
+function TDSData.GetNamaku: string;
 begin
   Result := 'BP';
+end;
+
+function TDSData.LoadAccountPengeluaranKasLain: TDataset;
+var
+  sSQL: string;
+begin
+  sSQL := 'select * from VAccountTransaksiPengeluaranLain order by kode';
+  Result := TDBUtils.OpenDataset(sSQL);
+end;
+
+function TDSData.LoadAP(ASupplier : TSupplier): TDataSet;
+var
+  sSQL: string;
+begin
+  Result := nil;
+
+  if ASupplier = nil then
+    Exit;
+
+  if ASupplier.ID = '' then
+    Exit;
+
+  sSQL := 'select * from V_LOOK_AP' +
+          ' where supplierid = ' + QuotedStr(ASupplier.ID);
+
+  Result := TDBUtils.OpenDataset(sSQL);
 end;
 
 function TServerAP.Retrieve(AID : String): TAP;
@@ -3167,6 +3242,182 @@ begin
       Free;
     end;
   end;
+end;
+
+destructor TServerPengeluaranKas.Destroy;
+begin
+  inherited;
+  ServerAP.Free;
+end;
+
+function TServerPengeluaranKas.AfterSave(AAppObject : TAppObject): Boolean;
+begin
+  Result := False;
+
+  if AAppObject= nil then
+    Exit;
+
+  if UpdateAPTerbayar(TPengeluaranKas(AAppObject), True) then
+    Result := True;
+end;
+
+function TServerPengeluaranKas.BeforeDelete(AAppObject : TAppObject): Boolean;
+begin
+  Result := False;
+
+  if AAppObject= nil then
+    Exit;
+
+  if UpdateAPTerbayar(TPengeluaranKas(AAppObject), False) then
+    Result := True;
+end;
+
+function TServerPengeluaranKas.BeforeSave(AAppObject : TAppObject): Boolean;
+begin
+  Result := False;
+
+  if AAppObject= nil then
+    Exit;
+
+  if UpdateAPTerbayar(TPengeluaranKas(AAppObject), False) then
+    Result := True;
+end;
+
+function TServerPengeluaranKas.GetServerAP: TServerAP;
+begin
+  if FServerAP = nil then
+    FServerAP := TServerAP.Create;
+
+  Result := FServerAP;
+end;
+
+function TServerPengeluaranKas.Retrieve(AID : String): TPengeluaranKas;
+begin
+  Result := TPengeluaranKas.Create;
+  TDBUtils.LoadFromDB(Result, AID);
+end;
+
+function TServerPengeluaranKas.RetrievePenerimaanAPs(AID : String): TDataSet;
+var
+  sSQL: string;
+begin
+  sSQL   := 'select a.*, b.nobukti, b.nominal as nominalaP, b.terbayar' +
+            ' from tpengeluarankasap a ' +
+            ' INNER JOIN tar b on a.ar = b.id ' +
+            ' where a.pengeluarankas = ' + QuotedStr(AID);
+
+  Result := TDBUtils.OpenDataset(sSQL);
+end;
+
+function TServerPengeluaranKas.RetrieveCDSlip(ATglAwal , ATglAtglAkhir :
+    TDateTime; ACabang : TCabang; ANoBukti : String): TFDJSONDataSets;
+begin
+  Result := TFDJSONDataSets.Create;
+
+  TFDJSONDataSetsWriter.ListAdd(Result, RetrieveCDSlipPengeluaranKas(ATglAwal, ATglAtglAkhir, ACabang, ANoBukti));
+  TFDJSONDataSetsWriter.ListAdd(Result, RetrieveCDSlipPengeluaranKasAP(ATglAwal, ATglAtglAkhir, ACabang, ANoBukti));
+  TFDJSONDataSetsWriter.ListAdd(Result, RetrieveCDSlipPengeluaranKasNonAP(ATglAwal, ATglAtglAkhir, ACabang, ANoBukti));
+
+end;
+
+function TServerPengeluaranKas.RetrieveCDSlipPengeluaranKas(ATglAwal ,
+    ATglAtglAkhir : TDateTime; ACabang : TCabang; ANoBukti : String): TFDQuery;
+var
+  sSQL: string;
+begin
+  sSQL   := 'select * from VPENGELUARAN_KAS_SLIP a ' +
+            ' where tglbukti between ' + TAppUtils.QuotDt(StartOfTheDay(ATglAwal)) +
+            ' and ' + TAppUtils.QuotDt(EndOfTheDay(ATglAtglAkhir)) +
+            ' and nobukti like ' + QuotedStr('%' + Trim(ANoBukti) + '%');
+
+  if ACabang <> nil then
+    sSQL := sSQL + ' and cabangid = ' + QuotedStr(ACabang.ID);
+
+  Result := TDBUtils.OpenQuery(sSQL);
+
+end;
+
+function TServerPengeluaranKas.RetrieveCDSlipPengeluaranKasNonAP(ATglAwal ,
+    ATglAtglAkhir : TDateTime; ACabang : TCabang; ANoBukti : String): TFDQuery;
+var
+  sSQL: string;
+begin
+  sSQL   := 'select * from VPENGELUARAN_KAS_NONAP_SLIP a ' +
+            ' where tglbukti between ' + TAppUtils.QuotDt(StartOfTheDay(ATglAwal)) +
+            ' and ' + TAppUtils.QuotDt(EndOfTheDay(ATglAtglAkhir)) +
+            ' and nobukti like ' + QuotedStr('%' + Trim(ANoBukti) + '%');
+
+  if ACabang <> nil then
+    sSQL := sSQL + ' and cabangid = ' + QuotedStr(ACabang.ID);
+
+  Result := TDBUtils.OpenQuery(sSQL);
+
+end;
+
+function TServerPengeluaranKas.RetrieveCDSlipPengeluaranKasAP(ATglAwal ,
+    ATglAtglAkhir : TDateTime; ACabang : TCabang; ANoBukti : String): TFDQuery;
+var
+  sSQL: string;
+begin
+  sSQL   := 'select * from VPENGELUARAN_KAS_AP_SLIP a ' +
+            ' where tglbukti between ' + TAppUtils.QuotDt(StartOfTheDay(ATglAwal)) +
+            ' and ' + TAppUtils.QuotDt(EndOfTheDay(ATglAtglAkhir)) +
+            ' and nobukti like ' + QuotedStr('%' + Trim(ANoBukti) + '%');
+
+  if ACabang <> nil then
+    sSQL := sSQL + ' and cabangid = ' + QuotedStr(ACabang.ID);
+
+  Result := TDBUtils.OpenQuery(sSQL);
+
+end;
+
+function TServerPengeluaranKas.RetrieveNoBukti(ANoBukti : String):
+    TPengeluaranKas;
+var
+  sID: string;
+  sSQL: string;
+begin
+  sSQL := 'select * from ' + GetTableName
+          + ' where nobukti = ' + QuotedStr(ANoBukti);
+
+  with TDBUtils.OpenDataset(sSQL) do
+  begin
+    try
+      sID := FieldByName('ID').AsString;
+      Result := Retrieve(sID);
+    finally
+      Free;
+    end;
+  end;
+
+
+end;
+
+function TServerPengeluaranKas.UpdateAPTerbayar(APengeluaranKas :
+    TPengeluaranKas; AIsBayar : Boolean): Boolean;
+var
+  sFilterID: string;
+  sOperator: string;
+  sSQL: string;
+begin
+  Result := False;
+
+  sOperator := '-';
+  if AIsBayar then
+    sOperator := '+';
+
+  if APengeluaranKas.ID = '' then
+    sFilterID := 'newid()'
+  else
+    sFilterID := QuotedStr(APengeluaranKas.ID);
+
+  sSQL := 'update a set a.terbayar = isnull(a.terbayar,0) ' + sOperator + ' b.nominal' +
+          ' from tap a ' +
+          ' INNER JOIN tpengeluarankasap b on a.id = b.ap ' +
+          ' where b.pengeluarankas = ' + sFilterID;
+
+  if TDBUtils.ExecuteSQL(sSQL) then
+    Result := True;
 end;
 
 

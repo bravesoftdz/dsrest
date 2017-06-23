@@ -301,15 +301,17 @@ begin
   TCustServerClass.Create(Self, DSServer1, TServerGudang, DSServerClass1.LifeCycle);
   TCustServerClass.Create(Self, DSServer1, TServerPenjualan, DSServerClass1.LifeCycle);
   TCustServerClass.Create(Self, DSServer1, TServerAR, DSServerClass1.LifeCycle);
+  TCustServerClass.Create(Self, DSServer1, TServerAP, DSServerClass1.LifeCycle);
   TCustServerClass.Create(Self, DSServer1, TServerAccount, DSServerClass1.LifeCycle);
   TCustServerClass.Create(Self, DSServer1, TServerRekBank, DSServerClass1.LifeCycle);
   TCustServerClass.Create(Self, DSServer1, TServerPenerimaanKas, DSServerClass1.LifeCycle);
+  TCustServerClass.Create(Self, DSServer1, TServerPengeluaranKas, DSServerClass1.LifeCycle);
   TCustServerClass.Create(Self, DSServer1, TServerSettingApp, DSServerClass1.LifeCycle);
   TCustServerClass.Create(Self, DSServer1, TServerTransferAntarGudang, DSServerClass1.LifeCycle);
   TCustServerClass.Create(Self, DSServer1, TServerTAGRequest, DSServerClass1.LifeCycle);
   TCustServerClass.Create(Self, DSServer1, TServerTransferAntarCabangKirim, DSServerClass1.LifeCycle);
   TCustServerClass.Create(Self, DSServer1, TServerTransferAntarCabangTerima, DSServerClass1.LifeCycle);
-  TCustServerClass.Create(Self, DSServer1, TDSReport, DSServerClass1.LifeCycle);
+  TCustServerClass.Create(Self, DSServer1, TDSData, DSServerClass1.LifeCycle);
 
 end;
 

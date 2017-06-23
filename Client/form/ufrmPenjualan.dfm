@@ -38,31 +38,31 @@ inherited frmPenjualan: TfrmPenjualan
           Width = 757
           ExplicitWidth = 757
           inherited lblPeriode: TLabel
-            Left = 352
+            Left = 334
             ExplicitLeft = 383
           end
           inherited lblSD: TLabel
-            Left = 507
+            Left = 495
             ExplicitLeft = 538
           end
           inherited dtpAwal: TDateTimePicker
-            Left = 402
-            ExplicitLeft = 402
+            Left = 387
+            ExplicitLeft = 387
           end
           inherited dtpAkhir: TDateTimePicker
-            Left = 545
-            ExplicitLeft = 545
+            Left = 536
+            ExplicitLeft = 536
           end
           inherited btnRefresh: TcxButton
-            Left = 650
-            ExplicitLeft = 650
+            Left = 647
+            ExplicitLeft = 647
           end
         end
         inherited cxGrid: TcxGrid
           Width = 757
-          Height = 314
+          Height = 315
           ExplicitWidth = 757
-          ExplicitHeight = 314
+          ExplicitHeight = 315
           inherited cxGridDBTableOverview: TcxGridDBTableView
             OnCellDblClick = cxGridDBTableOverviewCellDblClick
           end
@@ -462,9 +462,6 @@ inherited frmPenjualan: TfrmPenjualan
     inherited ActionSimpan: TAction
       OnExecute = ActionSimpanExecute
     end
-    inherited actCetak: TAction
-      OnExecute = actCetakExecute
-    end
     inherited ActionRefresh: TAction
       OnExecute = ActionRefreshExecute
     end
@@ -497,7 +494,7 @@ inherited frmPenjualan: TfrmPenjualan
     Left = 40
     Top = 352
     Bitmap = {
-      494C010106000800EC0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010106000800F00018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

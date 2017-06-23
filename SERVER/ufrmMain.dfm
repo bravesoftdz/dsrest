@@ -217,7 +217,6 @@ object frmServer: TfrmServer
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
-    ReadOnly = True
     TabOrder = 1
     OnChange = mmoLogsChange
   end
