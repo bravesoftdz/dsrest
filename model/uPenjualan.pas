@@ -55,9 +55,11 @@ type
     FSalesman: TSupplier;
     FPenjualanItems: TObjectList<TPenjualanItem>;
     FTglBukti: TDatetime;
-    FTOP: Integer;
+    FTermOfPayment: Integer;
     function GetPenjualanItems: TObjectList<TPenjualanItem>;
+    function GetTotal: Double;
   public
+    property Total: Double read GetTotal;
   published
     property Cabang: TCabang read FCabang write FCabang;
     property Fee: string read FFee write FFee;
@@ -73,7 +75,7 @@ type
     property PenjualanItems: TObjectList<TPenjualanItem> read GetPenjualanItems
         write FPenjualanItems;
     property TglBukti: TDatetime read FTglBukti write FTglBukti;
-    property TOP: Integer read FTOP write FTOP;
+    property TermOfPayment: Integer read FTermOfPayment write FTermOfPayment;
   end;
 
 
@@ -85,6 +87,23 @@ begin
     FPenjualanItems := TObjectList<TPenjualanItem>.Create(False);
 
   Result := FPenjualanItems;
+end;
+
+function TPenjualan.GetTotal: Double;
+var
+  dLinePrice: Double;
+  I: Integer;
+begin
+  Result := 0;
+
+  for I := 0 to PenjualanItems.Count - 1 do
+  begin
+    dLinePrice := PenjualanItems[i].Qty *
+                  PenjualanItems[i].HargaSetelahDiskon;
+
+    dLinePrice := (100 + PenjualanItems[i].PPN) / 100 * dLinePrice;
+    Result := Result + dLinePrice;
+  end;
 end;
 
 function TPenjualanItem.GetHargaSetelahDiskon: Double;

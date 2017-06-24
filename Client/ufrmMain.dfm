@@ -29,7 +29,6 @@ object frmMain: TfrmMain
     Contexts = <>
     TabOrder = 0
     TabStop = False
-    ExplicitWidth = 866
     object dxrbnAplikasi: TdxRibbonTab
       Caption = 'Application'
       Groups = <
@@ -110,8 +109,6 @@ object frmMain: TfrmMain
         Text = 'Cabang : '
         Width = 50
       end>
-    ExplicitTop = 474
-    ExplicitWidth = 866
   end
   object pnlGaji: TPanel
     Left = 16
@@ -866,7 +863,7 @@ object frmMain: TfrmMain
     Left = 688
     Top = 128
     Bitmap = {
-      494C010113001800240120002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010113001800280120002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000080000000A000000001002000000000000040
       0100000000000000000000000000000000000000000000000000131313224341
       3F7561605FAD797474D4878180ED8D8988F98A8685F8838181EC787574D3625E

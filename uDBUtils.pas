@@ -376,8 +376,10 @@ begin
   try
       rt := ctx.GetType(AObject.ClassType);
 
-      Result := 'delete from ' + AObject.ClassName
-            + ' where id =' + QuotedStr(AID) + ';';
+      if AID <> '' then
+        Result := 'delete from ' + AObject.ClassName + ' where id =' + QuotedStr(AID) + ';'
+      else
+        Result := 'delete from ' + AObject.ClassName + ' where id = newid();';
 
       for prop in rt.GetProperties() do begin
         if (not prop.IsWritable) or
@@ -404,7 +406,7 @@ begin
 
       if ResultObjectList <> '' then
       begin
-        Result := Result + ResultObjectList;
+        Result := ResultObjectList + Result;
       end;
   finally
       ctx.Free();

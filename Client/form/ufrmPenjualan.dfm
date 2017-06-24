@@ -2,6 +2,7 @@ inherited frmPenjualan: TfrmPenjualan
   Caption = 'Penjualan'
   ClientHeight = 429
   ClientWidth = 775
+  ExplicitTop = -23
   ExplicitWidth = 791
   ExplicitHeight = 468
   PixelsPerInch = 96
@@ -65,6 +66,7 @@ inherited frmPenjualan: TfrmPenjualan
           ExplicitHeight = 315
           inherited cxGridDBTableOverview: TcxGridDBTableView
             OnCellDblClick = cxGridDBTableOverviewCellDblClick
+            OptionsView.Indicator = True
           end
         end
       end
@@ -290,12 +292,16 @@ inherited frmPenjualan: TfrmPenjualan
                     Column = cxgrdclmnGridTablePenjualanColumnSubTotalRp
                   end>
                 DataController.Summary.SummaryGroups = <>
+                OptionsBehavior.FocusCellOnTab = True
                 OptionsBehavior.FocusFirstCellOnNewRecord = True
                 OptionsBehavior.GoToNextCellOnEnter = True
+                OptionsBehavior.IncSearch = True
                 OptionsBehavior.FocusCellOnCycle = True
+                OptionsCustomize.ColumnSorting = False
                 OptionsData.Appending = True
                 OptionsView.Footer = True
                 OptionsView.GroupByBox = False
+                OptionsView.Indicator = True
                 Styles.ContentEven = ClientDataModule.cxstylGridEven
                 Styles.ContentOdd = ClientDataModule.cxstylGridOdd
                 Styles.Header = ClientDataModule.cxstylGridHeader
@@ -461,6 +467,9 @@ inherited frmPenjualan: TfrmPenjualan
     Top = 280
     inherited ActionSimpan: TAction
       OnExecute = ActionSimpanExecute
+    end
+    inherited ActionHapus: TAction
+      OnExecute = ActionHapusExecute
     end
     inherited ActionRefresh: TAction
       OnExecute = ActionRefreshExecute

@@ -207,17 +207,21 @@ type
     function RetrieveKode(AKode : String): TGudang;
   end;
 
-  TServerPenjualan = class(TServerTransaction, IBisaSimpanStock)
+  TServerPenjualan = class(TServerTransaction)
   strict private
-    function HapusMutasi(ANoBukti : String): Boolean; stdcall;
-    function SimpanMutasiStock(AAppObject : TAppObject): Boolean; stdcall;
+
   private
+    function HapusAR(AOBject: TAppObject): Boolean;
+  protected
     function SimpanStockSekarang(AAppObject : TAppObject; AIsMenghapus : Boolean =
         False): Boolean; stdcall;
-  protected
+    function HapusMutasi(ANoBukti : String): Boolean; stdcall;
+    function SimpanMutasiStock(AAppObject : TAppObject): Boolean; stdcall;
+
     function AfterDelete(AOBject : TAppObject): Boolean; override;
     function AfterSave(AOBject : TAppObject): Boolean; override;
     function BeforeSave(AOBject : TAppObject): Boolean; override;
+    function SimpanAR(AOBject: TAppObject): Boolean;
   public
     function Retrieve(AID : String): TPenjualan;
     function RetrieveNoBukti(ANoBukti : String): TPenjualan;
@@ -1801,10 +1805,9 @@ function TServerPenjualan.AfterDelete(AOBject : TAppObject): Boolean;
 begin
   Result := False;
 
-  if SimpanStockSekarang(AOBject, True) then
+  if HapusAR(AOBject) then
   begin
-    if HapusMutasi(TPenerimaanBarang(AOBject).NoBukti) then
-      Result := True;
+    Result := True;
   end;
 end;
 
@@ -1812,36 +1815,54 @@ function TServerPenjualan.AfterSave(AOBject : TAppObject): Boolean;
 begin
   Result := False;
 
-  if SimpanStockSekarang(AOBject) then
-    if SimpanMutasiStock(AOBject) then
-      Result := True;
+  if SimpanAR(AOBject) then
+    Result := True;
 
 end;
 
 function TServerPenjualan.BeforeSave(AOBject : TAppObject): Boolean;
-var
-  lPenjualanLama: TPenjualan;
+//var
+//  lPenjualanLama: TPenjualan;
 begin
-  Result := False;
-
-  lPenjualanLama := Retrieve(AOBject.ID);
-  try
-    if AOBject.ObjectState <> 1 then
-    begin
-       if NOT SimpanStockSekarang(lPenjualanLama, True) then
-        Exit;
-    end;
-  finally
-    lPenjualanLama.Free;
-  end;
+//  Result := False;
+//
+//  lPenjualanLama := Retrieve(AOBject.ID);
+//  try
+//    if AOBject.ObjectState <> 1 then
+//    begin
+//       if NOT SimpanStockSekarang(lPenjualanLama, True) then
+//        Exit;
+//    end;
+//  finally
+//    lPenjualanLama.Free;
+//  end;
 
   with TPenjualan(AOBject) do
   begin
-    JatuhTempo := TglBukti + TOP;
+    JatuhTempo := TglBukti + TermOfPayment;
   end;
 
   Result := True;
 
+end;
+
+function TServerPenjualan.HapusAR(AOBject: TAppObject): Boolean;
+var
+  lAR: TAR;
+  lPJ: TPenjualan;
+  lServerAR: TServerAR;
+begin
+  Result := False;
+
+  lPJ       := TPenjualan(AOBject);
+  lServerAR := TServerAR.Create;
+  try
+    lAR := lServerAR.RetrieveTransaksi(lPJ.ClassName, AOBject.ID);
+    if lServerAR.DeleteNoCommit(lAR) then
+      Result := True;
+  finally
+    lServerAR.Free;
+  end;
 end;
 
 function TServerPenjualan.HapusMutasi(ANoBukti : String): Boolean;
@@ -1866,6 +1887,10 @@ var
   I: Integer;
 begin
   Result := TPenjualan.Create;
+
+  if AID = '' then
+    Exit;
+
   TDBUtils.LoadFromDB(Result, AID);
 
   sSQL := 'select c.* from tpenjualan a' +
@@ -1936,6 +1961,36 @@ begin
     end;
   end;
 
+
+end;
+
+function TServerPenjualan.SimpanAR(AOBject: TAppObject): Boolean;
+var
+  lAR: TAR;
+  lPJ: TPenjualan;
+  lServerAR: TServerAR;
+begin
+  Result := False;
+
+  lPJ       := TPenjualan(AOBject);
+  lServerAR := TServerAR.Create;
+  try
+    lAR                   := lServerAR.RetrieveTransaksi(lPJ.ClassName, AOBject.ID);
+    lAR.Cabang            := TCabang.CreateID(lPJ.Cabang.ID);
+    lAR.Customer          := TSupplier.CreateID(lPJ.Pembeli.ID);
+    lAR.IDTransaksi       := lPJ.ID;
+    lAR.NoBukti           := lPJ.NoBukti;
+    lAR.Nominal           := lPJ.Total;
+    lAR.Transaksi         := lPJ.ClassName;
+    lAR.JatuhTempo        := lPJ.JatuhTempo;
+    lAR.NoBuktiTransaksi  := lPJ.NoBukti;
+    lAR.TglBukti          := lPJ.TglBukti;
+
+    if lServerAR.SaveNoCommit(lAR) then
+      Result := True;
+  finally
+    lServerAR.Free;
+  end;
 
 end;
 
