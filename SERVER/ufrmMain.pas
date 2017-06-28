@@ -55,6 +55,7 @@ type
     FDQuery1: TFDQuery;
     btn1: TButton;
     fdstnstrgbnlnkMotoroli: TFDStanStorageBinLink;
+    tmrDB: TTimer;
     procedure FormCreate(Sender: TObject);
     procedure ApplicationEvents1Idle(Sender: TObject; var Done: Boolean);
     procedure btn1Click(Sender: TObject);
@@ -66,6 +67,7 @@ type
     procedure cbbEngineExit(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure mmoLogsChange(Sender: TObject);
+    procedure tmrDBTimer(Sender: TObject);
   private
     FServer: TIdHTTPWebBrokerBridge;
     procedure StartServer;
@@ -190,10 +192,13 @@ begin
     edUser.Text := TAppUtils.BacaRegistry('User_Name');
     edPassword.Text := TAppUtils.BacaRegistry('Password');
     edPort.Text := TAppUtils.BacaRegistry('Port');
+
+    tmrDB.Enabled     := True;
   end;
 
   webmodule.mmoLogs := Self.mmoLogs;
   uDBUtils.mmoLogs  := Self.mmoLogs;
+
 
 end;
 
@@ -227,6 +232,16 @@ begin
     WebModule2.DSServer1.Start;
 
     mmoLogs.Lines.Add('Rest server dijalankan');
+  end;
+end;
+
+procedure TfrmServer.tmrDBTimer(Sender: TObject);
+begin
+  try
+    btnKonekDB.Click;
+    ButtonStart.Click;
+  finally
+    tmrDB.Enabled := False;
   end;
 end;
 

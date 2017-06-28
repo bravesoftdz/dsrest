@@ -16,6 +16,9 @@ type
     FKeterangan: string;
     FNominal: Double;
     FPenerimaanKas: TPenerimaanKas;
+    FUangBayar: Double;
+    FUangSisa: Double;
+    function GetUangSisa: Double;
   public
     function GetHeaderField: string; override;
     procedure SetHeaderProperty(AHeaderProperty : TAppObject); override;
@@ -24,6 +27,8 @@ type
     property Keterangan: string read FKeterangan write FKeterangan;
     property Nominal: Double read FNominal write FNominal;
     property PenerimaanKas: TPenerimaanKas read FPenerimaanKas write FPenerimaanKas;
+    property UangBayar: Double read FUangBayar write FUangBayar;
+    property UangSisa: Double read GetUangSisa write FUangSisa;
   end;
 
   TPenerimaanKas = class(TAPPobject)
@@ -59,6 +64,13 @@ implementation
 function TPenerimaanKasAR.GetHeaderField: string;
 begin
   Result := 'PenerimaanKas';
+end;
+
+function TPenerimaanKasAR.GetUangSisa: Double;
+begin
+  FUangSisa := FUangBayar - FNominal;
+
+  Result := FUangSisa;
 end;
 
 procedure TPenerimaanKasAR.SetHeaderProperty(AHeaderProperty : TAppObject);

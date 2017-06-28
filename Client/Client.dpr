@@ -56,7 +56,8 @@ uses
   ufrmTACTerima in 'form\ufrmTACTerima.pas' {frmTACTerima},
   uModelHelper in '..\model\uModelHelper.pas',
   uDMReport in '..\uDMReport.pas' {DMReport},
-  ufrmPenerimaanKas in 'form\ufrmPenerimaanKas.pas' {frmPenerimaanKas};
+  ufrmPenerimaanKas in 'form\ufrmPenerimaanKas.pas' {frmPenerimaanKas},
+  ufrmPembayaranPOS in 'form\ufrmPembayaranPOS.pas' {frmPembayaran};
 
 {$R *.res}
 
@@ -66,5 +67,6 @@ begin
   Application.CreateForm(TClientDataModule, ClientDataModule);
   Application.CreateForm(TfrmMain, frmMain);
   Application.CreateForm(TDMReport, DMReport);
+  Application.CreateForm(TfrmPembayaran, frmPembayaran);
   Application.Run;
 end.

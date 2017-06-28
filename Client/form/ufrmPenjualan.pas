@@ -15,7 +15,7 @@ uses
   cxDateUtils, cxGridLevel, cxDropDownEdit, cxLookupEdit, cxDBLookupEdit,
   cxMemo, cxMaskEdit, cxCalendar, cxTextEdit, Vcl.StdCtrls, ClientModule,
   uPenjualan, uDBUtils, uAppUtils, Vcl.Menus, cxCalc, dxBarBuiltInMenu, cxPC,
-  cxButtons, uReport, uInterface;
+  cxButtons, uReport, uInterface,uDMReport,Data.FireDACJSONReflect;
 
 type
   TfrmPenjualan = class(TfrmDefault, IForm)
@@ -110,6 +110,7 @@ type
     function JenisPenjualan: string; virtual;
     procedure SetHarga(AJenisHarga : String);
   public
+    procedure CetakSlip; override;
     function LoadData(AID : String): Boolean; stdcall;
     property Penjualan: TPenjualan read GetPenjualan write FPenjualan;
     { Public declarations }
@@ -126,23 +127,26 @@ uses
 {$R *.dfm}
 
 procedure TfrmPenjualan.actCetakExecute(Sender: TObject);
-var
-  lcds: TClientDataSet;
-  lTSReport: TTSReport;
+//var
+//  lcds: TClientDataSet;
+//  lTSReport: TTSReport;
 begin
   inherited;
-  lTSReport := TTSReport.Create(self);
-  try
-    with ClientDataModule.ServerPenjualanClient do
-    begin
-      lcds := TDBUtils.DSToCDS(RetrieveCDSlip(Now-3000, Now + 3000, nil, Penjualan.NoBukti), cxGridTablePenjualan);
 
-      lTSReport.AddDataset(lcds, 'QPenjualan');
-      lTSReport.ShowReport('SlipPenjualan');
-    end;
-  finally
-    lTSReport.Free;
-  end;
+  CetakSlip;
+
+//  lTSReport := TTSReport.Create(self);
+//  try
+//    with ClientDataModule.ServerPenjualanClient do
+//    begin
+//      lcds := RetrieveCDSlip(Now-3000, Now + 3000, nil, Penjualan.NoBukti);
+//
+//      lTSReport.AddDataset(lcds, 'QPenjualan');
+//      lTSReport.ShowReport('SlipPenjualan');
+//    end;
+//  finally
+//    lTSReport.Free;
+//  end;
 
 end;
 
@@ -384,6 +388,27 @@ procedure TfrmPenjualan.Bengkel1Click(Sender: TObject);
 begin
   inherited;
   SetHarga('bengkel');
+end;
+
+procedure TfrmPenjualan.CetakSlip;
+var
+  lcds: TFDJSONDataSets;
+begin
+  with dmReport do
+  begin
+    AddReportVariable('UserCetak', User);
+
+    if cxPCData.ActivePageIndex = 0 then
+      lcds := ClientDataModule.ServerPenjualanClient.RetrieveCDSlip(dtpAwal.DateTime, dtpAkhir.DateTime, ClientDataModule.Cabang, '%')
+    else
+      lcds := ClientDataModule.ServerPenjualanClient.RetrieveCDSlip(dtpAwal.DateTime, dtpAkhir.DateTime, ClientDataModule.Cabang, Penjualan.NoBukti);
+
+
+    ExecuteReport('Reports/Slip_Penjualan' ,
+      lcds
+
+    );
+  end;
 end;
 
 procedure TfrmPenjualan.cxGridDBTableOverviewCellDblClick(Sender:

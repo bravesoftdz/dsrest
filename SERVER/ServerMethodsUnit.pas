@@ -19,6 +19,7 @@ type
     function GetNamaku: string;
     function LoadAccountPengeluaranKasLain: TDataset;
     function LoadAP(ASupplier : TSupplier): TDataSet;
+    function LoadAR(ACustomer : TSupplier): TDataSet;
   end;
 
   TServerLaporan = class(TInterfacedPersistent)
@@ -226,7 +227,9 @@ type
     function Retrieve(AID : String): TPenjualan;
     function RetrieveNoBukti(ANoBukti : String): TPenjualan;
     function RetrieveCDSlip(ATglAwal , ATglAtglAkhir : TDateTime; ACabang :
-        TCabang; ANoBukti : String): TDataset;
+        TCabang; ANoBukti : String): TFDJSONDataSets;
+    function SaveToDBDibayar(APenjualan : TPenjualan; APembayaran :
+        TPenerimaanKas): Boolean;
 
   end;
 
@@ -265,17 +268,19 @@ type
   private
     FServerAR: TServerAR;
     function GetServerAR: TServerAR;
+    function UpdateARTerbayar(APenerimaanKas : TPenerimaanKas; AIsBayar : Boolean):
+        Boolean;
     property ServerAR: TServerAR read GetServerAR write FServerAR;
   protected
   public
     destructor Destroy; override;
     function AfterSave(AAppObject : TAppObject): Boolean; override;
-    function AfterDelete(AAppObject : TAppObject): Boolean; override;
+    function BeforeDelete(AAppObject : TAppObject): Boolean; override;
     function BeforeSave(AAppObject : TAppObject): Boolean; override;
     function Retrieve(AID : String): TPenerimaanKas;
     function RetrievePenerimaanARs(AID : String): TDataSet;
     function RetrieveCDSlip(ATglAwal , ATglAtglAkhir : TDateTime; ACabang :
-        TCabang; ANoBukti : String): TDataset;
+        TCabang; ANoBukti : String): TFDJSONDataSets;
     function RetrieveNoBukti(ANoBukti : String): TPenerimaanKas;
   end;
 
@@ -1923,24 +1928,21 @@ begin
 end;
 
 function TServerPenjualan.RetrieveCDSlip(ATglAwal , ATglAtglAkhir : TDateTime;
-    ACabang : TCabang; ANoBukti : String): TDataset;
+    ACabang : TCabang; ANoBukti : String): TFDJSONDataSets;
 var
   sSQL: string;
 begin
+  Result := TFDJSONDataSets.Create;
+
   sSQL := 'select * from VPenjualanSlip' +
           ' where tglbukti between ' + TAppUtils.QuotDt(StartOfTheDay(ATglAwal)) +
           ' and ' + TAppUtils.QuotDt(EndOfTheDay(ATglAtglAkhir)) +
           ' and nobukti like ' + QuotedStr('%' + Trim(ANoBukti) + '%');
 
   if ACabang <> nil then
-    sSQL := ' and cabangid = ' + QuotedStr(ACabang.ID);
+    sSQL := sSQL + ' and cabangid = ' + QuotedStr(ACabang.ID);
 
-
-
-
-
-  Result := TDBUtils.OpenQuery(sSQL);
-  // TODO -cMM: TServerPenjualan.RetrieveCDSlip default body inserted
+  TFDJSONDataSetsWriter.ListAdd(Result,TDBUtils.OpenQuery(sSQL))
 end;
 
 function TServerPenjualan.RetrieveNoBukti(ANoBukti : String): TPenjualan;
@@ -1962,6 +1964,14 @@ begin
   end;
 
 
+end;
+
+function TServerPenjualan.SaveToDBDibayar(APenjualan : TPenjualan; APembayaran
+    : TPenerimaanKas): Boolean;
+begin
+  Result := False;
+  if SaveNoCommit(APenjualan) then
+    Result := Save(APembayaran);
 end;
 
 function TServerPenjualan.SimpanAR(AOBject: TAppObject): Boolean;
@@ -2334,82 +2344,36 @@ begin
 end;
 
 function TServerPenerimaanKas.AfterSave(AAppObject : TAppObject): Boolean;
-var
-  lPK: TPenerimaanKas;
-  I: Integer;
-  sIDAR: string;
 begin
   Result := False;
 
-  lPK    := TPenerimaanKas(AAppObject);
-  for I := 0 to lPK.PenerimaanKasARItems.Count - 1 do
-  begin
-    sIDAR := lPK.PenerimaanKasARItems[i].AR.ID;
-    lPK.PenerimaanKasARItems[i].AR.Free;
-    lPK.PenerimaanKasARItems[i].AR := ServerAR.Retrieve(sIDAR);
-    lPK.PenerimaanKasARItems[i].AR.TerBayar := lPK.PenerimaanKasARItems[i].AR.TerBayar + lPK.PenerimaanKasARItems[i].Nominal;
+  if AAppObject= nil then
+    Exit;
 
-    if not ServerAR.SaveNoCommit(lPK.PenerimaanKasARItems[i].AR) then
-      Exit;
-  end;
-
-
-
-  Result := True;
+  if UpdateARTerbayar(TPenerimaanKas(AAppObject), True) then
+    Result := True;
 end;
 
-function TServerPenerimaanKas.AfterDelete(AAppObject : TAppObject): Boolean;
-var
-  lPK: TPenerimaanKas;
-  I: Integer;
-  sIDAR: string;
+function TServerPenerimaanKas.BeforeDelete(AAppObject : TAppObject): Boolean;
 begin
   Result := False;
 
-  lPK    := TPenerimaanKas(AAppObject);
-  for I := 0 to lPK.PenerimaanKasARItems.Count - 1 do
-  begin
-    sIDAR := lPK.PenerimaanKasARItems[i].AR.ID;
-    lPK.PenerimaanKasARItems[i].AR.Free;
-    lPK.PenerimaanKasARItems[i].AR := ServerAR.Retrieve(sIDAR);
-    lPK.PenerimaanKasARItems[i].AR.TerBayar := lPK.PenerimaanKasARItems[i].AR.TerBayar - lPK.PenerimaanKasARItems[i].Nominal;
+  if AAppObject= nil then
+    Exit;
 
-    if not ServerAR.SaveNoCommit(lPK.PenerimaanKasARItems[i].AR) then
-      Exit;
-  end;
-
-
-
-  Result := True;
+  if UpdateARTerbayar(TPenerimaanKas(AAppObject), False) then
+    Result := True;
 end;
 
 function TServerPenerimaanKas.BeforeSave(AAppObject : TAppObject): Boolean;
-var
-  lPK: TPenerimaanKas;
-  I: Integer;
-  sIDAR: string;
 begin
   Result := False;
 
-  lPK    := Retrieve(AAppObject.ID);
-  try
-    for I := 0 to lPK.PenerimaanKasARItems.Count - 1 do
-    begin
-      sIDAR := lPK.PenerimaanKasARItems[i].AR.ID;
-      lPK.PenerimaanKasARItems[i].AR.Free;
-      lPK.PenerimaanKasARItems[i].AR := ServerAR.Retrieve(sIDAR);
-      lPK.PenerimaanKasARItems[i].AR.TerBayar := lPK.PenerimaanKasARItems[i].AR.TerBayar - lPK.PenerimaanKasARItems[i].Nominal;
+  if AAppObject= nil then
+    Exit;
 
-      if not ServerAR.SaveNoCommit(lPK.PenerimaanKasARItems[i].AR) then
-        Exit;
-    end;
-  finally
-    lPK.Free;
-  end;
-
-
-
-  Result := True;
+  if UpdateARTerbayar(TPenerimaanKas(AAppObject), False) then
+    Result := True;
 end;
 
 function TServerPenerimaanKas.GetServerAR: TServerAR;
@@ -2439,20 +2403,22 @@ begin
 end;
 
 function TServerPenerimaanKas.RetrieveCDSlip(ATglAwal , ATglAtglAkhir :
-    TDateTime; ACabang : TCabang; ANoBukti : String): TDataset;
+    TDateTime; ACabang : TCabang; ANoBukti : String): TFDJSONDataSets;
 var
   sSQL: string;
 begin
+  Result := TFDJSONDataSets.Create;
+
   sSQL   := 'select * from vpenerimaan_kas_slip a ' +
             ' where tglbukti between ' + TAppUtils.QuotDt(StartOfTheDay(ATglAwal)) +
             ' and ' + TAppUtils.QuotDt(EndOfTheDay(ATglAtglAkhir)) +
             ' and nobukti like ' + QuotedStr('%' + Trim(ANoBukti) + '%');
 
   if ACabang <> nil then
-    sSQL := ' and cabangid = ' + QuotedStr(ACabang.ID);
+    sSQL := sSQL + ' and cabangid = ' + QuotedStr(ACabang.ID);
 
+  TFDJSONDataSetsWriter.ListAdd(Result, TDBUtils.OpenQuery(sSQL))
 
-  Result := TDBUtils.OpenDataset(sSQL);
 end;
 
 function TServerPenerimaanKas.RetrieveNoBukti(ANoBukti : String):
@@ -2475,6 +2441,33 @@ begin
   end;
 
 
+end;
+
+function TServerPenerimaanKas.UpdateARTerbayar(APenerimaanKas : TPenerimaanKas;
+    AIsBayar : Boolean): Boolean;
+var
+  sFilterID: string;
+  sOperator: string;
+  sSQL: string;
+begin
+  Result := False;
+
+  sOperator := '-';
+  if AIsBayar then
+    sOperator := '+';
+
+  if APenerimaanKas.ID = '' then
+    sFilterID := 'newid()'
+  else
+    sFilterID := QuotedStr(APenerimaanKas.ID);
+
+  sSQL := 'update a set a.terbayar = isnull(a.terbayar,0) ' + sOperator + ' b.nominal' +
+          ' from tar a ' +
+          ' INNER JOIN tpenerimaankasar b on a.id = b.ar ' +
+          ' where b.penerimaankas = ' + sFilterID;
+
+  if TDBUtils.ExecuteSQL(sSQL) then
+    Result := True;
 end;
 
 function TServerAccount.Retrieve(AID : String): TAccount;
@@ -3253,8 +3246,26 @@ begin
   if ASupplier.ID = '' then
     Exit;
 
-  sSQL := 'select * from V_LOOK_AP' +
+  sSQL := 'select * from vlookup_ap' +
           ' where supplierid = ' + QuotedStr(ASupplier.ID);
+
+  Result := TDBUtils.OpenDataset(sSQL);
+end;
+
+function TDSData.LoadAR(ACustomer : TSupplier): TDataSet;
+var
+  sSQL: string;
+begin
+  Result := nil;
+
+  if ACustomer = nil then
+    Exit;
+
+  if ACustomer.ID = '' then
+    Exit;
+
+  sSQL := 'select * from vlookup_ar' +
+          ' where customerid = ' + QuotedStr(ACustomer.ID);
 
   Result := TDBUtils.OpenDataset(sSQL);
 end;

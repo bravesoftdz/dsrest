@@ -270,4 +270,11 @@ object frmServer: TfrmServer
     Left = 297
     Top = 113
   end
+  object tmrDB: TTimer
+    Enabled = False
+    Interval = 2000
+    OnTimer = tmrDBTimer
+    Left = 328
+    Top = 112
+  end
 end

@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 6/23/2017 8:30:34 PM
+// 6/28/2017 10:13:52 PM
 //
 
 unit ClientClassesUnit2;
@@ -499,8 +499,8 @@ type
     function Retrieve_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedTPenjualan;
     function RetrieveNoBukti(ANoBukti: string; const ARequestFilter: string = ''): TPenjualan;
     function RetrieveNoBukti_Cache(ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedTPenjualan;
-    function RetrieveCDSlip(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; ANoBukti: string; const ARequestFilter: string = ''): TDataSet;
-    function RetrieveCDSlip_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function RetrieveCDSlip(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; ANoBukti: string; const ARequestFilter: string = ''): TFDJSONDataSets;
+    function RetrieveCDSlip_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
     function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
     function RetrieveData(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): TDataSet;
     function RetrieveData_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
@@ -640,7 +640,7 @@ type
   TServerPenerimaanKasClient = class(TDSAdminRestClient)
   private
     FAfterSaveCommand: TDSRestCommand;
-    FAfterDeleteCommand: TDSRestCommand;
+    FBeforeDeleteCommand: TDSRestCommand;
     FBeforeSaveCommand: TDSRestCommand;
     FRetrieveCommand: TDSRestCommand;
     FRetrieveCommand_Cache: TDSRestCommand;
@@ -665,14 +665,14 @@ type
     constructor Create(ARestConnection: TDSRestConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
     function AfterSave(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
-    function AfterDelete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
+    function BeforeDelete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
     function BeforeSave(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
     function Retrieve(AID: string; const ARequestFilter: string = ''): TPenerimaanKas;
     function Retrieve_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedTPenerimaanKas;
     function RetrievePenerimaanARs(AID: string; const ARequestFilter: string = ''): TDataSet;
     function RetrievePenerimaanARs_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
-    function RetrieveCDSlip(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; ANoBukti: string; const ARequestFilter: string = ''): TDataSet;
-    function RetrieveCDSlip_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function RetrieveCDSlip(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; ANoBukti: string; const ARequestFilter: string = ''): TFDJSONDataSets;
+    function RetrieveCDSlip_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
     function RetrieveNoBukti(ANoBukti: string; const ARequestFilter: string = ''): TPenerimaanKas;
     function RetrieveNoBukti_Cache(ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedTPenerimaanKas;
     function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
@@ -924,6 +924,8 @@ type
     FLoadAccountPengeluaranKasLainCommand_Cache: TDSRestCommand;
     FLoadAPCommand: TDSRestCommand;
     FLoadAPCommand_Cache: TDSRestCommand;
+    FLoadARCommand: TDSRestCommand;
+    FLoadARCommand_Cache: TDSRestCommand;
   public
     constructor Create(ARestConnection: TDSRestConnection); overload;
     constructor Create(ARestConnection: TDSRestConnection; AInstanceOwner: Boolean); overload;
@@ -933,6 +935,8 @@ type
     function LoadAccountPengeluaranKasLain_Cache(const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function LoadAP(ASupplier: TSupplier; const ARequestFilter: string = ''): TDataSet;
     function LoadAP_Cache(ASupplier: TSupplier; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function LoadAR(ACustomer: TSupplier; const ARequestFilter: string = ''): TDataSet;
+    function LoadAR_Cache(ACustomer: TSupplier; const ARequestFilter: string = ''): IDSRestCachedDataSet;
   end;
 
   IDSRestCachedTGudang = interface(IDSRestCachedObject<TGudang>)
@@ -2125,7 +2129,7 @@ const
     (Name: 'ATglAtglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
     (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
-    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+    (Name: ''; Direction: 4; DBXType: 37; TypeName: 'TFDJSONDataSets')
   );
 
   TServerPenjualan_RetrieveCDSlip_Cache: array [0..4] of TDSRestParameterMetaData =
@@ -2516,7 +2520,7 @@ const
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
   );
 
-  TServerPenerimaanKas_AfterDelete: array [0..1] of TDSRestParameterMetaData =
+  TServerPenerimaanKas_BeforeDelete: array [0..1] of TDSRestParameterMetaData =
   (
     (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
@@ -2558,7 +2562,7 @@ const
     (Name: 'ATglAtglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
     (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
-    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+    (Name: ''; Direction: 4; DBXType: 37; TypeName: 'TFDJSONDataSets')
   );
 
   TServerPenerimaanKas_RetrieveCDSlip_Cache: array [0..4] of TDSRestParameterMetaData =
@@ -3292,6 +3296,18 @@ const
   TDSData_LoadAP_Cache: array [0..1] of TDSRestParameterMetaData =
   (
     (Name: 'ASupplier'; Direction: 1; DBXType: 37; TypeName: 'TSupplier'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TDSData_LoadAR: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'ACustomer'; Direction: 1; DBXType: 37; TypeName: 'TSupplier'),
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TDSData_LoadAR_Cache: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'ACustomer'; Direction: 1; DBXType: 37; TypeName: 'TSupplier'),
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
@@ -7590,7 +7606,7 @@ begin
   Result := TDSRestCachedTPenjualan.Create(FRetrieveNoBuktiCommand_Cache.Parameters[1].Value.GetString);
 end;
 
-function TServerPenjualanClient.RetrieveCDSlip(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; ANoBukti: string; const ARequestFilter: string): TDataSet;
+function TServerPenjualanClient.RetrieveCDSlip(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; ANoBukti: string; const ARequestFilter: string): TFDJSONDataSets;
 begin
   if FRetrieveCDSlipCommand = nil then
   begin
@@ -7616,13 +7632,22 @@ begin
     end;
   FRetrieveCDSlipCommand.Parameters[3].Value.SetWideString(ANoBukti);
   FRetrieveCDSlipCommand.Execute(ARequestFilter);
-  Result := TCustomSQLDataSet.Create(nil, FRetrieveCDSlipCommand.Parameters[4].Value.GetDBXReader(False), True);
-  Result.Open;
-  if FInstanceOwner then
-    FRetrieveCDSlipCommand.FreeOnExecute(Result);
+  if not FRetrieveCDSlipCommand.Parameters[4].Value.IsNull then
+  begin
+    FUnMarshal := TDSRestCommand(FRetrieveCDSlipCommand.Parameters[4].ConnectionHandler).GetJSONUnMarshaler;
+    try
+      Result := TFDJSONDataSets(FUnMarshal.UnMarshal(FRetrieveCDSlipCommand.Parameters[4].Value.GetJSONValue(True)));
+      if FInstanceOwner then
+        FRetrieveCDSlipCommand.FreeOnExecute(Result);
+    finally
+      FreeAndNil(FUnMarshal)
+    end
+  end
+  else
+    Result := nil;
 end;
 
-function TServerPenjualanClient.RetrieveCDSlip_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; ANoBukti: string; const ARequestFilter: string): IDSRestCachedDataSet;
+function TServerPenjualanClient.RetrieveCDSlip_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; ANoBukti: string; const ARequestFilter: string): IDSRestCachedTFDJSONDataSets;
 begin
   if FRetrieveCDSlipCommand_Cache = nil then
   begin
@@ -7648,7 +7673,7 @@ begin
     end;
   FRetrieveCDSlipCommand_Cache.Parameters[3].Value.SetWideString(ANoBukti);
   FRetrieveCDSlipCommand_Cache.ExecuteCache(ARequestFilter);
-  Result := TDSRestCachedDataSet.Create(FRetrieveCDSlipCommand_Cache.Parameters[4].Value.GetString);
+  Result := TDSRestCachedTFDJSONDataSets.Create(FRetrieveCDSlipCommand_Cache.Parameters[4].Value.GetString);
 end;
 
 function TServerPenjualanClient.GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string): string;
@@ -9082,30 +9107,30 @@ begin
   Result := FAfterSaveCommand.Parameters[1].Value.GetBoolean;
 end;
 
-function TServerPenerimaanKasClient.AfterDelete(AAppObject: TAppObject; const ARequestFilter: string): Boolean;
+function TServerPenerimaanKasClient.BeforeDelete(AAppObject: TAppObject; const ARequestFilter: string): Boolean;
 begin
-  if FAfterDeleteCommand = nil then
+  if FBeforeDeleteCommand = nil then
   begin
-    FAfterDeleteCommand := FConnection.CreateCommand;
-    FAfterDeleteCommand.RequestType := 'POST';
-    FAfterDeleteCommand.Text := 'TServerPenerimaanKas."AfterDelete"';
-    FAfterDeleteCommand.Prepare(TServerPenerimaanKas_AfterDelete);
+    FBeforeDeleteCommand := FConnection.CreateCommand;
+    FBeforeDeleteCommand.RequestType := 'POST';
+    FBeforeDeleteCommand.Text := 'TServerPenerimaanKas."BeforeDelete"';
+    FBeforeDeleteCommand.Prepare(TServerPenerimaanKas_BeforeDelete);
   end;
   if not Assigned(AAppObject) then
-    FAfterDeleteCommand.Parameters[0].Value.SetNull
+    FBeforeDeleteCommand.Parameters[0].Value.SetNull
   else
   begin
-    FMarshal := TDSRestCommand(FAfterDeleteCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    FMarshal := TDSRestCommand(FBeforeDeleteCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
     try
-      FAfterDeleteCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      FBeforeDeleteCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
       if FInstanceOwner then
         AAppObject.Free
     finally
       FreeAndNil(FMarshal)
     end
     end;
-  FAfterDeleteCommand.Execute(ARequestFilter);
-  Result := FAfterDeleteCommand.Parameters[1].Value.GetBoolean;
+  FBeforeDeleteCommand.Execute(ARequestFilter);
+  Result := FBeforeDeleteCommand.Parameters[1].Value.GetBoolean;
 end;
 
 function TServerPenerimaanKasClient.BeforeSave(AAppObject: TAppObject; const ARequestFilter: string): Boolean;
@@ -9205,7 +9230,7 @@ begin
   Result := TDSRestCachedDataSet.Create(FRetrievePenerimaanARsCommand_Cache.Parameters[1].Value.GetString);
 end;
 
-function TServerPenerimaanKasClient.RetrieveCDSlip(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; ANoBukti: string; const ARequestFilter: string): TDataSet;
+function TServerPenerimaanKasClient.RetrieveCDSlip(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; ANoBukti: string; const ARequestFilter: string): TFDJSONDataSets;
 begin
   if FRetrieveCDSlipCommand = nil then
   begin
@@ -9231,13 +9256,22 @@ begin
     end;
   FRetrieveCDSlipCommand.Parameters[3].Value.SetWideString(ANoBukti);
   FRetrieveCDSlipCommand.Execute(ARequestFilter);
-  Result := TCustomSQLDataSet.Create(nil, FRetrieveCDSlipCommand.Parameters[4].Value.GetDBXReader(False), True);
-  Result.Open;
-  if FInstanceOwner then
-    FRetrieveCDSlipCommand.FreeOnExecute(Result);
+  if not FRetrieveCDSlipCommand.Parameters[4].Value.IsNull then
+  begin
+    FUnMarshal := TDSRestCommand(FRetrieveCDSlipCommand.Parameters[4].ConnectionHandler).GetJSONUnMarshaler;
+    try
+      Result := TFDJSONDataSets(FUnMarshal.UnMarshal(FRetrieveCDSlipCommand.Parameters[4].Value.GetJSONValue(True)));
+      if FInstanceOwner then
+        FRetrieveCDSlipCommand.FreeOnExecute(Result);
+    finally
+      FreeAndNil(FUnMarshal)
+    end
+  end
+  else
+    Result := nil;
 end;
 
-function TServerPenerimaanKasClient.RetrieveCDSlip_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; ANoBukti: string; const ARequestFilter: string): IDSRestCachedDataSet;
+function TServerPenerimaanKasClient.RetrieveCDSlip_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; ANoBukti: string; const ARequestFilter: string): IDSRestCachedTFDJSONDataSets;
 begin
   if FRetrieveCDSlipCommand_Cache = nil then
   begin
@@ -9263,7 +9297,7 @@ begin
     end;
   FRetrieveCDSlipCommand_Cache.Parameters[3].Value.SetWideString(ANoBukti);
   FRetrieveCDSlipCommand_Cache.ExecuteCache(ARequestFilter);
-  Result := TDSRestCachedDataSet.Create(FRetrieveCDSlipCommand_Cache.Parameters[4].Value.GetString);
+  Result := TDSRestCachedTFDJSONDataSets.Create(FRetrieveCDSlipCommand_Cache.Parameters[4].Value.GetString);
 end;
 
 function TServerPenerimaanKasClient.RetrieveNoBukti(ANoBukti: string; const ARequestFilter: string): TPenerimaanKas;
@@ -9548,7 +9582,7 @@ end;
 destructor TServerPenerimaanKasClient.Destroy;
 begin
   FAfterSaveCommand.DisposeOf;
-  FAfterDeleteCommand.DisposeOf;
+  FBeforeDeleteCommand.DisposeOf;
   FBeforeSaveCommand.DisposeOf;
   FRetrieveCommand.DisposeOf;
   FRetrieveCommand_Cache.DisposeOf;
@@ -11906,6 +11940,61 @@ begin
   Result := TDSRestCachedDataSet.Create(FLoadAPCommand_Cache.Parameters[1].Value.GetString);
 end;
 
+function TDSDataClient.LoadAR(ACustomer: TSupplier; const ARequestFilter: string): TDataSet;
+begin
+  if FLoadARCommand = nil then
+  begin
+    FLoadARCommand := FConnection.CreateCommand;
+    FLoadARCommand.RequestType := 'POST';
+    FLoadARCommand.Text := 'TDSData."LoadAR"';
+    FLoadARCommand.Prepare(TDSData_LoadAR);
+  end;
+  if not Assigned(ACustomer) then
+    FLoadARCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FLoadARCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FLoadARCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(ACustomer), True);
+      if FInstanceOwner then
+        ACustomer.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FLoadARCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FLoadARCommand.Parameters[1].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FLoadARCommand.FreeOnExecute(Result);
+end;
+
+function TDSDataClient.LoadAR_Cache(ACustomer: TSupplier; const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FLoadARCommand_Cache = nil then
+  begin
+    FLoadARCommand_Cache := FConnection.CreateCommand;
+    FLoadARCommand_Cache.RequestType := 'POST';
+    FLoadARCommand_Cache.Text := 'TDSData."LoadAR"';
+    FLoadARCommand_Cache.Prepare(TDSData_LoadAR_Cache);
+  end;
+  if not Assigned(ACustomer) then
+    FLoadARCommand_Cache.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FLoadARCommand_Cache.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FLoadARCommand_Cache.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(ACustomer), True);
+      if FInstanceOwner then
+        ACustomer.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FLoadARCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FLoadARCommand_Cache.Parameters[1].Value.GetString);
+end;
+
 constructor TDSDataClient.Create(ARestConnection: TDSRestConnection);
 begin
   inherited Create(ARestConnection);
@@ -11923,6 +12012,8 @@ begin
   FLoadAccountPengeluaranKasLainCommand_Cache.DisposeOf;
   FLoadAPCommand.DisposeOf;
   FLoadAPCommand_Cache.DisposeOf;
+  FLoadARCommand.DisposeOf;
+  FLoadARCommand_Cache.DisposeOf;
   inherited;
 end;
 

@@ -14,7 +14,7 @@ uses
   dxStatusBar, uDBUtils, ClientModule, uAppUtils, dxCore, cxDateUtils,
   cxMaskEdit, cxDropDownEdit, cxCalendar, cxTextEdit, cxMemo, cxLookupEdit,
   cxDBLookupEdit, cxDBExtLookupComboBox, cxCurrencyEdit,uModel,uPenerimaanKas,
-  uReport, uRekBank;
+  uReport, uRekBank,uDMReport, Data.FireDACJSONReflect;
 
 type
   TfrmPenerimaanKas = class(TfrmDefault)
@@ -32,11 +32,10 @@ type
     memKeterangan: TcxMemo;
     cxGridDBAR: TcxGrid;
     cxGridTableAR: TcxGridTableView;
-    cxgrdclmnARID: TcxGridColumn;
-    cxgrdclmnARNo: TcxGridColumn;
-    cxgrdclmnNominal: TcxGridColumn;
+    cxGridColAR: TcxGridColumn;
+    cxGridColNominal: TcxGridColumn;
     cxgrdlvlAR: TcxGridLevel;
-    cxgrdclmnBayar: TcxGridColumn;
+    cxGridColBayar: TcxGridColumn;
     btnLoadAR: TcxButton;
     cxgrdlvlDP: TcxGridLevel;
     cxGridTableGridDBARTableView1: TcxGridTableView;
@@ -44,36 +43,45 @@ type
     cxGridTableGridDBARTableView2: TcxGridTableView;
     lblNominal: TLabel;
     edNominal: TcxCurrencyEdit;
-    cxgrdclmnKeterangan: TcxGridColumn;
+    cxGridColKeterangan: TcxGridColumn;
     cbbRekBank: TcxExtLookupComboBox;
     edNoRek: TcxTextEdit;
     edAlamatBank: TcxTextEdit;
-    lblStatusNominal: TLabel;
     procedure actCetakExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ActionBaruExecute(Sender: TObject);
     procedure ActionHapusExecute(Sender: TObject);
     procedure ActionRefreshExecute(Sender: TObject);
     procedure ActionSimpanExecute(Sender: TObject);
-    procedure btnLoadARClick(Sender: TObject);
     procedure cbbRekBankExit(Sender: TObject);
     procedure cxGridTableAREditing(Sender: TcxCustomGridTableView; AItem:
         TcxCustomGridTableItem; var AAllow: Boolean);
     procedure edTglBuktiExit(Sender: TObject);
     procedure edNominalPropertiesChange(Sender: TObject);
-    procedure cxgrdclmnBayarPropertiesChange(Sender: TObject);
     procedure cxGridDBTableOverviewCellDblClick(Sender: TcxCustomGridTableView;
         ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton; AShift:
         TShiftState; var AHandled: Boolean);
+    procedure cbbCustomerPropertiesValidate(Sender: TObject;
+      var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
+    procedure cxGridColARPropertiesValidate(Sender: TObject;
+      var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
+    procedure cxGridTableARDataControllerAfterInsert(
+      ADataController: TcxCustomDataController);
+    procedure cxGridTableARDataControllerAfterDelete(
+      ADataController: TcxCustomDataController);
   private
+    FCDSAP: tclientDataSet;
     FCDSRekBank: TClientDataSet;
     FPenerimaanKas: TPenerimaanKas;
     function GetPenerimaanKas: TPenerimaanKas;
     function GetTotalNominalGrid: Double;
     procedure InisialisasiCBBSalesman;
     procedure InisialisasiRekBank;
+    procedure LoadDataAR(AIDCustomer : String);
+    procedure LoadDataPenerimaanKasARItems;
     procedure SetStatusNominal;
     procedure SetUser;
+    procedure UpdatePenerimaanKasARItems;
     property CDSRekBank: TClientDataSet read FCDSRekBank write FCDSRekBank;
     property PenerimaanKas: TPenerimaanKas read GetPenerimaanKas write
         FPenerimaanKas;
@@ -100,23 +108,26 @@ end;
 
 procedure TfrmPenerimaanKas.actCetakExecute(Sender: TObject);
 var
-  lcds: TClientDataSet;
-  lTSReport: TTSReport;
+  lcds: TFDJSONDataSets;
+//  lcds: TClientDataSet;
 begin
   inherited;
-  lTSReport := TTSReport.Create(self);
-  try
-    with ClientDataModule.ServerPenerimaanKasClient do
-    begin
-      lcds := TDBUtils.DSToCDS(RetrieveCDSlip(Now-3000, Now + 3000, nil, PenerimaanKas.NoBukti), cxGridTableAR);
 
-      lTSReport.AddDataset(lcds, 'QPenerimaanKas');
-      lTSReport.ShowReport('SlipPenerimaanKas');
-    end;
-  finally
-    lTSReport.Free;
+  with dmReport do
+  begin
+    AddReportVariable('UserCetak', User);
+
+    if cxPCData.ActivePageIndex = 0 then
+      lcds := ClientDataModule.ServerPenerimaanKasClient.RetrieveCDSlip(dtpAwal.DateTime, dtpAkhir.DateTime, ClientDataModule.Cabang, '%')
+    else
+      lcds := ClientDataModule.ServerPenerimaanKasClient.RetrieveCDSlip(dtpAwal.DateTime, dtpAkhir.DateTime, ClientDataModule.Cabang, PenerimaanKas.NoBukti);
+
+
+    ExecuteReport( 'Reports/Slip_PenerimaanKas' ,
+      lcds
+
+    );
   end;
-
 end;
 
 procedure TfrmPenerimaanKas.FormCreate(Sender: TObject);
@@ -138,7 +149,7 @@ end;
 procedure TfrmPenerimaanKas.ActionHapusExecute(Sender: TObject);
 begin
   inherited;
-  if TAppUtils.Confirm('Anda yakin akan menghapus data ?') then
+  if not TAppUtils.Confirm('Anda yakin akan menghapus data ?') then
     Exit;
 
   if ClientDataModule.ServerPenerimaanKasClient.Delete(PenerimaanKas) then
@@ -165,21 +176,15 @@ begin
 end;
 
 procedure TfrmPenerimaanKas.ActionSimpanExecute(Sender: TObject);
-var
-  I: Integer;
-  lPKAR: TPenerimaanKasAR;
 begin
   inherited;
+  edNominal.Value := GetTotalNominalGrid;
+
   if not ValidateEmptyCtrl([1]) then
     Exit
   else if edNominal.Value <= 0 then
   begin
     TAppUtils.Warning('Nominal Harus > 0');
-    edNominal.SetFocus;
-    Exit;
-  end else if lblStatusNominal.Caption = 'Beda' then
-  begin
-    TAppUtils.Warning('Detail Nominal dan Nominal Total Belum Sama');
     edNominal.SetFocus;
     Exit;
   end;
@@ -194,18 +199,7 @@ begin
   PenerimaanKas.Pembeli        := TSupplier.CreateID(cbbCustomer.EditValue);
   PenerimaanKas.Petugas        := edPenerima.Text;
 
-  PenerimaanKas.PenerimaanKasARItems.Clear;
-  for I := 0 to cxGridTableAR.DataController.RecordCount - 1 do
-  begin
-    lPKAR               := TPenerimaanKasAR.Create;
-    lPKAR.AR            := TAR.CreateID(cxGridTableAR.GetString(i, cxgrdclmnARID.Index));
-    lPKAR.Nominal       := cxGridTableAR.GetDouble(i, cxgrdclmnBayar.Index);
-    lPKAR.Keterangan    := cxGridTableAR.GetString(i, cxgrdclmnKeterangan.Index);
-    lPKAR.PenerimaanKas := PenerimaanKas;
-
-
-    PenerimaanKas.PenerimaanKasARItems.Add(lPKAR);
-  end;
+  UpdatePenerimaanKasARItems;
 
   if ClientDataModule.ServerPenerimaanKasClient.Save(PenerimaanKas) then
   begin
@@ -216,40 +210,12 @@ begin
 
 end;
 
-procedure TfrmPenerimaanKas.btnLoadARClick(Sender: TObject);
-var
-  iBaris: Integer;
-  lds: TDataset;
+procedure TfrmPenerimaanKas.cbbCustomerPropertiesValidate(Sender: TObject;
+  var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
 begin
   inherited;
-  if cbbCustomer.EditValue = null then
-  begin
-    TAppUtils.Warning('Salesman/Pembeli Belum Dipilih');
-    Exit;
-  end;
-
-  lds := ClientDataModule.ServerLaporanClient.RetriveAR(TSupplier.CreateID(cbbCustomer.EditValue));
-  try
-    cxGridTableAR.ClearRows;
-
-    while not lds.Eof do
-    begin
-      cxGridTableAR.DataController.RecordCount := cxGridTableAR.DataController.RecordCount + 1;
-      iBaris :=cxGridTableAR.DataController.RecordCount - 1;
-
-      cxGridTableAR.SetValue(iBaris,cxgrdclmnARID.Index, lds.FieldByName('ID').AsString);
-      cxGridTableAR.SetValue(iBaris,cxgrdclmnARNo.Index, lds.FieldByName('NoBukti').AsString);
-      cxGridTableAR.SetValue(iBaris,cxgrdclmnNominal.Index, lds.FieldByName('Nominal').AsFloat - lds.FieldByName('Terbayar').AsFloat);
-      cxGridTableAR.SetValue(iBaris,cxgrdclmnBayar.Index, lds.FieldByName('Nominal').AsFloat - lds.FieldByName('Terbayar').AsFloat);
-
-      lds.Next;
-    end;
-
-    cxGridTableAR.ApplyBestFit();
-    SetStatusNominal;
-  finally
-    lds.Free;
-  end;
+  LoadDataAR(cbbCustomer.EditValue);
+  cxGridTableAR.ClearRows;
 end;
 
 procedure TfrmPenerimaanKas.cbbRekBankExit(Sender: TObject);
@@ -259,10 +225,12 @@ begin
   edNoRek.Text      := CDSRekBank.FieldByName('norek').AsString;
 end;
 
-procedure TfrmPenerimaanKas.cxgrdclmnBayarPropertiesChange(Sender: TObject);
+procedure TfrmPenerimaanKas.cxGridColARPropertiesValidate(Sender: TObject;
+  var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
 begin
   inherited;
-   SetStatusNominal;
+  cxGridTableAR.SetValue(cxGridTableAR.FocusedIndex, cxGridColNominal.Index, FCDSAP.FieldByName('sisa').AsFloat);
+  cxGridTableAR.SetValue(cxGridTableAR.FocusedIndex, cxGridColBayar.Index, FCDSAP.FieldByName('sisa').AsFloat);
 end;
 
 procedure TfrmPenerimaanKas.cxGridDBTableOverviewCellDblClick(Sender:
@@ -273,12 +241,26 @@ begin
   LoadData(cxGridDBTableOverview.DS.FieldByName('ID').AsString);
 end;
 
+procedure TfrmPenerimaanKas.cxGridTableARDataControllerAfterDelete(
+  ADataController: TcxCustomDataController);
+begin
+  inherited;
+  edNominal.Value := GetTotalNominalGrid;
+end;
+
+procedure TfrmPenerimaanKas.cxGridTableARDataControllerAfterInsert(
+  ADataController: TcxCustomDataController);
+begin
+  inherited;
+  edNominal.Value := GetTotalNominalGrid;
+end;
+
 procedure TfrmPenerimaanKas.cxGridTableAREditing(Sender:
     TcxCustomGridTableView; AItem: TcxCustomGridTableItem; var AAllow: Boolean);
 begin
   inherited;
   AAllow := False;
-  if AItem.Index in [cxgrdclmnBayar.Index,cxgrdclmnKeterangan.Index] then
+  if AItem.Index in [cxGridColAR.Index, cxGridColBayar.Index,cxGridColKeterangan.Index] then
     AAllow := True;
 end;
 
@@ -292,7 +274,7 @@ procedure TfrmPenerimaanKas.edTglBuktiExit(Sender: TObject);
 begin
   inherited;
   if PenerimaanKas.ID = '' then
-    edNoBukti.Text := ClientDataModule.ServerPenerimaanKasClient.GenerateNoBukti(edTglBukti.Date, ClientDataModule.Cabang.Kode + '/BKM/');
+    edNoBukti.Text := ClientDataModule.ServerPenerimaanKasClient.GenerateNoBukti(edTglBukti.Date, ClientDataModule.Cabang.Kode);
 end;
 
 function TfrmPenerimaanKas.GetPenerimaanKas: TPenerimaanKas;
@@ -311,7 +293,7 @@ begin
 
   for i := 0 to cxGridTableAR.DataController.RecordCount - 1 do
   begin
-    Result := Result + cxGridTableAR.GetDouble(i, cxgrdclmnBayar.Index);
+    Result := Result + cxGridTableAR.GetDouble(i, cxGridColBayar.Index);
   end;
 
 end;
@@ -321,7 +303,7 @@ var
   lCDSSalesman: TClientDataSet;
   sSQL: string;
 begin
-  sSQL := 'select Nama,Kode,ID from TSupplier where issalesman = 1';
+  sSQL := 'select Nama,Kode,ID from TSupplier where ispembeli = 1';
   lCDSSalesman := TDBUtils.OpenDataset(sSQL);
   cbbCustomer.Properties.LoadFromCDS(lCDSSalesman,'ID','Nama',['ID'],Self);
   cbbCustomer.Properties.SetMultiPurposeLookup;
@@ -338,15 +320,10 @@ begin
 end;
 
 procedure TfrmPenerimaanKas.LoadData(AID : String);
-var
-//  dNominal: Double;
-//  I: Integer;
-  iBaris: Integer;
-  lds: TDataSet;
 begin
   FreeAndNil(FPenerimaanKas);
   ClearByTag([0,1]);
-  edNoBukti.Text := ClientDataModule.ServerPenerimaanKasClient.GenerateNoBukti(edTglBukti.Date, ClientDataModule.Cabang.Kode + '/BKM/');
+  edNoBukti.Text := ClientDataModule.ServerPenerimaanKasClient.GenerateNoBukti(edTglBukti.Date, ClientDataModule.Cabang.Kode);
   SetUser;
 
   cxGridTableAR.ClearRows;
@@ -367,52 +344,73 @@ begin
   cbbRekBankExit(nil);
 
   cbbCustomer.EditValue:= FPenerimaanKas.Pembeli.ID;
-
   memKeterangan.Text   := FPenerimaanKas.Keterangan;
 
-  lds := ClientDataModule.ServerPenerimaanKasClient.RetrievePenerimaanARs(FPenerimaanKas.ID);
-  try
-    cxGridTableAR.ClearRows;
-
-    while not lds.Eof do
-    begin
-      cxGridTableAR.DataController.RecordCount := cxGridTableAR.DataController.RecordCount + 1;
-      iBaris :=cxGridTableAR.DataController.RecordCount - 1;
-
-      cxGridTableAR.SetValue(iBaris,cxgrdclmnARID.Index, lds.FieldByName('ar').AsString);
-      cxGridTableAR.SetValue(iBaris,cxgrdclmnARNo.Index, lds.FieldByName('NoBukti').AsString);
-      cxGridTableAR.SetValue(iBaris,cxgrdclmnNominal.Index, lds.FieldByName('Nominalar').AsFloat - lds.FieldByName('Terbayar').AsFloat + lds.FieldByName('Nominal').AsFloat);
-      cxGridTableAR.SetValue(iBaris,cxgrdclmnBayar.Index, lds.FieldByName('Nominal').AsFloat);
-      cxGridTableAR.SetValue(iBaris,cxgrdclmnKeterangan.Index, lds.FieldByName('Keterangan').AsString);
-
-      lds.Next;
-    end;
-
-    cxGridTableAR.ApplyBestFit();
-    SetStatusNominal;
-  finally
-    lds.Free;
-  end;
+  LoadDataPenerimaanKasARItems;
 
   cxPCData.ActivePageIndex := 1;
 
 end;
 
+procedure TfrmPenerimaanKas.LoadDataAR(AIDCustomer : String);
+var
+  lCustomer: TSupplier;
+begin
+  lCustomer := TSupplier.CreateID(AIDCustomer);
+  try
+    FCDSAP := TDBUtils.DSToCDS(ClientDataModule.DSDataCLient.LoadAR(lCustomer), Self);
+    TcxExtLookupComboBoxProperties(cxGridColAR.Properties).LoadFromCDS(FCDSAP, 'ID', 'NOBUKTI', ['ID','CUSTOMERID'],Self);
+  finally
+    lCustomer.Free;
+  end;
+
+end;
+
+procedure TfrmPenerimaanKas.LoadDataPenerimaanKasARItems;
+var
+  i: Integer;
+begin
+  LoadDataAR(PenerimaanKas.Pembeli.ID);
+
+  cxGridTableAR.ClearRows;
+  for I := 0 to PenerimaanKas.PenerimaanKasARItems.Count - 1 do
+  begin
+    cxGridTableAR.DataController.AppendRecord;
+    cxGridTableAR.SetObjectData(PenerimaanKas.PenerimaanKasARItems[i], i);
+    cxGridTableAR.SetValue(i, cxGridColNominal.Index, FCDSAP.FieldByName('nominal').AsFloat + PenerimaanKas.PenerimaanKasARItems[i].Nominal);
+  end;
+end;
+
 procedure TfrmPenerimaanKas.SetStatusNominal;
 begin
-  if edNominal.Value = GetTotalNominalGrid then
-  begin
-    lblStatusNominal.Caption := 'Sama';
-    lblStatusNominal.Font.Color := clGreen;
-  end else begin
-    lblStatusNominal.Caption := 'Beda';
-    lblStatusNominal.Font.Color := clRed;
-  end;
+//  if edNominal.Value = GetTotalNominalGrid then
+//  begin
+//    lblStatusNominal.Caption := 'Sama';
+//    lblStatusNominal.Font.Color := clGreen;
+//  end else begin
+//    lblStatusNominal.Caption := 'Beda';
+//    lblStatusNominal.Font.Color := clRed;
+//  end;
 end;
 
 procedure TfrmPenerimaanKas.SetUser;
 begin
   edPenerima.Text := 'AKU';
+end;
+
+procedure TfrmPenerimaanKas.UpdatePenerimaanKasARItems;
+var
+  I: Integer;
+  lPKAR: TPenerimaanKasAR;
+begin
+  PenerimaanKas.PenerimaanKasARItems.Clear;
+  for I := 0 to cxGridTableAR.DataController.RecordCount - 1 do
+  begin
+    lPKAR               := TPenerimaanKasAR.Create;
+    cxGridTableAR.LoadObjectData(lPKAR,i);
+
+    PenerimaanKas.PenerimaanKasARItems.Add(lPKAR);
+  end;
 end;
 
 end.
