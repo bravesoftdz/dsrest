@@ -69,10 +69,14 @@ type
     procedure mmoLogsChange(Sender: TObject);
     procedure tmrDBTimer(Sender: TObject);
   private
+    FCRUDServer: TCRUDServer;
     FServer: TIdHTTPWebBrokerBridge;
+    function GetCRUDServer: TCRUDServer;
     procedure StartServer;
+    property CRUDServer: TCRUDServer read GetCRUDServer write FCRUDServer;
     { Private declarations }
   public
+    destructor Destroy; override;
     procedure SetServerLogs(AMessage : String);
     { Public declarations }
   end;
@@ -114,6 +118,12 @@ procedure TerminateThreads;
 begin
 //  if TDSSessionManager.Instance <> nil then
 //    TDSSessionManager.Instance.TerminateAllSessions;
+end;
+
+destructor TfrmServer.Destroy;
+begin
+  inherited;
+  FreeAndNil(FCRUDServer);
 end;
 
 procedure TfrmServer.btn1Click(Sender: TObject);
@@ -208,6 +218,14 @@ begin
 //  ButtonStartClick(Sender);
 end;
 
+function TfrmServer.GetCRUDServer: TCRUDServer;
+begin
+  if FCRUDServer = nil then
+    FCRUDServer := TCRUDServer.Create;
+
+  Result := FCRUDServer;
+end;
+
 procedure TfrmServer.mmoLogsChange(Sender: TObject);
 begin
   if mmoLogs.Lines.Count > 10000 then
@@ -230,6 +248,9 @@ begin
     FServer.DefaultPort := StrToInt(EditPort.Text);
     FServer.Active := True;
     WebModule2.DSServer1.Start;
+
+
+    CRUDServer.InisialisasiSettingAppServer;
 
     mmoLogs.Lines.Add('Rest server dijalankan');
   end;

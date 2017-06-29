@@ -3,7 +3,7 @@ unit uRekBank;
 interface
 
 uses
-  uModel, uAccount, System.SysUtils;
+  uAccount, System.SysUtils, uModel;
 
 type
   TRekBank = class(TAppObject)

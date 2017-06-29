@@ -28,7 +28,8 @@ uses
   uMukafaah in '..\model\uMukafaah.pas',
   uPengurus in '..\model\uPengurus.pas',
   uTransferAntarCabang in '..\model\uTransferAntarCabang.pas',
-  uPengeluaranKas in '..\model\uPengeluaranKas.pas';
+  uPengeluaranKas in '..\model\uPengeluaranKas.pas',
+  uSettingAppServer in '..\model\uSettingAppServer.pas';
 
 {$R *.res}
 

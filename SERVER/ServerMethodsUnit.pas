@@ -7,12 +7,12 @@ uses
   DBXJSON, DBClient, DB, rtti, uInterface, uPenjualan,Data.FireDACJSONReflect,
   uCustomerInvoice, uAR, uPenerimaanKas, uAccount, uRekBank,
   uTransferAntarGudang, uSettingApp, uTAGRequests, uTransferAntarCabang,
-  uPengeluaranKas, FireDAC.Comp.Client;
+  uPengeluaranKas, FireDAC.Comp.Client, uSettingAppServer;
 
 type
   {$METHODINFO ON}
 
-//  TServerAR = class;
+  TServerAR = class;
   TDSData = class(TInterfacedPersistent)
 
   public
@@ -120,7 +120,6 @@ type
     function RetrieveKode(AKode : String): TBarang;
   end;
 
-type
   TServerGroupBarang = class(TCRUD)
   protected
   public
@@ -176,9 +175,12 @@ type
     function HapusMutasi(ANoBukti : String): Boolean; stdcall;
     function SimpanMutasiStock(AAppObject : TAppObject): Boolean; stdcall;
   private
+    FServerAR: TServerAR;
+    function GetServerAR: TServerAR;
     function HapusAR(AOBject: TAppObject): Boolean;
     function SimpanStockSekarang(AAppObject : TAppObject; AIsMenghapus : Boolean =
         False): Boolean; stdcall;
+    property ServerAR: TServerAR read GetServerAR write FServerAR;
   protected
     function AfterDelete(AOBject : TAppObject): Boolean; override;
     function AfterSave(AOBject : TAppObject): Boolean; override;
@@ -212,14 +214,18 @@ type
   strict private
 
   private
+    FServerAR: TServerAR;
+    function GetServerAR: TServerAR;
     function HapusAR(AOBject: TAppObject): Boolean;
+    function SimpanBayar(APenjualan : TPenjualan; ADibayar : Double): Boolean;
+    property ServerAR: TServerAR read GetServerAR write FServerAR;
   protected
     function SimpanStockSekarang(AAppObject : TAppObject; AIsMenghapus : Boolean =
         False): Boolean; stdcall;
     function HapusMutasi(ANoBukti : String): Boolean; stdcall;
     function SimpanMutasiStock(AAppObject : TAppObject): Boolean; stdcall;
 
-    function AfterDelete(AOBject : TAppObject): Boolean; override;
+    function BeforeDelete(AOBject : TAppObject): Boolean; override;
     function AfterSave(AOBject : TAppObject): Boolean; override;
     function BeforeSave(AOBject : TAppObject): Boolean; override;
     function SimpanAR(AOBject: TAppObject): Boolean;
@@ -228,8 +234,7 @@ type
     function RetrieveNoBukti(ANoBukti : String): TPenjualan;
     function RetrieveCDSlip(ATglAwal , ATglAtglAkhir : TDateTime; ACabang :
         TCabang; ANoBukti : String): TFDJSONDataSets;
-    function SaveToDBDibayar(APenjualan : TPenjualan; APembayaran :
-        TPenerimaanKas): Boolean;
+    function SaveToDBDibayar(APenjualan : TPenjualan; ADibayar : Double): Boolean;
 
   end;
 
@@ -284,21 +289,19 @@ type
     function RetrieveNoBukti(ANoBukti : String): TPenerimaanKas;
   end;
 
-type
   TServerAccount = class(TServerMaster)
   protected
   public
     function Retrieve(AID : String): TAccount;
   end;
 
-type
   TServerRekBank = class(TServerMaster)
   protected
   public
     function Retrieve(AID : String): TRekBank;
+    function RetrieveRek(ANorek : String): TRekBank;
   end;
 
-type
   TServerTransferAntarGudang = class(TServerTransaction, IBisaSimpanStock)
   strict private
     function HapusMutasi(ANoBukti : String): Boolean; stdcall;
@@ -372,7 +375,6 @@ type
     function RetrieveTransaksi(ATransaksi : String; AIDTransaksi : String): TAP;
   end;
 
-type
   TServerPengeluaranKas = class(TServerTransaction)
   private
     FServerAP: TServerAP;
@@ -399,6 +401,13 @@ type
     function RetrieveNoBukti(ANoBukti : String): TPengeluaranKas;
   end;
 
+  TCRUDServer = class(TCRUD)
+  public
+    destructor Destroy; override;
+    procedure FinalisasiSettingAppServer;
+    procedure InisialisasiSettingAppServer;
+  end;
+
 
 
 
@@ -408,9 +417,10 @@ type
 {$METHODINFO OFF}
 
 implementation
-
-
 uses StrUtils, Provider,uAppUtils, System.DateUtils;
+
+var
+  SettingAppServer : TSettingAppServer;
 
 function TServerMethods1.EchoString(Value: string): string;
 begin
@@ -1496,23 +1506,26 @@ begin
 
 end;
 
+function TServerReturSupplier.GetServerAR: TServerAR;
+begin
+  if FServerAR = nil then
+    FServerAR := TServerAR.Create;
+
+  Result := FServerAR;
+end;
+
 function TServerReturSupplier.HapusAR(AOBject: TAppObject): Boolean;
 var
   lAR: TAR;
   lRS: TReturSupplier;
-  lServerAR: TServerAR;
 begin
   Result := False;
 
   lRS       := TReturSupplier(AOBject);
-  lServerAR := TServerAR.Create;
-  try
-    lAR := lServerAR.RetrieveTransaksi(lRS.ClassName, AOBject.ID);
-    if lServerAR.DeleteNoCommit(lAR) then
-      Result := True;
-  finally
-    lServerAR.Free;
-  end;
+  lAR := ServerAR.RetrieveTransaksi(lRS.ClassName, AOBject.ID);
+
+  if ServerAR.DeleteNoCommit(lAR) then
+    Result := True;
 end;
 
 function TServerReturSupplier.HapusMutasi(ANoBukti : String): Boolean;
@@ -1563,29 +1576,24 @@ function TServerReturSupplier.SimpanAR(AOBject: TAppObject): Boolean;
 var
   lAR: TAR;
   lRS: TReturSupplier;
-  lServerAR: TServerAR;
 begin
   Result := False;
 
   lRS       := TReturSupplier(AOBject);
-  lServerAR := TServerAR.Create;
-  try
-    lAR := lServerAR.RetrieveTransaksi(lRS.ClassName, AOBject.ID);
-    lAR.Cabang := TCabang.CreateID(lRS.Cabang.ID);
-    lAR.Customer := TSupplier.CreateID(lRS.Supplier.ID);
-    lAR.IDTransaksi := lRS.ID;
-    lAR.NoBukti := lRS.NoBukti;
-    lAR.Nominal := lRS.Total;
-    lAR.Transaksi := lRS.ClassName;
-    lAR.JatuhTempo:= lRS.TglBukti;
-    lAR.NoBuktiTransaksi := lRS.NoBukti;
-    lAR.TglBukti := lRS.TglBukti;
 
-    if lServerAR.SaveNoCommit(lAR) then
-      Result := True;
-  finally
-    lServerAR.Free;
-  end;
+  lAR := ServerAR.RetrieveTransaksi(lRS.ClassName, AOBject.ID);
+  lAR.Cabang := TCabang.CreateID(lRS.Cabang.ID);
+  lAR.Customer := TSupplier.CreateID(lRS.Supplier.ID);
+  lAR.IDTransaksi := lRS.ID;
+  lAR.NoBukti := lRS.NoBukti;
+  lAR.Nominal := lRS.Total;
+  lAR.Transaksi := lRS.ClassName;
+  lAR.JatuhTempo:= lRS.TglBukti;
+  lAR.NoBuktiTransaksi := lRS.NoBukti;
+  lAR.TglBukti := lRS.TglBukti;
+
+  if ServerAR.SaveNoCommit(lAR) then
+    Result := True;
 
 end;
 
@@ -1806,7 +1814,7 @@ begin
   end;
 end;
 
-function TServerPenjualan.AfterDelete(AOBject : TAppObject): Boolean;
+function TServerPenjualan.BeforeDelete(AOBject : TAppObject): Boolean;
 begin
   Result := False;
 
@@ -1851,23 +1859,26 @@ begin
 
 end;
 
+function TServerPenjualan.GetServerAR: TServerAR;
+begin
+  if FServerAR = nil then
+    FServerAR := TServerAR.Create;
+
+  Result := FServerAR;
+end;
+
 function TServerPenjualan.HapusAR(AOBject: TAppObject): Boolean;
 var
   lAR: TAR;
   lPJ: TPenjualan;
-  lServerAR: TServerAR;
 begin
   Result := False;
 
   lPJ       := TPenjualan(AOBject);
-  lServerAR := TServerAR.Create;
-  try
-    lAR := lServerAR.RetrieveTransaksi(lPJ.ClassName, AOBject.ID);
-    if lServerAR.DeleteNoCommit(lAR) then
-      Result := True;
-  finally
-    lServerAR.Free;
-  end;
+
+  lAR := ServerAR.RetrieveTransaksi(lPJ.ClassName, AOBject.ID);
+  if ServerAR.DeleteNoCommit(lAR) then
+    Result := True;
 end;
 
 function TServerPenjualan.HapusMutasi(ANoBukti : String): Boolean;
@@ -1966,40 +1977,75 @@ begin
 
 end;
 
-function TServerPenjualan.SaveToDBDibayar(APenjualan : TPenjualan; APembayaran
-    : TPenerimaanKas): Boolean;
+function TServerPenjualan.SaveToDBDibayar(APenjualan : TPenjualan; ADibayar :
+    Double): Boolean;
 begin
   Result := False;
-  if SaveNoCommit(APenjualan) then
-    Result := Save(APembayaran);
+
+
 end;
 
 function TServerPenjualan.SimpanAR(AOBject: TAppObject): Boolean;
 var
   lAR: TAR;
   lPJ: TPenjualan;
-  lServerAR: TServerAR;
 begin
   Result := False;
 
   lPJ       := TPenjualan(AOBject);
-  lServerAR := TServerAR.Create;
-  try
-    lAR                   := lServerAR.RetrieveTransaksi(lPJ.ClassName, AOBject.ID);
-    lAR.Cabang            := TCabang.CreateID(lPJ.Cabang.ID);
-    lAR.Customer          := TSupplier.CreateID(lPJ.Pembeli.ID);
-    lAR.IDTransaksi       := lPJ.ID;
-    lAR.NoBukti           := lPJ.NoBukti;
-    lAR.Nominal           := lPJ.Total;
-    lAR.Transaksi         := lPJ.ClassName;
-    lAR.JatuhTempo        := lPJ.JatuhTempo;
-    lAR.NoBuktiTransaksi  := lPJ.NoBukti;
-    lAR.TglBukti          := lPJ.TglBukti;
 
-    if lServerAR.SaveNoCommit(lAR) then
+  lAR                   := ServerAR.RetrieveTransaksi(lPJ.ClassName, AOBject.ID);
+  lAR.Cabang            := TCabang.CreateID(lPJ.Cabang.ID);
+  lAR.Customer          := TSupplier.CreateID(lPJ.Pembeli.ID);
+  lAR.IDTransaksi       := lPJ.ID;
+  lAR.NoBukti           := lPJ.NoBukti;
+  lAR.Nominal           := lPJ.Total;
+  lAR.Transaksi         := lPJ.ClassName;
+  lAR.JatuhTempo        := lPJ.JatuhTempo;
+  lAR.NoBuktiTransaksi  := lPJ.NoBukti;
+  lAR.TglBukti          := lPJ.TglBukti;
+
+  if ServerAR.SaveNoCommit(lAR) then
+    Result := True;
+
+end;
+
+function TServerPenjualan.SimpanBayar(APenjualan : TPenjualan; ADibayar :
+    Double): Boolean;
+var
+  lPenerimaanKas: TPenerimaanKas;
+  lPenerimaanKasAR: TPenerimaanKasAR;
+begin
+  Result := False;
+
+  lPenerimaanKas := TPenerimaanKas.Create();
+  try
+    lPenerimaanKas.Cabang         := TCabang.CreateID(APenjualan.Cabang.ID);
+    lPenerimaanKas.JenisTransaksi := 'CASH';
+    lPenerimaanKas.Keterangan     := 'TUNAI';
+    lPenerimaanKas.NoBukti        := APenjualan.NoBukti;
+    lPenerimaanKas.Nominal        := APenjualan.Total;
+    lPenerimaanKas.Pembeli        := TSupplier.CreateID(lPenerimaanKas.Pembeli.ID);
+    lPenerimaanKas.Petugas        := APenjualan.Kasir;
+
+    lPenerimaanKas.RekBank        := TRekBank.CreateID(SettingAppServer.RekBankCash.ID);
+    lPenerimaanKas.TglBukti       := APenjualan.TglBukti;
+
+    lPenerimaanKasAR              := TPenerimaanKasAR.Create();
+    lPenerimaanKasAR.Keterangan   := 'TUNAI';
+    lPenerimaanKasAR.Nominal      := APenjualan.Total;
+    lPenerimaanKasAR.UangBayar    := ADibayar;
+
+//    lAR                           := lServerAR.RetrieveTransaksi(lPJ.ClassName, AOBject.ID);
+    lPenerimaanKasAR.AR           := TAR.CreateID('');
+
+    lPenerimaanKas.PenerimaanKasARItems.Add(lPenerimaanKasAR);
+
+    if SaveNoCommit(lPenerimaanKas) then
       Result := True;
+
   finally
-    lServerAR.Free;
+    lPenerimaanKas.Free;
   end;
 
 end;
@@ -2480,6 +2526,31 @@ function TServerRekBank.Retrieve(AID : String): TRekBank;
 begin
   Result      := TRekBank.Create;
   TDBUtils.LoadFromDB(Result, AID);
+end;
+
+function TServerRekBank.RetrieveRek(ANorek : String): TRekBank;
+var
+  sID: string;
+  sSQL: string;
+begin
+  Result := TRekBank.Create;
+
+  sSQL   := 'select id from trekbank ' +
+            ' where norek = ' + QuotedStr(ANorek);
+
+  sID    := '-';
+  with TDBUtils.OpenQuery(sSQL) do
+  begin
+    try
+      if not IsEmpty then
+        sID := FieldByName('id').AsString;
+
+    Finally
+      Free;
+    End;
+  end;
+
+  TDBUtils.LoadFromDB(Result, sID);
 end;
 
 function TServerTransferAntarGudang.AfterDelete(AOBject : TAppObject): Boolean;
@@ -3484,6 +3555,35 @@ begin
 
   if TDBUtils.ExecuteSQL(sSQL) then
     Result := True;
+end;
+
+destructor TCRUDServer.Destroy;
+begin
+  inherited;
+  FinalisasiSettingAppServer;
+end;
+
+procedure TCRUDServer.FinalisasiSettingAppServer;
+begin
+  FreeAndNil(SettingAppServer);
+end;
+
+procedure TCRUDServer.InisialisasiSettingAppServer;
+var
+  sSQL: string;
+begin
+  FreeAndNil(SettingAppServer);
+
+  sSQL := 'select * from tsettingappserver';
+  with TDBUtils.OpenQuery(sSQL) do
+  begin
+    try
+      SettingAppServer := TSettingAppServer.Create;
+      TDBUtils.LoadFromDB(SettingAppServer, FieldByName('ID').AsString);
+    finally
+      Free;
+    end;
+  end;
 end;
 
 
