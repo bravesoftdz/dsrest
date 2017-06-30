@@ -7,7 +7,8 @@ uses
   DBXJSON, DBClient, DB, rtti, uInterface, uPenjualan,Data.FireDACJSONReflect,
   uCustomerInvoice, uAR, uPenerimaanKas, uAccount, uRekBank,
   uTransferAntarGudang, uSettingApp, uTAGRequests, uTransferAntarCabang,
-  uPengeluaranKas, FireDAC.Comp.Client, uSettingAppServer;
+  uPengeluaranKas, FireDAC.Comp.Client, uSettingAppServer, uJurnal, uSupplier,
+  uPenerimaanBarang,uReturSupplier;
 
 type
   {$METHODINFO ON}
@@ -50,6 +51,8 @@ type
     function RetriveAR(ASupplier : TSupplier): TDataset;
     function RetrivePengeluaranKas(ATglAwal , ATglAtglAkhir : TDateTime; ACabang :
         TCabang): TDataset;
+    function RetriveJurnal(ATglAwal , ATglAtglAkhir : TDateTime; ACabang : TCabang;
+        AJenisJurnal : String): TDataset;
     function RetriveSettingApp(ACabang : TCabang): TDataset;
 
   end;
@@ -406,6 +409,13 @@ type
     destructor Destroy; override;
     procedure FinalisasiSettingAppServer;
     procedure InisialisasiSettingAppServer;
+  end;
+
+  TServerJurnal = class(TServerTransaction)
+  public
+    function BeforeSave(AAppObject : TAppObject): Boolean; override;
+    function BeforeDelete(AAppObject : TAppObject): Boolean; override;
+    function Retrieve(AID : String): TJurnal;
   end;
 
 
@@ -1445,6 +1455,27 @@ begin
 
   if ACabang <> nil then
     sSQL := sSQL + ' and a.cabangID = ' + QuotedStr(ACabang.ID);
+
+  Result   := TDBUtils.OpenDataset(sSQL);
+end;
+
+{ TLaporan }
+
+function TServerLaporan.RetriveJurnal(ATglAwal , ATglAtglAkhir : TDateTime;
+    ACabang : TCabang; AJenisJurnal : String): TDataset;
+var
+  sSQL : String;
+begin
+  sSQL := 'SELECT * FROM vjurnal A' +
+          ' where a.tglbukti between ' + TAppUtils.QuotDt(StartOfTheDay(ATglAwal))+
+          ' and ' + TAppUtils.QuotDt(EndOfTheDay(ATglAtglAkhir));
+
+  if ACabang <> nil then
+    sSQL := sSQL + ' and a.cabangID = ' + QuotedStr(ACabang.ID);
+
+  if AJenisJurnal <> '' then
+    sSQL := sSQL + ' and a.transaksi = ' + QuotedStr(AJenisJurnal);
+
 
   Result   := TDBUtils.OpenDataset(sSQL);
 end;
@@ -3584,6 +3615,43 @@ begin
       Free;
     end;
   end;
+end;
+
+function TServerJurnal.BeforeSave(AAppObject : TAppObject): Boolean;
+var
+  lJurnal: TJurnal;
+begin
+//  Result := False;
+  lJurnal := TJurnal(AAppObject);
+
+  if lJurnal.Debet <> lJurnal.Kredit then
+    raise Exception.Create('Nilai Debet Tidak Sama Dengan Kredit');
+
+  if lJurnal.IDTransaksi = '' then
+  begin
+    lJurnal.IDTransaksi := TDBUtils.GetNextIDGUIDToString;
+    lJurnal.Transaksi   := lJurnal.ClassName;
+  end;
+
+  Result := True;
+end;
+
+function TServerJurnal.BeforeDelete(AAppObject : TAppObject): Boolean;
+var
+  lJurnal: TJurnal;
+begin
+  lJurnal := TJurnal(AAppObject);
+
+  if lJurnal.IsPosted = 1 then
+    raise Exception.Create('Jurnal sudah diposting, tidak bisa dihapus');
+
+  Result := True;
+end;
+
+function TServerJurnal.Retrieve(AID : String): TJurnal;
+begin
+  Result      := TJurnal.Create;
+  TDBUtils.LoadFromDB(Result, AID);
 end;
 
 

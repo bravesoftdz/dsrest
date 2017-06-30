@@ -18,7 +18,7 @@ uses
   FireDAC.Comp.Client, FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf,
   FireDAC.Comp.DataSet, FireDAC.DApt, cxGraphics,
   FireDAC.Phys.MSSQLDef, FireDAC.Phys.PGDef, uTransferAntarCabang,
-  FireDAC.Stan.StorageBin;
+  FireDAC.Stan.StorageBin,uPenerimaanBarang;
 
 type
   TfrmServer = class(TForm)

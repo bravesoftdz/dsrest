@@ -41,6 +41,7 @@ type
     FSettingApp: TSettingApp;
     FServerTransferAntarCabangKirimClient: TServerTransferAntarCabangKirimClient;
     FServerTransferAntarCabangTerimaClient: TServerTransferAntarCabangTerimaClient;
+    FServerJurnalClient: TServerJurnalClient;
     function GetCabang: tcabang;
     function GetServerUOMClient: TServerUOMClient;
     function GetServerSupplierClient: TServerSupplierClient;
@@ -68,6 +69,7 @@ type
         TServerTransferAntarCabangKirimClient;
     function GetServerTransferAntarCabangTerimaClient:
         TServerTransferAntarCabangTerimaClient;
+    function GetServerJurnalClient: TServerJurnalClient;
     { Private declarations }
   public
     constructor Create(AOwner: TComponent); override;
@@ -116,6 +118,8 @@ type
         TServerTransferAntarCabangTerimaClient read
         GetServerTransferAntarCabangTerimaClient write
         FServerTransferAntarCabangTerimaClient;
+    property ServerJurnalClient: TServerJurnalClient read GetServerJurnalClient
+        write FServerJurnalClient;
 end;
 
 var
@@ -388,6 +392,15 @@ begin
 
   FServerTransferAntarCabangTerimaClient := TServerTransferAntarCabangTerimaClient.Create(ClientDataModule.DSRestConnection, FInstanceOwner);
   Result := FServerTransferAntarCabangTerimaClient;
+end;
+
+function TClientDataModule.GetServerJurnalClient: TServerJurnalClient;
+begin
+  if FServerJurnalClient <> nil then
+    FreeAndNil(FServerJurnalClient);
+
+  FServerJurnalClient:= TServerJurnalClient.Create(DSRestConnection, FInstanceOwner);
+  Result := FServerJurnalClient;
 end;
 
 end.

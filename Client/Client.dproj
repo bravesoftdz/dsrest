@@ -231,6 +231,14 @@
             <Form>frmPembayaran</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="..\model\uJurnal.pas"/>
+        <DCCReference Include="form\ufrmJurnal.pas">
+            <Form>frmJurnal</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="..\model\uSupplier.pas"/>
+        <DCCReference Include="..\model\uPenerimaanBarang.pas"/>
+        <DCCReference Include="..\model\uReturSupplier.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

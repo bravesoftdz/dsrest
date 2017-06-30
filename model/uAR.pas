@@ -3,7 +3,7 @@ unit uAR;
 interface
 
 uses
-  uModel, System.SysUtils,System.Classes;
+  uModel, System.SysUtils,System.Classes, uSupplier;
 
 type
   TAR = class(TAppObject)

@@ -3,7 +3,7 @@ unit uPenjualan;
 interface
 
 uses
-  uModel, System.Generics.Collections;
+  uModel, System.Generics.Collections, uSupplier;
 
 
 type

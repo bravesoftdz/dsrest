@@ -29,7 +29,11 @@ uses
   uPengurus in '..\model\uPengurus.pas',
   uTransferAntarCabang in '..\model\uTransferAntarCabang.pas',
   uPengeluaranKas in '..\model\uPengeluaranKas.pas',
-  uSettingAppServer in '..\model\uSettingAppServer.pas';
+  uSettingAppServer in '..\model\uSettingAppServer.pas',
+  uJurnal in '..\model\uJurnal.pas',
+  uSupplier in '..\model\uSupplier.pas',
+  uReturSupplier in '..\model\uReturSupplier.pas',
+  uPenerimaanBarang in '..\model\uPenerimaanBarang.pas';
 
 {$R *.res}
 

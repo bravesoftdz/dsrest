@@ -16,7 +16,7 @@ uses
   ufrmCustomerInvoice,ufrmPenerimaanKas, ufrmRekBank, ufrmLaporanAR,
   ufrmSettingAplikasi, ufrmTransferAntarGudang, ufrmTAGRequest,
   Datasnap.DBClient, ufrmTACKirim, cxContainer, cxEdit, cxTextEdit, cxMaskEdit,
-  cxDropDownEdit, ufrmPengeluaranKas;
+  cxDropDownEdit, ufrmPengeluaranKas, ufrmJurnal;
 
 type
   TfrmMain = class(TForm)
@@ -131,10 +131,15 @@ type
     actTACTerima: TAction;
     dxbrlrgbtnPengeluaranKas: TdxBarLargeButton;
     actPengeluaranKas: TAction;
+    dxrbntbAkuntansi: TdxRibbonTab;
+    dxbrJurnal: TdxBar;
+    dxbrlrgbtnJurnalMemorial: TdxBarLargeButton;
+    actJurnalMemorial: TAction;
     procedure actAlatGantiCabangExecute(Sender: TObject);
     procedure actApplicationExitExecute(Sender: TObject);
     procedure actClosingInventoryExecute(Sender: TObject);
     procedure actCustomerInvoiceExecute(Sender: TObject);
+    procedure actJurnalMemorialExecute(Sender: TObject);
     procedure actLapKartokExecute(Sender: TObject);
     procedure actMasSupplierExecute(Sender: TObject);
     procedure actMasterBarangExecute(Sender: TObject);
@@ -210,6 +215,11 @@ end;
 procedure TfrmMain.actCustomerInvoiceExecute(Sender: TObject);
 begin
   frmCustomerInvoice := TfrmCustomerInvoice.Create(Self);
+end;
+
+procedure TfrmMain.actJurnalMemorialExecute(Sender: TObject);
+begin
+  frmJurnal := TfrmJurnal.Create(Self);
 end;
 
 procedure TfrmMain.actLapKartokExecute(Sender: TObject);

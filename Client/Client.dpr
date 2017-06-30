@@ -57,7 +57,12 @@ uses
   uModelHelper in '..\model\uModelHelper.pas',
   uDMReport in '..\uDMReport.pas' {DMReport},
   ufrmPenerimaanKas in 'form\ufrmPenerimaanKas.pas' {frmPenerimaanKas},
-  ufrmPembayaranPOS in 'form\ufrmPembayaranPOS.pas' {frmPembayaran};
+  ufrmPembayaranPOS in 'form\ufrmPembayaranPOS.pas' {frmPembayaran},
+  uJurnal in '..\model\uJurnal.pas',
+  ufrmJurnal in 'form\ufrmJurnal.pas' {frmJurnal},
+  uSupplier in '..\model\uSupplier.pas',
+  uPenerimaanBarang in '..\model\uPenerimaanBarang.pas',
+  uReturSupplier in '..\model\uReturSupplier.pas';
 
 {$R *.res}
 
@@ -67,6 +72,5 @@ begin
   Application.CreateForm(TClientDataModule, ClientDataModule);
   Application.CreateForm(TfrmMain, frmMain);
   Application.CreateForm(TDMReport, DMReport);
-  Application.CreateForm(TfrmPembayaran, frmPembayaran);
   Application.Run;
 end.

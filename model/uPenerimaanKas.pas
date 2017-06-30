@@ -3,7 +3,7 @@ unit uPenerimaanKas;
 interface
 
 uses
-  uModel, uRekBank, uAR, System.Generics.Collections,System.SysUtils;
+  uModel, uRekBank, uAR, System.Generics.Collections,System.SysUtils, uSupplier;
 
 type
   TPenerimaanKas = class;

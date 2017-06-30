@@ -3,7 +3,7 @@ unit uCustomerInvoice;
 interface
 
 uses
-  uModel, uPenjualan, System.Generics.Collections, uAR, System.SysUtils;
+  uModel, uPenjualan, System.Generics.Collections, uAR, System.SysUtils, uSupplier;
 
 type
   {$TYPEINFO ON}

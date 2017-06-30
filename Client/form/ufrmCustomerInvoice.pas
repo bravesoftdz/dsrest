@@ -15,7 +15,7 @@ uses
   cxCalendar, cxMaskEdit, cxLookupEdit, cxDBLookupEdit, cxDBExtLookupComboBox,
   cxTextEdit, uCustomerInvoice,uModel, uAR, uPenjualan,
   cxCurrencyEdit, cxGridLevel, ClientModule, dxBarBuiltInMenu, cxPC, Vcl.Menus,
-  cxButtons;
+  cxButtons, uReturSupplier, uSupplier;
 
 type
   TfrmCustomerInvoice = class(TfrmDefault)

@@ -3,7 +3,8 @@ unit uPengeluaranKas;
 interface
 
 uses
-  uModel, uRekBank, uAR, uAccount, System.Generics.Collections, System.SysUtils;
+  uModel, uRekBank, uAR, uAccount, System.Generics.Collections,
+  System.SysUtils, uSupplier;
 
 type
   TPengeluaranKasAP = class;

@@ -15,7 +15,7 @@ uses
   cxDateUtils, cxGridLevel, cxDropDownEdit, cxLookupEdit, cxDBLookupEdit,
   cxMemo, cxMaskEdit, cxCalendar, cxTextEdit, Vcl.StdCtrls, ClientModule,
   uPenjualan, uDBUtils, uAppUtils, Vcl.Menus, cxCalc, dxBarBuiltInMenu, cxPC,
-  cxButtons, uReport, uInterface,uDMReport,Data.FireDACJSONReflect;
+  cxButtons, uReport, uInterface,uDMReport,Data.FireDACJSONReflect,uReturSupplier, uSupplier;
 
 type
   TfrmPenjualan = class(TfrmDefault, IForm)

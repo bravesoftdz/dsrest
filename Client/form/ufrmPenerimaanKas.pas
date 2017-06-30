@@ -14,7 +14,7 @@ uses
   dxStatusBar, uDBUtils, ClientModule, uAppUtils, dxCore, cxDateUtils,
   cxMaskEdit, cxDropDownEdit, cxCalendar, cxTextEdit, cxMemo, cxLookupEdit,
   cxDBLookupEdit, cxDBExtLookupComboBox, cxCurrencyEdit,uModel,uPenerimaanKas,
-  uReport, uRekBank,uDMReport, Data.FireDACJSONReflect;
+  uReport, uRekBank,uDMReport, Data.FireDACJSONReflect, uReturSupplier, uSupplier;
 
 type
   TfrmPenerimaanKas = class(TfrmDefault)

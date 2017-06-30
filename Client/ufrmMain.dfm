@@ -51,7 +51,6 @@ object frmMain: TfrmMain
       Index = 1
     end
     object dxrbntbPenerimaanBarangTransaksi: TdxRibbonTab
-      Active = True
       Caption = 'Transaksi'
       Groups = <
         item
@@ -63,14 +62,28 @@ object frmMain: TfrmMain
           ToolbarName = 'dxbrmngrAMSBarPenjualan'
         end
         item
-          Caption = 'Keuangan'
-          ToolbarName = 'dxbrmngrAMSBarKeuangan'
-        end
-        item
           Caption = 'Transfer Antar Gudang'
           ToolbarName = 'dxbrTAG'
         end>
       Index = 2
+    end
+    object dxrbntbAkuntansi: TdxRibbonTab
+      Active = True
+      Caption = 'Keuangan & Akuntansi'
+      Groups = <
+        item
+          Caption = 'Master'
+          ToolbarName = 'dxbrmngrAMSBarFA'
+        end
+        item
+          Caption = 'Kas Masuk & Keluar'
+          ToolbarName = 'dxbrmngrAMSBarKeuangan'
+        end
+        item
+          Caption = 'Jurnal'
+          ToolbarName = 'dxbrJurnal'
+        end>
+      Index = 3
     end
     object dxrbntbPenerimaanBarangClosing: TdxRibbonTab
       Caption = 'Alat'
@@ -79,7 +92,7 @@ object frmMain: TfrmMain
           Caption = 'Setting'
           ToolbarName = 'dxbrCLosing'
         end>
-      Index = 3
+      Index = 4
     end
     object dxrbntbLaporan: TdxRibbonTab
       Caption = 'Laporan'
@@ -88,7 +101,7 @@ object frmMain: TfrmMain
           Caption = 'Inventory'
           ToolbarName = 'dxbrLaporanInventory'
         end>
-      Index = 4
+      Index = 5
     end
   end
   object statDS: TStatusBar
@@ -240,12 +253,15 @@ object frmMain: TfrmMain
     Categories.Strings = (
       'Button Master'
       'ButtonApplication'
-      'LaporanInventory')
+      'LaporanInventory'
+      'Akuntansi')
     Categories.ItemsVisibles = (
+      2
       2
       2
       2)
     Categories.Visibles = (
+      True
       True
       True
       True)
@@ -263,7 +279,7 @@ object frmMain: TfrmMain
     object dxbrApplication: TdxBar
       Caption = 'Apllication'
       CaptionButtons = <>
-      DockedLeft = 0
+      DockedLeft = 354
       DockedTop = 0
       FloatLeft = 340
       FloatTop = 244
@@ -319,7 +335,7 @@ object frmMain: TfrmMain
           Visible = True
           ItemName = 'dxbrlrgbtnAssetCat'
         end>
-      OneOnRow = False
+      OneOnRow = True
       Row = 0
       UseOwnFont = True
       Visible = True
@@ -440,7 +456,7 @@ object frmMain: TfrmMain
     object dxbrmngrAMSBarKeuangan: TdxBar
       Caption = 'Keuangan'
       CaptionButtons = <>
-      DockedLeft = 349
+      DockedLeft = 114
       DockedTop = 0
       FloatLeft = 900
       FloatTop = 8
@@ -460,7 +476,7 @@ object frmMain: TfrmMain
           ItemName = 'dxbrlrgbtnPengeluaranKas'
         end>
       OneOnRow = False
-      Row = 0
+      Row = 1
       UseOwnFont = False
       Visible = True
       WholeRow = False
@@ -468,7 +484,7 @@ object frmMain: TfrmMain
     object dxbrmngrAMSBarFA: TdxBar
       Caption = 'FA'
       CaptionButtons = <>
-      DockedLeft = 335
+      DockedLeft = 0
       DockedTop = 0
       FloatLeft = 900
       FloatTop = 8
@@ -484,7 +500,7 @@ object frmMain: TfrmMain
           ItemName = 'dxbrlrgbtnBank'
         end>
       OneOnRow = False
-      Row = 0
+      Row = 1
       UseOwnFont = False
       Visible = True
       WholeRow = False
@@ -492,7 +508,7 @@ object frmMain: TfrmMain
     object dxbrTAG: TdxBar
       Caption = 'Transfer Inventory'
       CaptionButtons = <>
-      DockedLeft = 589
+      DockedLeft = 349
       DockedTop = 0
       FloatLeft = 900
       FloatTop = 8
@@ -516,6 +532,26 @@ object frmMain: TfrmMain
           ItemName = 'dxbrlrgbtnTACTerima'
         end>
       OneOnRow = False
+      Row = 0
+      UseOwnFont = False
+      Visible = True
+      WholeRow = False
+    end
+    object dxbrJurnal: TdxBar
+      Caption = 'Jurnal'
+      CaptionButtons = <>
+      DockedLeft = 354
+      DockedTop = 0
+      FloatLeft = 799
+      FloatTop = 8
+      FloatClientWidth = 0
+      FloatClientHeight = 0
+      ItemLinks = <
+        item
+          Visible = True
+          ItemName = 'dxbrlrgbtnJurnalMemorial'
+        end>
+      OneOnRow = True
       Row = 0
       UseOwnFont = False
       Visible = True
@@ -706,6 +742,11 @@ object frmMain: TfrmMain
       Category = 2
       LargeImageIndex = 5
     end
+    object dxbrlrgbtnJurnalMemorial: TdxBarLargeButton
+      Action = actJurnalMemorial
+      Category = 3
+      LargeImageIndex = 10
+    end
   end
   object dxbrplctnmnAMS: TdxBarApplicationMenu
     BarManager = dxbrmngrAMS
@@ -855,6 +896,11 @@ object frmMain: TfrmMain
       Caption = 'Pengeluaran Kas'
       OnExecute = actPengeluaranKasExecute
     end
+    object actJurnalMemorial: TAction
+      Category = 'Keuangan'
+      Caption = 'Jurnal Memorial'
+      OnExecute = actJurnalMemorialExecute
+    end
   end
   object ImgListMainLarge: TImageList
     ColorDepth = cd32Bit
@@ -863,7 +909,7 @@ object frmMain: TfrmMain
     Left = 688
     Top = 128
     Bitmap = {
-      494C010113001800280120002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C0101130018002C0120002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000080000000A000000001002000000000000040
       0100000000000000000000000000000000000000000000000000131313224341
       3F7561605FAD797474D4878180ED8D8988F98A8685F8838181EC787574D3625E

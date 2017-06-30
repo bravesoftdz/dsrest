@@ -1473,6 +1473,9 @@ begin
       Self.Columns[i].Caption := UpperCase(Trim(' ' + Self.Columns[i].Caption) + ' ');
       Self.Columns[i].Caption := StringReplace(Self.Columns[i].Caption ,'_', ' ',[rfReplaceAll]);
       Self.Columns[i].HeaderAlignmentHorz := taCenter;
+
+//      if Self.Columns[i].DataBinding.ValueTypeClass  = tks
+
     end;
   end;
 
@@ -1603,6 +1606,11 @@ begin
     rt := ctx.GetType(AObject.ClassType);
     for prop in rt.GetProperties() do
     begin
+      if UpperCase(prop.Name) = 'URUTAN' then
+      begin
+        prop.SetValue(AObject,ARow);
+      end;
+
       for I := 0 to Self.ColumnCount - 1 do
       begin
         if UpperCase(prop.Name) = UpperCase(Self.Columns[i].AlternateCaption) then

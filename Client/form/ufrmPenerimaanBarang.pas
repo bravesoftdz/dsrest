@@ -14,7 +14,7 @@ uses
   cxDBExtLookupComboBox, Provider, DBClient, cxNavigator, dxCore, cxDateUtils,
   System.Actions, dxBarExtDBItems, cxCheckBox, cxBarEditItem, System.ImageList,
   dxBarExtItems, cxCalc, dxBarBuiltInMenu, Vcl.Menus, cxButtons, cxPC,uDMReport,
-  Data.FireDACJSONReflect;
+  Data.FireDACJSONReflect, uPenerimaanBarang, uSupplier;
 
 type
   TfrmPenerimaanBarang = class(TfrmDefault)
@@ -134,11 +134,9 @@ uses
 {$R *.dfm}
 
 procedure TfrmPenerimaanBarang.actCetakExecute(Sender: TObject);
-//var
-//  lReport: TTSReport;
 begin
   inherited;
-  CetakSlip;
+//  CetakSlip;
 //  lReport := TTSReport.Create(Self);
 //  try
 //    if cxPCData.ActivePageIndex = 0 then

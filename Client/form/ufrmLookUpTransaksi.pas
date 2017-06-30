@@ -8,7 +8,8 @@ uses
   cxLookAndFeelPainters, cxStyles, cxCustomData, cxFilter, cxData,
   cxDataStorage, cxEdit, cxNavigator, Data.DB, cxDBData, cxGridLevel, cxClasses,
   cxGridCustomView, cxGridCustomTableView, cxGridTableView, cxGridDBTableView,
-  cxGrid, Vcl.ExtCtrls, Vcl.StdCtrls, Datasnap.Provider, Datasnap.DBClient, ClientModule;
+  cxGrid, Vcl.ExtCtrls, Vcl.StdCtrls, Datasnap.Provider, Datasnap.DBClient,
+  ClientModule, uPenerimaanBarang;
 
 type
   TfrmLookUpTransaksi = class(TForm)

@@ -2,6 +2,7 @@ inherited frmPengeluaranKas: TfrmPengeluaranKas
   Caption = 'Pengeluaran Kas'
   ClientHeight = 461
   ClientWidth = 788
+  ExplicitTop = -148
   ExplicitWidth = 804
   ExplicitHeight = 500
   PixelsPerInch = 96
@@ -15,7 +16,6 @@ inherited frmPengeluaranKas: TfrmPengeluaranKas
   inherited cxPCData: TcxPageControl
     Width = 788
     Height = 408
-    Properties.ActivePage = cxTSInputData
     ExplicitWidth = 788
     ExplicitHeight = 408
     ClientRectBottom = 404
@@ -453,7 +453,7 @@ inherited frmPengeluaranKas: TfrmPengeluaranKas
     Left = 648
     Top = 248
     Bitmap = {
-      494C010107000800280118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800300118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

@@ -14,7 +14,8 @@ uses
   cxDBExtLookupComboBox, Provider, DBClient, cxNavigator, dxCore, cxDateUtils,
   System.Actions, dxBarExtDBItems, cxCheckBox, cxBarEditItem, System.ImageList,
   dxBarExtItems, ufrmLookUpTransaksi, dxBarBuiltInMenu, Vcl.Menus, cxButtons,
-  cxPC,uAppUtils,System.StrUtils, Data.FireDACJSONReflect,uDMReport;
+  cxPC,uAppUtils,System.StrUtils, Data.FireDACJSONReflect,uDMReport,
+  uReturSupplier, uSupplier, uPenerimaanBarang;
 
 type
   TfrmReturSupplier = class(TfrmDefault)
