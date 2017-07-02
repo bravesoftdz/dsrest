@@ -243,7 +243,7 @@ begin
                           end;
                         end else begin
                           sNama := prop.Name;
-                          if prop.GetValue(AObject).AsObject = nil then
+                          if (prop.GetValue(AObject).AsObject = nil) or (TAppObject(prop.GetValue(AObject).AsObject).ID = '') then
                             Result := Result +  ' null,'
                           else
                             Result := Result + QuotedStr(TAppObject(prop.GetValue(AObject).AsObject).ID) + ',';
@@ -321,9 +321,11 @@ begin
                                 ResultObjectList := ResultObjectList + GenerateSQLInsert(TAppObject(GetArrayElement(i).AsObject));
                               end;
                             end;
-                          end else begin
+                          end else if (prop.GetValue(AObject).AsObject = nil) or (TAppObject(prop.GetValue(AObject).AsObject).ID = '') then
+                          begin
+                            Result := Result + ' null,'
+                          end else
                             Result := Result + QuotedStr(TAppObject(prop.GetValue(AObject).AsObject).ID) + ',';
-                          end;
                         end;
           tkInteger   : Result := Result + FloatToStr(prop.GetValue(AObject).AsExtended) + ',';
           

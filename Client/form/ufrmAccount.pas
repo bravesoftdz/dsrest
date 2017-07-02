@@ -32,6 +32,7 @@ type
     chkIsAkunTransaksi: TcxCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure ActionBaruExecute(Sender: TObject);
+    procedure ActionHapusExecute(Sender: TObject);
     procedure ActionRefreshExecute(Sender: TObject);
     procedure ActionSimpanExecute(Sender: TObject);
     procedure cbbParentExit(Sender: TObject);
@@ -81,6 +82,20 @@ begin
   LoadDataAccount('')
 end;
 
+procedure TfrmAccount.ActionHapusExecute(Sender: TObject);
+begin
+  inherited;
+  if not TAppUtils.Confirm('Anda yakin akan menghapus data ?') then
+    Exit;
+
+  if ClientDataModule.ServerAccountClient.Delete(Account) then
+  begin
+    TAppUtils.InformationBerhasilHapus;
+
+    ActionBaruExecute(Sender);
+  end;
+end;
+
 procedure TfrmAccount.ActionRefreshExecute(Sender: TObject);
 var
   lcds: TClientDataSet;
@@ -91,7 +106,7 @@ begin
     lstAccount.DataController.DataSource := TDataSource.Create(lstAccount);
 
   lstAccount.DataController.DataSource.DataSet := lcds;
-  lstAccount.FocusedNode.Expand(True);
+//  lstAccount.FocusedNode.Expand(True);
   lstAccount.ApplyBestFit;
 end;
 

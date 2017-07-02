@@ -16,7 +16,7 @@ uses
   ufrmCustomerInvoice,ufrmPenerimaanKas, ufrmRekBank, ufrmLaporanAR,
   ufrmSettingAplikasi, ufrmTransferAntarGudang, ufrmTAGRequest,
   Datasnap.DBClient, ufrmTACKirim, cxContainer, cxEdit, cxTextEdit, cxMaskEdit,
-  cxDropDownEdit, ufrmPengeluaranKas, ufrmJurnal;
+  cxDropDownEdit, ufrmPengeluaranKas, ufrmJurnal, ufrmLapPenerimaanBarang;
 
 type
   TfrmMain = class(TForm)
@@ -135,6 +135,7 @@ type
     dxbrJurnal: TdxBar;
     dxbrlrgbtnJurnalMemorial: TdxBarLargeButton;
     actJurnalMemorial: TAction;
+    actLapPenerimaanBarang: TAction;
     procedure actAlatGantiCabangExecute(Sender: TObject);
     procedure actApplicationExitExecute(Sender: TObject);
     procedure actClosingInventoryExecute(Sender: TObject);
@@ -146,6 +147,7 @@ type
     procedure actPenerimaanBarangExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure actLapMutasiBarangExecute(Sender: TObject);
+    procedure actLapPenerimaanBarangExecute(Sender: TObject);
     procedure actLapStockSekarangExecute(Sender: TObject);
     procedure actMasterAccountExecute(Sender: TObject);
     procedure actMasterBankExecute(Sender: TObject);
@@ -230,6 +232,11 @@ end;
 procedure TfrmMain.actLapMutasiBarangExecute(Sender: TObject);
 begin
   frmLapMutasiBarangPerTransaksi := TfrmLapMutasiBarangPerTransaksi.Create(Self);
+end;
+
+procedure TfrmMain.actLapPenerimaanBarangExecute(Sender: TObject);
+begin
+  frmLapPenerimaanBarang := TfrmLapPenerimaanBarang.Create(Self);
 end;
 
 procedure TfrmMain.actLapStockSekarangExecute(Sender: TObject);

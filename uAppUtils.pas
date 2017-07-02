@@ -1461,6 +1461,9 @@ procedure TcxGridDBTableViewHelper.SetDataset(ADataset : TDataset;
 var
   I: Integer;
 begin
+  if ADataset = nil then
+    Exit;
+
   if Self.DataController.DataSource = nil then
     Self.DataController.DataSource := TDataSource.Create(Self);
 
@@ -1479,6 +1482,7 @@ begin
     end;
   end;
 
+  AutoFormatCurrency();
 end;
 
 procedure TcxGridDBTableViewHelper.SetDataset(ASQL : String; AAutoCreateField :

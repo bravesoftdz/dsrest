@@ -1,203 +1,133 @@
 inherited frmLapMutasiBarangPerTransaksi: TfrmLapMutasiBarangPerTransaksi
   Caption = 'Laporan Mutasi Barang Per Transaksi'
   ClientHeight = 425
-  ClientWidth = 765
+  ClientWidth = 818
   WindowState = wsMaximized
   OnShow = FormShow
-  ExplicitWidth = 781
+  ExplicitWidth = 834
   ExplicitHeight = 464
   PixelsPerInch = 96
   TextHeight = 13
   inherited cxSBTransaksi: TdxStatusBar
     Top = 405
-    Width = 765
+    Width = 818
     ExplicitTop = 405
-    ExplicitWidth = 765
+    ExplicitWidth = 818
   end
   inherited cxPCData: TcxPageControl
-    Width = 765
+    Width = 818
     Height = 372
-    ExplicitWidth = 765
+    ExplicitWidth = 818
     ExplicitHeight = 372
     ClientRectBottom = 368
-    ClientRectRight = 761
+    ClientRectRight = 814
     inherited cxTSOverview: TcxTabSheet
-      ExplicitWidth = 757
+      ExplicitWidth = 810
       ExplicitHeight = 344
       inherited splTransaksi: TSplitter
         Height = 344
         ExplicitHeight = 344
       end
       inherited pnlListTransaksi: TPanel
-        Width = 749
+        Width = 802
         Height = 344
-        ExplicitWidth = 749
+        ExplicitWidth = 802
         ExplicitHeight = 344
-        object lblAwal: TLabel [0]
-          Left = 16
-          Top = 17
-          Width = 36
-          Height = 13
-          Caption = 'Periode'
-        end
         inherited pnlFilter: TPanel
-          Width = 747
-          ExplicitWidth = 747
+          Width = 800
+          ExplicitWidth = 800
           inherited lblPeriode: TLabel
-            Left = 342
-            ExplicitLeft = 342
+            Left = 399
+            ExplicitLeft = 399
           end
           inherited lblSD: TLabel
-            Left = 497
-            ExplicitLeft = 497
+            Left = 551
+            ExplicitLeft = 551
+          end
+          inherited lblGudang: TLabel
+            Left = 192
+            Width = 50
+            ExplicitLeft = 207
+            ExplicitTop = 4
+            ExplicitWidth = 50
+          end
+          inherited lblCabang: TLabel
+            Left = 16
+            Width = 50
+            ExplicitLeft = 16
+            ExplicitTop = 4
+            ExplicitWidth = 50
           end
           inherited dtpAwal: TDateTimePicker
-            Left = 392
-            ExplicitLeft = 392
+            Left = 440
+            ExplicitLeft = 440
           end
           inherited dtpAkhir: TDateTimePicker
-            Left = 535
-            ExplicitLeft = 535
+            Left = 585
+            ExplicitLeft = 585
           end
           inherited btnRefresh: TcxButton
-            Left = 640
-            ExplicitLeft = 640
+            Left = 693
+            ExplicitLeft = 693
+          end
+          inherited cbbGudang: TcxExtLookupComboBox
+            Left = 248
+            ExplicitLeft = 248
+          end
+          inherited cbbCabang: TcxExtLookupComboBox
+            Left = 72
+            Properties.OnValidate = nil
+            ExplicitLeft = 72
+            ExplicitWidth = 114
+            Width = 114
           end
         end
         inherited cxGrid: TcxGrid
-          Width = 747
-          Height = 310
-          ExplicitWidth = 747
-          ExplicitHeight = 310
-        end
-        object cxGridLapMutasi: TcxGrid
-          Left = 1
-          Top = 33
-          Width = 747
-          Height = 310
-          Align = alClient
-          TabOrder = 2
-          object cxGridDBTableMutasiBarang: TcxGridDBTableView
-            Navigator.Buttons.CustomButtons = <>
-            DataController.Summary.DefaultGroupSummaryItems = <>
-            DataController.Summary.FooterSummaryItems = <>
-            DataController.Summary.SummaryGroups = <>
-            OptionsView.NoDataToDisplayInfoText = 'Tidak Ada Data'
-            OptionsView.GroupByBox = False
-            Styles.ContentEven = ClientDataModule.cxstylGridEven
-            Styles.ContentOdd = ClientDataModule.cxstylGridOdd
-            Styles.Header = ClientDataModule.cxstylGridHeader
-            object cxGridColsku: TcxGridDBColumn
-              Caption = 'SKU '
-              DataBinding.FieldName = 'Barang'
-              HeaderAlignmentHorz = taCenter
-            end
-            object cxGridColNama: TcxGridDBColumn
-              Caption = 'Nama '
-              DataBinding.FieldName = 'Nama'
-              HeaderAlignmentHorz = taCenter
-            end
-            object cxGridColGudang: TcxGridDBColumn
-              Caption = 'Gudang '
-              DataBinding.FieldName = 'Gudang'
-            end
-            object cxGridColSaldoAwal: TcxGridDBColumn
-              Caption = 'Saldo Awal'
-              DataBinding.FieldName = 'SaldoAwal'
-              PropertiesClassName = 'TcxCurrencyEditProperties'
-              Properties.DisplayFormat = ',0.##;(,0.##)'
-              HeaderAlignmentHorz = taCenter
-            end
-            object cxGridColPenerimaan: TcxGridDBColumn
-              Caption = 'Penerimaan '
-              DataBinding.FieldName = 'Penerimaan'
-              PropertiesClassName = 'TcxCurrencyEditProperties'
-              Properties.DisplayFormat = ',0.##;(,0.##)'
-              HeaderAlignmentHorz = taCenter
-            end
-            object cxGridColReturSupplier: TcxGridDBColumn
-              Caption = 'Retur Supplier'
-              DataBinding.FieldName = 'ReturSupplier'
-              PropertiesClassName = 'TcxCurrencyEditProperties'
-              Properties.DisplayFormat = ',0.##;(,0.##)'
-              HeaderAlignmentHorz = taCenter
-            end
-            object cxGridColPenjualan: TcxGridDBColumn
-              Caption = 'Penjualan '
-              DataBinding.FieldName = 'Penjualan'
-              PropertiesClassName = 'TcxCurrencyEditProperties'
-              Properties.DisplayFormat = ',0.##;(,0.##)'
-              HeaderAlignmentHorz = taCenter
-            end
-            object cxGridColReturCustomer: TcxGridDBColumn
-              Caption = 'Retur Customer'
-              DataBinding.FieldName = 'ReturCustomer'
-              PropertiesClassName = 'TcxCurrencyEditProperties'
-              Properties.DisplayFormat = ',0.##;(,0.##)'
-              HeaderAlignmentHorz = taCenter
-            end
-            object cxGridColKoreksiPlus: TcxGridDBColumn
-              Caption = 'Koreksi (+)'
-              DataBinding.FieldName = 'KoreksiPlus'
-              PropertiesClassName = 'TcxCurrencyEditProperties'
-              Properties.DisplayFormat = ',0.##;(,0.##)'
-              HeaderAlignmentHorz = taCenter
-            end
-            object cxGridColKoreksiMinus: TcxGridDBColumn
-              Caption = 'Koreksi (-)'
-              DataBinding.FieldName = 'KoreksiMinus'
-              PropertiesClassName = 'TcxCurrencyEditProperties'
-              Properties.DisplayFormat = ',0.##;(,0.##)'
-              HeaderAlignmentHorz = taCenter
-            end
-            object cxGridColSaldoAkhir: TcxGridDBColumn
-              Caption = 'Saldo Akhir'
-              DataBinding.FieldName = 'SaldoAkhir'
-              PropertiesClassName = 'TcxCurrencyEditProperties'
-              Properties.DisplayFormat = ',0.##;(,0.##)'
-              HeaderAlignmentHorz = taCenter
-            end
-          end
-          object cxGridLapMutasiLevelLapMutasi: TcxGridLevel
-            GridView = cxGridDBTableMutasiBarang
-          end
+          Width = 800
+          Height = 311
+          ExplicitWidth = 800
+          ExplicitHeight = 311
         end
       end
     end
     inherited cxTSInputData: TcxTabSheet
-      TabVisible = False
-      ExplicitLeft = 4
-      ExplicitTop = 24
+      ExplicitLeft = 0
+      ExplicitTop = 0
       ExplicitWidth = 757
       ExplicitHeight = 344
     end
   end
   inherited pnlButton: TPanel
     Top = 372
-    Width = 765
+    Width = 818
     ExplicitTop = 372
-    ExplicitWidth = 765
+    ExplicitWidth = 818
     inherited btnBaru: TcxButton
-      Left = 653
-      ExplicitLeft = 653
+      Left = 706
+      ExplicitLeft = 706
     end
     inherited btnHapus: TcxButton
-      Left = 529
-      ExplicitLeft = 529
+      Left = 582
+      ExplicitLeft = 582
     end
     inherited btnSave: TcxButton
-      Left = 413
-      ExplicitLeft = 413
+      Left = 466
+      ExplicitLeft = 466
     end
   end
   inherited ActionListForm: TActionList
+    Top = 96
     inherited ActionRefresh: TAction
       OnExecute = ActionRefreshExecute
     end
   end
+  inherited cxGridRepTransaksi: TcxGridViewRepository
+    Left = 592
+    Top = 96
+  end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010105000800600018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010105000800700018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

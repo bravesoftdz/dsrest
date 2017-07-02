@@ -1,20 +1,13 @@
 //
 // Created by the DataSnap proxy generator.
-// 6/30/2017 8:54:58 AM
+// 7/2/2017 4:12:13 PM
 //
 
 unit ClientClassesUnit2;
 
 interface
 
-uses System.JSON, Datasnap.DSProxyRest, Datasnap.DSClientRest,
-Data.DBXCommon, Data.DBXClient, Data.DBXDataSnap, Data.DBXJSON,
-Datasnap.DSProxy, System.Classes, System.SysUtils, Data.DB,
-Data.SqlExpr, Data.DBXDBReaders, Data.DBXCDSReaders, uModel,
-uCustomerInvoice, Data.FireDACJSONReflect, uPenjualan, uAR,
-uAccount, uRekBank, uPenerimaanKas, uPengeluaranKas, uSettingApp,
-uTransferAntarGudang, uTAGRequests, uTransferAntarCabang, uJurnal,
-Data.DBXJSONReflect, uSupplier,uPenerimaanBarang, uReturSupplier;
+uses System.JSON, Datasnap.DSProxyRest, Datasnap.DSClientRest, Data.DBXCommon, Data.DBXClient, Data.DBXDataSnap, Data.DBXJSON, Datasnap.DSProxy, System.Classes, System.SysUtils, Data.DB, Data.SqlExpr, Data.DBXDBReaders, Data.DBXCDSReaders, uModel, uSupplier, uCustomerInvoice, Data.FireDACJSONReflect, uPenerimaanBarang, uReturSupplier, uPenjualan, uAR, uAccount, uRekBank, uPenerimaanKas, uPengeluaranKas, uSettingApp, uTransferAntarGudang, uTAGRequests, uTransferAntarCabang, uJurnal, Data.DBXJSONReflect;
 
 type
 
@@ -81,6 +74,10 @@ type
     FRetrivePengeluaranKasCommand_Cache: TDSRestCommand;
     FRetriveJurnalCommand: TDSRestCommand;
     FRetriveJurnalCommand_Cache: TDSRestCommand;
+    FLaporanPenerimaanBarangCommand: TDSRestCommand;
+    FLaporanPenerimaanBarangCommand_Cache: TDSRestCommand;
+    FLaporanReturSupplierCommand: TDSRestCommand;
+    FLaporanReturSupplierCommand_Cache: TDSRestCommand;
     FRetriveSettingAppCommand: TDSRestCommand;
     FRetriveSettingAppCommand_Cache: TDSRestCommand;
   public
@@ -107,8 +104,8 @@ type
     function RetrieveTACTerima_Cache(ATglAwal: TDateTime; ATglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function RetrieveTransferAntarGudang(ATglAwal: TDateTime; ATglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string = ''): TDataSet;
     function RetrieveTransferAntarGudang_Cache(ATglAwal: TDateTime; ATglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string = ''): IDSRestCachedDataSet;
-    function RetriveMutasiBarang(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; const ARequestFilter: string = ''): TDataSet;
-    function RetriveMutasiBarang_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function RetriveMutasiBarang(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; AGudang: TGudang; const ARequestFilter: string = ''): TDataSet;
+    function RetriveMutasiBarang_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; AGudang: TGudang; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function RetrivePenjualan(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string = ''): TDataSet;
     function RetrivePenjualan_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function RetriveCI(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string = ''): TDataSet;
@@ -121,6 +118,10 @@ type
     function RetrivePengeluaranKas_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function RetriveJurnal(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; AJenisJurnal: string; const ARequestFilter: string = ''): TDataSet;
     function RetriveJurnal_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; AJenisJurnal: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function LaporanPenerimaanBarang(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; AGudang: TGudang; const ARequestFilter: string = ''): TDataSet;
+    function LaporanPenerimaanBarang_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; AGudang: TGudang; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function LaporanReturSupplier(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; AGudang: TGudang; const ARequestFilter: string = ''): TDataSet;
+    function LaporanReturSupplier_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; AGudang: TGudang; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function RetriveSettingApp(ACabang: TCabang; const ARequestFilter: string = ''): TDataSet;
     function RetriveSettingApp_Cache(ACabang: TCabang; const ARequestFilter: string = ''): IDSRestCachedDataSet;
   end;
@@ -937,6 +938,10 @@ type
 
   TDSDataClient = class(TDSAdminRestClient)
   private
+    FDS_CabangLookUpCommand: TDSRestCommand;
+    FDS_CabangLookUpCommand_Cache: TDSRestCommand;
+    FDS_GudangLookUpCommand: TDSRestCommand;
+    FDS_GudangLookUpCommand_Cache: TDSRestCommand;
     FGetNamakuCommand: TDSRestCommand;
     FLoadAccountPengeluaranKasLainCommand: TDSRestCommand;
     FLoadAccountPengeluaranKasLainCommand_Cache: TDSRestCommand;
@@ -948,6 +953,10 @@ type
     constructor Create(ARestConnection: TDSRestConnection); overload;
     constructor Create(ARestConnection: TDSRestConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
+    function DS_CabangLookUp(const ARequestFilter: string = ''): TDataSet;
+    function DS_CabangLookUp_Cache(const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function DS_GudangLookUp(const ARequestFilter: string = ''): TDataSet;
+    function DS_GudangLookUp_Cache(const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function GetNamaku(const ARequestFilter: string = ''): string;
     function LoadAccountPengeluaranKasLain(const ARequestFilter: string = ''): TDataSet;
     function LoadAccountPengeluaranKasLain_Cache(const ARequestFilter: string = ''): IDSRestCachedDataSet;
@@ -960,6 +969,7 @@ type
   TServerJurnalClient = class(TDSAdminRestClient)
   private
     FBeforeSaveCommand: TDSRestCommand;
+    FBeforeDeleteCommand: TDSRestCommand;
     FRetrieveCommand: TDSRestCommand;
     FRetrieveCommand_Cache: TDSRestCommand;
     FGenerateNoBuktiCommand: TDSRestCommand;
@@ -977,6 +987,7 @@ type
     constructor Create(ARestConnection: TDSRestConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
     function BeforeSave(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
+    function BeforeDelete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
     function Retrieve(AID: string; const ARequestFilter: string = ''): TJurnal;
     function Retrieve_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedTJurnal;
     function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
@@ -1273,17 +1284,21 @@ const
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
-  TServerLaporan_RetriveMutasiBarang: array [0..2] of TDSRestParameterMetaData =
+  TServerLaporan_RetriveMutasiBarang: array [0..4] of TDSRestParameterMetaData =
   (
     (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'ATglAtglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
+    (Name: 'AGudang'; Direction: 1; DBXType: 37; TypeName: 'TGudang'),
     (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
   );
 
-  TServerLaporan_RetriveMutasiBarang_Cache: array [0..2] of TDSRestParameterMetaData =
+  TServerLaporan_RetriveMutasiBarang_Cache: array [0..4] of TDSRestParameterMetaData =
   (
     (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'ATglAtglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
+    (Name: 'AGudang'; Direction: 1; DBXType: 37; TypeName: 'TGudang'),
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
@@ -1378,6 +1393,42 @@ const
     (Name: 'ATglAtglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
     (Name: 'AJenisJurnal'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerLaporan_LaporanPenerimaanBarang: array [0..4] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ATglAtglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
+    (Name: 'AGudang'; Direction: 1; DBXType: 37; TypeName: 'TGudang'),
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TServerLaporan_LaporanPenerimaanBarang_Cache: array [0..4] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ATglAtglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
+    (Name: 'AGudang'; Direction: 1; DBXType: 37; TypeName: 'TGudang'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerLaporan_LaporanReturSupplier: array [0..4] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ATglAtglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
+    (Name: 'AGudang'; Direction: 1; DBXType: 37; TypeName: 'TGudang'),
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TServerLaporan_LaporanReturSupplier_Cache: array [0..4] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ATglAtglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
+    (Name: 'AGudang'; Direction: 1; DBXType: 37; TypeName: 'TGudang'),
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
@@ -3366,6 +3417,26 @@ const
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
   );
 
+  TDSData_DS_CabangLookUp: array [0..0] of TDSRestParameterMetaData =
+  (
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TDSData_DS_CabangLookUp_Cache: array [0..0] of TDSRestParameterMetaData =
+  (
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TDSData_DS_GudangLookUp: array [0..0] of TDSRestParameterMetaData =
+  (
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TDSData_DS_GudangLookUp_Cache: array [0..0] of TDSRestParameterMetaData =
+  (
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
   TDSData_GetNamaku: array [0..0] of TDSRestParameterMetaData =
   (
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'string')
@@ -3406,6 +3477,12 @@ const
   );
 
   TServerJurnal_BeforeSave: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
+  TServerJurnal_BeforeDelete: array [0..1] of TDSRestParameterMetaData =
   (
     (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
@@ -4052,37 +4129,89 @@ begin
   Result := TDSRestCachedDataSet.Create(FRetrieveTransferAntarGudangCommand_Cache.Parameters[3].Value.GetString);
 end;
 
-function TServerLaporanClient.RetriveMutasiBarang(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; const ARequestFilter: string): TDataSet;
+function TServerLaporanClient.RetriveMutasiBarang(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; AGudang: TGudang; const ARequestFilter: string): TDataSet;
 begin
   if FRetriveMutasiBarangCommand = nil then
   begin
     FRetriveMutasiBarangCommand := FConnection.CreateCommand;
-    FRetriveMutasiBarangCommand.RequestType := 'GET';
-    FRetriveMutasiBarangCommand.Text := 'TServerLaporan.RetriveMutasiBarang';
+    FRetriveMutasiBarangCommand.RequestType := 'POST';
+    FRetriveMutasiBarangCommand.Text := 'TServerLaporan."RetriveMutasiBarang"';
     FRetriveMutasiBarangCommand.Prepare(TServerLaporan_RetriveMutasiBarang);
   end;
   FRetriveMutasiBarangCommand.Parameters[0].Value.AsDateTime := ATglAwal;
   FRetriveMutasiBarangCommand.Parameters[1].Value.AsDateTime := ATglAtglAkhir;
+  if not Assigned(ACabang) then
+    FRetriveMutasiBarangCommand.Parameters[2].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FRetriveMutasiBarangCommand.Parameters[2].ConnectionHandler).GetJSONMarshaler;
+    try
+      FRetriveMutasiBarangCommand.Parameters[2].Value.SetJSONValue(FMarshal.Marshal(ACabang), True);
+      if FInstanceOwner then
+        ACabang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  if not Assigned(AGudang) then
+    FRetriveMutasiBarangCommand.Parameters[3].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FRetriveMutasiBarangCommand.Parameters[3].ConnectionHandler).GetJSONMarshaler;
+    try
+      FRetriveMutasiBarangCommand.Parameters[3].Value.SetJSONValue(FMarshal.Marshal(AGudang), True);
+      if FInstanceOwner then
+        AGudang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
   FRetriveMutasiBarangCommand.Execute(ARequestFilter);
-  Result := TCustomSQLDataSet.Create(nil, FRetriveMutasiBarangCommand.Parameters[2].Value.GetDBXReader(False), True);
+  Result := TCustomSQLDataSet.Create(nil, FRetriveMutasiBarangCommand.Parameters[4].Value.GetDBXReader(False), True);
   Result.Open;
   if FInstanceOwner then
     FRetriveMutasiBarangCommand.FreeOnExecute(Result);
 end;
 
-function TServerLaporanClient.RetriveMutasiBarang_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; const ARequestFilter: string): IDSRestCachedDataSet;
+function TServerLaporanClient.RetriveMutasiBarang_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; AGudang: TGudang; const ARequestFilter: string): IDSRestCachedDataSet;
 begin
   if FRetriveMutasiBarangCommand_Cache = nil then
   begin
     FRetriveMutasiBarangCommand_Cache := FConnection.CreateCommand;
-    FRetriveMutasiBarangCommand_Cache.RequestType := 'GET';
-    FRetriveMutasiBarangCommand_Cache.Text := 'TServerLaporan.RetriveMutasiBarang';
+    FRetriveMutasiBarangCommand_Cache.RequestType := 'POST';
+    FRetriveMutasiBarangCommand_Cache.Text := 'TServerLaporan."RetriveMutasiBarang"';
     FRetriveMutasiBarangCommand_Cache.Prepare(TServerLaporan_RetriveMutasiBarang_Cache);
   end;
   FRetriveMutasiBarangCommand_Cache.Parameters[0].Value.AsDateTime := ATglAwal;
   FRetriveMutasiBarangCommand_Cache.Parameters[1].Value.AsDateTime := ATglAtglAkhir;
+  if not Assigned(ACabang) then
+    FRetriveMutasiBarangCommand_Cache.Parameters[2].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FRetriveMutasiBarangCommand_Cache.Parameters[2].ConnectionHandler).GetJSONMarshaler;
+    try
+      FRetriveMutasiBarangCommand_Cache.Parameters[2].Value.SetJSONValue(FMarshal.Marshal(ACabang), True);
+      if FInstanceOwner then
+        ACabang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  if not Assigned(AGudang) then
+    FRetriveMutasiBarangCommand_Cache.Parameters[3].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FRetriveMutasiBarangCommand_Cache.Parameters[3].ConnectionHandler).GetJSONMarshaler;
+    try
+      FRetriveMutasiBarangCommand_Cache.Parameters[3].Value.SetJSONValue(FMarshal.Marshal(AGudang), True);
+      if FInstanceOwner then
+        AGudang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
   FRetriveMutasiBarangCommand_Cache.ExecuteCache(ARequestFilter);
-  Result := TDSRestCachedDataSet.Create(FRetriveMutasiBarangCommand_Cache.Parameters[2].Value.GetString);
+  Result := TDSRestCachedDataSet.Create(FRetriveMutasiBarangCommand_Cache.Parameters[4].Value.GetString);
 end;
 
 function TServerLaporanClient.RetrivePenjualan(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string): TDataSet;
@@ -4437,6 +4566,176 @@ begin
   Result := TDSRestCachedDataSet.Create(FRetriveJurnalCommand_Cache.Parameters[4].Value.GetString);
 end;
 
+function TServerLaporanClient.LaporanPenerimaanBarang(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; AGudang: TGudang; const ARequestFilter: string): TDataSet;
+begin
+  if FLaporanPenerimaanBarangCommand = nil then
+  begin
+    FLaporanPenerimaanBarangCommand := FConnection.CreateCommand;
+    FLaporanPenerimaanBarangCommand.RequestType := 'POST';
+    FLaporanPenerimaanBarangCommand.Text := 'TServerLaporan."LaporanPenerimaanBarang"';
+    FLaporanPenerimaanBarangCommand.Prepare(TServerLaporan_LaporanPenerimaanBarang);
+  end;
+  FLaporanPenerimaanBarangCommand.Parameters[0].Value.AsDateTime := ATglAwal;
+  FLaporanPenerimaanBarangCommand.Parameters[1].Value.AsDateTime := ATglAtglAkhir;
+  if not Assigned(ACabang) then
+    FLaporanPenerimaanBarangCommand.Parameters[2].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FLaporanPenerimaanBarangCommand.Parameters[2].ConnectionHandler).GetJSONMarshaler;
+    try
+      FLaporanPenerimaanBarangCommand.Parameters[2].Value.SetJSONValue(FMarshal.Marshal(ACabang), True);
+      if FInstanceOwner then
+        ACabang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  if not Assigned(AGudang) then
+    FLaporanPenerimaanBarangCommand.Parameters[3].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FLaporanPenerimaanBarangCommand.Parameters[3].ConnectionHandler).GetJSONMarshaler;
+    try
+      FLaporanPenerimaanBarangCommand.Parameters[3].Value.SetJSONValue(FMarshal.Marshal(AGudang), True);
+      if FInstanceOwner then
+        AGudang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FLaporanPenerimaanBarangCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FLaporanPenerimaanBarangCommand.Parameters[4].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FLaporanPenerimaanBarangCommand.FreeOnExecute(Result);
+end;
+
+function TServerLaporanClient.LaporanPenerimaanBarang_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; AGudang: TGudang; const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FLaporanPenerimaanBarangCommand_Cache = nil then
+  begin
+    FLaporanPenerimaanBarangCommand_Cache := FConnection.CreateCommand;
+    FLaporanPenerimaanBarangCommand_Cache.RequestType := 'POST';
+    FLaporanPenerimaanBarangCommand_Cache.Text := 'TServerLaporan."LaporanPenerimaanBarang"';
+    FLaporanPenerimaanBarangCommand_Cache.Prepare(TServerLaporan_LaporanPenerimaanBarang_Cache);
+  end;
+  FLaporanPenerimaanBarangCommand_Cache.Parameters[0].Value.AsDateTime := ATglAwal;
+  FLaporanPenerimaanBarangCommand_Cache.Parameters[1].Value.AsDateTime := ATglAtglAkhir;
+  if not Assigned(ACabang) then
+    FLaporanPenerimaanBarangCommand_Cache.Parameters[2].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FLaporanPenerimaanBarangCommand_Cache.Parameters[2].ConnectionHandler).GetJSONMarshaler;
+    try
+      FLaporanPenerimaanBarangCommand_Cache.Parameters[2].Value.SetJSONValue(FMarshal.Marshal(ACabang), True);
+      if FInstanceOwner then
+        ACabang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  if not Assigned(AGudang) then
+    FLaporanPenerimaanBarangCommand_Cache.Parameters[3].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FLaporanPenerimaanBarangCommand_Cache.Parameters[3].ConnectionHandler).GetJSONMarshaler;
+    try
+      FLaporanPenerimaanBarangCommand_Cache.Parameters[3].Value.SetJSONValue(FMarshal.Marshal(AGudang), True);
+      if FInstanceOwner then
+        AGudang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FLaporanPenerimaanBarangCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FLaporanPenerimaanBarangCommand_Cache.Parameters[4].Value.GetString);
+end;
+
+function TServerLaporanClient.LaporanReturSupplier(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; AGudang: TGudang; const ARequestFilter: string): TDataSet;
+begin
+  if FLaporanReturSupplierCommand = nil then
+  begin
+    FLaporanReturSupplierCommand := FConnection.CreateCommand;
+    FLaporanReturSupplierCommand.RequestType := 'POST';
+    FLaporanReturSupplierCommand.Text := 'TServerLaporan."LaporanReturSupplier"';
+    FLaporanReturSupplierCommand.Prepare(TServerLaporan_LaporanReturSupplier);
+  end;
+  FLaporanReturSupplierCommand.Parameters[0].Value.AsDateTime := ATglAwal;
+  FLaporanReturSupplierCommand.Parameters[1].Value.AsDateTime := ATglAtglAkhir;
+  if not Assigned(ACabang) then
+    FLaporanReturSupplierCommand.Parameters[2].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FLaporanReturSupplierCommand.Parameters[2].ConnectionHandler).GetJSONMarshaler;
+    try
+      FLaporanReturSupplierCommand.Parameters[2].Value.SetJSONValue(FMarshal.Marshal(ACabang), True);
+      if FInstanceOwner then
+        ACabang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  if not Assigned(AGudang) then
+    FLaporanReturSupplierCommand.Parameters[3].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FLaporanReturSupplierCommand.Parameters[3].ConnectionHandler).GetJSONMarshaler;
+    try
+      FLaporanReturSupplierCommand.Parameters[3].Value.SetJSONValue(FMarshal.Marshal(AGudang), True);
+      if FInstanceOwner then
+        AGudang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FLaporanReturSupplierCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FLaporanReturSupplierCommand.Parameters[4].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FLaporanReturSupplierCommand.FreeOnExecute(Result);
+end;
+
+function TServerLaporanClient.LaporanReturSupplier_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; AGudang: TGudang; const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FLaporanReturSupplierCommand_Cache = nil then
+  begin
+    FLaporanReturSupplierCommand_Cache := FConnection.CreateCommand;
+    FLaporanReturSupplierCommand_Cache.RequestType := 'POST';
+    FLaporanReturSupplierCommand_Cache.Text := 'TServerLaporan."LaporanReturSupplier"';
+    FLaporanReturSupplierCommand_Cache.Prepare(TServerLaporan_LaporanReturSupplier_Cache);
+  end;
+  FLaporanReturSupplierCommand_Cache.Parameters[0].Value.AsDateTime := ATglAwal;
+  FLaporanReturSupplierCommand_Cache.Parameters[1].Value.AsDateTime := ATglAtglAkhir;
+  if not Assigned(ACabang) then
+    FLaporanReturSupplierCommand_Cache.Parameters[2].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FLaporanReturSupplierCommand_Cache.Parameters[2].ConnectionHandler).GetJSONMarshaler;
+    try
+      FLaporanReturSupplierCommand_Cache.Parameters[2].Value.SetJSONValue(FMarshal.Marshal(ACabang), True);
+      if FInstanceOwner then
+        ACabang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  if not Assigned(AGudang) then
+    FLaporanReturSupplierCommand_Cache.Parameters[3].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FLaporanReturSupplierCommand_Cache.Parameters[3].ConnectionHandler).GetJSONMarshaler;
+    try
+      FLaporanReturSupplierCommand_Cache.Parameters[3].Value.SetJSONValue(FMarshal.Marshal(AGudang), True);
+      if FInstanceOwner then
+        AGudang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FLaporanReturSupplierCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FLaporanReturSupplierCommand_Cache.Parameters[4].Value.GetString);
+end;
+
 function TServerLaporanClient.RetriveSettingApp(ACabang: TCabang; const ARequestFilter: string): TDataSet;
 begin
   if FRetriveSettingAppCommand = nil then
@@ -4538,6 +4837,10 @@ begin
   FRetrivePengeluaranKasCommand_Cache.DisposeOf;
   FRetriveJurnalCommand.DisposeOf;
   FRetriveJurnalCommand_Cache.DisposeOf;
+  FLaporanPenerimaanBarangCommand.DisposeOf;
+  FLaporanPenerimaanBarangCommand_Cache.DisposeOf;
+  FLaporanReturSupplierCommand.DisposeOf;
+  FLaporanReturSupplierCommand_Cache.DisposeOf;
   FRetriveSettingAppCommand.DisposeOf;
   FRetriveSettingAppCommand_Cache.DisposeOf;
   inherited;
@@ -12159,6 +12462,64 @@ begin
   inherited;
 end;
 
+function TDSDataClient.DS_CabangLookUp(const ARequestFilter: string): TDataSet;
+begin
+  if FDS_CabangLookUpCommand = nil then
+  begin
+    FDS_CabangLookUpCommand := FConnection.CreateCommand;
+    FDS_CabangLookUpCommand.RequestType := 'GET';
+    FDS_CabangLookUpCommand.Text := 'TDSData.DS_CabangLookUp';
+    FDS_CabangLookUpCommand.Prepare(TDSData_DS_CabangLookUp);
+  end;
+  FDS_CabangLookUpCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FDS_CabangLookUpCommand.Parameters[0].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FDS_CabangLookUpCommand.FreeOnExecute(Result);
+end;
+
+function TDSDataClient.DS_CabangLookUp_Cache(const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FDS_CabangLookUpCommand_Cache = nil then
+  begin
+    FDS_CabangLookUpCommand_Cache := FConnection.CreateCommand;
+    FDS_CabangLookUpCommand_Cache.RequestType := 'GET';
+    FDS_CabangLookUpCommand_Cache.Text := 'TDSData.DS_CabangLookUp';
+    FDS_CabangLookUpCommand_Cache.Prepare(TDSData_DS_CabangLookUp_Cache);
+  end;
+  FDS_CabangLookUpCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FDS_CabangLookUpCommand_Cache.Parameters[0].Value.GetString);
+end;
+
+function TDSDataClient.DS_GudangLookUp(const ARequestFilter: string): TDataSet;
+begin
+  if FDS_GudangLookUpCommand = nil then
+  begin
+    FDS_GudangLookUpCommand := FConnection.CreateCommand;
+    FDS_GudangLookUpCommand.RequestType := 'GET';
+    FDS_GudangLookUpCommand.Text := 'TDSData.DS_GudangLookUp';
+    FDS_GudangLookUpCommand.Prepare(TDSData_DS_GudangLookUp);
+  end;
+  FDS_GudangLookUpCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FDS_GudangLookUpCommand.Parameters[0].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FDS_GudangLookUpCommand.FreeOnExecute(Result);
+end;
+
+function TDSDataClient.DS_GudangLookUp_Cache(const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FDS_GudangLookUpCommand_Cache = nil then
+  begin
+    FDS_GudangLookUpCommand_Cache := FConnection.CreateCommand;
+    FDS_GudangLookUpCommand_Cache.RequestType := 'GET';
+    FDS_GudangLookUpCommand_Cache.Text := 'TDSData.DS_GudangLookUp';
+    FDS_GudangLookUpCommand_Cache.Prepare(TDSData_DS_GudangLookUp_Cache);
+  end;
+  FDS_GudangLookUpCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FDS_GudangLookUpCommand_Cache.Parameters[0].Value.GetString);
+end;
+
 function TDSDataClient.GetNamaku(const ARequestFilter: string): string;
 begin
   if FGetNamakuCommand = nil then
@@ -12323,6 +12684,10 @@ end;
 
 destructor TDSDataClient.Destroy;
 begin
+  FDS_CabangLookUpCommand.DisposeOf;
+  FDS_CabangLookUpCommand_Cache.DisposeOf;
+  FDS_GudangLookUpCommand.DisposeOf;
+  FDS_GudangLookUpCommand_Cache.DisposeOf;
   FGetNamakuCommand.DisposeOf;
   FLoadAccountPengeluaranKasLainCommand.DisposeOf;
   FLoadAccountPengeluaranKasLainCommand_Cache.DisposeOf;
@@ -12357,6 +12722,32 @@ begin
     end;
   FBeforeSaveCommand.Execute(ARequestFilter);
   Result := FBeforeSaveCommand.Parameters[1].Value.GetBoolean;
+end;
+
+function TServerJurnalClient.BeforeDelete(AAppObject: TAppObject; const ARequestFilter: string): Boolean;
+begin
+  if FBeforeDeleteCommand = nil then
+  begin
+    FBeforeDeleteCommand := FConnection.CreateCommand;
+    FBeforeDeleteCommand.RequestType := 'POST';
+    FBeforeDeleteCommand.Text := 'TServerJurnal."BeforeDelete"';
+    FBeforeDeleteCommand.Prepare(TServerJurnal_BeforeDelete);
+  end;
+  if not Assigned(AAppObject) then
+    FBeforeDeleteCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FBeforeDeleteCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FBeforeDeleteCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FBeforeDeleteCommand.Execute(ARequestFilter);
+  Result := FBeforeDeleteCommand.Parameters[1].Value.GetBoolean;
 end;
 
 function TServerJurnalClient.Retrieve(AID: string; const ARequestFilter: string): TJurnal;
@@ -12641,6 +13032,7 @@ end;
 destructor TServerJurnalClient.Destroy;
 begin
   FBeforeSaveCommand.DisposeOf;
+  FBeforeDeleteCommand.DisposeOf;
   FRetrieveCommand.DisposeOf;
   FRetrieveCommand_Cache.DisposeOf;
   FGenerateNoBuktiCommand.DisposeOf;

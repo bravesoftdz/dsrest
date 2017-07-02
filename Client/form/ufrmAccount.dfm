@@ -36,9 +36,9 @@ inherited frmAccount: TfrmAccount
         end
         object lstAccount: TcxDBTreeList
           Left = 1
-          Top = 33
+          Top = 32
           Width = 699
-          Height = 191
+          Height = 192
           Align = alClient
           Bands = <
             item
@@ -160,6 +160,7 @@ inherited frmAccount: TfrmAccount
           'PASIVA'
           'PENDAPATAN'
           'BEBAN'
+          'HPP'
           'MODAL')
         TabOrder = 4
         Text = 'AKTIVA'
@@ -183,6 +184,9 @@ inherited frmAccount: TfrmAccount
     Top = 136
     inherited ActionSimpan: TAction
       OnExecute = ActionSimpanExecute
+    end
+    inherited ActionHapus: TAction
+      OnExecute = ActionHapusExecute
     end
     inherited ActionRefresh: TAction
       OnExecute = ActionRefreshExecute
@@ -212,7 +216,7 @@ inherited frmAccount: TfrmAccount
     Left = 528
     Top = 8
     Bitmap = {
-      494C010107000800DC0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800E00018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

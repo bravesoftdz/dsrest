@@ -84,8 +84,9 @@ var
   sSQL: string;
 begin
   inherited;
-  sSQL := 'select a.bank,a.alamat,a.norek,a.namapemegang,b.kode as kodeacccount,' +
-          ' b.nama as NamaAccount,a.id' +
+  sSQL := 'select a.bank,a.alamat,a.norek,a.namapemegang as nama_pemegang,' +
+          ' b.kode as kode_acccount ,' +
+          ' b.nama as Nama_Account ,a.id' +
           ' from trekbank a' +
           ' left join taccount b on a.account = b.id' +
           ' order by a.bank';
@@ -126,7 +127,9 @@ procedure TfrmRekBank.cxGridDBTableOverviewCellDblClick(Sender:
     AButton: TMouseButton; AShift: TShiftState; var AHandled: Boolean);
 begin
   inherited;
+
   LoadData(cxGridDBTableOverview.DS.FieldByName('ID').AsString);
+  cxPCData.ActivePageIndex := 1;
 end;
 
 function TfrmRekBank.GetRekBang: TRekBank;
@@ -165,7 +168,18 @@ begin
 
   edBank.Text          := RekBang.Bank;
   edCabang.Text        := RekBang.Alamat;
-  cbbAccount.EditValue := RekBang.Account.ID;
+
+  try
+    cbbAccount.EditValue := RekBang.Account.ID;
+    FcdsAccount.Filter   := 'ID = ' + QuotedStr(RekBang.Account.ID);
+    FcdsAccount.Filtered := True;
+    edAccountName.Text   := FcdsAccount.FieldByName('nama').AsString;
+  finally
+    FcdsAccount.Filtered := False;
+
+  end;
+
+
   edPemegang.Text      := RekBang.NamaPemegang;
   edNoRek.Text         := RekBang.NoRek;
 end;

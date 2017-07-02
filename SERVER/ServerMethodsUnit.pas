@@ -17,6 +17,8 @@ type
   TDSData = class(TInterfacedPersistent)
 
   public
+    function DS_CabangLookUp: TDataset;
+    function DS_GudangLookUp: TDataset;
     function GetNamaku: string;
     function LoadAccountPengeluaranKasLain: TDataset;
     function LoadAP(ASupplier : TSupplier): TDataSet;
@@ -41,7 +43,8 @@ type
         TDataSet;
     function RetrieveTransferAntarGudang(ATglAwal , ATglAkhir : TDateTime;ACabang :
         TCabang): TDataSet;
-    function RetriveMutasiBarang(ATglAwal , ATglAtglAkhir : TDateTime) : TDataset;
+    function RetriveMutasiBarang(ATglAwal , ATglAkhir : TDateTime; ACabang :
+        TCabang; AGudang : TGudang): TDataset;
     function RetrivePenjualan(ATglAwal , ATglAtglAkhir : TDateTime; ACabang :
         TCabang): TDataset;
     function RetriveCI(ATglAwal , ATglAtglAkhir : TDateTime; ACabang : TCabang):
@@ -53,6 +56,10 @@ type
         TCabang): TDataset;
     function RetriveJurnal(ATglAwal , ATglAtglAkhir : TDateTime; ACabang : TCabang;
         AJenisJurnal : String): TDataset;
+    function LaporanPenerimaanBarang(ATglAwal , AtglAkhir : TDateTime; ACabang :
+        TCabang; AGudang : TGudang): TDataset;
+    function LaporanReturSupplier(ATglAwal , ATglAtglAkhir : TDateTime; ACabang :
+        TCabang; AGudang : TGudang): TDataset;
     function RetriveSettingApp(ACabang : TCabang): TDataset;
 
   end;
@@ -1179,10 +1186,7 @@ function TServerLaporan.DS_OverviewAccount: TDataset;
 var
   sSQL: string;
 begin
-  sSQL := 'select cast(a.kode || ' + QuotedStr(' - ') + ' || a.nama as character varying(120))  as KodeNama, a.kode,a.nama,a.isakuntransaksi,a.kelompok,' +
-          ' b.Kode as KodeParent, b.Nama as NamaParent, a.id, a.parent' +
-          ' from TAccount a ' +
-          ' left outer join Taccount b on a.parent = b.id' +
+  sSQL := 'select * from vaccountall' +
           ' order by kode ';
 
   Result := TDBUtils.OpenQuery(sSQL);
@@ -1358,23 +1362,20 @@ end;
 
 { TLaporan }
 
-function TServerLaporan.RetriveMutasiBarang(ATglAwal,
-  ATglAtglAkhir: TDateTime): TDataset;
+function TServerLaporan.RetriveMutasiBarang(ATglAwal , ATglAkhir : TDateTime;
+    ACabang : TCabang; AGudang : TGudang): TDataset;
 var
   sSQL : String;
 begin
-  if DayOf(ATglAwal) <> 1 then
-    raise Exception.Create('Periode laporan harus dimulai dari awal bulan');
+  sSQL := 'select * ' +
+          ' from SP_INVENTORY_MOVEMENT(' + TAppUtils.QuotDt(StartOfTheDay(ATglAwal)) + ',' + TAppUtils.QuotDt(EndOfTheDay(ATglAkhir)) + ')' +
+          ' where 1 = 1 ';
 
-  sSQL := 'select cabang ,gudang, barang , nama , sum(saldoawal) as saldoawal,' +
-          ' sum(penerimaan) as penerimaan , sum(retursupplier) as retursupplier,' +
-          ' sum(penjualan) as penjualan , sum(returcustomer) as returcustomer,' +
-          ' sum(koreksiplus) as koreksiplus, sum(koreksiminus) as koreksiminus,' +
-          ' sum(saldoakhir) as saldoakhir' +
-          ' from proc_mutasi_barang_per_transaksi(' + TAppUtils.QuotD(ATglAwal) + ',' +
-            TAppUtils.QuotDt(EndOfTheDay(ATglAtglAkhir)) + ')' +
-          ' group by cabang ,gudang, barang , nama' +
-          ' order by barang, nama';
+  if (ACabang <> nil) and (ACabang.ID <> '') then
+    sSQL := sSQL + ' and cabang = ' + QuotedStr(ACabang.ID);
+
+  if (AGudang <> nil) and (AGudang.ID <> '') then
+    sSQL := sSQL + ' and gudang = ' + QuotedStr(AGudang.ID);
 
   Result   := TDBUtils.OpenDataset(sSQL);
 end;
@@ -1476,6 +1477,49 @@ begin
   if AJenisJurnal <> '' then
     sSQL := sSQL + ' and a.transaksi = ' + QuotedStr(AJenisJurnal);
 
+
+  Result   := TDBUtils.OpenDataset(sSQL);
+end;
+
+{ TLaporan }
+
+function TServerLaporan.LaporanPenerimaanBarang(ATglAwal , AtglAkhir :
+    TDateTime; ACabang : TCabang; AGudang : TGudang): TDataset;
+var
+  sSQL : String;
+begin
+  sSQL := 'select * ' +
+          ' from vlaporanpenerimaanbarang' +
+          ' where tglbukti between ' + TAppUtils.QuotDt(StartOfTheDay(ATglAwal)) +
+          ' and ' + TAppUtils.QuotDt(EndOfTheDay(AtglAkhir)) ;
+
+  if (ACabang <> nil) and (ACabang.ID <> '') then
+    sSQL := sSQL + ' and cabang = ' + QuotedStr(ACabang.ID);
+
+  if (AGudang <> nil) and (AGudang.ID <> '') then
+    sSQL := sSQL + ' and gudang = ' + QuotedStr(AGudang.ID);
+
+  sSQL := sSQL + ' ORDER BY NOBUKTI';
+
+  Result   := TDBUtils.OpenDataset(sSQL);
+end;
+
+{ TLaporan }
+
+function TServerLaporan.LaporanReturSupplier(ATglAwal , ATglAtglAkhir :
+    TDateTime; ACabang : TCabang; AGudang : TGudang): TDataset;
+var
+  sSQL : String;
+begin
+  sSQL := 'select * ' +
+          ' from vReturSupplier' +
+          ' where 1 = 1';
+
+  if (ACabang <> nil) and (ACabang.ID <> '') then
+    sSQL := sSQL + ' and cabang = ' + QuotedStr(ACabang.ID);
+
+  if (AGudang <> nil) and (AGudang.ID <> '') then
+    sSQL := sSQL + ' and gudang = ' + QuotedStr(AGudang.ID);
 
   Result   := TDBUtils.OpenDataset(sSQL);
 end;
@@ -3321,6 +3365,22 @@ begin
       Free;
     end;
   end;
+end;
+
+function TDSData.DS_CabangLookUp: TDataset;
+var
+  sSQL: string;
+begin
+  sSQL   := 'select * from vcabang';
+  Result := TDBUtils.OpenDataset(sSQL);
+end;
+
+function TDSData.DS_GudangLookUp: TDataset;
+var
+  sSQL: string;
+begin
+  sSQL   := 'select * from vgudang';
+  Result := TDBUtils.OpenDataset(sSQL);
 end;
 
 function TDSData.GetNamaku: string;

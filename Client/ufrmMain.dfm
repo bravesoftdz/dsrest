@@ -68,7 +68,6 @@ object frmMain: TfrmMain
       Index = 2
     end
     object dxrbntbAkuntansi: TdxRibbonTab
-      Active = True
       Caption = 'Keuangan & Akuntansi'
       Groups = <
         item
@@ -95,6 +94,7 @@ object frmMain: TfrmMain
       Index = 4
     end
     object dxrbntbLaporan: TdxRibbonTab
+      Active = True
       Caption = 'Laporan'
       Groups = <
         item
@@ -335,7 +335,7 @@ object frmMain: TfrmMain
           Visible = True
           ItemName = 'dxbrlrgbtnAssetCat'
         end>
-      OneOnRow = True
+      OneOnRow = False
       Row = 0
       UseOwnFont = True
       Visible = True
@@ -358,10 +358,6 @@ object frmMain: TfrmMain
         item
           Visible = True
           ItemName = 'dxbrlrgbtnReturn'
-        end
-        item
-          Visible = True
-          ItemName = 'dxbrlrgbtnLaporanPenerimaanBarang'
         end>
       OneOnRow = False
       Row = 0
@@ -382,6 +378,10 @@ object frmMain: TfrmMain
         item
           Visible = True
           ItemName = 'dxbrlrgbtnMutasiBarang'
+        end
+        item
+          Visible = True
+          ItemName = 'dxbrlrgbtnLaporanPenerimaanBarang'
         end
         item
           Visible = True
@@ -432,7 +432,7 @@ object frmMain: TfrmMain
     object dxbrmngrAMSBarPenjualan: TdxBar
       Caption = 'Penjualan'
       CaptionButtons = <>
-      DockedLeft = 228
+      DockedLeft = 149
       DockedTop = 0
       FloatLeft = 518
       FloatTop = 260
@@ -476,7 +476,7 @@ object frmMain: TfrmMain
           ItemName = 'dxbrlrgbtnPengeluaranKas'
         end>
       OneOnRow = False
-      Row = 1
+      Row = 0
       UseOwnFont = False
       Visible = True
       WholeRow = False
@@ -484,7 +484,7 @@ object frmMain: TfrmMain
     object dxbrmngrAMSBarFA: TdxBar
       Caption = 'FA'
       CaptionButtons = <>
-      DockedLeft = 0
+      DockedLeft = 335
       DockedTop = 0
       FloatLeft = 900
       FloatTop = 8
@@ -500,7 +500,7 @@ object frmMain: TfrmMain
           ItemName = 'dxbrlrgbtnBank'
         end>
       OneOnRow = False
-      Row = 1
+      Row = 0
       UseOwnFont = False
       Visible = True
       WholeRow = False
@@ -508,7 +508,7 @@ object frmMain: TfrmMain
     object dxbrTAG: TdxBar
       Caption = 'Transfer Inventory'
       CaptionButtons = <>
-      DockedLeft = 349
+      DockedLeft = 270
       DockedTop = 0
       FloatLeft = 900
       FloatTop = 8
@@ -551,7 +551,7 @@ object frmMain: TfrmMain
           Visible = True
           ItemName = 'dxbrlrgbtnJurnalMemorial'
         end>
-      OneOnRow = True
+      OneOnRow = False
       Row = 0
       UseOwnFont = False
       Visible = True
@@ -593,10 +593,8 @@ object frmMain: TfrmMain
       LargeImageIndex = 9
     end
     object dxbrlrgbtnLaporanPenerimaanBarang: TdxBarLargeButton
-      Caption = 'Laporan Penerimaan'
+      Action = actLapPenerimaanBarang
       Category = 0
-      Hint = 'Laporan Penerimaan'
-      Visible = ivAlways
       LargeImageIndex = 10
     end
     object dxbrlrgbtnCLosingInventory: TdxBarLargeButton
@@ -901,6 +899,11 @@ object frmMain: TfrmMain
       Caption = 'Jurnal Memorial'
       OnExecute = actJurnalMemorialExecute
     end
+    object actLapPenerimaanBarang: TAction
+      Category = 'Laporan'
+      Caption = 'Laporan Penerimaan Barang'
+      OnExecute = actLapPenerimaanBarangExecute
+    end
   end
   object ImgListMainLarge: TImageList
     ColorDepth = cd32Bit
@@ -909,7 +912,7 @@ object frmMain: TfrmMain
     Left = 688
     Top = 128
     Bitmap = {
-      494C0101130018002C0120002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010113001800300120002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000080000000A000000001002000000000000040
       0100000000000000000000000000000000000000000000000000131313224341
       3F7561605FAD797474D4878180ED8D8988F98A8685F8838181EC787574D3625E

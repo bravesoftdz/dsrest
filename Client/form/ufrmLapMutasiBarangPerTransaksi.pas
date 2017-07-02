@@ -13,32 +13,19 @@ uses
   Datasnap.Provider, Datasnap.DBClient, uDBUtils, Vcl.StdCtrls, cxContainer,
   Vcl.ComCtrls, dxCore, cxDateUtils, cxTextEdit, cxMaskEdit, cxDropDownEdit,
   cxCalendar, dxBarExtDBItems, cxCheckBox, cxBarEditItem, System.ImageList,
-  dxBarExtItems, dxBarBuiltInMenu, Vcl.Menus, cxButtons, cxPC;
+  dxBarExtItems, dxBarBuiltInMenu, Vcl.Menus, cxButtons, cxPC, ufrmDefaultLaporan,
+  cxLookupEdit, cxDBLookupEdit, cxDBExtLookupComboBox, uModel, uDMReport, Data.FireDACJSONReflect;
 
 type
-  TfrmLapMutasiBarangPerTransaksi = class(TfrmDefault)
+  TfrmLapMutasiBarangPerTransaksi = class(TfrmDefaultLaporan)
     ProvMutasi: TDataSetProvider;
     cdsMutasi: TClientDataSet;
-    lblAwal: TLabel;
-    cxGridLapMutasi: TcxGrid;
-    cxGridDBTableMutasiBarang: TcxGridDBTableView;
-    cxGridColsku: TcxGridDBColumn;
-    cxGridColNama: TcxGridDBColumn;
-    cxGridColGudang: TcxGridDBColumn;
-    cxGridColSaldoAwal: TcxGridDBColumn;
-    cxGridColPenerimaan: TcxGridDBColumn;
-    cxGridColReturSupplier: TcxGridDBColumn;
-    cxGridColPenjualan: TcxGridDBColumn;
-    cxGridColReturCustomer: TcxGridDBColumn;
-    cxGridColKoreksiPlus: TcxGridDBColumn;
-    cxGridColKoreksiMinus: TcxGridDBColumn;
-    cxGridColSaldoAkhir: TcxGridDBColumn;
-    cxGridLapMutasiLevelLapMutasi: TcxGridLevel;
     procedure ActionRefreshExecute(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private
     { Private declarations }
   public
+    procedure CetakSlip; override;
     { Public declarations }
   end;
 
@@ -59,13 +46,34 @@ begin
   with TServerLaporanClient.Create(ClientDataModule.DSRestConnection, False) do
   begin
     try
-      lcds := TDBUtils.DSToCDS(RetriveMutasiBarang(dtpAwal.DateTime, dtpAkhir.DateTime), cxGridDBTableMutasiBarang);
-      cxGridDBTableMutasiBarang.SetDataset(lcds);
-      cxGridDBTableMutasiBarang.ApplyBestFit();
+      if chkKonsolidasi1.Checked then
+        lcds := TDBUtils.DSToCDS(RetriveMutasiBarang(dtpAwal.DateTime, dtpAkhir.DateTime, nil, nil), cxGridDBTableOverview)
+      else
+        lcds := TDBUtils.DSToCDS(RetriveMutasiBarang(dtpAwal.DateTime, dtpAkhir.DateTime, TCabang.CreateID(cbbCabang.EditValue), TGudang.CreateID(cbbGudang.EditValue)), cxGridDBTableOverview);
+
+      cxGridDBTableOverview.SetDataset(lcds, True);
+      cxGridDBTableOverview.SetVisibleColumns(['GUDANG','KODEGUDANG','NAMAGUDANG','KODECABANG','NAMACABANG', 'CABANG'], False);
+      cxGridDBTableOverview.ApplyBestFit();
     finally
       Free;
     end;
   end;
+end;
+
+procedure TfrmLapMutasiBarangPerTransaksi.CetakSlip;
+//var
+//  ljson: TFDJSONDataSets;
+begin
+  inherited;
+//  ljson := TFDJSONDataSets.Create;
+//
+//  TFDJSONDataSetsWriter.ListAdd(ljson, FCDSCabang);
+//  TFDJSONDataSetsWriter.ListAdd(ljson, cdsMutasi);
+//
+//  DMReport.ExecuteReport( 'Reports/MutasiBarang' ,
+//      ljson
+//
+//    );
 end;
 
 procedure TfrmLapMutasiBarangPerTransaksi.FormShow(Sender: TObject);

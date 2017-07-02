@@ -40,7 +40,6 @@ uses
   ufrmAccount in 'form\ufrmAccount.pas' {frmAccount},
   uAccount in '..\model\uAccount.pas',
   ufrmRekBank in 'form\ufrmRekBank.pas' {frmRekBank},
-  ufrmDefaultLaporan in 'form\ufrmDefaultLaporan.pas' {frmDefaultLaporan},
   ufrmLaporanAR in 'form\ufrmLaporanAR.pas' {frmLaporanAR},
   ufrmSettingAplikasi in 'form\ufrmSettingAplikasi.pas' {frmSettingAplikasi},
   uSettingApp in '..\model\uSettingApp.pas',
@@ -62,7 +61,9 @@ uses
   ufrmJurnal in 'form\ufrmJurnal.pas' {frmJurnal},
   uSupplier in '..\model\uSupplier.pas',
   uPenerimaanBarang in '..\model\uPenerimaanBarang.pas',
-  uReturSupplier in '..\model\uReturSupplier.pas';
+  uReturSupplier in '..\model\uReturSupplier.pas',
+  ufrmDefaultLaporan in 'form\ufrmDefaultLaporan.pas' {frmDefaultLaporan},
+  ufrmLapPenerimaanBarang in 'form\ufrmLapPenerimaanBarang.pas' {frmLapPenerimaanBarang};
 
 {$R *.res}
 

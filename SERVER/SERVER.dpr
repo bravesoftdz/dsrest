@@ -33,7 +33,8 @@ uses
   uJurnal in '..\model\uJurnal.pas',
   uSupplier in '..\model\uSupplier.pas',
   uReturSupplier in '..\model\uReturSupplier.pas',
-  uPenerimaanBarang in '..\model\uPenerimaanBarang.pas';
+  uPenerimaanBarang in '..\model\uPenerimaanBarang.pas',
+  ufrmSettingAppServer in 'ufrmSettingAppServer.pas' {frmSettingAppServer};
 
 {$R *.res}
 
@@ -43,5 +44,6 @@ begin
   Application.Initialize;
   Application.CreateForm(TfrmServer, frmServer);
   Application.CreateForm(TWebModule2, WebModule2);
+  Application.CreateForm(TfrmSettingAppServer, frmSettingAppServer);
   Application.Run;
 end.
