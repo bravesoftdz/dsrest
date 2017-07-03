@@ -96,6 +96,9 @@ type
     procedure edTglBuktiPropertiesChange(Sender: TObject);
     procedure cbbJenisPembayaranPropertiesChange(Sender: TObject);
   private
+    FCDSPembeli: TClientDataset;
+    FCDSSalesman: TClientDataset;
+    FInfix: string;
     FPenjualan: TPenjualan;
     function GetPenjualan: TPenjualan;
     procedure HitungNilaiNilaiPerBaris(dNilai: Double; Acolumn : Integer);
@@ -109,6 +112,10 @@ type
     function getDefaultHarga: string; virtual;
     function JenisPenjualan: string; virtual;
     procedure SetHarga(AJenisHarga : String);
+    procedure SetInfix; virtual;
+    property CDSPembeli: TClientDataset read FCDSPembeli write FCDSPembeli;
+    property CDSSalesman: TClientDataset read FCDSSalesman write FCDSSalesman;
+    property Infix: string read FInfix write FInfix;
   public
     procedure CetakSlip; override;
     function LoadData(AID : String): Boolean; stdcall;
@@ -276,11 +283,13 @@ end;
 procedure TfrmPenjualan.ActionBaruExecute(Sender: TObject);
 begin
   inherited;
+  SetInfix;
+
   with ClientDataModule.ServerPenjualanClient do
   begin
     edTglBukti.Date := Now;
     edJthTempo.Date := edTglBukti.Date + 7;
-    edNoBukti.Text  := GenerateNoBukti(edTglBukti.Date, ClientDataModule.Cabang.Kode);
+    edNoBukti.Text  := GenerateNoBukti(edTglBukti.Date, ClientDataModule.Cabang.Kode + Infix);
 
     memKeterangan.Clear;
     cxGridTablePenjualan.ClearRows;
@@ -491,23 +500,21 @@ end;
 
 procedure TfrmPenjualan.InisialisasiCBBSalesman;
 var
-  lCDSSalesman: TClientDataSet;
   sSQL: string;
 begin
   sSQL := 'select Nama,Kode,ID from vbusinesspartner where is_salesman = 1';
-  lCDSSalesman := TDBUtils.OpenDataset(sSQL);
-  cbbSalesman.Properties.LoadFromCDS(lCDSSalesman,'ID','Nama',['ID'],Self);
+  CDSSalesman := TDBUtils.OpenDataset(sSQL);
+  cbbSalesman.Properties.LoadFromCDS(CDSSalesman,'ID','Nama',['ID'],Self);
   cbbSalesman.Properties.SetMultiPurposeLookup;
 end;
 
 procedure TfrmPenjualan.InisialisasiCBBPembeli;
 var
-  lCDSPembeli: TClientDataSet;
   sSQL: string;
 begin
   sSQL := 'select * from vbusinesspartner where is_pembeli = 1';
-  lCDSPembeli := TDBUtils.OpenDataset(sSQL, Self);
-  cbbPembeli.Properties.LoadFromCDS(lCDSPembeli,'ID','Nama',['ID','is_pembeli','is_salesman','is_supplier'],Self);
+  CDSPembeli := TDBUtils.OpenDataset(sSQL, Self);
+  cbbPembeli.Properties.LoadFromCDS(CDSPembeli,'ID','Nama',['ID','is_pembeli','is_salesman','is_supplier'],Self);
   cbbPembeli.Properties.SetMultiPurposeLookup;
 end;
 
@@ -687,6 +694,11 @@ begin
   finally
 
   end;
+end;
+
+procedure TfrmPenjualan.SetInfix;
+begin
+  Infix := '';
 end;
 
 procedure TfrmPenjualan.Umum1Click(Sender: TObject);

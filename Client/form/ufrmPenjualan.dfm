@@ -2,6 +2,7 @@ inherited frmPenjualan: TfrmPenjualan
   Caption = 'Penjualan'
   ClientHeight = 429
   ClientWidth = 775
+  ExplicitTop = -89
   ExplicitWidth = 791
   ExplicitHeight = 468
   PixelsPerInch = 96
@@ -15,6 +16,7 @@ inherited frmPenjualan: TfrmPenjualan
   inherited cxPCData: TcxPageControl
     Width = 775
     Height = 376
+    Properties.ActivePage = cxTSInputData
     ExplicitWidth = 775
     ExplicitHeight = 376
     ClientRectBottom = 372
@@ -92,10 +94,6 @@ inherited frmPenjualan: TfrmPenjualan
           TabOrder = 0
           object tsHeader: TTabSheet
             Caption = 'Penjualan'
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
             object lblNoBukti: TLabel
               Left = 23
               Top = 8
@@ -262,10 +260,6 @@ inherited frmPenjualan: TfrmPenjualan
           TabOrder = 1
           object tsDetailPenerimaan: TTabSheet
             Caption = 'Detail Penerimaan'
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
             object cxGridDBPenjualan: TcxGrid
               Left = 0
               Top = 0
@@ -510,7 +504,7 @@ inherited frmPenjualan: TfrmPenjualan
     Left = 40
     Top = 352
     Bitmap = {
-      494C010106000800FC0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010106000800000118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

@@ -18,11 +18,13 @@ uses
 
 type
   TfrmPenjualanPOS = class(TfrmPenjualan)
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
   protected
     function getDefaultHarga: string; override;
     function JenisPenjualan: string; override;
+    procedure SetInfix; override;
   public
     { Public declarations }
   end;
@@ -34,6 +36,29 @@ implementation
 
 {$R *.dfm}
 
+procedure TfrmPenjualanPOS.FormCreate(Sender: TObject);
+begin
+  inherited;
+  cbbJenisPembayaran.ItemIndex := 0;
+  cbbJenisPembayaran.Enabled   := False;
+
+  CDSSalesman.Filter    := ' nama = ' + QuotedStr('Point Of Sales');
+  CDSSalesman.Filtered  := True;
+  try
+    cbbSalesman.EditValue := CDSSalesman.FieldByName('ID').AsString;
+  finally
+    CDSSalesman.Filtered  := False;
+  end;
+
+  CDSPembeli.Filter    := ' nama = ' + QuotedStr('Point Of Sales');
+  CDSPembeli.Filtered  := True;
+  try
+    cbbPembeli.EditValue := CDSPembeli.FieldByName('ID').AsString;
+  finally
+    CDSPembeli.Filtered  := False;
+  end;
+end;
+
 function TfrmPenjualanPOS.getDefaultHarga: string;
 begin
   Result := 'umum';
@@ -42,6 +67,11 @@ end;
 function TfrmPenjualanPOS.JenisPenjualan: string;
 begin
   Result := 'POS';
+end;
+
+procedure TfrmPenjualanPOS.SetInfix;
+begin
+  Infix := '/POS';
 end;
 
 end.
