@@ -6,46 +6,60 @@ inherited frmPenjualanPOS: TfrmPenjualanPOS
   TextHeight = 13
   inherited cxSBTransaksi: TdxStatusBar
     Width = 796
+    ExplicitWidth = 796
   end
   inherited cxPCData: TcxPageControl
     Width = 796
     Properties.ActivePage = cxTSOverview
+    ExplicitWidth = 796
     ClientRectRight = 792
     inherited cxTSOverview: TcxTabSheet
+      ExplicitWidth = 788
       inherited pnlListTransaksi: TPanel
         Width = 780
+        ExplicitWidth = 780
         inherited pnlFilter: TPanel
           Width = 778
+          ExplicitWidth = 778
           inherited lblPeriode: TLabel
             Left = 355
+            ExplicitLeft = 355
           end
           inherited lblSD: TLabel
             Left = 516
+            ExplicitLeft = 516
           end
           inherited dtpAwal: TDateTimePicker
             Left = 408
+            ExplicitLeft = 408
           end
           inherited dtpAkhir: TDateTimePicker
             Left = 557
+            ExplicitLeft = 557
           end
           inherited btnRefresh: TcxButton
             Left = 668
+            ExplicitLeft = 668
           end
         end
         inherited cxGrid: TcxGrid
           Width = 778
+          ExplicitWidth = 778
         end
       end
     end
     inherited cxTSInputData: TcxTabSheet
+      ExplicitWidth = 788
       inherited pnlInput: TPanel
         Width = 788
+        ExplicitWidth = 788
         inherited pgcHeader: TPageControl
           Width = 786
+          ExplicitWidth = 786
           inherited tsHeader: TTabSheet
             ExplicitLeft = 4
             ExplicitTop = 24
-            ExplicitWidth = 757
+            ExplicitWidth = 778
             ExplicitHeight = 108
             inherited lblSupplier: TLabel
               Enabled = False
@@ -87,6 +101,7 @@ inherited frmPenjualanPOS: TfrmPenjualanPOS
         end
         inherited pgcDetail: TPageControl
           Width = 786
+          ExplicitWidth = 786
           inherited tsDetailPenerimaan: TTabSheet
             ExplicitLeft = 4
             ExplicitTop = 24
@@ -94,6 +109,7 @@ inherited frmPenjualanPOS: TfrmPenjualanPOS
             ExplicitHeight = 182
             inherited cxGridDBPenjualan: TcxGrid
               Width = 778
+              ExplicitWidth = 778
             end
           end
         end
@@ -102,19 +118,23 @@ inherited frmPenjualanPOS: TfrmPenjualanPOS
   end
   inherited pnlButton: TPanel
     Width = 796
+    ExplicitWidth = 796
     inherited btnBaru: TcxButton
       Left = 684
+      ExplicitLeft = 684
     end
     inherited btnHapus: TcxButton
       Left = 560
+      ExplicitLeft = 560
     end
     inherited btnSave: TcxButton
       Left = 444
+      ExplicitLeft = 444
     end
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010106000800AC0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010106000800B00018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
