@@ -51,6 +51,7 @@ object frmMain: TfrmMain
       Index = 1
     end
     object dxrbntbPenerimaanBarangTransaksi: TdxRibbonTab
+      Active = True
       Caption = 'Transaksi'
       Groups = <
         item
@@ -94,7 +95,6 @@ object frmMain: TfrmMain
       Index = 4
     end
     object dxrbntbLaporan: TdxRibbonTab
-      Active = True
       Caption = 'Laporan'
       Groups = <
         item
@@ -335,7 +335,7 @@ object frmMain: TfrmMain
           Visible = True
           ItemName = 'dxbrlrgbtnAssetCat'
         end>
-      OneOnRow = False
+      OneOnRow = True
       Row = 0
       UseOwnFont = True
       Visible = True
@@ -912,7 +912,7 @@ object frmMain: TfrmMain
     Left = 688
     Top = 128
     Bitmap = {
-      494C010113001800300120002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010113001800340120002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000080000000A000000001002000000000000040
       0100000000000000000000000000000000000000000000000000131313224341
       3F7561605FAD797474D4878180ED8D8988F98A8685F8838181EC787574D3625E

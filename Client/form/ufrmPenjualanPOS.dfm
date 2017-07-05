@@ -1,16 +1,52 @@
 inherited frmPenjualanPOS: TfrmPenjualanPOS
   Caption = 'Penjualan Melalui POS (Point Of Sales)'
+  ClientWidth = 796
+  ExplicitWidth = 812
   PixelsPerInch = 96
   TextHeight = 13
+  inherited cxSBTransaksi: TdxStatusBar
+    Width = 796
+  end
   inherited cxPCData: TcxPageControl
+    Width = 796
+    Properties.ActivePage = cxTSOverview
+    ClientRectRight = 792
+    inherited cxTSOverview: TcxTabSheet
+      inherited pnlListTransaksi: TPanel
+        Width = 780
+        inherited pnlFilter: TPanel
+          Width = 778
+          inherited lblPeriode: TLabel
+            Left = 355
+          end
+          inherited lblSD: TLabel
+            Left = 516
+          end
+          inherited dtpAwal: TDateTimePicker
+            Left = 408
+          end
+          inherited dtpAkhir: TDateTimePicker
+            Left = 557
+          end
+          inherited btnRefresh: TcxButton
+            Left = 668
+          end
+        end
+        inherited cxGrid: TcxGrid
+          Width = 778
+        end
+      end
+    end
     inherited cxTSInputData: TcxTabSheet
       inherited pnlInput: TPanel
+        Width = 788
         inherited pgcHeader: TPageControl
+          Width = 786
           inherited tsHeader: TTabSheet
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
+            ExplicitLeft = 4
+            ExplicitTop = 24
+            ExplicitWidth = 757
+            ExplicitHeight = 108
             inherited lblSupplier: TLabel
               Enabled = False
             end
@@ -49,12 +85,36 @@ inherited frmPenjualanPOS: TfrmPenjualanPOS
             end
           end
         end
+        inherited pgcDetail: TPageControl
+          Width = 786
+          inherited tsDetailPenerimaan: TTabSheet
+            ExplicitLeft = 4
+            ExplicitTop = 24
+            ExplicitWidth = 757
+            ExplicitHeight = 182
+            inherited cxGridDBPenjualan: TcxGrid
+              Width = 778
+            end
+          end
+        end
       end
+    end
+  end
+  inherited pnlButton: TPanel
+    Width = 796
+    inherited btnBaru: TcxButton
+      Left = 684
+    end
+    inherited btnHapus: TcxButton
+      Left = 560
+    end
+    inherited btnSave: TcxButton
+      Left = 444
     end
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010106000800A80018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010106000800AC0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

@@ -64,7 +64,6 @@ type
     lblFee: TLabel;
     cbbFee: TcxComboBox;
     cxgrdclmnGridTablePenjualanColumnJenisHarga: TcxGridColumn;
-    procedure actCetakExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ActionBaruExecute(Sender: TObject);
     procedure ActionHapusExecute(Sender: TObject);
@@ -132,30 +131,6 @@ uses
   uModel, ufrmCustomerInvoice, System.Math;
 
 {$R *.dfm}
-
-procedure TfrmPenjualan.actCetakExecute(Sender: TObject);
-//var
-//  lcds: TClientDataSet;
-//  lTSReport: TTSReport;
-begin
-  inherited;
-
-  CetakSlip;
-
-//  lTSReport := TTSReport.Create(self);
-//  try
-//    with ClientDataModule.ServerPenjualanClient do
-//    begin
-//      lcds := RetrieveCDSlip(Now-3000, Now + 3000, nil, Penjualan.NoBukti);
-//
-//      lTSReport.AddDataset(lcds, 'QPenjualan');
-//      lTSReport.ShowReport('SlipPenjualan');
-//    end;
-//  finally
-//    lTSReport.Free;
-//  end;
-
-end;
 
 procedure TfrmPenjualan.cbbJenisPembayaranPropertiesChange(Sender: TObject);
 begin
@@ -412,11 +387,16 @@ begin
     else
       lcds := ClientDataModule.ServerPenjualanClient.RetrieveCDSlip(dtpAwal.DateTime, dtpAkhir.DateTime, ClientDataModule.Cabang, Penjualan.NoBukti);
 
+    if JenisPenjualan = 'SALESMAN'then
+      ExecuteReport('Reports/Slip_Penjualan' ,
+        lcds
 
-    ExecuteReport('Reports/Slip_Penjualan' ,
-      lcds
+      )
+    else
+      ExecuteReport('Reports/Slip_Penjualan_POS' ,
+        lcds
 
-    );
+      )
   end;
 end;
 
