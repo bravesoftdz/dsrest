@@ -69,6 +69,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
+    FIsLangsungPrint: Boolean;
     function GetcxGridDBTableViewExport(AGridName : String): TcxGridDBTableView;
         virtual;
     procedure InisialisasiCDSCabang;
@@ -78,6 +79,7 @@ type
     procedure CetakSlip; virtual;
     function PanjangNoBukti: Integer;
     function User: string;
+    property IsLangsungPrint: Boolean read FIsLangsungPrint write FIsLangsungPrint;
   public
     { Public declarations }
   end;
@@ -147,7 +149,9 @@ end;
 procedure TfrmDefault.FormCreate(Sender: TObject);
 begin
   InisialisasiCDSCabang;
-  cxPCDataChange(Sender)
+  cxPCDataChange(Sender);
+
+  IsLangsungPrint := False;
 end;
 
 procedure TfrmDefault.FormClose(Sender: TObject; var Action: TCloseAction);

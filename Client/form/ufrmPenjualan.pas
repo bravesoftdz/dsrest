@@ -253,6 +253,8 @@ begin
   InisialisasiCBBUOM;
 
   ActionBaruExecute(Sender);
+
+  IsLangsungPrint := True;
 end;
 
 procedure TfrmPenjualan.ActionBaruExecute(Sender: TObject);
@@ -354,7 +356,10 @@ begin
   end;
 
   if ClientModule.ClientDataModule.ServerPenjualanClient.Save(Penjualan) then
+  begin
+    CetakSlip;
     ActionBaruExecute(Sender);
+  end;
 end;
 
 procedure TfrmPenjualan.actNextTransactionExecute(Sender: TObject);

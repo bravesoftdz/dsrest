@@ -21,8 +21,6 @@ inherited frmSupplier: TfrmSupplier
     ClientRectBottom = 307
     ClientRectRight = 767
     inherited cxTSOverview: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
       ExplicitWidth = 763
       ExplicitHeight = 283
       inherited splTransaksi: TSplitter
@@ -77,8 +75,6 @@ inherited frmSupplier: TfrmSupplier
       end
     end
     inherited cxTSInputData: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
       ExplicitWidth = 763
       ExplicitHeight = 283
       object lblKode: TLabel
@@ -224,10 +220,6 @@ inherited frmSupplier: TfrmSupplier
       Left = 419
       ExplicitLeft = 419
     end
-    inherited chkKonsolidasi1: TcxCheckBox
-      ExplicitWidth = 76
-      ExplicitHeight = 31
-    end
   end
   inherited ActionListForm: TActionList
     inherited ActionSimpan: TAction
@@ -259,7 +251,7 @@ inherited frmSupplier: TfrmSupplier
   inherited ilButton: TImageList
     Left = 96
     Bitmap = {
-      494C010105000800700018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010105000800740018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

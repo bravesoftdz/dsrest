@@ -125,7 +125,7 @@ begin
   if not ValidateEmptyCtrl([1]) then
     Exit;
 
-  if chkSupplier.Checked = chkPembeli.Checked = chkSalesman.Checked = False then
+  if (not chkSupplier.Checked) and (not chkPembeli.Checked) and (not chkSalesman.Checked) then
   begin
     TAppUtils.Warning('Role Belum Diset');
     Exit;
