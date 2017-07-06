@@ -14,6 +14,7 @@ type
   {$METHODINFO ON}
 
   TServerAR = class;
+  TServerPenerimaanKas = class;
   TDSData = class(TInterfacedPersistent)
 
   public
@@ -225,10 +226,14 @@ type
 
   private
     FServerAR: TServerAR;
+    FServerPenerimaanKas: TServerPenerimaanKas;
     function GetServerAR: TServerAR;
+    function GetServerPenerimaanKas: TServerPenerimaanKas;
     function HapusAR(AOBject: TAppObject): Boolean;
     function SimpanBayar(APenjualan : TPenjualan; ADibayar : Double): Boolean;
     property ServerAR: TServerAR read GetServerAR write FServerAR;
+    property ServerPenerimaanKas: TServerPenerimaanKas read GetServerPenerimaanKas
+        write FServerPenerimaanKas;
   protected
     function SimpanStockSekarang(AAppObject : TAppObject; AIsMenghapus : Boolean =
         False): Boolean; stdcall;
@@ -240,6 +245,7 @@ type
     function BeforeSave(AOBject : TAppObject): Boolean; override;
     function SimpanAR(AOBject: TAppObject): Boolean;
   public
+    destructor Destroy; override;
     function Retrieve(AID : String): TPenjualan;
     function RetrieveNoBukti(ANoBukti : String): TPenjualan;
     function RetrieveCDSlip(ATglAwal , ATglAtglAkhir : TDateTime; ACabang :
@@ -1889,6 +1895,13 @@ begin
   end;
 end;
 
+destructor TServerPenjualan.Destroy;
+begin
+  inherited;
+  ServerAR.Free;
+  ServerPenerimaanKas.Free;
+end;
+
 function TServerPenjualan.BeforeDelete(AOBject : TAppObject): Boolean;
 begin
   Result := False;
@@ -1940,6 +1953,14 @@ begin
     FServerAR := TServerAR.Create;
 
   Result := FServerAR;
+end;
+
+function TServerPenjualan.GetServerPenerimaanKas: TServerPenerimaanKas;
+begin
+  if FServerPenerimaanKas = nil then
+    FServerPenerimaanKas := TServerPenerimaanKas.Create;
+
+  Result := FServerPenerimaanKas;
 end;
 
 function TServerPenjualan.HapusAR(AOBject: TAppObject): Boolean;
@@ -2057,7 +2078,20 @@ function TServerPenjualan.SaveToDBDibayar(APenjualan : TPenjualan; ADibayar :
 begin
   Result := False;
 
-
+  ADConnection.StartTransaction;
+  try
+    if SaveNoCommit(APenjualan) then
+    begin
+      if SimpanBayar(APenjualan,ADibayar) then
+      begin
+        ADConnection.Commit;
+        Result := True;
+      end;
+    end;
+  except
+    ADConnection.Rollback;
+    raise
+  end;
 end;
 
 function TServerPenjualan.SimpanAR(AOBject: TAppObject): Boolean;
@@ -2088,6 +2122,7 @@ end;
 function TServerPenjualan.SimpanBayar(APenjualan : TPenjualan; ADibayar :
     Double): Boolean;
 var
+  lAR: TAR;
   lPenerimaanKas: TPenerimaanKas;
   lPenerimaanKasAR: TPenerimaanKasAR;
 begin
@@ -2100,7 +2135,7 @@ begin
     lPenerimaanKas.Keterangan     := 'TUNAI';
     lPenerimaanKas.NoBukti        := APenjualan.NoBukti;
     lPenerimaanKas.Nominal        := APenjualan.Total;
-    lPenerimaanKas.Pembeli        := TSupplier.CreateID(lPenerimaanKas.Pembeli.ID);
+    lPenerimaanKas.Pembeli        := TSupplier.CreateID(APenjualan.Pembeli.ID);
     lPenerimaanKas.Petugas        := APenjualan.Kasir;
 
     lPenerimaanKas.RekBank        := TRekBank.CreateID(SettingAppServer.RekBankCash.ID);
@@ -2111,14 +2146,16 @@ begin
     lPenerimaanKasAR.Nominal      := APenjualan.Total;
     lPenerimaanKasAR.UangBayar    := ADibayar;
 
-//    lAR                           := lServerAR.RetrieveTransaksi(lPJ.ClassName, AOBject.ID);
-    lPenerimaanKasAR.AR           := TAR.CreateID('');
+    lAR                           := ServerAR.RetrieveTransaksi(APenjualan.ClassName, APenjualan.ID);
+    try
+      lPenerimaanKasAR.AR         := TAR.CreateID(lAR.ID);
+      lPenerimaanKas.PenerimaanKasARItems.Add(lPenerimaanKasAR);
 
-    lPenerimaanKas.PenerimaanKasARItems.Add(lPenerimaanKasAR);
-
-    if SaveNoCommit(lPenerimaanKas) then
-      Result := True;
-
+      if ServerPenerimaanKas.SaveNoCommit(lPenerimaanKas) then
+        Result := True;
+    finally
+      lAR.Free;
+    end;
   finally
     lPenerimaanKas.Free;
   end;

@@ -56,7 +56,7 @@ uses
   uModelHelper in '..\model\uModelHelper.pas',
   uDMReport in '..\uDMReport.pas' {DMReport},
   ufrmPenerimaanKas in 'form\ufrmPenerimaanKas.pas' {frmPenerimaanKas},
-  ufrmPembayaranPOS in 'form\ufrmPembayaranPOS.pas' {frmPembayaran},
+  ufrmPembayaranPOS in 'form\ufrmPembayaranPOS.pas' {frmPembayaranPOS},
   uJurnal in '..\model\uJurnal.pas',
   ufrmJurnal in 'form\ufrmJurnal.pas' {frmJurnal},
   uSupplier in '..\model\uSupplier.pas',

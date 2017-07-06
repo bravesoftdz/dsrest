@@ -15,7 +15,8 @@ uses
   cxDateUtils, cxGridLevel, cxDropDownEdit, cxLookupEdit, cxDBLookupEdit,
   cxMemo, cxMaskEdit, cxCalendar, cxTextEdit, Vcl.StdCtrls, ClientModule,
   uPenjualan, uDBUtils, uAppUtils, Vcl.Menus, cxCalc, dxBarBuiltInMenu, cxPC,
-  cxButtons, uReport, uInterface,uDMReport,Data.FireDACJSONReflect,uReturSupplier, uSupplier;
+  cxButtons, uReport, uInterface,uDMReport,Data.FireDACJSONReflect,
+  uReturSupplier, uSupplier, ufrmPembayaranPOS;
 
 type
   TfrmPenjualan = class(TfrmDefault, IForm)
@@ -312,6 +313,8 @@ end;
 procedure TfrmPenjualan.ActionSimpanExecute(Sender: TObject);
 var
   I: Integer;
+  IsBerhasilSimpan: Boolean;
+  lDibayar: Double;
   lPenjualanItem: TPenjualanItem;
 begin
   inherited;
@@ -321,6 +324,9 @@ begin
 
   if not IsPenjualanItemValid then
     Exit;
+
+  if Penjualan.ID = '' then
+    edNoBukti.Text  := ClientModule.ClientDataModule.ServerPenjualanClient.GenerateNoBukti(edTglBukti.Date, ClientDataModule.Cabang.Kode + Infix);
 
   Penjualan.NoBukti        := edNoBukti.Text;
   Penjualan.Cabang         := TCabang.CreateID(ClientDataModule.Cabang.ID);
@@ -355,7 +361,14 @@ begin
     Penjualan.PenjualanItems.Add(lPenjualanItem);
   end;
 
-  if ClientModule.ClientDataModule.ServerPenjualanClient.Save(Penjualan) then
+  if cbbJenisPembayaran.Text = 'CASH' then
+  begin
+    lDibayar         := TfrmPembayaranPOS.Bayar(Penjualan.Total);
+    IsBerhasilSimpan := ClientModule.ClientDataModule.ServerPenjualanClient.SaveToDBDibayar(Penjualan,lDibayar);
+  end else
+    IsBerhasilSimpan := ClientModule.ClientDataModule.ServerPenjualanClient.Save(Penjualan);
+
+  if IsBerhasilSimpan then
   begin
     CetakSlip;
     ActionBaruExecute(Sender);
@@ -683,7 +696,7 @@ end;
 
 procedure TfrmPenjualan.SetInfix;
 begin
-  Infix := '';
+  Infix := '/SLS';
 end;
 
 procedure TfrmPenjualan.Umum1Click(Sender: TObject);

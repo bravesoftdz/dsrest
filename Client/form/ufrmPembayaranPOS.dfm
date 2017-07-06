@@ -1,4 +1,4 @@
-object frmPembayaran: TfrmPembayaran
+object frmPembayaranPOS: TfrmPembayaranPOS
   Left = 0
   Top = 0
   Caption = 'Pembayaran'
@@ -11,6 +11,7 @@ object frmPembayaran: TfrmPembayaran
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  Position = poMainFormCenter
   PixelsPerInch = 96
   TextHeight = 13
   object lblTotal: TLabel
@@ -55,18 +56,23 @@ object frmPembayaran: TfrmPembayaran
   object edTotal: TcxCurrencyEdit
     Left = 86
     Top = 9
+    Enabled = False
+    Properties.DisplayFormat = ',0.00;(,0.00)'
     TabOrder = 0
     Width = 199
   end
   object edDibayar: TcxCurrencyEdit
     Left = 86
     Top = 36
+    Properties.DisplayFormat = ',0.00;(,0.00)'
+    Properties.OnChange = edDibayarPropertiesChange
     TabOrder = 1
     Width = 199
   end
   object edSisa: TcxCurrencyEdit
     Left = 86
     Top = 63
+    Properties.DisplayFormat = ',0.00;(,0.00)'
     TabOrder = 2
     Width = 199
   end
@@ -75,28 +81,18 @@ object frmPembayaran: TfrmPembayaran
     Top = 90
     Width = 93
     Height = 31
-    Action = actBayar
+    Caption = 'Simpan [Ctrl+S]'
+    ModalResult = 1
     TabOrder = 3
+    OnClick = btnSaveClick
   end
   object btnHapus: TcxButton
     Left = 184
     Top = 90
     Width = 101
     Height = 31
-    Action = actBatal
     Caption = 'Hapus [Ctrl+X]'
+    ModalResult = 2
     TabOrder = 4
-  end
-  object actlstBayar: TActionList
-    Left = 144
-    Top = 80
-    object actBayar: TAction
-      Caption = 'Simpan [Ctrl+S]'
-      ShortCut = 16467
-    end
-    object actBatal: TAction
-      Caption = 'actBatal'
-      ShortCut = 49240
-    end
   end
 end

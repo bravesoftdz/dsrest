@@ -9,7 +9,7 @@ uses
   cxCurrencyEdit, Vcl.Menus, cxButtons, System.Actions, Vcl.ActnList;
 
 type
-  TfrmPembayaran = class(TForm)
+  TfrmPembayaranPOS = class(TForm)
     lblTotal: TLabel;
     lblDibayar: TLabel;
     lblSisa: TLabel;
@@ -18,20 +18,46 @@ type
     edSisa: TcxCurrencyEdit;
     btnSave: TcxButton;
     btnHapus: TcxButton;
-    actlstBayar: TActionList;
-    actBayar: TAction;
-    actBatal: TAction;
+    procedure edDibayarPropertiesChange(Sender: TObject);
+    procedure btnSaveClick(Sender: TObject);
   private
+    FDibayar: Double;
     { Private declarations }
   public
+    class function Bayar(ANominalBeli : Double): Double;
+    property Dibayar: Double read FDibayar write FDibayar;
+
     { Public declarations }
   end;
 
 var
-  frmPembayaran: TfrmPembayaran;
+  frmPembayaranPOS: TfrmPembayaranPOS;
 
 implementation
 
 {$R *.dfm}
+
+class function TfrmPembayaranPOS.Bayar(ANominalBeli : Double): Double;
+begin
+  Result := 0;
+
+  frmPembayaranPOS                := TfrmPembayaranPOS.Create(Application);
+  frmPembayaranPOS.edTotal.Value  := ANominalBeli;
+  frmPembayaranPOS.ShowModal;
+
+  if frmPembayaranPOS.ModalResult = mrOk then
+    Result := frmPembayaranPOS.Dibayar;
+
+end;
+
+procedure TfrmPembayaranPOS.btnSaveClick(Sender: TObject);
+begin
+  Dibayar := edDibayar.Value;
+end;
+
+procedure TfrmPembayaranPOS.edDibayarPropertiesChange(Sender: TObject);
+begin
+  edSisa.Value := edDibayar.Value - edTotal.Value;
+end;
 
 end.
