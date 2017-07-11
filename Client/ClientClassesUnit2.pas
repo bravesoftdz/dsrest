@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 7/2/2017 4:12:13 PM
+// 7/12/2017 5:16:21 AM
 //
 
 unit ClientClassesUnit2;
@@ -86,8 +86,8 @@ type
     destructor Destroy; override;
     function DS_OverviewAccount(const ARequestFilter: string = ''): TDataSet;
     function DS_OverviewAccount_Cache(const ARequestFilter: string = ''): IDSRestCachedDataSet;
-    function LaporanKartok(ATglAwal: TDateTime; ATglAkhir: TDateTime; ABarang: TBarang; AGudang: TGudang; ACabang: TCabang; const ARequestFilter: string = ''): TDataSet;
-    function LaporanKartok_Cache(ATglAwal: TDateTime; ATglAkhir: TDateTime; ABarang: TBarang; AGudang: TGudang; ACabang: TCabang; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function LaporanKartok(ATglAwal: TDateTime; ATglAkhir: TDateTime; ABarang: TBarang; AGudang: TGudang; const ARequestFilter: string = ''): TDataSet;
+    function LaporanKartok_Cache(ATglAwal: TDateTime; ATglAkhir: TDateTime; ABarang: TBarang; AGudang: TGudang; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function LaporanStockSekarang(ACabang: TCabang; const ARequestFilter: string = ''): TDataSet;
     function LaporanStockSekarang_Cache(ACabang: TCabang; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function LookUpPenerimaan(ABulan: Integer; ATahun: Integer; const ARequestFilter: string = ''): TDataSet;
@@ -104,8 +104,8 @@ type
     function RetrieveTACTerima_Cache(ATglAwal: TDateTime; ATglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function RetrieveTransferAntarGudang(ATglAwal: TDateTime; ATglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string = ''): TDataSet;
     function RetrieveTransferAntarGudang_Cache(ATglAwal: TDateTime; ATglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string = ''): IDSRestCachedDataSet;
-    function RetriveMutasiBarang(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; AGudang: TGudang; const ARequestFilter: string = ''): TDataSet;
-    function RetriveMutasiBarang_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; AGudang: TGudang; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function RetriveMutasiBarang(ATglAwal: TDateTime; ATglAkhir: TDateTime; ACabang: TCabang; AGudang: TGudang; const ARequestFilter: string = ''): TDataSet;
+    function RetriveMutasiBarang_Cache(ATglAwal: TDateTime; ATglAkhir: TDateTime; ACabang: TCabang; AGudang: TGudang; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function RetrivePenjualan(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string = ''): TDataSet;
     function RetrivePenjualan_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function RetriveCI(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string = ''): TDataSet;
@@ -118,8 +118,8 @@ type
     function RetrivePengeluaranKas_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function RetriveJurnal(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; AJenisJurnal: string; const ARequestFilter: string = ''): TDataSet;
     function RetriveJurnal_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; AJenisJurnal: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
-    function LaporanPenerimaanBarang(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; AGudang: TGudang; const ARequestFilter: string = ''): TDataSet;
-    function LaporanPenerimaanBarang_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; AGudang: TGudang; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function LaporanPenerimaanBarang(ATglAwal: TDateTime; AtglAkhir: TDateTime; ACabang: TCabang; AGudang: TGudang; const ARequestFilter: string = ''): TDataSet;
+    function LaporanPenerimaanBarang_Cache(ATglAwal: TDateTime; AtglAkhir: TDateTime; ACabang: TCabang; AGudang: TGudang; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function LaporanReturSupplier(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; AGudang: TGudang; const ARequestFilter: string = ''): TDataSet;
     function LaporanReturSupplier_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; AGudang: TGudang; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function RetriveSettingApp(ACabang: TCabang; const ARequestFilter: string = ''): TDataSet;
@@ -1144,23 +1144,21 @@ const
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
-  TServerLaporan_LaporanKartok: array [0..5] of TDSRestParameterMetaData =
+  TServerLaporan_LaporanKartok: array [0..4] of TDSRestParameterMetaData =
   (
     (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'ATglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'ABarang'; Direction: 1; DBXType: 37; TypeName: 'TBarang'),
     (Name: 'AGudang'; Direction: 1; DBXType: 37; TypeName: 'TGudang'),
-    (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
     (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
   );
 
-  TServerLaporan_LaporanKartok_Cache: array [0..5] of TDSRestParameterMetaData =
+  TServerLaporan_LaporanKartok_Cache: array [0..4] of TDSRestParameterMetaData =
   (
     (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'ATglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'ABarang'; Direction: 1; DBXType: 37; TypeName: 'TBarang'),
     (Name: 'AGudang'; Direction: 1; DBXType: 37; TypeName: 'TGudang'),
-    (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
@@ -1287,7 +1285,7 @@ const
   TServerLaporan_RetriveMutasiBarang: array [0..4] of TDSRestParameterMetaData =
   (
     (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
-    (Name: 'ATglAtglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ATglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
     (Name: 'AGudang'; Direction: 1; DBXType: 37; TypeName: 'TGudang'),
     (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
@@ -1296,7 +1294,7 @@ const
   TServerLaporan_RetriveMutasiBarang_Cache: array [0..4] of TDSRestParameterMetaData =
   (
     (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
-    (Name: 'ATglAtglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ATglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
     (Name: 'AGudang'; Direction: 1; DBXType: 37; TypeName: 'TGudang'),
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
@@ -1399,7 +1397,7 @@ const
   TServerLaporan_LaporanPenerimaanBarang: array [0..4] of TDSRestParameterMetaData =
   (
     (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
-    (Name: 'ATglAtglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'AtglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
     (Name: 'AGudang'; Direction: 1; DBXType: 37; TypeName: 'TGudang'),
     (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
@@ -1408,7 +1406,7 @@ const
   TServerLaporan_LaporanPenerimaanBarang_Cache: array [0..4] of TDSRestParameterMetaData =
   (
     (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
-    (Name: 'ATglAtglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'AtglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
     (Name: 'AGudang'; Direction: 1; DBXType: 37; TypeName: 'TGudang'),
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
@@ -3602,7 +3600,7 @@ begin
   Result := TDSRestCachedDataSet.Create(FDS_OverviewAccountCommand_Cache.Parameters[0].Value.GetString);
 end;
 
-function TServerLaporanClient.LaporanKartok(ATglAwal: TDateTime; ATglAkhir: TDateTime; ABarang: TBarang; AGudang: TGudang; ACabang: TCabang; const ARequestFilter: string): TDataSet;
+function TServerLaporanClient.LaporanKartok(ATglAwal: TDateTime; ATglAkhir: TDateTime; ABarang: TBarang; AGudang: TGudang; const ARequestFilter: string): TDataSet;
 begin
   if FLaporanKartokCommand = nil then
   begin
@@ -3639,27 +3637,14 @@ begin
       FreeAndNil(FMarshal)
     end
     end;
-  if not Assigned(ACabang) then
-    FLaporanKartokCommand.Parameters[4].Value.SetNull
-  else
-  begin
-    FMarshal := TDSRestCommand(FLaporanKartokCommand.Parameters[4].ConnectionHandler).GetJSONMarshaler;
-    try
-      FLaporanKartokCommand.Parameters[4].Value.SetJSONValue(FMarshal.Marshal(ACabang), True);
-      if FInstanceOwner then
-        ACabang.Free
-    finally
-      FreeAndNil(FMarshal)
-    end
-    end;
   FLaporanKartokCommand.Execute(ARequestFilter);
-  Result := TCustomSQLDataSet.Create(nil, FLaporanKartokCommand.Parameters[5].Value.GetDBXReader(False), True);
+  Result := TCustomSQLDataSet.Create(nil, FLaporanKartokCommand.Parameters[4].Value.GetDBXReader(False), True);
   Result.Open;
   if FInstanceOwner then
     FLaporanKartokCommand.FreeOnExecute(Result);
 end;
 
-function TServerLaporanClient.LaporanKartok_Cache(ATglAwal: TDateTime; ATglAkhir: TDateTime; ABarang: TBarang; AGudang: TGudang; ACabang: TCabang; const ARequestFilter: string): IDSRestCachedDataSet;
+function TServerLaporanClient.LaporanKartok_Cache(ATglAwal: TDateTime; ATglAkhir: TDateTime; ABarang: TBarang; AGudang: TGudang; const ARequestFilter: string): IDSRestCachedDataSet;
 begin
   if FLaporanKartokCommand_Cache = nil then
   begin
@@ -3696,21 +3681,8 @@ begin
       FreeAndNil(FMarshal)
     end
     end;
-  if not Assigned(ACabang) then
-    FLaporanKartokCommand_Cache.Parameters[4].Value.SetNull
-  else
-  begin
-    FMarshal := TDSRestCommand(FLaporanKartokCommand_Cache.Parameters[4].ConnectionHandler).GetJSONMarshaler;
-    try
-      FLaporanKartokCommand_Cache.Parameters[4].Value.SetJSONValue(FMarshal.Marshal(ACabang), True);
-      if FInstanceOwner then
-        ACabang.Free
-    finally
-      FreeAndNil(FMarshal)
-    end
-    end;
   FLaporanKartokCommand_Cache.ExecuteCache(ARequestFilter);
-  Result := TDSRestCachedDataSet.Create(FLaporanKartokCommand_Cache.Parameters[5].Value.GetString);
+  Result := TDSRestCachedDataSet.Create(FLaporanKartokCommand_Cache.Parameters[4].Value.GetString);
 end;
 
 function TServerLaporanClient.LaporanStockSekarang(ACabang: TCabang; const ARequestFilter: string): TDataSet;
@@ -4129,7 +4101,7 @@ begin
   Result := TDSRestCachedDataSet.Create(FRetrieveTransferAntarGudangCommand_Cache.Parameters[3].Value.GetString);
 end;
 
-function TServerLaporanClient.RetriveMutasiBarang(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; AGudang: TGudang; const ARequestFilter: string): TDataSet;
+function TServerLaporanClient.RetriveMutasiBarang(ATglAwal: TDateTime; ATglAkhir: TDateTime; ACabang: TCabang; AGudang: TGudang; const ARequestFilter: string): TDataSet;
 begin
   if FRetriveMutasiBarangCommand = nil then
   begin
@@ -4139,7 +4111,7 @@ begin
     FRetriveMutasiBarangCommand.Prepare(TServerLaporan_RetriveMutasiBarang);
   end;
   FRetriveMutasiBarangCommand.Parameters[0].Value.AsDateTime := ATglAwal;
-  FRetriveMutasiBarangCommand.Parameters[1].Value.AsDateTime := ATglAtglAkhir;
+  FRetriveMutasiBarangCommand.Parameters[1].Value.AsDateTime := ATglAkhir;
   if not Assigned(ACabang) then
     FRetriveMutasiBarangCommand.Parameters[2].Value.SetNull
   else
@@ -4173,7 +4145,7 @@ begin
     FRetriveMutasiBarangCommand.FreeOnExecute(Result);
 end;
 
-function TServerLaporanClient.RetriveMutasiBarang_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; AGudang: TGudang; const ARequestFilter: string): IDSRestCachedDataSet;
+function TServerLaporanClient.RetriveMutasiBarang_Cache(ATglAwal: TDateTime; ATglAkhir: TDateTime; ACabang: TCabang; AGudang: TGudang; const ARequestFilter: string): IDSRestCachedDataSet;
 begin
   if FRetriveMutasiBarangCommand_Cache = nil then
   begin
@@ -4183,7 +4155,7 @@ begin
     FRetriveMutasiBarangCommand_Cache.Prepare(TServerLaporan_RetriveMutasiBarang_Cache);
   end;
   FRetriveMutasiBarangCommand_Cache.Parameters[0].Value.AsDateTime := ATglAwal;
-  FRetriveMutasiBarangCommand_Cache.Parameters[1].Value.AsDateTime := ATglAtglAkhir;
+  FRetriveMutasiBarangCommand_Cache.Parameters[1].Value.AsDateTime := ATglAkhir;
   if not Assigned(ACabang) then
     FRetriveMutasiBarangCommand_Cache.Parameters[2].Value.SetNull
   else
@@ -4566,7 +4538,7 @@ begin
   Result := TDSRestCachedDataSet.Create(FRetriveJurnalCommand_Cache.Parameters[4].Value.GetString);
 end;
 
-function TServerLaporanClient.LaporanPenerimaanBarang(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; AGudang: TGudang; const ARequestFilter: string): TDataSet;
+function TServerLaporanClient.LaporanPenerimaanBarang(ATglAwal: TDateTime; AtglAkhir: TDateTime; ACabang: TCabang; AGudang: TGudang; const ARequestFilter: string): TDataSet;
 begin
   if FLaporanPenerimaanBarangCommand = nil then
   begin
@@ -4576,7 +4548,7 @@ begin
     FLaporanPenerimaanBarangCommand.Prepare(TServerLaporan_LaporanPenerimaanBarang);
   end;
   FLaporanPenerimaanBarangCommand.Parameters[0].Value.AsDateTime := ATglAwal;
-  FLaporanPenerimaanBarangCommand.Parameters[1].Value.AsDateTime := ATglAtglAkhir;
+  FLaporanPenerimaanBarangCommand.Parameters[1].Value.AsDateTime := AtglAkhir;
   if not Assigned(ACabang) then
     FLaporanPenerimaanBarangCommand.Parameters[2].Value.SetNull
   else
@@ -4610,7 +4582,7 @@ begin
     FLaporanPenerimaanBarangCommand.FreeOnExecute(Result);
 end;
 
-function TServerLaporanClient.LaporanPenerimaanBarang_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; AGudang: TGudang; const ARequestFilter: string): IDSRestCachedDataSet;
+function TServerLaporanClient.LaporanPenerimaanBarang_Cache(ATglAwal: TDateTime; AtglAkhir: TDateTime; ACabang: TCabang; AGudang: TGudang; const ARequestFilter: string): IDSRestCachedDataSet;
 begin
   if FLaporanPenerimaanBarangCommand_Cache = nil then
   begin
@@ -4620,7 +4592,7 @@ begin
     FLaporanPenerimaanBarangCommand_Cache.Prepare(TServerLaporan_LaporanPenerimaanBarang_Cache);
   end;
   FLaporanPenerimaanBarangCommand_Cache.Parameters[0].Value.AsDateTime := ATglAwal;
-  FLaporanPenerimaanBarangCommand_Cache.Parameters[1].Value.AsDateTime := ATglAtglAkhir;
+  FLaporanPenerimaanBarangCommand_Cache.Parameters[1].Value.AsDateTime := AtglAkhir;
   if not Assigned(ACabang) then
     FLaporanPenerimaanBarangCommand_Cache.Parameters[2].Value.SetNull
   else

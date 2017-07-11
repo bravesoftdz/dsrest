@@ -4,33 +4,26 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ufrmDefault, cxGraphics, cxControls,
-  cxLookAndFeels, cxLookAndFeelPainters, cxCheckBox, cxStyles, cxCustomData,
-  cxFilter, cxData, cxDataStorage, cxEdit, cxNavigator, Data.DB, cxDBData,
-  Datasnap.DBClient, Datasnap.Provider, System.ImageList, Vcl.ImgList,
-  cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGridCustomView,
-  cxGrid, cxClasses, System.Actions, Vcl.ActnList, cxBarEditItem, dxBar,
-  dxBarExtDBItems, Vcl.ExtCtrls, dxStatusBar, cxGridLevel, cxContainer,
-  Vcl.ComCtrls, dxCore, cxDateUtils, cxTextEdit, cxMaskEdit, cxDropDownEdit,
-  cxCalendar, Vcl.StdCtrls, cxLookupEdit, cxDBLookupEdit, cxDBExtLookupComboBox,
-  uModel, dxBarExtItems, dxBarBuiltInMenu, Vcl.Menus, cxButtons, cxPC;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ufrmDefaultLaporan, cxGraphics,
+  cxControls, cxLookAndFeels, cxLookAndFeelPainters, dxBarBuiltInMenu,
+  Vcl.Menus, cxContainer, cxEdit, cxStyles, cxCustomData, cxFilter, cxData,
+  cxDataStorage, cxNavigator, Data.DB, cxDBData, System.ImageList, Vcl.ImgList,
+  Datasnap.DBClient, Datasnap.Provider, cxGridCustomTableView, cxGridTableView,
+  cxGridDBTableView, cxGrid, System.Actions, Vcl.ActnList, cxCheckBox,
+  cxGridLevel, cxClasses, cxGridCustomView, cxTextEdit, cxMaskEdit,
+  cxDropDownEdit, cxLookupEdit, cxDBLookupEdit, cxDBExtLookupComboBox,
+  Vcl.StdCtrls, cxButtons, Vcl.ComCtrls, Vcl.ExtCtrls, cxPC, dxStatusBar,
+  uDBUtils, ClientModule, uModel, ClientClassesUnit2, uAppUtils;
 
 type
-  TfrmLapKartuStock = class(TfrmDefault)
-    lblGudang: TLabel;
-    cbbGudang: TcxExtLookupComboBox;
-    lblBarang: TLabel;
+  TfrmLapKartuStock = class(TfrmDefaultLaporan)
     cbbBarang: TcxExtLookupComboBox;
-    cxGridDBLapMutasi: TcxGrid;
-    cxGridDBTableKartok: TcxGridDBTableView;
-    cxgrdlvlGridLapMutasiLevelLapMutasi: TcxGridLevel;
+    Label1: TLabel;
     procedure ActionRefreshExecute(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private
     procedure InisialisasiCBBBarang;
-    procedure InisialisasiGudang;
     { Private declarations }
-  protected
   public
     { Public declarations }
   end;
@@ -39,34 +32,27 @@ var
   frmLapKartuStock: TfrmLapKartuStock;
 
 implementation
-uses
-  uAppUtils, uDBUtils, System.DateUtils, ClientModule, ClientClassesUnit2;
 
 {$R *.dfm}
 
 procedure TfrmLapKartuStock.ActionRefreshExecute(Sender: TObject);
 var
   lBarang: TBarang;
-  lCabang: TCabang;
-  lDS: TDataset;
+  lDS: TClientDataSet;
   lGudang: TGudang;
 begin
-  inherited;
+//  inherited;
 
   with TServerLaporanClient.Create(ClientDataModule.DSRestConnection) do
   begin
     try
       lBarang := TBarang.CreateID(cbbBarang.EditValue);
       lGudang := TGudang.CreateID(cbbGudang.EditValue);
-      lCabang := TCabang.CreateID(ClientDataModule.Cabang.ID);
+      lDS := TDBUtils.DSToCDS(LaporanKartok(dtpAwal.Date, dtpAkhir.Date,lBarang, lGudang), Self);
 
-      lDS := LaporanKartok(dtpAwal.Date, dtpAkhir.Date,lBarang, lGudang, lCabang);
-
-
-//      lDS.Open;
-      cxGridDBTableKartok.SetDataset(lDS, True);
-      cxGridDBTableKartok.ApplyBestFit();
-      cxGridDBTableKartok.SetVisibleColumns(['urutan'], False);
+      cxGridDBTableOverview.SetDataset(lDS, True);
+      cxGridDBTableOverview.ApplyBestFit();
+      cxGridDBTableOverview.SetVisibleColumns(['urutan'], False);
     finally
 
     end;
@@ -77,10 +63,6 @@ end;
 procedure TfrmLapKartuStock.FormShow(Sender: TObject);
 begin
   inherited;
-  dtpAwal.Date := StartOfTheMonth(Now);
-  dtpAkhir.Date:= Now;
-
-  InisialisasiGudang;
   InisialisasiCBBBarang;
 end;
 
@@ -93,17 +75,6 @@ begin
   lCDSBarang := TDBUtils.OpenDataset(sSQL);
   cbbBarang.Properties.LoadFromCDS(lCDSBarang,'ID','Nama',['ID'],Self);
   cbbBarang.Properties.SetMultiPurposeLookup;
-end;
-
-procedure TfrmLapKartuStock.InisialisasiGudang;
-var
-  lCDSGudang: TClientDataSet;
-  sSQL: string;
-begin
-  sSQL := 'select Nama,Kode,ID from TGudang';
-  lCDSGudang := TDBUtils.OpenDataset(sSQL);
-  cbbGudang.Properties.LoadFromCDS(lCDSGudang,'ID','Nama',['ID'],Self);
-  cbbGudang.Properties.SetMultiPurposeLookup;
 end;
 
 end.
