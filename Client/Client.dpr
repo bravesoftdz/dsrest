@@ -21,7 +21,6 @@ uses
   ufrmPembayaranSupplier in 'form\ufrmPembayaranSupplier.pas' {frmPembayaranSupplier},
   uReport in '..\uReport.pas',
   ufrmGudang in 'form\ufrmGudang.pas' {frmGudang},
-  ufrmLapKartuStock in 'form\ufrmLapKartuStock.pas' {frmLapKartuStock},
   ufrmDefault in 'form\ufrmDefault.pas' {frmDefault},
   ufrmPilihGrid in 'form\ufrmPilihGrid.pas' {frmPilihGrid},
   ufrmPenjualan in 'form\ufrmPenjualan.pas' {frmPenjualan},
@@ -63,7 +62,8 @@ uses
   uPenerimaanBarang in '..\model\uPenerimaanBarang.pas',
   uReturSupplier in '..\model\uReturSupplier.pas',
   ufrmDefaultLaporan in 'form\ufrmDefaultLaporan.pas' {frmDefaultLaporan},
-  ufrmLapPenerimaanBarang in 'form\ufrmLapPenerimaanBarang.pas' {frmLapPenerimaanBarang};
+  ufrmLapPenerimaanBarang in 'form\ufrmLapPenerimaanBarang.pas' {frmLapPenerimaanBarang},
+  ufrmLapKartuStock in 'form\ufrmLapKartuStock.pas' {frmLapKartuStock};
 
 {$R *.res}
 
