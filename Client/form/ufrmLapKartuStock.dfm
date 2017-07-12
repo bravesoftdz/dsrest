@@ -71,12 +71,6 @@ inherited frmLapKartuStock: TfrmLapKartuStock
         end
       end
     end
-    inherited cxTSInputData: TcxTabSheet
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
-    end
   end
   inherited pnlButton: TPanel
     ExplicitWidth = 1008
@@ -97,7 +91,7 @@ inherited frmLapKartuStock: TfrmLapKartuStock
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010107000800EC0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800F00018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

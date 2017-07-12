@@ -13,7 +13,8 @@ uses
   cxGridLevel, cxClasses, cxGridCustomView, cxTextEdit, cxMaskEdit,
   cxDropDownEdit, cxLookupEdit, cxDBLookupEdit, cxDBExtLookupComboBox,
   Vcl.StdCtrls, cxButtons, Vcl.ComCtrls, Vcl.ExtCtrls, cxPC, dxStatusBar,
-  uDBUtils, ClientModule, uModel, ClientClassesUnit2, uAppUtils;
+  uDBUtils, ClientModule, uModel, ClientClassesUnit2, uAppUtils,
+  Data.FireDACJSONReflect, uDMReport;
 
 type
   TfrmLapKartuStock = class(TfrmDefaultLaporan)
@@ -22,9 +23,11 @@ type
     procedure ActionRefreshExecute(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private
+    FCDSS: TFDJSONDataSets;
     procedure InisialisasiCBBBarang;
     { Private declarations }
   public
+    procedure CetakSlip; override;
     { Public declarations }
   end;
 
@@ -41,21 +44,38 @@ var
   lDS: TClientDataSet;
   lGudang: TGudang;
 begin
-//  inherited;
+  inherited;
 
-  with TServerLaporanClient.Create(ClientDataModule.DSRestConnection) do
+  lBarang := TBarang.CreateID(cbbBarang.EditValue);
+  lGudang := TGudang.CreateID(cbbGudang.EditValue);
+
+  FCDSS := ClientDataModule.ServerLaporanClient.LaporanKartok(dtpAwal.Date, dtpAkhir.Date,lBarang, lGudang);
+
+  lDS := TDBUtils.DSToCDS(TDataSet(TFDJSONDataSetsReader.GetListValue(FCDSS, 1)), Self);
+
+  cxGridDBTableOverview.SetDataset(lDS, True);
+  cxGridDBTableOverview.ApplyBestFit();
+  cxGridDBTableOverview.SetVisibleColumns(['urutan'], False);
+  
+end;
+
+procedure TfrmLapKartuStock.CetakSlip;
+var
+  lBarang: TBarang;
+  lGudang: TGudang;
+begin
+  inherited;
+  lBarang := TBarang.CreateID(cbbBarang.EditValue);
+  lGudang := TGudang.CreateID(cbbGudang.EditValue);
+
+  FCDSS := ClientDataModule.ServerLaporanClient.LaporanKartok(dtpAwal.Date, dtpAkhir.Date,lBarang, lGudang);
+  with dmReport do
   begin
-    try
-      lBarang := TBarang.CreateID(cbbBarang.EditValue);
-      lGudang := TGudang.CreateID(cbbGudang.EditValue);
-      lDS := TDBUtils.DSToCDS(LaporanKartok(dtpAwal.Date, dtpAkhir.Date,lBarang, lGudang), Self);
+    AddReportVariable('UserCetak', User);
 
-      cxGridDBTableOverview.SetDataset(lDS, True);
-      cxGridDBTableOverview.ApplyBestFit();
-      cxGridDBTableOverview.SetVisibleColumns(['urutan'], False);
-    finally
-
-    end;
+    ExecuteReport( 'Reports/Lap_Kartok' ,
+      FCDSS
+    );
   end;
 
 end;

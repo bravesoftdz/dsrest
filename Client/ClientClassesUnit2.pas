@@ -1,13 +1,13 @@
 //
 // Created by the DataSnap proxy generator.
-// 7/12/2017 5:16:21 AM
+// 7/12/2017 9:58:24 PM
 //
 
 unit ClientClassesUnit2;
 
 interface
 
-uses System.JSON, Datasnap.DSProxyRest, Datasnap.DSClientRest, Data.DBXCommon, Data.DBXClient, Data.DBXDataSnap, Data.DBXJSON, Datasnap.DSProxy, System.Classes, System.SysUtils, Data.DB, Data.SqlExpr, Data.DBXDBReaders, Data.DBXCDSReaders, uModel, uSupplier, uCustomerInvoice, Data.FireDACJSONReflect, uPenerimaanBarang, uReturSupplier, uPenjualan, uAR, uAccount, uRekBank, uPenerimaanKas, uPengeluaranKas, uSettingApp, uTransferAntarGudang, uTAGRequests, uTransferAntarCabang, uJurnal, Data.DBXJSONReflect;
+uses System.JSON, Datasnap.DSProxyRest, Datasnap.DSClientRest, Data.DBXCommon, Data.DBXClient, Data.DBXDataSnap, Data.DBXJSON, Datasnap.DSProxy, System.Classes, System.SysUtils, Data.DB, Data.SqlExpr, Data.DBXDBReaders, Data.DBXCDSReaders, uModel, Data.FireDACJSONReflect, uSupplier, uCustomerInvoice, uPenerimaanBarang, uReturSupplier, uPenjualan, uAR, uAccount, uRekBank, uPenerimaanKas, uPengeluaranKas, uSettingApp, uTransferAntarGudang, uTAGRequests, uTransferAntarCabang, uJurnal, Data.DBXJSONReflect;
 
 type
 
@@ -86,8 +86,8 @@ type
     destructor Destroy; override;
     function DS_OverviewAccount(const ARequestFilter: string = ''): TDataSet;
     function DS_OverviewAccount_Cache(const ARequestFilter: string = ''): IDSRestCachedDataSet;
-    function LaporanKartok(ATglAwal: TDateTime; ATglAkhir: TDateTime; ABarang: TBarang; AGudang: TGudang; const ARequestFilter: string = ''): TDataSet;
-    function LaporanKartok_Cache(ATglAwal: TDateTime; ATglAkhir: TDateTime; ABarang: TBarang; AGudang: TGudang; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function LaporanKartok(ATglAwal: TDateTime; ATglAkhir: TDateTime; ABarang: TBarang; AGudang: TGudang; const ARequestFilter: string = ''): TFDJSONDataSets;
+    function LaporanKartok_Cache(ATglAwal: TDateTime; ATglAkhir: TDateTime; ABarang: TBarang; AGudang: TGudang; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
     function LaporanStockSekarang(ACabang: TCabang; const ARequestFilter: string = ''): TDataSet;
     function LaporanStockSekarang_Cache(ACabang: TCabang; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function LookUpPenerimaan(ABulan: Integer; ATahun: Integer; const ARequestFilter: string = ''): TDataSet;
@@ -1150,7 +1150,7 @@ const
     (Name: 'ATglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'ABarang'; Direction: 1; DBXType: 37; TypeName: 'TBarang'),
     (Name: 'AGudang'; Direction: 1; DBXType: 37; TypeName: 'TGudang'),
-    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+    (Name: ''; Direction: 4; DBXType: 37; TypeName: 'TFDJSONDataSets')
   );
 
   TServerLaporan_LaporanKartok_Cache: array [0..4] of TDSRestParameterMetaData =
@@ -3600,7 +3600,7 @@ begin
   Result := TDSRestCachedDataSet.Create(FDS_OverviewAccountCommand_Cache.Parameters[0].Value.GetString);
 end;
 
-function TServerLaporanClient.LaporanKartok(ATglAwal: TDateTime; ATglAkhir: TDateTime; ABarang: TBarang; AGudang: TGudang; const ARequestFilter: string): TDataSet;
+function TServerLaporanClient.LaporanKartok(ATglAwal: TDateTime; ATglAkhir: TDateTime; ABarang: TBarang; AGudang: TGudang; const ARequestFilter: string): TFDJSONDataSets;
 begin
   if FLaporanKartokCommand = nil then
   begin
@@ -3638,13 +3638,22 @@ begin
     end
     end;
   FLaporanKartokCommand.Execute(ARequestFilter);
-  Result := TCustomSQLDataSet.Create(nil, FLaporanKartokCommand.Parameters[4].Value.GetDBXReader(False), True);
-  Result.Open;
-  if FInstanceOwner then
-    FLaporanKartokCommand.FreeOnExecute(Result);
+  if not FLaporanKartokCommand.Parameters[4].Value.IsNull then
+  begin
+    FUnMarshal := TDSRestCommand(FLaporanKartokCommand.Parameters[4].ConnectionHandler).GetJSONUnMarshaler;
+    try
+      Result := TFDJSONDataSets(FUnMarshal.UnMarshal(FLaporanKartokCommand.Parameters[4].Value.GetJSONValue(True)));
+      if FInstanceOwner then
+        FLaporanKartokCommand.FreeOnExecute(Result);
+    finally
+      FreeAndNil(FUnMarshal)
+    end
+  end
+  else
+    Result := nil;
 end;
 
-function TServerLaporanClient.LaporanKartok_Cache(ATglAwal: TDateTime; ATglAkhir: TDateTime; ABarang: TBarang; AGudang: TGudang; const ARequestFilter: string): IDSRestCachedDataSet;
+function TServerLaporanClient.LaporanKartok_Cache(ATglAwal: TDateTime; ATglAkhir: TDateTime; ABarang: TBarang; AGudang: TGudang; const ARequestFilter: string): IDSRestCachedTFDJSONDataSets;
 begin
   if FLaporanKartokCommand_Cache = nil then
   begin
@@ -3682,7 +3691,7 @@ begin
     end
     end;
   FLaporanKartokCommand_Cache.ExecuteCache(ARequestFilter);
-  Result := TDSRestCachedDataSet.Create(FLaporanKartokCommand_Cache.Parameters[4].Value.GetString);
+  Result := TDSRestCachedTFDJSONDataSets.Create(FLaporanKartokCommand_Cache.Parameters[4].Value.GetString);
 end;
 
 function TServerLaporanClient.LaporanStockSekarang(ACabang: TCabang; const ARequestFilter: string): TDataSet;

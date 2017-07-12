@@ -63,7 +63,8 @@ uses
   uReturSupplier in '..\model\uReturSupplier.pas',
   ufrmDefaultLaporan in 'form\ufrmDefaultLaporan.pas' {frmDefaultLaporan},
   ufrmLapPenerimaanBarang in 'form\ufrmLapPenerimaanBarang.pas' {frmLapPenerimaanBarang},
-  ufrmLapKartuStock in 'form\ufrmLapKartuStock.pas' {frmLapKartuStock};
+  ufrmLapKartuStock in 'form\ufrmLapKartuStock.pas' {frmLapKartuStock},
+  uSelfFastReportFunction in 'lib\uSelfFastReportFunction.pas';
 
 {$R *.res}
 

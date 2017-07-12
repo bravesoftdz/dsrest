@@ -14,7 +14,7 @@ uses
   Data.FireDACJSONReflect, FireDAC.Stan.Intf, FireDAC.Stan.Option,
   FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
   FireDAC.DApt.Intf, FireDAC.Comp.DataSet, FireDAC.Comp.Client, ClientClassesUnit2,
-  ClientModule, FireDAC.Stan.StorageJSON, FireDAC.Stan.StorageBin;
+  ClientModule, FireDAC.Stan.StorageJSON, FireDAC.Stan.StorageBin, uSelfFastReportFunction;
 
 type
   TDMReport = class(TForm)

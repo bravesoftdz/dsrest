@@ -30,7 +30,7 @@ type
   public
     function DS_OverviewAccount: TDataset;
     function LaporanKartok(ATglAwal , ATglAkhir : TDateTime; ABarang : TBarang;
-        AGudang : TGudang): TDataset;
+        AGudang : TGudang): TFDJSONDataSets;
     function LaporanStockSekarang(ACabang : TCabang): TDataset;
     function LookUpPenerimaan(ABulan, ATahun : Integer): TDataset;
     function RetrieveCDSTAGRequestKepada(ATglAwal , ATglAkhir : TDateTime;ACabang :
@@ -1200,17 +1200,25 @@ begin
 end;
 
 function TServerLaporan.LaporanKartok(ATglAwal , ATglAkhir : TDateTime; ABarang
-    : TBarang; AGudang : TGudang): TDataset;
+    : TBarang; AGudang : TGudang): TFDJSONDataSets;
 var
   sSQL: string;
 begin
+  Result := TFDJSONDataSets.Create;
+  sSQL := 'select a.*' +
+          ' from vcabang a ' +
+          ' INNER JOIN tgudang b on a.id = b.cabang ' +
+          ' where b.id = ' + QuotedStr(AGudang.ID);
+
+  TFDJSONDataSetsWriter.ListAdd(Result, TDBUtils.OpenQuery(sSQL));
+
   sSQL := 'select * from SP_KARTOK(' +
           TAppUtils.QuotDt(StartOfTheDay(ATglAwal)) + ',' +
           TAppUtils.QuotDt(EndOfTheDay(ATglAkhir)) + ',' +
           QuotedStr(ABarang.ID) + ',' +
           QuotedStr(AGudang.ID) + ')';
 
-  Result := TDBUtils.OpenDataset(sSQL);
+  TFDJSONDataSetsWriter.ListAdd(Result, TDBUtils.OpenQuery(sSQL));
 end;
 
 function TServerLaporan.LaporanStockSekarang(ACabang : TCabang): TDataset;
