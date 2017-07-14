@@ -100,6 +100,9 @@ object frmMain: TfrmMain
         item
           Caption = 'Inventory'
           ToolbarName = 'dxbrLaporanInventory'
+        end
+        item
+          ToolbarName = 'dxbrLapKasKeluar'
         end>
       Index = 5
     end
@@ -366,7 +369,7 @@ object frmMain: TfrmMain
       WholeRow = False
     end
     object dxbrLaporanInventory: TdxBar
-      Caption = 'Laporan'
+      Caption = 'LaporanInv'
       CaptionButtons = <>
       DockedLeft = 0
       DockedTop = 0
@@ -392,7 +395,7 @@ object frmMain: TfrmMain
           ItemName = 'dxbrlrgbtn1'
         end>
       OneOnRow = True
-      Row = 0
+      Row = 1
       UseOwnFont = False
       Visible = True
       WholeRow = False
@@ -484,7 +487,7 @@ object frmMain: TfrmMain
     object dxbrmngrAMSBarFA: TdxBar
       Caption = 'FA'
       CaptionButtons = <>
-      DockedLeft = 335
+      DockedLeft = 0
       DockedTop = 0
       FloatLeft = 900
       FloatTop = 8
@@ -552,6 +555,26 @@ object frmMain: TfrmMain
           ItemName = 'dxbrlrgbtnJurnalMemorial'
         end>
       OneOnRow = False
+      Row = 0
+      UseOwnFont = False
+      Visible = True
+      WholeRow = False
+    end
+    object dxbrLapKasKeluar: TdxBar
+      Caption = 'Kas Keluar'
+      CaptionButtons = <>
+      DockedLeft = 291
+      DockedTop = 0
+      FloatLeft = 576
+      FloatTop = 247
+      FloatClientWidth = 62
+      FloatClientHeight = 54
+      ItemLinks = <
+        item
+          Visible = True
+          ItemName = 'dxbrlrgbtnKartuAP'
+        end>
+      OneOnRow = True
       Row = 0
       UseOwnFont = False
       Visible = True
@@ -724,6 +747,11 @@ object frmMain: TfrmMain
       Action = actPengeluaranKas
       Category = 0
       LargeImageIndex = 18
+    end
+    object dxbrlrgbtnKartuAP: TdxBarLargeButton
+      Action = actKartuAP
+      Category = 0
+      LargeImageIndex = 14
     end
     object dxbrlrgbtnExit: TdxBarLargeButton
       Action = actApplicationExit
@@ -904,6 +932,11 @@ object frmMain: TfrmMain
       Caption = 'Laporan Penerimaan Barang'
       OnExecute = actLapPenerimaanBarangExecute
     end
+    object actKartuAP: TAction
+      Category = 'Keuangan'
+      Caption = 'Kartu AP'
+      OnExecute = actKartuAPExecute
+    end
   end
   object ImgListMainLarge: TImageList
     ColorDepth = cd32Bit
@@ -912,7 +945,7 @@ object frmMain: TfrmMain
     Left = 688
     Top = 128
     Bitmap = {
-      494C010113001800380120002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C0101130018003C0120002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000080000000A000000001002000000000000040
       0100000000000000000000000000000000000000000000000000131313224341
       3F7561605FAD797474D4878180ED8D8988F98A8685F8838181EC787574D3625E

@@ -92,7 +92,7 @@ type
     function GetPengeluaranKas: TPengeluaranKas;
     function GetTotalNominalGrid: Double;
     procedure InisialisasiAccount;
-    procedure InisialisasiCBBSalesman;
+    procedure InisialisasiCBBSupplier;
     procedure InisialisasiRekBank;
     procedure LoadDataAPSupplier(AIDSupplier : String);
     procedure SetUser;
@@ -149,7 +149,7 @@ end;
 procedure TfrmPengeluaranKas.FormCreate(Sender: TObject);
 begin
   inherited;
-  InisialisasiCBBSalesman;
+  InisialisasiCBBSupplier;
   InisialisasiRekBank;
   InisialisasiAccount;
 
@@ -354,7 +354,7 @@ procedure TfrmPengeluaranKas.edTglBuktiExit(Sender: TObject);
 begin
   inherited;
   if PengeluaranKas.ID = '' then
-    edNoBukti.Text := ClientDataModule.ServerPenerimaanKasClient.GenerateNoBukti(edTglBukti.Date, ClientDataModule.Cabang.Kode);
+    edNoBukti.Text := ClientDataModule.ServerPengeluaranKasClient.GenerateNoBukti(edTglBukti.Date, ClientDataModule.Cabang.Kode);
 end;
 
 function TfrmPengeluaranKas.GetPengeluaranKas: TPengeluaranKas;
@@ -390,7 +390,7 @@ begin
   TcxExtLookupComboBoxProperties(cxGridColNonAPNama.Properties).LoadFromCDS(FCDSAccountPengeluaranKasLain, 'ID', 'Nama', ['id'], Self);
 end;
 
-procedure TfrmPengeluaranKas.InisialisasiCBBSalesman;
+procedure TfrmPengeluaranKas.InisialisasiCBBSupplier;
 var
   lCDSSalesman: TClientDataSet;
   sSQL: string;
@@ -417,7 +417,7 @@ var
 begin
   FreeAndNil(FPengeluaranKas);
   ClearByTag([0,1]);
-  edNoBukti.Text := ClientDataModule.ServerPenerimaanKasClient.GenerateNoBukti(edTglBukti.Date, ClientDataModule.Cabang.Kode);
+  edNoBukti.Text := ClientDataModule.ServerPengeluaranKasClient.GenerateNoBukti(edTglBukti.Date, ClientDataModule.Cabang.Kode);
   SetUser;
 
   cxGridTableAP.ClearRows;

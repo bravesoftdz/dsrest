@@ -31,6 +31,8 @@ type
     function DS_OverviewAccount: TDataset;
     function LaporanKartok(ATglAwal , ATglAkhir : TDateTime; ABarang : TBarang;
         AGudang : TGudang): TFDJSONDataSets;
+    function LaporanKarAP(ATglAwal , ATglAkhir : TDateTime; ASupplier : TSupplier;
+        ACabang : TCabang): TFDJSONDataSets;
     function LaporanStockSekarang(ACabang : TCabang): TDataset;
     function LookUpPenerimaan(ABulan, ATahun : Integer): TDataset;
     function RetrieveCDSTAGRequestKepada(ATglAwal , ATglAkhir : TDateTime;ACabang :
@@ -1217,6 +1219,27 @@ begin
           TAppUtils.QuotDt(EndOfTheDay(ATglAkhir)) + ',' +
           QuotedStr(ABarang.ID) + ',' +
           QuotedStr(AGudang.ID) + ')';
+
+  TFDJSONDataSetsWriter.ListAdd(Result, TDBUtils.OpenQuery(sSQL));
+end;
+
+function TServerLaporan.LaporanKarAP(ATglAwal , ATglAkhir : TDateTime;
+    ASupplier : TSupplier; ACabang : TCabang): TFDJSONDataSets;
+var
+  sSQL: string;
+begin
+  Result := TFDJSONDataSets.Create;
+  sSQL := 'select a.*' +
+          ' from vcabang a ' +
+          ' where a.id = ' + QuotedStr(ACabang.ID);
+
+  TFDJSONDataSetsWriter.ListAdd(Result, TDBUtils.OpenQuery(sSQL));
+
+  sSQL := 'select * from SP_KARAP(' +
+          TAppUtils.QuotDt(StartOfTheDay(ATglAwal)) + ',' +
+          TAppUtils.QuotDt(EndOfTheDay(ATglAkhir)) + ',' +
+          QuotedStr(ASupplier.ID) + ',' +
+          QuotedStr(ACabang.ID) + ')';
 
   TFDJSONDataSetsWriter.ListAdd(Result, TDBUtils.OpenQuery(sSQL));
 end;

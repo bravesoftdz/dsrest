@@ -64,7 +64,8 @@ uses
   ufrmDefaultLaporan in 'form\ufrmDefaultLaporan.pas' {frmDefaultLaporan},
   ufrmLapPenerimaanBarang in 'form\ufrmLapPenerimaanBarang.pas' {frmLapPenerimaanBarang},
   ufrmLapKartuStock in 'form\ufrmLapKartuStock.pas' {frmLapKartuStock},
-  uSelfFastReportFunction in 'lib\uSelfFastReportFunction.pas';
+  uSelfFastReportFunction in 'lib\uSelfFastReportFunction.pas',
+  ufrmKartuAP in 'form\ufrmKartuAP.pas' {frmKartuAP};
 
 {$R *.res}
 
