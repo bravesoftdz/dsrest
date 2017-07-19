@@ -1,5 +1,5 @@
-inherited frmLaporanAR: TfrmLaporanAR
-  Caption = 'Daftar AR'
+inherited frmKartuAR: TfrmKartuAR
+  Caption = 'Kartu AR'
   PixelsPerInch = 96
   TextHeight = 13
   inherited cxPCData: TcxPageControl
@@ -7,54 +7,49 @@ inherited frmLaporanAR: TfrmLaporanAR
       inherited pnlListTransaksi: TPanel
         inherited pnlFilter: TPanel
           inherited lblPeriode: TLabel
-            Left = 497
-            ExplicitLeft = 497
-          end
-          inherited lblSD: TLabel
-            Left = 649
-            ExplicitLeft = 649
+            ExplicitLeft = 606
+            ExplicitTop = 2
           end
           inherited lblGudang: TLabel
-            Left = 284
+            Left = 362
+            Width = 10
             Visible = False
-            ExplicitLeft = 284
+            ExplicitLeft = 362
+            ExplicitWidth = 10
           end
           inherited lblCabang: TLabel
-            Left = 63
-            ExplicitLeft = 63
+            Left = 141
+            ExplicitLeft = 141
           end
-          inherited dtpAwal: TDateTimePicker
-            Left = 538
-            TabOrder = 2
-            ExplicitLeft = 503
-          end
-          inherited dtpAkhir: TDateTimePicker
-            Left = 683
-            TabOrder = 3
-            ExplicitLeft = 648
-          end
-          inherited btnRefresh: TcxButton
-            TabOrder = 5
+          object lblCustomer: TLabel [4]
+            AlignWithMargins = True
+            Left = 394
+            Top = 4
+            Width = 38
+            Height = 23
+            Align = alRight
+            Caption = 'Supplier'
+            ExplicitHeight = 13
           end
           inherited cbbGudang: TcxExtLookupComboBox
-            Left = 346
-            TabOrder = 1
+            Left = 378
             Visible = False
-            ExplicitLeft = 311
+            ExplicitLeft = 378
+            ExplicitWidth = 10
+            Width = 10
           end
           inherited cbbCabang: TcxExtLookupComboBox
-            Left = 133
-            TabOrder = 0
-            ExplicitLeft = 98
+            Left = 211
+            ExplicitLeft = 211
           end
-          object chkIsTglJthTempo: TcxCheckBox
+          object cbbCustomer: TcxExtLookupComboBox
+            Tag = 1
             AlignWithMargins = True
-            Left = 794
+            Left = 438
             Top = 4
             Align = alRight
-            Caption = 'Jatuh Tempo'
-            TabOrder = 4
-            ExplicitLeft = 759
+            TabOrder = 5
+            Width = 145
           end
         end
       end

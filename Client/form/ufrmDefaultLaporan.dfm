@@ -9,29 +9,33 @@ inherited frmDefaultLaporan: TfrmDefaultLaporan
   inherited cxSBTransaksi: TdxStatusBar
     Top = 473
     Width = 1008
-    ExplicitWidth = 802
+    ExplicitTop = 473
+    ExplicitWidth = 1008
   end
   inherited cxPCData: TcxPageControl
     Width = 1008
     Height = 440
-    ExplicitWidth = 802
+    ExplicitWidth = 1008
+    ExplicitHeight = 440
     ClientRectBottom = 436
     ClientRectRight = 1004
     inherited cxTSOverview: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
-      ExplicitWidth = 794
-      ExplicitHeight = 265
+      ExplicitWidth = 1000
+      ExplicitHeight = 412
       inherited splTransaksi: TSplitter
         Height = 412
+        ExplicitHeight = 412
       end
       inherited pnlListTransaksi: TPanel
         Width = 992
         Height = 412
-        ExplicitWidth = 786
+        ExplicitWidth = 992
+        ExplicitHeight = 412
         inherited pnlFilter: TPanel
           Width = 990
-          ExplicitWidth = 784
+          ExplicitWidth = 990
           inherited lblPeriode: TLabel
             AlignWithMargins = True
             Left = 589
@@ -77,18 +81,18 @@ inherited frmDefaultLaporan: TfrmDefaultLaporan
           end
           inherited dtpAwal: TDateTimePicker
             Left = 630
-            ExplicitLeft = 424
+            ExplicitLeft = 630
           end
           inherited dtpAkhir: TDateTimePicker
             Left = 775
-            ExplicitLeft = 569
+            ExplicitLeft = 775
           end
           inherited btnRefresh: TcxButton
             AlignWithMargins = False
             Left = 883
             Top = 1
             Height = 29
-            ExplicitLeft = 677
+            ExplicitLeft = 883
             ExplicitTop = 1
             ExplicitHeight = 29
           end
@@ -98,7 +102,6 @@ inherited frmDefaultLaporan: TfrmDefaultLaporan
             Top = 4
             Align = alRight
             TabOrder = 3
-            ExplicitLeft = 232
             Width = 145
           end
           object cbbCabang: TcxExtLookupComboBox
@@ -108,14 +111,14 @@ inherited frmDefaultLaporan: TfrmDefaultLaporan
             Align = alRight
             Properties.OnValidate = cbbCabangPropertiesValidate
             TabOrder = 4
-            ExplicitLeft = 40
             Width = 145
           end
         end
         inherited cxGrid: TcxGrid
           Width = 990
           Height = 379
-          ExplicitWidth = 784
+          ExplicitWidth = 990
+          ExplicitHeight = 379
         end
       end
     end
@@ -130,21 +133,22 @@ inherited frmDefaultLaporan: TfrmDefaultLaporan
   inherited pnlButton: TPanel
     Top = 440
     Width = 1008
-    ExplicitWidth = 802
+    ExplicitTop = 440
+    ExplicitWidth = 1008
     inherited btnBaru: TcxButton
       Left = 896
       Visible = False
-      ExplicitLeft = 690
+      ExplicitLeft = 896
     end
     inherited btnHapus: TcxButton
       Left = 772
       Visible = False
-      ExplicitLeft = 566
+      ExplicitLeft = 772
     end
     inherited btnSave: TcxButton
       Left = 656
       Visible = False
-      ExplicitLeft = 450
+      ExplicitLeft = 656
     end
     inherited chkKonsolidasi1: TcxCheckBox
       ExplicitWidth = 76
@@ -161,7 +165,7 @@ inherited frmDefaultLaporan: TfrmDefaultLaporan
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010107000800E00018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800E40018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

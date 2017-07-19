@@ -1,4 +1,4 @@
-unit ufrmLaporanAR;
+unit ufrmKartuAR;
 
 interface
 
@@ -13,15 +13,18 @@ uses
   cxGridLevel, cxClasses, cxGridCustomView, cxTextEdit, cxMaskEdit,
   cxDropDownEdit, cxLookupEdit, cxDBLookupEdit, cxDBExtLookupComboBox,
   Vcl.StdCtrls, cxButtons, Vcl.ComCtrls, Vcl.ExtCtrls, cxPC, dxStatusBar,
-  uAppUtils, uModel, uModelHelper, Data.FireDACJSONReflect,
-  uDMReport, ClientModule, uDBUtils;
+  uDBUtils, ClientModule, uAppUtils, uSupplier, uModel,
+  Data.FireDACJSONReflect, uModelHelper,uDMReport;
 
 type
-  TfrmLaporanAR = class(TfrmDefaultLaporan)
-    chkIsTglJthTempo: TcxCheckBox;
+  TfrmKartuAR = class(TfrmDefaultLaporan)
+    cbbCustomer: TcxExtLookupComboBox;
+    lblCustomer: TLabel;
     procedure ActionRefreshExecute(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     FCDSS: TFDJSONDataSets;
+    procedure InisialisasiCBBSupplier;
     { Private declarations }
   public
     procedure CetakSlip; override;
@@ -29,62 +32,72 @@ type
   end;
 
 var
-  frmLaporanAR: TfrmLaporanAR;
+  frmKartuAR: TfrmKartuAR;
 
 implementation
 
 {$R *.dfm}
 
-procedure TfrmLaporanAR.ActionRefreshExecute(Sender: TObject);
+procedure TfrmKartuAR.ActionRefreshExecute(Sender: TObject);
 var
+  lCustomer: TSupplier;
   lDS: TClientDataSet;
   lCabang: TCabang;
 begin
   inherited;
 
+  lCustomer := TSupplier.CreateID(cbbCustomer.EditValue);
   lCabang := TCabang.CreateID(cbbCabang.EditValue);
 
-  if chkKonsolidasi1.Checked then
-    FCDSS := ClientDataModule.ServerLaporanClient.LaporanAR(dtpAwal.Date, dtpAkhir.Date,nil, chkIsTglJthTempo.Checked)
-  else
-    FCDSS := ClientDataModule.ServerLaporanClient.LaporanAR(dtpAwal.Date, dtpAkhir.Date,lCabang, chkIsTglJthTempo.Checked);
+  FCDSS := ClientDataModule.ServerLaporanClient.LaporanKarAR(dtpAwal.Date, dtpAkhir.Date,lCustomer, lCabang);
 
   lDS := TDBUtils.DSToCDS(TDataSet(TFDJSONDataSetsReader.GetListValue(FCDSS, 1)), Self);
 
   cxGridDBTableOverview.SetDataset(lDS, True);
   cxGridDBTableOverview.ApplyBestFit();
-  cxGridDBTableOverview.SetVisibleColumns(['cabang','customer'], False);
+  cxGridDBTableOverview.SetVisibleColumns(['urutan'], False);
 
 end;
 
-procedure TfrmLaporanAR.CetakSlip;
+procedure TfrmKartuAR.CetakSlip;
 var
+  lCustomer: TSupplier;
   lCabang: TCabang;
 begin
   inherited;
 
+  lCustomer := TSupplier.CreateID(cbbCustomer.EditValue);
   lCabang := TCabang.CreateID(cbbCabang.EditValue);
 
-  if chkKonsolidasi1.Checked then
-    FCDSS := ClientDataModule.ServerLaporanClient.LaporanAR(dtpAwal.Date, dtpAkhir.Date,nil, chkIsTglJthTempo.Checked)
-  else
-    FCDSS := ClientDataModule.ServerLaporanClient.LaporanAR(dtpAwal.Date, dtpAkhir.Date,lCabang, chkIsTglJthTempo.Checked);
+  FCDSS := ClientDataModule.ServerLaporanClient.LaporanKarAR(dtpAwal.Date, dtpAkhir.Date,lCustomer, lCabang);
 
   with dmReport do
   begin
     AddReportVariable('UserCetak', User);
-    AddReportVariable('PeriodeAwal', FormatDateTime('dd/MM/yyyy', dtpAwal.DateTime));
-    AddReportVariable('PeriodeAkhir', FormatDateTime('dd/MM/yyyy', dtpAkhir.DateTime));
 
-    if chkIsTglJthTempo.Checked then
-      AddReportVariable('JenisTanggal', 'Tanggal Jatuh Tempo')
-    else
-      AddReportVariable('JenisTanggal', 'Tanggal AR');
-
-    ExecuteReport( 'Reports/Lap_AR' ,
+    ExecuteReport( 'Reports/Lap_KarAR' ,
       FCDSS
     );
   end;
+end;
+
+procedure TfrmKartuAR.FormCreate(Sender: TObject);
+begin
+  inherited;
+  InisialisasiCBBSupplier;
+
+  cbbCabang.EditValue := ClientDataModule.Cabang.ID;
+end;
+
+procedure TfrmKartuAR.InisialisasiCBBSupplier;
+var
+  lCDSSalesman: TClientDataSet;
+  sSQL: string;
+begin
+  sSQL := 'select Nama,Kode,ID from TSupplier';
+  lCDSSalesman := TDBUtils.OpenDataset(sSQL);
+  cbbCustomer.Properties.LoadFromCDS(lCDSSalesman,'ID','Nama',['ID'],Self);
+  cbbCustomer.Properties.SetMultiPurposeLookup;
 end;
 
 end.

@@ -1,6 +1,5 @@
 inherited frmKartuAP: TfrmKartuAP
   Caption = 'Kartu AP'
-  ExplicitLeft = -235
   PixelsPerInch = 96
   TextHeight = 13
   inherited cxPCData: TcxPageControl
@@ -15,10 +14,12 @@ inherited frmKartuAP: TfrmKartuAP
             Left = 362
             Width = 10
             Visible = False
+            ExplicitLeft = 362
             ExplicitWidth = 10
           end
           inherited lblCabang: TLabel
             Left = 141
+            ExplicitLeft = 141
           end
           object lblCustomer: TLabel [4]
             AlignWithMargins = True
@@ -28,19 +29,18 @@ inherited frmKartuAP: TfrmKartuAP
             Height = 23
             Align = alRight
             Caption = 'Supplier'
-            ExplicitLeft = 435
-            ExplicitTop = 2
+            ExplicitHeight = 13
           end
           inherited cbbGudang: TcxExtLookupComboBox
             Left = 378
             Visible = False
-            ExplicitLeft = 438
+            ExplicitLeft = 378
             ExplicitWidth = 10
-            ExplicitHeight = 23
             Width = 10
           end
           inherited cbbCabang: TcxExtLookupComboBox
             Left = 211
+            ExplicitLeft = 211
           end
           object cbbCustomer: TcxExtLookupComboBox
             Tag = 1
@@ -49,12 +49,16 @@ inherited frmKartuAP: TfrmKartuAP
             Top = 4
             Align = alRight
             TabOrder = 5
-            ExplicitLeft = 497
-            ExplicitTop = 2
             Width = 145
           end
         end
       end
+    end
+    inherited cxTSInputData: TcxTabSheet
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
     end
   end
   inherited ActionListForm: TActionList
@@ -64,7 +68,7 @@ inherited frmKartuAP: TfrmKartuAP
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010107000800E80018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800F00018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

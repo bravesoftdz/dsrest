@@ -13,10 +13,11 @@ uses
   FireDAC.Phys.ODBCBase, FireDAC.Phys.MSSQL, Firedac.Dapt,
   dxRibbonCustomizationForm, FireDAC.Phys.MSSQLDef, FireDAC.Phys.PGDef,
   System.ImageList, ufrmLapKartuStock, ufrmPenjualan, ufrmPenjualanPOS,
-  ufrmCustomerInvoice,ufrmPenerimaanKas, ufrmRekBank, ufrmLaporanAR,
+  ufrmCustomerInvoice,ufrmPenerimaanKas, ufrmRekBank,
   ufrmSettingAplikasi, ufrmTransferAntarGudang, ufrmTAGRequest,
   Datasnap.DBClient, ufrmTACKirim, cxContainer, cxEdit, cxTextEdit, cxMaskEdit,
-  cxDropDownEdit, ufrmPengeluaranKas, ufrmJurnal, ufrmLapPenerimaanBarang,ufrmKartuAP;
+  cxDropDownEdit, ufrmPengeluaranKas, ufrmJurnal, ufrmLapPenerimaanBarang,
+  ufrmKartuAP, ufrmLaporanAP, ufrmKartuAR,ufrmLaporanAR, ufrmLaporanReturSupplier;
 
 type
   TfrmMain = class(TForm)
@@ -139,12 +140,24 @@ type
     actKartuAP: TAction;
     dxbrLapKasKeluar: TdxBar;
     dxbrlrgbtnKartuAP: TdxBarLargeButton;
+    dxbrlrgbtnLapAP: TdxBarLargeButton;
+    actDaftarAP: TAction;
+    dxbrLapKasMasuk: TdxBar;
+    dxbrlrgbtnKartuAR: TdxBarLargeButton;
+    dxbrlrgbtnDaftarAR: TdxBarLargeButton;
+    actKartuAR: TAction;
+    actDaftarAR: TAction;
+    dxbrlrgbtnReturSupplier: TdxBarLargeButton;
+    actLapReturSupplier: TAction;
     procedure actAlatGantiCabangExecute(Sender: TObject);
     procedure actApplicationExitExecute(Sender: TObject);
     procedure actClosingInventoryExecute(Sender: TObject);
     procedure actCustomerInvoiceExecute(Sender: TObject);
+    procedure actDaftarAPExecute(Sender: TObject);
+    procedure actDaftarARExecute(Sender: TObject);
     procedure actJurnalMemorialExecute(Sender: TObject);
     procedure actKartuAPExecute(Sender: TObject);
+    procedure actKartuARExecute(Sender: TObject);
     procedure actLapKartokExecute(Sender: TObject);
     procedure actMasSupplierExecute(Sender: TObject);
     procedure actMasterBarangExecute(Sender: TObject);
@@ -169,6 +182,7 @@ type
     procedure btnCetakClick(Sender: TObject);
     procedure FormDblClick(Sender: TObject);
     procedure actPengeluaranKasExecute(Sender: TObject);
+    procedure actLapReturSupplierExecute(Sender: TObject);
   private
     procedure UpdateStatusBar;
     { Private declarations }
@@ -223,6 +237,16 @@ begin
   frmCustomerInvoice := TfrmCustomerInvoice.Create(Self);
 end;
 
+procedure TfrmMain.actDaftarAPExecute(Sender: TObject);
+begin
+  frmlaporanAP := TfrmLaporanAP.Create(Self);
+end;
+
+procedure TfrmMain.actDaftarARExecute(Sender: TObject);
+begin
+  frmlaporanAR := TfrmLaporanAR.Create(Self);
+end;
+
 procedure TfrmMain.actJurnalMemorialExecute(Sender: TObject);
 begin
   frmJurnal := TfrmJurnal.Create(Self);
@@ -231,6 +255,11 @@ end;
 procedure TfrmMain.actKartuAPExecute(Sender: TObject);
 begin
   frmKartuAP := TfrmKartuAP.Create(Self);
+end;
+
+procedure TfrmMain.actKartuARExecute(Sender: TObject);
+begin
+  frmKartuAR := TfrmKartuAR.Create(Self);
 end;
 
 procedure TfrmMain.actLapKartokExecute(Sender: TObject);
@@ -246,6 +275,11 @@ end;
 procedure TfrmMain.actLapPenerimaanBarangExecute(Sender: TObject);
 begin
   frmLapPenerimaanBarang := TfrmLapPenerimaanBarang.Create(Self);
+end;
+
+procedure TfrmMain.actLapReturSupplierExecute(Sender: TObject);
+begin
+  frmLaporanReturSupplier := TfrmLaporanReturSupplier.Create(Self);
 end;
 
 procedure TfrmMain.actLapStockSekarangExecute(Sender: TObject);

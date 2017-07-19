@@ -76,8 +76,10 @@ begin
   with ClientDataModule.DSDataCLient do
   begin
     FCDSCabang := TDBUtils.DSToCDS(DS_CabangLookUp(), Self);
-    cbbCabang.Properties.LoadFromCDS(FCDSCabang, 'id','nama',['id'], Self);
+    cbbCabang.Properties.LoadFromCDS(FCDSCabang, 'id','cabang',['id'], Self);
     cbbCabang.Properties.SetMultiPurposeLookup();
+
+    cbbCabang.EditValue := ClientDataModule.Cabang.ID;
   end;
 end;
 

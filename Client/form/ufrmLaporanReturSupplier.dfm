@@ -1,69 +1,36 @@
-inherited frmLaporanAR: TfrmLaporanAR
-  Caption = 'Daftar AR'
+inherited frmLaporanReturSupplier: TfrmLaporanReturSupplier
+  Caption = 'Laporan Retur Supplier'
+  ExplicitLeft = -235
   PixelsPerInch = 96
   TextHeight = 13
   inherited cxPCData: TcxPageControl
     inherited cxTSOverview: TcxTabSheet
       inherited pnlListTransaksi: TPanel
         inherited pnlFilter: TPanel
-          inherited lblPeriode: TLabel
-            Left = 497
-            ExplicitLeft = 497
-          end
-          inherited lblSD: TLabel
-            Left = 649
-            ExplicitLeft = 649
-          end
           inherited lblGudang: TLabel
-            Left = 284
             Visible = False
-            ExplicitLeft = 284
-          end
-          inherited lblCabang: TLabel
-            Left = 63
-            ExplicitLeft = 63
           end
           inherited dtpAwal: TDateTimePicker
-            Left = 538
-            TabOrder = 2
-            ExplicitLeft = 503
+            TabOrder = 1
           end
           inherited dtpAkhir: TDateTimePicker
-            Left = 683
-            TabOrder = 3
-            ExplicitLeft = 648
+            TabOrder = 2
           end
           inherited btnRefresh: TcxButton
-            TabOrder = 5
+            TabOrder = 3
           end
           inherited cbbGudang: TcxExtLookupComboBox
-            Left = 346
-            TabOrder = 1
+            TabStop = False
+            TabOrder = 4
             Visible = False
-            ExplicitLeft = 311
+            ExplicitHeight = 23
           end
           inherited cbbCabang: TcxExtLookupComboBox
-            Left = 133
             TabOrder = 0
-            ExplicitLeft = 98
-          end
-          object chkIsTglJthTempo: TcxCheckBox
-            AlignWithMargins = True
-            Left = 794
-            Top = 4
-            Align = alRight
-            Caption = 'Jatuh Tempo'
-            TabOrder = 4
-            ExplicitLeft = 759
+            ExplicitHeight = 23
           end
         end
       end
-    end
-    inherited cxTSInputData: TcxTabSheet
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
     end
   end
   inherited ActionListForm: TActionList
@@ -73,7 +40,7 @@ inherited frmLaporanAR: TfrmLaporanAR
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010107000800F00018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800F40018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

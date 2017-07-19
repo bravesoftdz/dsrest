@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<TfrxReport Version="5.3.16" DotMatrixReport="True" IniFile="\Software\Fast Reports" PreviewOptions.Buttons="4095" PreviewOptions.Modal="False" PreviewOptions.Zoom="1" PrintOptions.Printer="Default" PrintOptions.PrintOnSheet="0" ReportOptions.CreateDate="42851.6618599421" ReportOptions.Description.Text="" ReportOptions.LastChange="42930.9381027894" ScriptLanguage="PascalScript" ScriptText.Text="VAR&#13;&#10;  dTotal : Double;                                                 &#13;&#10;procedure GroupHeader1OnAfterPrint(Sender: TfrxComponent);&#13;&#10;begin&#13;&#10;  dTotal := 0;                                   &#13;&#10;&#13;&#10;end;&#13;&#10;&#13;&#10;procedure MasterData1OnBeforePrint(Sender: TfrxComponent);&#13;&#10;begin&#13;&#10;  dTotal := dTotal + &#60;IBQ2.&#34;MASUK&#34;&#62; - &#60;IBQ2.&#34;KELUAR&#34;&#62;;                                                        &#13;&#10;end;&#13;&#10;&#13;&#10;begin&#13;&#10;&#13;&#10;end.">
+<TfrxReport Version="5.3.16" DotMatrixReport="True" IniFile="\Software\Fast Reports" PreviewOptions.Buttons="4095" PreviewOptions.Modal="False" PreviewOptions.Zoom="1" PrintOptions.Printer="Default" PrintOptions.PrintOnSheet="0" ReportOptions.CreateDate="42851.6618599421" ReportOptions.Description.Text="" ReportOptions.LastChange="42931.2406888657" ScriptLanguage="PascalScript" ScriptText.Text="VAR&#13;&#10;  dTotal : Double;                                                 &#13;&#10;procedure GroupHeader1OnAfterPrint(Sender: TfrxComponent);&#13;&#10;begin&#13;&#10;  dTotal := 0;                                   &#13;&#10;&#13;&#10;end;&#13;&#10;&#13;&#10;procedure MasterData1OnBeforePrint(Sender: TfrxComponent);&#13;&#10;begin&#13;&#10;  dTotal := dTotal + &#60;IBQ2.&#34;MASUK&#34;&#62; - &#60;IBQ2.&#34;KELUAR&#34;&#62;;                                                        &#13;&#10;end;&#13;&#10;&#13;&#10;begin&#13;&#10;&#13;&#10;end.">
   <Datasets>
     <item DataSet="IBQ1" DataSetName="IBQ1"/>
     <item DataSet="IBQ2" DataSetName="IBQ2"/>
@@ -27,12 +27,7 @@
       <TfrxDMPMemoView Name="IBQ1CABANGALAMAT" Left="0" Top="17" Width="816" Height="17" DataField="CABANGALAMAT" DataSet="IBQ1" DataSetName="IBQ1" HAlign="haCenter" TruncOutboundText="False" Text="[IBQ1.&#34;CABANGALAMAT&#34;]"/>
       <TfrxDMPMemoView Name="IBQ1CABANGFAX" Left="0" Top="34" Width="816" Height="17" DataSet="IBQ1" DataSetName="IBQ1" HAlign="haCenter" TruncOutboundText="False" Text="TELP : [IBQ1.&#34;cabangTELP&#34;] FAX : [IBQ1.&#34;CABANGFAX&#34;]"/>
       <TfrxDMPMemoView Name="DMPMemo36" Left="0" Top="51" Width="940.8" Height="17" TruncOutboundText="False" Text="---------------------------------------------------------------------------------------------------"/>
-      <TfrxDMPMemoView Name="IBQ1supplier" Left="86.4" Top="119" Width="489.6" Height="17" DataSet="IBQ1" DataSetName="IBQ1" TruncOutboundText="False" Text="[IBQ2.&#34;SUPPLIER&#34;]">
-        <Formats>
-          <item/>
-          <item/>
-        </Formats>
-      </TfrxDMPMemoView>
+      <TfrxDMPMemoView Name="IBQ1supplier" Left="86.4" Top="119" Width="489.6" Height="17" DataSet="IBQ1" DataSetName="IBQ1" TruncOutboundText="False" Text="[IBQ2.&#34;CUSTOMER&#34;]"/>
       <TfrxDMPMemoView Name="DMPMemo10" Left="0" Top="119" Width="76.8" Height="17" TruncOutboundText="False" Text="SUPPLIER"/>
       <TfrxDMPMemoView Name="IBQ1tglbukti" Left="86.4" Top="136" Width="489.6" Height="17" DataSet="IBQ1" DataSetName="IBQ1" TruncOutboundText="False" Text="[IBQ2.&#34;PERIODEAWAL&#34;] S.D. [IBQ2.&#34;PERIODEAKHIR&#34;]">
         <Formats>
@@ -43,7 +38,7 @@
       <TfrxDMPMemoView Name="DMPMemo11" Left="0" Top="136" Width="76.8" Height="17" DisplayFormat.FormatStr="dd mmm yyyy" DisplayFormat.Kind="fkDateTime" TruncOutboundText="False" Text="PERIODE"/>
       <TfrxDMPMemoView Name="DMPMemo19" Left="76.8" Top="119" Width="9.6" Height="17" HAlign="haCenter" TruncOutboundText="False" Text=":"/>
       <TfrxDMPMemoView Name="DMPMemo20" Left="76.8" Top="136" Width="9.6" Height="17" DisplayFormat.FormatStr="dd mmm yyyy" DisplayFormat.Kind="fkDateTime" HAlign="haCenter" TruncOutboundText="False" Text=":"/>
-      <TfrxDMPMemoView Name="DMPMemo13" Left="0" Top="68" Width="816" Height="17" DataSet="IBQ1" DataSetName="IBQ1" HAlign="haCenter" TruncOutboundText="False" Text="KARTU AP"/>
+      <TfrxDMPMemoView Name="DMPMemo13" Left="0" Top="68" Width="816" Height="17" DataSet="IBQ1" DataSetName="IBQ1" HAlign="haCenter" TruncOutboundText="False" Text="KARTU AR"/>
     </TfrxGroupHeader>
     <TfrxGroupFooter Name="GroupFooter1" FillType="ftBrush" FillGap.Top="0" FillGap.Left="0" FillGap.Bottom="0" FillGap.Right="0" Height="51" Left="0" Top="272" Width="796.8">
       <TfrxDMPMemoView Name="DMPMemo28" Left="0" Top="0" Width="940.8" Height="17" TruncOutboundText="False" Text="---------------------------------------------------------------------------------------------------"/>

@@ -25,7 +25,6 @@ type
   private
     FCDSS: TFDJSONDataSets;
     procedure InisialisasiCBBSupplier;
-    procedure InisialisasiCBBCabang;
     { Private declarations }
   public
     procedure CetakSlip; override;
@@ -63,7 +62,6 @@ end;
 procedure TfrmKartuAP.CetakSlip;
 var
   lSupplier: TSupplier;
-  lDS: TClientDataSet;
   lCabang: TCabang;
 begin
   inherited;
@@ -87,7 +85,6 @@ procedure TfrmKartuAP.FormCreate(Sender: TObject);
 begin
   inherited;
   InisialisasiCBBSupplier;
-  InisialisasiCBBCabang;
 
   cbbCabang.EditValue := ClientDataModule.Cabang.ID;
 end;
@@ -101,17 +98,6 @@ begin
   lCDSSalesman := TDBUtils.OpenDataset(sSQL);
   cbbCustomer.Properties.LoadFromCDS(lCDSSalesman,'ID','Nama',['ID'],Self);
   cbbCustomer.Properties.SetMultiPurposeLookup;
-end;
-
-procedure TfrmKartuAP.InisialisasiCBBCabang;
-var
-  lCDSSalesman: TClientDataSet;
-  sSQL: string;
-begin
-  sSQL := 'select Nama,Kode,ID from tcabang';
-  lCDSSalesman := TDBUtils.OpenDataset(sSQL);
-  cbbCabang.Properties.LoadFromCDS(lCDSSalesman,'ID','Nama',['ID'],Self);
-  cbbCabang.Properties.SetMultiPurposeLookup;
 end;
 
 end.

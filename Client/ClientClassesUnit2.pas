@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 7/14/2017 4:39:34 PM
+// 7/19/2017 5:51:36 AM
 //
 
 unit ClientClassesUnit2;
@@ -78,8 +78,14 @@ type
     FRetriveJurnalCommand_Cache: TDSRestCommand;
     FLaporanPenerimaanBarangCommand: TDSRestCommand;
     FLaporanPenerimaanBarangCommand_Cache: TDSRestCommand;
+    FLaporanAPCommand: TDSRestCommand;
+    FLaporanAPCommand_Cache: TDSRestCommand;
+    FLaporanARCommand: TDSRestCommand;
+    FLaporanARCommand_Cache: TDSRestCommand;
     FLaporanReturSupplierCommand: TDSRestCommand;
     FLaporanReturSupplierCommand_Cache: TDSRestCommand;
+    FLaporanKarARCommand: TDSRestCommand;
+    FLaporanKarARCommand_Cache: TDSRestCommand;
     FRetriveSettingAppCommand: TDSRestCommand;
     FRetriveSettingAppCommand_Cache: TDSRestCommand;
   public
@@ -124,8 +130,14 @@ type
     function RetriveJurnal_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; AJenisJurnal: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function LaporanPenerimaanBarang(ATglAwal: TDateTime; AtglAkhir: TDateTime; ACabang: TCabang; AGudang: TGudang; const ARequestFilter: string = ''): TDataSet;
     function LaporanPenerimaanBarang_Cache(ATglAwal: TDateTime; AtglAkhir: TDateTime; ACabang: TCabang; AGudang: TGudang; const ARequestFilter: string = ''): IDSRestCachedDataSet;
-    function LaporanReturSupplier(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; AGudang: TGudang; const ARequestFilter: string = ''): TDataSet;
-    function LaporanReturSupplier_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; AGudang: TGudang; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function LaporanAP(ATglAwal: TDateTime; AtglAkhir: TDateTime; ACabang: TCabang; AIsTglJatuhTempo: Boolean; const ARequestFilter: string = ''): TFDJSONDataSets;
+    function LaporanAP_Cache(ATglAwal: TDateTime; AtglAkhir: TDateTime; ACabang: TCabang; AIsTglJatuhTempo: Boolean; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
+    function LaporanAR(ATglAwal: TDateTime; AtglAkhir: TDateTime; ACabang: TCabang; AIsTglJatuhTempo: Boolean; const ARequestFilter: string = ''): TFDJSONDataSets;
+    function LaporanAR_Cache(ATglAwal: TDateTime; AtglAkhir: TDateTime; ACabang: TCabang; AIsTglJatuhTempo: Boolean; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
+    function LaporanReturSupplier(ATglAwal: TDateTime; AtglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string = ''): TFDJSONDataSets;
+    function LaporanReturSupplier_Cache(ATglAwal: TDateTime; AtglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
+    function LaporanKarAR(ATglAwal: TDateTime; ATglAkhir: TDateTime; ACustomer: TSupplier; ACabang: TCabang; const ARequestFilter: string = ''): TFDJSONDataSets;
+    function LaporanKarAR_Cache(ATglAwal: TDateTime; ATglAkhir: TDateTime; ACustomer: TSupplier; ACabang: TCabang; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
     function RetriveSettingApp(ACabang: TCabang; const ARequestFilter: string = ''): TDataSet;
     function RetriveSettingApp_Cache(ACabang: TCabang; const ARequestFilter: string = ''): IDSRestCachedDataSet;
   end;
@@ -1434,21 +1446,73 @@ const
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
-  TServerLaporan_LaporanReturSupplier: array [0..4] of TDSRestParameterMetaData =
+  TServerLaporan_LaporanAP: array [0..4] of TDSRestParameterMetaData =
   (
     (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
-    (Name: 'ATglAtglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'AtglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
-    (Name: 'AGudang'; Direction: 1; DBXType: 37; TypeName: 'TGudang'),
-    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+    (Name: 'AIsTglJatuhTempo'; Direction: 1; DBXType: 4; TypeName: 'Boolean'),
+    (Name: ''; Direction: 4; DBXType: 37; TypeName: 'TFDJSONDataSets')
   );
 
-  TServerLaporan_LaporanReturSupplier_Cache: array [0..4] of TDSRestParameterMetaData =
+  TServerLaporan_LaporanAP_Cache: array [0..4] of TDSRestParameterMetaData =
   (
     (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
-    (Name: 'ATglAtglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'AtglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
-    (Name: 'AGudang'; Direction: 1; DBXType: 37; TypeName: 'TGudang'),
+    (Name: 'AIsTglJatuhTempo'; Direction: 1; DBXType: 4; TypeName: 'Boolean'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerLaporan_LaporanAR: array [0..4] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'AtglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
+    (Name: 'AIsTglJatuhTempo'; Direction: 1; DBXType: 4; TypeName: 'Boolean'),
+    (Name: ''; Direction: 4; DBXType: 37; TypeName: 'TFDJSONDataSets')
+  );
+
+  TServerLaporan_LaporanAR_Cache: array [0..4] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'AtglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
+    (Name: 'AIsTglJatuhTempo'; Direction: 1; DBXType: 4; TypeName: 'Boolean'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerLaporan_LaporanReturSupplier: array [0..3] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'AtglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
+    (Name: ''; Direction: 4; DBXType: 37; TypeName: 'TFDJSONDataSets')
+  );
+
+  TServerLaporan_LaporanReturSupplier_Cache: array [0..3] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'AtglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerLaporan_LaporanKarAR: array [0..4] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ATglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ACustomer'; Direction: 1; DBXType: 37; TypeName: 'TSupplier'),
+    (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
+    (Name: ''; Direction: 4; DBXType: 37; TypeName: 'TFDJSONDataSets')
+  );
+
+  TServerLaporan_LaporanKarAR_Cache: array [0..4] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ATglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ACustomer'; Direction: 1; DBXType: 37; TypeName: 'TSupplier'),
+    (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
@@ -4748,7 +4812,147 @@ begin
   Result := TDSRestCachedDataSet.Create(FLaporanPenerimaanBarangCommand_Cache.Parameters[4].Value.GetString);
 end;
 
-function TServerLaporanClient.LaporanReturSupplier(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; AGudang: TGudang; const ARequestFilter: string): TDataSet;
+function TServerLaporanClient.LaporanAP(ATglAwal: TDateTime; AtglAkhir: TDateTime; ACabang: TCabang; AIsTglJatuhTempo: Boolean; const ARequestFilter: string): TFDJSONDataSets;
+begin
+  if FLaporanAPCommand = nil then
+  begin
+    FLaporanAPCommand := FConnection.CreateCommand;
+    FLaporanAPCommand.RequestType := 'POST';
+    FLaporanAPCommand.Text := 'TServerLaporan."LaporanAP"';
+    FLaporanAPCommand.Prepare(TServerLaporan_LaporanAP);
+  end;
+  FLaporanAPCommand.Parameters[0].Value.AsDateTime := ATglAwal;
+  FLaporanAPCommand.Parameters[1].Value.AsDateTime := AtglAkhir;
+  if not Assigned(ACabang) then
+    FLaporanAPCommand.Parameters[2].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FLaporanAPCommand.Parameters[2].ConnectionHandler).GetJSONMarshaler;
+    try
+      FLaporanAPCommand.Parameters[2].Value.SetJSONValue(FMarshal.Marshal(ACabang), True);
+      if FInstanceOwner then
+        ACabang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FLaporanAPCommand.Parameters[3].Value.SetBoolean(AIsTglJatuhTempo);
+  FLaporanAPCommand.Execute(ARequestFilter);
+  if not FLaporanAPCommand.Parameters[4].Value.IsNull then
+  begin
+    FUnMarshal := TDSRestCommand(FLaporanAPCommand.Parameters[4].ConnectionHandler).GetJSONUnMarshaler;
+    try
+      Result := TFDJSONDataSets(FUnMarshal.UnMarshal(FLaporanAPCommand.Parameters[4].Value.GetJSONValue(True)));
+      if FInstanceOwner then
+        FLaporanAPCommand.FreeOnExecute(Result);
+    finally
+      FreeAndNil(FUnMarshal)
+    end
+  end
+  else
+    Result := nil;
+end;
+
+function TServerLaporanClient.LaporanAP_Cache(ATglAwal: TDateTime; AtglAkhir: TDateTime; ACabang: TCabang; AIsTglJatuhTempo: Boolean; const ARequestFilter: string): IDSRestCachedTFDJSONDataSets;
+begin
+  if FLaporanAPCommand_Cache = nil then
+  begin
+    FLaporanAPCommand_Cache := FConnection.CreateCommand;
+    FLaporanAPCommand_Cache.RequestType := 'POST';
+    FLaporanAPCommand_Cache.Text := 'TServerLaporan."LaporanAP"';
+    FLaporanAPCommand_Cache.Prepare(TServerLaporan_LaporanAP_Cache);
+  end;
+  FLaporanAPCommand_Cache.Parameters[0].Value.AsDateTime := ATglAwal;
+  FLaporanAPCommand_Cache.Parameters[1].Value.AsDateTime := AtglAkhir;
+  if not Assigned(ACabang) then
+    FLaporanAPCommand_Cache.Parameters[2].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FLaporanAPCommand_Cache.Parameters[2].ConnectionHandler).GetJSONMarshaler;
+    try
+      FLaporanAPCommand_Cache.Parameters[2].Value.SetJSONValue(FMarshal.Marshal(ACabang), True);
+      if FInstanceOwner then
+        ACabang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FLaporanAPCommand_Cache.Parameters[3].Value.SetBoolean(AIsTglJatuhTempo);
+  FLaporanAPCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedTFDJSONDataSets.Create(FLaporanAPCommand_Cache.Parameters[4].Value.GetString);
+end;
+
+function TServerLaporanClient.LaporanAR(ATglAwal: TDateTime; AtglAkhir: TDateTime; ACabang: TCabang; AIsTglJatuhTempo: Boolean; const ARequestFilter: string): TFDJSONDataSets;
+begin
+  if FLaporanARCommand = nil then
+  begin
+    FLaporanARCommand := FConnection.CreateCommand;
+    FLaporanARCommand.RequestType := 'POST';
+    FLaporanARCommand.Text := 'TServerLaporan."LaporanAR"';
+    FLaporanARCommand.Prepare(TServerLaporan_LaporanAR);
+  end;
+  FLaporanARCommand.Parameters[0].Value.AsDateTime := ATglAwal;
+  FLaporanARCommand.Parameters[1].Value.AsDateTime := AtglAkhir;
+  if not Assigned(ACabang) then
+    FLaporanARCommand.Parameters[2].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FLaporanARCommand.Parameters[2].ConnectionHandler).GetJSONMarshaler;
+    try
+      FLaporanARCommand.Parameters[2].Value.SetJSONValue(FMarshal.Marshal(ACabang), True);
+      if FInstanceOwner then
+        ACabang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FLaporanARCommand.Parameters[3].Value.SetBoolean(AIsTglJatuhTempo);
+  FLaporanARCommand.Execute(ARequestFilter);
+  if not FLaporanARCommand.Parameters[4].Value.IsNull then
+  begin
+    FUnMarshal := TDSRestCommand(FLaporanARCommand.Parameters[4].ConnectionHandler).GetJSONUnMarshaler;
+    try
+      Result := TFDJSONDataSets(FUnMarshal.UnMarshal(FLaporanARCommand.Parameters[4].Value.GetJSONValue(True)));
+      if FInstanceOwner then
+        FLaporanARCommand.FreeOnExecute(Result);
+    finally
+      FreeAndNil(FUnMarshal)
+    end
+  end
+  else
+    Result := nil;
+end;
+
+function TServerLaporanClient.LaporanAR_Cache(ATglAwal: TDateTime; AtglAkhir: TDateTime; ACabang: TCabang; AIsTglJatuhTempo: Boolean; const ARequestFilter: string): IDSRestCachedTFDJSONDataSets;
+begin
+  if FLaporanARCommand_Cache = nil then
+  begin
+    FLaporanARCommand_Cache := FConnection.CreateCommand;
+    FLaporanARCommand_Cache.RequestType := 'POST';
+    FLaporanARCommand_Cache.Text := 'TServerLaporan."LaporanAR"';
+    FLaporanARCommand_Cache.Prepare(TServerLaporan_LaporanAR_Cache);
+  end;
+  FLaporanARCommand_Cache.Parameters[0].Value.AsDateTime := ATglAwal;
+  FLaporanARCommand_Cache.Parameters[1].Value.AsDateTime := AtglAkhir;
+  if not Assigned(ACabang) then
+    FLaporanARCommand_Cache.Parameters[2].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FLaporanARCommand_Cache.Parameters[2].ConnectionHandler).GetJSONMarshaler;
+    try
+      FLaporanARCommand_Cache.Parameters[2].Value.SetJSONValue(FMarshal.Marshal(ACabang), True);
+      if FInstanceOwner then
+        ACabang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FLaporanARCommand_Cache.Parameters[3].Value.SetBoolean(AIsTglJatuhTempo);
+  FLaporanARCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedTFDJSONDataSets.Create(FLaporanARCommand_Cache.Parameters[4].Value.GetString);
+end;
+
+function TServerLaporanClient.LaporanReturSupplier(ATglAwal: TDateTime; AtglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string): TFDJSONDataSets;
 begin
   if FLaporanReturSupplierCommand = nil then
   begin
@@ -4758,7 +4962,7 @@ begin
     FLaporanReturSupplierCommand.Prepare(TServerLaporan_LaporanReturSupplier);
   end;
   FLaporanReturSupplierCommand.Parameters[0].Value.AsDateTime := ATglAwal;
-  FLaporanReturSupplierCommand.Parameters[1].Value.AsDateTime := ATglAtglAkhir;
+  FLaporanReturSupplierCommand.Parameters[1].Value.AsDateTime := AtglAkhir;
   if not Assigned(ACabang) then
     FLaporanReturSupplierCommand.Parameters[2].Value.SetNull
   else
@@ -4772,27 +4976,23 @@ begin
       FreeAndNil(FMarshal)
     end
     end;
-  if not Assigned(AGudang) then
-    FLaporanReturSupplierCommand.Parameters[3].Value.SetNull
-  else
-  begin
-    FMarshal := TDSRestCommand(FLaporanReturSupplierCommand.Parameters[3].ConnectionHandler).GetJSONMarshaler;
-    try
-      FLaporanReturSupplierCommand.Parameters[3].Value.SetJSONValue(FMarshal.Marshal(AGudang), True);
-      if FInstanceOwner then
-        AGudang.Free
-    finally
-      FreeAndNil(FMarshal)
-    end
-    end;
   FLaporanReturSupplierCommand.Execute(ARequestFilter);
-  Result := TCustomSQLDataSet.Create(nil, FLaporanReturSupplierCommand.Parameters[4].Value.GetDBXReader(False), True);
-  Result.Open;
-  if FInstanceOwner then
-    FLaporanReturSupplierCommand.FreeOnExecute(Result);
+  if not FLaporanReturSupplierCommand.Parameters[3].Value.IsNull then
+  begin
+    FUnMarshal := TDSRestCommand(FLaporanReturSupplierCommand.Parameters[3].ConnectionHandler).GetJSONUnMarshaler;
+    try
+      Result := TFDJSONDataSets(FUnMarshal.UnMarshal(FLaporanReturSupplierCommand.Parameters[3].Value.GetJSONValue(True)));
+      if FInstanceOwner then
+        FLaporanReturSupplierCommand.FreeOnExecute(Result);
+    finally
+      FreeAndNil(FUnMarshal)
+    end
+  end
+  else
+    Result := nil;
 end;
 
-function TServerLaporanClient.LaporanReturSupplier_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; AGudang: TGudang; const ARequestFilter: string): IDSRestCachedDataSet;
+function TServerLaporanClient.LaporanReturSupplier_Cache(ATglAwal: TDateTime; AtglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string): IDSRestCachedTFDJSONDataSets;
 begin
   if FLaporanReturSupplierCommand_Cache = nil then
   begin
@@ -4802,7 +5002,7 @@ begin
     FLaporanReturSupplierCommand_Cache.Prepare(TServerLaporan_LaporanReturSupplier_Cache);
   end;
   FLaporanReturSupplierCommand_Cache.Parameters[0].Value.AsDateTime := ATglAwal;
-  FLaporanReturSupplierCommand_Cache.Parameters[1].Value.AsDateTime := ATglAtglAkhir;
+  FLaporanReturSupplierCommand_Cache.Parameters[1].Value.AsDateTime := AtglAkhir;
   if not Assigned(ACabang) then
     FLaporanReturSupplierCommand_Cache.Parameters[2].Value.SetNull
   else
@@ -4816,21 +5016,102 @@ begin
       FreeAndNil(FMarshal)
     end
     end;
-  if not Assigned(AGudang) then
-    FLaporanReturSupplierCommand_Cache.Parameters[3].Value.SetNull
+  FLaporanReturSupplierCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedTFDJSONDataSets.Create(FLaporanReturSupplierCommand_Cache.Parameters[3].Value.GetString);
+end;
+
+function TServerLaporanClient.LaporanKarAR(ATglAwal: TDateTime; ATglAkhir: TDateTime; ACustomer: TSupplier; ACabang: TCabang; const ARequestFilter: string): TFDJSONDataSets;
+begin
+  if FLaporanKarARCommand = nil then
+  begin
+    FLaporanKarARCommand := FConnection.CreateCommand;
+    FLaporanKarARCommand.RequestType := 'POST';
+    FLaporanKarARCommand.Text := 'TServerLaporan."LaporanKarAR"';
+    FLaporanKarARCommand.Prepare(TServerLaporan_LaporanKarAR);
+  end;
+  FLaporanKarARCommand.Parameters[0].Value.AsDateTime := ATglAwal;
+  FLaporanKarARCommand.Parameters[1].Value.AsDateTime := ATglAkhir;
+  if not Assigned(ACustomer) then
+    FLaporanKarARCommand.Parameters[2].Value.SetNull
   else
   begin
-    FMarshal := TDSRestCommand(FLaporanReturSupplierCommand_Cache.Parameters[3].ConnectionHandler).GetJSONMarshaler;
+    FMarshal := TDSRestCommand(FLaporanKarARCommand.Parameters[2].ConnectionHandler).GetJSONMarshaler;
     try
-      FLaporanReturSupplierCommand_Cache.Parameters[3].Value.SetJSONValue(FMarshal.Marshal(AGudang), True);
+      FLaporanKarARCommand.Parameters[2].Value.SetJSONValue(FMarshal.Marshal(ACustomer), True);
       if FInstanceOwner then
-        AGudang.Free
+        ACustomer.Free
     finally
       FreeAndNil(FMarshal)
     end
     end;
-  FLaporanReturSupplierCommand_Cache.ExecuteCache(ARequestFilter);
-  Result := TDSRestCachedDataSet.Create(FLaporanReturSupplierCommand_Cache.Parameters[4].Value.GetString);
+  if not Assigned(ACabang) then
+    FLaporanKarARCommand.Parameters[3].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FLaporanKarARCommand.Parameters[3].ConnectionHandler).GetJSONMarshaler;
+    try
+      FLaporanKarARCommand.Parameters[3].Value.SetJSONValue(FMarshal.Marshal(ACabang), True);
+      if FInstanceOwner then
+        ACabang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FLaporanKarARCommand.Execute(ARequestFilter);
+  if not FLaporanKarARCommand.Parameters[4].Value.IsNull then
+  begin
+    FUnMarshal := TDSRestCommand(FLaporanKarARCommand.Parameters[4].ConnectionHandler).GetJSONUnMarshaler;
+    try
+      Result := TFDJSONDataSets(FUnMarshal.UnMarshal(FLaporanKarARCommand.Parameters[4].Value.GetJSONValue(True)));
+      if FInstanceOwner then
+        FLaporanKarARCommand.FreeOnExecute(Result);
+    finally
+      FreeAndNil(FUnMarshal)
+    end
+  end
+  else
+    Result := nil;
+end;
+
+function TServerLaporanClient.LaporanKarAR_Cache(ATglAwal: TDateTime; ATglAkhir: TDateTime; ACustomer: TSupplier; ACabang: TCabang; const ARequestFilter: string): IDSRestCachedTFDJSONDataSets;
+begin
+  if FLaporanKarARCommand_Cache = nil then
+  begin
+    FLaporanKarARCommand_Cache := FConnection.CreateCommand;
+    FLaporanKarARCommand_Cache.RequestType := 'POST';
+    FLaporanKarARCommand_Cache.Text := 'TServerLaporan."LaporanKarAR"';
+    FLaporanKarARCommand_Cache.Prepare(TServerLaporan_LaporanKarAR_Cache);
+  end;
+  FLaporanKarARCommand_Cache.Parameters[0].Value.AsDateTime := ATglAwal;
+  FLaporanKarARCommand_Cache.Parameters[1].Value.AsDateTime := ATglAkhir;
+  if not Assigned(ACustomer) then
+    FLaporanKarARCommand_Cache.Parameters[2].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FLaporanKarARCommand_Cache.Parameters[2].ConnectionHandler).GetJSONMarshaler;
+    try
+      FLaporanKarARCommand_Cache.Parameters[2].Value.SetJSONValue(FMarshal.Marshal(ACustomer), True);
+      if FInstanceOwner then
+        ACustomer.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  if not Assigned(ACabang) then
+    FLaporanKarARCommand_Cache.Parameters[3].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FLaporanKarARCommand_Cache.Parameters[3].ConnectionHandler).GetJSONMarshaler;
+    try
+      FLaporanKarARCommand_Cache.Parameters[3].Value.SetJSONValue(FMarshal.Marshal(ACabang), True);
+      if FInstanceOwner then
+        ACabang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FLaporanKarARCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedTFDJSONDataSets.Create(FLaporanKarARCommand_Cache.Parameters[4].Value.GetString);
 end;
 
 function TServerLaporanClient.RetriveSettingApp(ACabang: TCabang; const ARequestFilter: string): TDataSet;
@@ -4938,8 +5219,14 @@ begin
   FRetriveJurnalCommand_Cache.DisposeOf;
   FLaporanPenerimaanBarangCommand.DisposeOf;
   FLaporanPenerimaanBarangCommand_Cache.DisposeOf;
+  FLaporanAPCommand.DisposeOf;
+  FLaporanAPCommand_Cache.DisposeOf;
+  FLaporanARCommand.DisposeOf;
+  FLaporanARCommand_Cache.DisposeOf;
   FLaporanReturSupplierCommand.DisposeOf;
   FLaporanReturSupplierCommand_Cache.DisposeOf;
+  FLaporanKarARCommand.DisposeOf;
+  FLaporanKarARCommand_Cache.DisposeOf;
   FRetriveSettingAppCommand.DisposeOf;
   FRetriveSettingAppCommand_Cache.DisposeOf;
   inherited;

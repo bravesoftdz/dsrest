@@ -1,60 +1,69 @@
-inherited frmLaporanAR: TfrmLaporanAR
-  Caption = 'Daftar AR'
+inherited frmLaporanAP: TfrmLaporanAP
+  Caption = 'Daftar AP'
+  ExplicitLeft = -235
+  ExplicitWidth = 320
+  ExplicitHeight = 240
   PixelsPerInch = 96
   TextHeight = 13
   inherited cxPCData: TcxPageControl
     inherited cxTSOverview: TcxTabSheet
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       inherited pnlListTransaksi: TPanel
         inherited pnlFilter: TPanel
           inherited lblPeriode: TLabel
-            Left = 497
+            Left = 462
             ExplicitLeft = 497
           end
           inherited lblSD: TLabel
-            Left = 649
+            Left = 614
             ExplicitLeft = 649
           end
           inherited lblGudang: TLabel
-            Left = 284
+            Left = 249
             Visible = False
             ExplicitLeft = 284
           end
           inherited lblCabang: TLabel
-            Left = 63
+            Left = 28
             ExplicitLeft = 63
           end
           inherited dtpAwal: TDateTimePicker
-            Left = 538
+            Left = 503
             TabOrder = 2
-            ExplicitLeft = 503
+            ExplicitLeft = 538
           end
           inherited dtpAkhir: TDateTimePicker
-            Left = 683
+            Left = 648
             TabOrder = 3
-            ExplicitLeft = 648
+            ExplicitLeft = 683
           end
           inherited btnRefresh: TcxButton
             TabOrder = 5
           end
           inherited cbbGudang: TcxExtLookupComboBox
-            Left = 346
+            Left = 311
             TabOrder = 1
             Visible = False
-            ExplicitLeft = 311
+            ExplicitLeft = 346
           end
           inherited cbbCabang: TcxExtLookupComboBox
-            Left = 133
+            Left = 98
             TabOrder = 0
-            ExplicitLeft = 98
+            ExplicitLeft = 133
           end
           object chkIsTglJthTempo: TcxCheckBox
             AlignWithMargins = True
-            Left = 794
+            Left = 759
             Top = 4
             Align = alRight
             Caption = 'Jatuh Tempo'
             TabOrder = 4
-            ExplicitLeft = 759
+            ExplicitLeft = 842
+            ExplicitTop = 2
+            ExplicitHeight = 21
           end
         end
       end
@@ -73,7 +82,7 @@ inherited frmLaporanAR: TfrmLaporanAR
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010107000800F00018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800EC0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

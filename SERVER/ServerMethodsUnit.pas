@@ -61,8 +61,14 @@ type
         AJenisJurnal : String): TDataset;
     function LaporanPenerimaanBarang(ATglAwal , AtglAkhir : TDateTime; ACabang :
         TCabang; AGudang : TGudang): TDataset;
-    function LaporanReturSupplier(ATglAwal , ATglAtglAkhir : TDateTime; ACabang :
-        TCabang; AGudang : TGudang): TDataset;
+    function LaporanAP(ATglAwal , AtglAkhir : TDateTime; ACabang : TCabang;
+        AIsTglJatuhTempo : Boolean): TFDJSONDataSets;
+    function LaporanAR(ATglAwal , AtglAkhir : TDateTime; ACabang : TCabang;
+        AIsTglJatuhTempo : Boolean): TFDJSONDataSets;
+    function LaporanReturSupplier(ATglAwal , AtglAkhir : TDateTime; ACabang :
+        TCabang): TFDJSONDataSets; overload;
+    function LaporanKarAR(ATglAwal , ATglAkhir : TDateTime; ACustomer : TSupplier;
+        ACabang : TCabang): TFDJSONDataSets;
     function RetriveSettingApp(ACabang : TCabang): TDataset;
 
   end;
@@ -1510,22 +1516,123 @@ end;
 
 { TLaporan }
 
-function TServerLaporan.LaporanReturSupplier(ATglAwal , ATglAtglAkhir :
-    TDateTime; ACabang : TCabang; AGudang : TGudang): TDataset;
+function TServerLaporan.LaporanAP(ATglAwal , AtglAkhir : TDateTime; ACabang :
+    TCabang; AIsTglJatuhTempo : Boolean): TFDJSONDataSets;
 var
   sSQL : String;
 begin
+  Result := TFDJSONDataSets.Create;
+
+  sSQL := 'select a.*' +
+          ' from vcabang a ' +
+          ' where a.id = ' + QuotedStr(ACabang.ID);
+
+  TFDJSONDataSetsWriter.ListAdd(Result, TDBUtils.OpenQuery(sSQL));
+
   sSQL := 'select * ' +
-          ' from vReturSupplier' +
-          ' where 1 = 1';
+          ' from vdaftarap ' +
+          ' where 1 = 1 ';
+
+  if AIsTglJatuhTempo then
+    sSQL := sSQL + ' and jatuh_tempo between ' + TAppUtils.QuotDt(StartOfTheDay(ATglAwal)) +
+          ' and ' + TAppUtils.QuotDt(EndOfTheDay(AtglAkhir))
+  else
+    sSQL := sSQL + ' and tglbukti between ' + TAppUtils.QuotDt(StartOfTheDay(ATglAwal)) +
+          ' and ' + TAppUtils.QuotDt(EndOfTheDay(AtglAkhir));
+
 
   if (ACabang <> nil) and (ACabang.ID <> '') then
     sSQL := sSQL + ' and cabang = ' + QuotedStr(ACabang.ID);
 
-  if (AGudang <> nil) and (AGudang.ID <> '') then
-    sSQL := sSQL + ' and gudang = ' + QuotedStr(AGudang.ID);
+  sSQL := sSQL + ' ORDER BY NOBUKTI';
 
-  Result   := TDBUtils.OpenDataset(sSQL);
+  TFDJSONDataSetsWriter.ListAdd(Result, TDBUtils.OpenQuery(sSQL));
+end;
+
+{ TLaporan }
+
+function TServerLaporan.LaporanAR(ATglAwal , AtglAkhir : TDateTime; ACabang :
+    TCabang; AIsTglJatuhTempo : Boolean): TFDJSONDataSets;
+var
+  sSQL : String;
+begin
+  Result := TFDJSONDataSets.Create;
+
+  sSQL := 'select a.*' +
+          ' from vcabang a ' +
+          ' where a.id = ' + QuotedStr(ACabang.ID);
+
+  TFDJSONDataSetsWriter.ListAdd(Result, TDBUtils.OpenQuery(sSQL));
+
+  sSQL := 'select * ' +
+          ' from vdaftarar ' +
+          ' where 1 = 1 ';
+
+  if AIsTglJatuhTempo then
+    sSQL := sSQL + ' and jatuh_tempo between ' + TAppUtils.QuotDt(StartOfTheDay(ATglAwal)) +
+          ' and ' + TAppUtils.QuotDt(EndOfTheDay(AtglAkhir))
+  else
+    sSQL := sSQL + ' and tglbukti between ' + TAppUtils.QuotDt(StartOfTheDay(ATglAwal)) +
+          ' and ' + TAppUtils.QuotDt(EndOfTheDay(AtglAkhir));
+
+
+  if (ACabang <> nil) and (ACabang.ID <> '') then
+    sSQL := sSQL + ' and cabang = ' + QuotedStr(ACabang.ID);
+
+  sSQL := sSQL + ' ORDER BY NOBUKTI';
+
+  TFDJSONDataSetsWriter.ListAdd(Result, TDBUtils.OpenQuery(sSQL));
+end;
+
+{ TLaporan }
+
+function TServerLaporan.LaporanReturSupplier(ATglAwal , AtglAkhir : TDateTime;
+    ACabang : TCabang): TFDJSONDataSets;
+var
+  sSQL : String;
+begin
+  Result := TFDJSONDataSets.Create;
+
+  sSQL := 'select a.*' +
+          ' from vcabang a ' +
+          ' where a.id = ' + QuotedStr(ACabang.ID);
+
+  TFDJSONDataSetsWriter.ListAdd(Result, TDBUtils.OpenQuery(sSQL));
+
+  sSQL := 'select * ' +
+          ' from vlaporanretursupplier ' +
+          ' where 1 = 1 ' +
+          ' and tglbukti between ' + TAppUtils.QuotDt(StartOfTheDay(ATglAwal)) +
+          ' and ' + TAppUtils.QuotDt(EndOfTheDay(AtglAkhir));
+
+
+  if (ACabang <> nil) and (ACabang.ID <> '') then
+    sSQL := sSQL + ' and cabang = ' + QuotedStr(ACabang.ID);
+
+  sSQL := sSQL + ' ORDER BY NOBUKTI';
+
+  TFDJSONDataSetsWriter.ListAdd(Result, TDBUtils.OpenQuery(sSQL));
+end;
+
+function TServerLaporan.LaporanKarAR(ATglAwal , ATglAkhir : TDateTime;
+    ACustomer : TSupplier; ACabang : TCabang): TFDJSONDataSets;
+var
+  sSQL: string;
+begin
+  Result := TFDJSONDataSets.Create;
+  sSQL := 'select a.*' +
+          ' from vcabang a ' +
+          ' where a.id = ' + QuotedStr(ACabang.ID);
+
+  TFDJSONDataSetsWriter.ListAdd(Result, TDBUtils.OpenQuery(sSQL));
+
+  sSQL := 'select * from SP_KARAR(' +
+          TAppUtils.QuotDt(StartOfTheDay(ATglAwal)) + ',' +
+          TAppUtils.QuotDt(EndOfTheDay(ATglAkhir)) + ',' +
+          QuotedStr(ACustomer.ID) + ',' +
+          QuotedStr(ACabang.ID) + ')';
+
+  TFDJSONDataSetsWriter.ListAdd(Result, TDBUtils.OpenQuery(sSQL));
 end;
 
 { TLaporan }

@@ -39,7 +39,6 @@ uses
   ufrmAccount in 'form\ufrmAccount.pas' {frmAccount},
   uAccount in '..\model\uAccount.pas',
   ufrmRekBank in 'form\ufrmRekBank.pas' {frmRekBank},
-  ufrmLaporanAR in 'form\ufrmLaporanAR.pas' {frmLaporanAR},
   ufrmSettingAplikasi in 'form\ufrmSettingAplikasi.pas' {frmSettingAplikasi},
   uSettingApp in '..\model\uSettingApp.pas',
   uInterface in 'lib\uInterface.pas',
@@ -65,7 +64,11 @@ uses
   ufrmLapPenerimaanBarang in 'form\ufrmLapPenerimaanBarang.pas' {frmLapPenerimaanBarang},
   ufrmLapKartuStock in 'form\ufrmLapKartuStock.pas' {frmLapKartuStock},
   uSelfFastReportFunction in 'lib\uSelfFastReportFunction.pas',
-  ufrmKartuAP in 'form\ufrmKartuAP.pas' {frmKartuAP};
+  ufrmKartuAR in 'form\ufrmKartuAR.pas' {frmKartuAR},
+  ufrmKartuAP in 'form\ufrmKartuAP.pas' {frmKartuAP},
+  ufrmLaporanAP in 'form\ufrmLaporanAP.pas' {frmLaporanAP},
+  ufrmLaporanAR in 'form\ufrmLaporanAR.pas' {frmLaporanAR},
+  ufrmLaporanReturSupplier in 'form\ufrmLaporanReturSupplier.pas' {frmLaporanReturSupplier};
 
 {$R *.res}
 

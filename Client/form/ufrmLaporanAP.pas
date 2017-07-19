@@ -1,4 +1,4 @@
-unit ufrmLaporanAR;
+unit ufrmLaporanAP;
 
 interface
 
@@ -17,7 +17,7 @@ uses
   uDMReport, ClientModule, uDBUtils;
 
 type
-  TfrmLaporanAR = class(TfrmDefaultLaporan)
+  TfrmLaporanAP = class(TfrmDefaultLaporan)
     chkIsTglJthTempo: TcxCheckBox;
     procedure ActionRefreshExecute(Sender: TObject);
   private
@@ -29,13 +29,13 @@ type
   end;
 
 var
-  frmLaporanAR: TfrmLaporanAR;
+  frmLaporanAP: TfrmLaporanAP;
 
 implementation
 
 {$R *.dfm}
 
-procedure TfrmLaporanAR.ActionRefreshExecute(Sender: TObject);
+procedure TfrmLaporanAP.ActionRefreshExecute(Sender: TObject);
 var
   lDS: TClientDataSet;
   lCabang: TCabang;
@@ -45,19 +45,19 @@ begin
   lCabang := TCabang.CreateID(cbbCabang.EditValue);
 
   if chkKonsolidasi1.Checked then
-    FCDSS := ClientDataModule.ServerLaporanClient.LaporanAR(dtpAwal.Date, dtpAkhir.Date,nil, chkIsTglJthTempo.Checked)
+    FCDSS := ClientDataModule.ServerLaporanClient.LaporanAP(dtpAwal.Date, dtpAkhir.Date,nil, chkIsTglJthTempo.Checked)
   else
-    FCDSS := ClientDataModule.ServerLaporanClient.LaporanAR(dtpAwal.Date, dtpAkhir.Date,lCabang, chkIsTglJthTempo.Checked);
+    FCDSS := ClientDataModule.ServerLaporanClient.LaporanAP(dtpAwal.Date, dtpAkhir.Date,lCabang, chkIsTglJthTempo.Checked);
 
   lDS := TDBUtils.DSToCDS(TDataSet(TFDJSONDataSetsReader.GetListValue(FCDSS, 1)), Self);
 
   cxGridDBTableOverview.SetDataset(lDS, True);
   cxGridDBTableOverview.ApplyBestFit();
-  cxGridDBTableOverview.SetVisibleColumns(['cabang','customer'], False);
+  cxGridDBTableOverview.SetVisibleColumns(['cabang','supplier'], False);
 
 end;
 
-procedure TfrmLaporanAR.CetakSlip;
+procedure TfrmLaporanAP.CetakSlip;
 var
   lCabang: TCabang;
 begin
@@ -66,9 +66,9 @@ begin
   lCabang := TCabang.CreateID(cbbCabang.EditValue);
 
   if chkKonsolidasi1.Checked then
-    FCDSS := ClientDataModule.ServerLaporanClient.LaporanAR(dtpAwal.Date, dtpAkhir.Date,nil, chkIsTglJthTempo.Checked)
+    FCDSS := ClientDataModule.ServerLaporanClient.LaporanAP(dtpAwal.Date, dtpAkhir.Date,nil, chkIsTglJthTempo.Checked)
   else
-    FCDSS := ClientDataModule.ServerLaporanClient.LaporanAR(dtpAwal.Date, dtpAkhir.Date,lCabang, chkIsTglJthTempo.Checked);
+    FCDSS := ClientDataModule.ServerLaporanClient.LaporanAP(dtpAwal.Date, dtpAkhir.Date,lCabang, chkIsTglJthTempo.Checked);
 
   with dmReport do
   begin
@@ -79,9 +79,9 @@ begin
     if chkIsTglJthTempo.Checked then
       AddReportVariable('JenisTanggal', 'Tanggal Jatuh Tempo')
     else
-      AddReportVariable('JenisTanggal', 'Tanggal AR');
+      AddReportVariable('JenisTanggal', 'Tanggal AP');
 
-    ExecuteReport( 'Reports/Lap_AR' ,
+    ExecuteReport( 'Reports/Lap_AP' ,
       FCDSS
     );
   end;

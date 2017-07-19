@@ -1,4 +1,4 @@
-unit ufrmLaporanAR;
+unit ufrmLaporanReturSupplier;
 
 interface
 
@@ -13,62 +13,47 @@ uses
   cxGridLevel, cxClasses, cxGridCustomView, cxTextEdit, cxMaskEdit,
   cxDropDownEdit, cxLookupEdit, cxDBLookupEdit, cxDBExtLookupComboBox,
   Vcl.StdCtrls, cxButtons, Vcl.ComCtrls, Vcl.ExtCtrls, cxPC, dxStatusBar,
-  uAppUtils, uModel, uModelHelper, Data.FireDACJSONReflect,
-  uDMReport, ClientModule, uDBUtils;
+  Data.FireDACJSONReflect, uModel, uModelHelper, uAppUtils, uDMReport,
+  ClientModule, uDBUtils;
 
 type
-  TfrmLaporanAR = class(TfrmDefaultLaporan)
-    chkIsTglJthTempo: TcxCheckBox;
+  TfrmLaporanReturSupplier = class(TfrmDefaultLaporan)
     procedure ActionRefreshExecute(Sender: TObject);
   private
     FCDSS: TFDJSONDataSets;
+    procedure GenerateJSONDatasets;
     { Private declarations }
+
   public
     procedure CetakSlip; override;
     { Public declarations }
   end;
 
 var
-  frmLaporanAR: TfrmLaporanAR;
+  frmLaporanReturSupplier: TfrmLaporanReturSupplier;
 
 implementation
 
 {$R *.dfm}
 
-procedure TfrmLaporanAR.ActionRefreshExecute(Sender: TObject);
+procedure TfrmLaporanReturSupplier.ActionRefreshExecute(Sender: TObject);
 var
-  lDS: TClientDataSet;
-  lCabang: TCabang;
+  lDS: tclientDataSet;
 begin
   inherited;
-
-  lCabang := TCabang.CreateID(cbbCabang.EditValue);
-
-  if chkKonsolidasi1.Checked then
-    FCDSS := ClientDataModule.ServerLaporanClient.LaporanAR(dtpAwal.Date, dtpAkhir.Date,nil, chkIsTglJthTempo.Checked)
-  else
-    FCDSS := ClientDataModule.ServerLaporanClient.LaporanAR(dtpAwal.Date, dtpAkhir.Date,lCabang, chkIsTglJthTempo.Checked);
-
+  GenerateJSONDatasets;
   lDS := TDBUtils.DSToCDS(TDataSet(TFDJSONDataSetsReader.GetListValue(FCDSS, 1)), Self);
 
   cxGridDBTableOverview.SetDataset(lDS, True);
   cxGridDBTableOverview.ApplyBestFit();
-  cxGridDBTableOverview.SetVisibleColumns(['cabang','customer'], False);
+  cxGridDBTableOverview.SetVisibleColumns(['cabang','URUTAN'], False);
 
 end;
 
-procedure TfrmLaporanAR.CetakSlip;
-var
-  lCabang: TCabang;
+procedure TfrmLaporanReturSupplier.CetakSlip;
 begin
   inherited;
-
-  lCabang := TCabang.CreateID(cbbCabang.EditValue);
-
-  if chkKonsolidasi1.Checked then
-    FCDSS := ClientDataModule.ServerLaporanClient.LaporanAR(dtpAwal.Date, dtpAkhir.Date,nil, chkIsTglJthTempo.Checked)
-  else
-    FCDSS := ClientDataModule.ServerLaporanClient.LaporanAR(dtpAwal.Date, dtpAkhir.Date,lCabang, chkIsTglJthTempo.Checked);
+  GenerateJSONDatasets();
 
   with dmReport do
   begin
@@ -76,14 +61,22 @@ begin
     AddReportVariable('PeriodeAwal', FormatDateTime('dd/MM/yyyy', dtpAwal.DateTime));
     AddReportVariable('PeriodeAkhir', FormatDateTime('dd/MM/yyyy', dtpAkhir.DateTime));
 
-    if chkIsTglJthTempo.Checked then
-      AddReportVariable('JenisTanggal', 'Tanggal Jatuh Tempo')
-    else
-      AddReportVariable('JenisTanggal', 'Tanggal AR');
-
-    ExecuteReport( 'Reports/Lap_AR' ,
+    ExecuteReport( 'Reports/Lap_ReturSupplier' ,
       FCDSS
     );
+  end;
+end;
+
+procedure TfrmLaporanReturSupplier.GenerateJSONDatasets;
+var
+  lCabang: TCabang;
+begin
+  inherited;
+  if chkKonsolidasi1.Checked then
+    FCDSS := ClientDataModule.ServerLaporanClient.LaporanReturSupplier(dtpAwal.Date, dtpAkhir.Date,nil)
+  else begin
+    lCabang := TCabang.CreateID(cbbCabang.EditValue);
+    FCDSS := ClientDataModule.ServerLaporanClient.LaporanReturSupplier(dtpAwal.Date, dtpAkhir.Date,lCabang);
   end;
 end;
 
