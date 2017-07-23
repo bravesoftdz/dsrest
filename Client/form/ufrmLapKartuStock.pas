@@ -14,12 +14,15 @@ uses
   cxDropDownEdit, cxLookupEdit, cxDBLookupEdit, cxDBExtLookupComboBox,
   Vcl.StdCtrls, cxButtons, Vcl.ComCtrls, Vcl.ExtCtrls, cxPC, dxStatusBar,
   uDBUtils, ClientModule, uModel, ClientClassesUnit2, uAppUtils,
-  Data.FireDACJSONReflect, uDMReport;
+  Data.FireDACJSONReflect, uDMReport, cxCurrencyEdit;
 
 type
   TfrmLapKartuStock = class(TfrmDefaultLaporan)
     cbbBarang: TcxExtLookupComboBox;
     Label1: TLabel;
+    pnlfOOTER: TPanel;
+    edtOTAL: TcxCurrencyEdit;
+    lblTotal: TLabel;
     procedure ActionRefreshExecute(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private
@@ -40,6 +43,7 @@ implementation
 
 procedure TfrmLapKartuStock.ActionRefreshExecute(Sender: TObject);
 var
+  dTotal: double;
   lBarang: TBarang;
   lDS: TClientDataSet;
   lGudang: TGudang;
@@ -56,6 +60,15 @@ begin
   cxGridDBTableOverview.SetDataset(lDS, True);
   cxGridDBTableOverview.ApplyBestFit();
   cxGridDBTableOverview.SetVisibleColumns(['urutan'], False);
+
+  dTotal := 0;
+  while not lDS.Eof do
+  begin
+    dTotal := dTotal + lDS.FieldByName('qtyin').AsFloat - lDS.FieldByName('qtyout').AsFloat;
+    lDS.Next;
+  end;
+
+  edtOTAL.Value := dTotal;
   
 end;
 

@@ -1,20 +1,14 @@
 inherited frmLapKartuStock: TfrmLapKartuStock
   Caption = 'Kartu Stock'
   OnShow = FormShow
+  ExplicitLeft = -235
+  ExplicitTop = -87
   PixelsPerInch = 96
   TextHeight = 13
-  inherited cxSBTransaksi: TdxStatusBar
-    ExplicitWidth = 1008
-  end
   inherited cxPCData: TcxPageControl
-    ExplicitWidth = 1008
     inherited cxTSOverview: TcxTabSheet
-      ExplicitWidth = 1000
-      ExplicitHeight = 412
       inherited pnlListTransaksi: TPanel
-        ExplicitWidth = 992
         inherited pnlFilter: TPanel
-          ExplicitWidth = 990
           inherited lblCabang: TLabel
             Left = 344
             Width = 10
@@ -32,17 +26,7 @@ inherited frmLapKartuStock: TfrmLapKartuStock
             Caption = 'Barang'
             ExplicitHeight = 13
           end
-          inherited dtpAwal: TDateTimePicker
-            ExplicitLeft = 630
-          end
-          inherited dtpAkhir: TDateTimePicker
-            ExplicitLeft = 775
-          end
-          inherited btnRefresh: TcxButton
-            ExplicitLeft = 883
-          end
           inherited cbbGudang: TcxExtLookupComboBox
-            ExplicitLeft = 438
             ExplicitHeight = 23
           end
           inherited cbbCabang: TcxExtLookupComboBox
@@ -67,21 +51,55 @@ inherited frmLapKartuStock: TfrmLapKartuStock
           end
         end
         inherited cxGrid: TcxGrid
-          ExplicitWidth = 990
+          Height = 336
+          ExplicitLeft = 6
+          ExplicitTop = 34
+          ExplicitHeight = 336
+        end
+        object pnlfOOTER: TPanel
+          Left = 1
+          Top = 368
+          Width = 990
+          Height = 43
+          Align = alBottom
+          TabOrder = 2
+          object lblTotal: TLabel
+            AlignWithMargins = True
+            Left = 735
+            Top = 4
+            Width = 83
+            Height = 35
+            Align = alRight
+            Caption = 'Total  '
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -29
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            ParentFont = False
+            ExplicitLeft = 725
+          end
+          object edtOTAL: TcxCurrencyEdit
+            AlignWithMargins = True
+            Left = 824
+            Top = 4
+            Align = alRight
+            EditValue = 90.000000000000000000
+            ParentFont = False
+            Properties.Alignment.Horz = taRightJustify
+            Properties.DisplayFormat = ',#.##;(,#.##)'
+            Properties.ReadOnly = True
+            Style.Font.Charset = DEFAULT_CHARSET
+            Style.Font.Color = clWindowText
+            Style.Font.Height = -27
+            Style.Font.Name = 'Tahoma'
+            Style.Font.Style = []
+            Style.IsFontAssigned = True
+            TabOrder = 0
+            Width = 162
+          end
         end
       end
-    end
-  end
-  inherited pnlButton: TPanel
-    ExplicitWidth = 1008
-    inherited btnBaru: TcxButton
-      ExplicitLeft = 896
-    end
-    inherited btnHapus: TcxButton
-      ExplicitLeft = 772
-    end
-    inherited btnSave: TcxButton
-      ExplicitLeft = 656
     end
   end
   inherited ActionListForm: TActionList
@@ -91,7 +109,7 @@ inherited frmLapKartuStock: TfrmLapKartuStock
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010107000800F00018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800F40018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

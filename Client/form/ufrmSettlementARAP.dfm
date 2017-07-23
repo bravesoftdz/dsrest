@@ -1,117 +1,340 @@
-inherited frmKartuAP: TfrmKartuAP
-  Caption = 'Kartu AP'
-  ExplicitTop = 7
+inherited frmSettlementARAP: TfrmSettlementARAP
+  Caption = 'Settlement AR/AP'
+  ClientHeight = 373
+  ClientWidth = 790
+  OnDestroy = FormDestroy
+  ExplicitLeft = -17
+  ExplicitWidth = 806
+  ExplicitHeight = 412
   PixelsPerInch = 96
   TextHeight = 13
+  inherited cxSBTransaksi: TdxStatusBar
+    Top = 353
+    Width = 790
+    ExplicitTop = 353
+    ExplicitWidth = 790
+  end
   inherited cxPCData: TcxPageControl
+    Width = 790
+    Height = 320
+    Properties.ActivePage = cxTSInputData
+    ExplicitWidth = 790
+    ExplicitHeight = 320
+    ClientRectBottom = 316
+    ClientRectRight = 786
     inherited cxTSOverview: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 782
+      ExplicitHeight = 292
+      inherited splTransaksi: TSplitter
+        Height = 292
+        ExplicitHeight = 292
+      end
       inherited pnlListTransaksi: TPanel
+        Width = 774
+        Height = 292
+        ExplicitWidth = 774
+        ExplicitHeight = 292
         inherited pnlFilter: TPanel
+          Width = 772
+          ExplicitWidth = 772
           inherited lblPeriode: TLabel
-            ExplicitLeft = 606
-            ExplicitTop = 2
+            Left = 349
+            ExplicitLeft = 349
           end
-          inherited lblGudang: TLabel
-            Left = 362
-            Width = 10
-            Visible = False
-            ExplicitLeft = 362
-            ExplicitWidth = 10
+          inherited lblSD: TLabel
+            Left = 510
+            ExplicitLeft = 510
           end
-          inherited lblCabang: TLabel
-            Left = 141
-            ExplicitLeft = 141
+          inherited dtpAwal: TDateTimePicker
+            Left = 402
+            ExplicitLeft = 402
           end
-          object lblCustomer: TLabel [4]
-            AlignWithMargins = True
-            Left = 394
-            Top = 4
-            Width = 38
-            Height = 23
-            Align = alRight
-            Caption = 'Supplier'
-            ExplicitHeight = 13
+          inherited dtpAkhir: TDateTimePicker
+            Left = 551
+            ExplicitLeft = 551
           end
-          inherited cbbGudang: TcxExtLookupComboBox
-            Left = 378
-            Visible = False
-            ExplicitLeft = 378
-            ExplicitWidth = 10
-            ExplicitHeight = 23
-            Width = 10
-          end
-          inherited cbbCabang: TcxExtLookupComboBox
-            Left = 211
-            ExplicitLeft = 211
-            ExplicitHeight = 23
-          end
-          object cbbCustomer: TcxExtLookupComboBox
-            Tag = 1
-            AlignWithMargins = True
-            Left = 438
-            Top = 4
-            Align = alRight
-            TabOrder = 5
-            Width = 145
+          inherited btnRefresh: TcxButton
+            Left = 662
+            ExplicitLeft = 662
           end
         end
         inherited cxGrid: TcxGrid
-          Height = 336
+          Width = 772
+          Height = 259
+          ExplicitWidth = 772
+          ExplicitHeight = 259
         end
-        object pnlfOOTER: TPanel
-          Left = 1
-          Top = 368
-          Width = 990
-          Height = 43
-          Align = alBottom
-          TabOrder = 2
-          object lblTotal: TLabel
-            AlignWithMargins = True
-            Left = 735
-            Top = 4
-            Width = 83
-            Height = 35
-            Align = alRight
-            Caption = 'Total  '
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -29
-            Font.Name = 'Tahoma'
-            Font.Style = []
-            ParentFont = False
-            ExplicitLeft = 725
+      end
+    end
+    inherited cxTSInputData: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 782
+      ExplicitHeight = 292
+      object splARAP: TSplitter
+        Left = 583
+        Top = 95
+        Width = 5
+        Height = 197
+        ExplicitLeft = 577
+        ExplicitTop = 89
+        ExplicitHeight = 203
+      end
+      object pnlHeader: TPanel
+        AlignWithMargins = True
+        Left = 3
+        Top = 3
+        Width = 776
+        Height = 89
+        Align = alTop
+        TabOrder = 0
+        ExplicitTop = 0
+        object lblNoBukti: TcxLabel
+          Left = 47
+          Top = 9
+          Caption = 'No Bukti'
+          Transparent = True
+        end
+        object lblTglBukti: TcxLabel
+          Left = 48
+          Top = 34
+          Caption = 'Tanggal'
+          Transparent = True
+        end
+        object lblSupplier: TcxLabel
+          Left = -2
+          Top = 59
+          Caption = 'Supplier/Customer'
+          Transparent = True
+        end
+        object edNoBukti: TcxTextEdit
+          Left = 96
+          Top = 7
+          TabOrder = 3
+          Text = 'No Otomatis'
+          Width = 145
+        end
+        object edTglBukti: TcxDateEdit
+          Left = 96
+          Top = 32
+          TabOrder = 4
+          Width = 145
+        end
+        object cbbSupplier: TcxExtLookupComboBox
+          Left = 96
+          Top = 57
+          Properties.OnValidate = cbbSupplierPropertiesValidate
+          TabOrder = 5
+          Width = 205
+        end
+        object lblKeterangan: TcxLabel
+          Left = 335
+          Top = 9
+          Caption = 'Keterangan'
+          Transparent = True
+        end
+        object mmoKeterangan: TMemo
+          Left = 401
+          Top = 7
+          Width = 185
+          Height = 71
+          Lines.Strings = (
+            'mmoKeterangan')
+          TabOrder = 7
+        end
+      end
+      object cxGridAR: TcxGrid
+        AlignWithMargins = True
+        Left = 3
+        Top = 98
+        Width = 577
+        Height = 191
+        Align = alLeft
+        TabOrder = 1
+        RootLevelOptions.DetailTabsPosition = dtpTop
+        object cxGridTableAR: TcxGridTableView
+          Navigator.Buttons.CustomButtons = <>
+          OnEditing = cxGridTableAREditing
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <
+            item
+              Format = ',0.00;(,0.00)'
+              Kind = skSum
+              Column = cxGridColARNominalSettlement
+            end>
+          DataController.Summary.SummaryGroups = <>
+          OptionsBehavior.FocusCellOnTab = True
+          OptionsBehavior.FocusFirstCellOnNewRecord = True
+          OptionsBehavior.GoToNextCellOnEnter = True
+          OptionsBehavior.FocusCellOnCycle = True
+          OptionsData.Appending = True
+          OptionsView.Footer = True
+          OptionsView.GroupByBox = False
+          Styles.ContentEven = ClientDataModule.cxstylGridEven
+          Styles.ContentOdd = ClientDataModule.cxstylGridOdd
+          Styles.Header = ClientDataModule.cxstylGridHeader
+          object cxGridColARAR: TcxGridColumn
+            Caption = 'No Bukti'
+            PropertiesClassName = 'TcxExtLookupComboBoxProperties'
+            Properties.OnValidate = cxGridColARARPropertiesValidate
+            HeaderAlignmentHorz = taCenter
+            Width = 149
           end
-          object edtOTAL: TcxCurrencyEdit
-            AlignWithMargins = True
-            Left = 824
-            Top = 4
-            Align = alRight
-            EditValue = 90.000000000000000000
-            ParentFont = False
+          object cxGridColARNominal: TcxGridColumn
+            Caption = 'Nominal'
+            PropertiesClassName = 'TcxCurrencyEditProperties'
             Properties.Alignment.Horz = taRightJustify
-            Properties.DisplayFormat = ',#.##;(,#.##)'
-            Properties.ReadOnly = True
-            Style.Font.Charset = DEFAULT_CHARSET
-            Style.Font.Color = clWindowText
-            Style.Font.Height = -27
-            Style.Font.Name = 'Tahoma'
-            Style.Font.Style = []
-            Style.IsFontAssigned = True
-            TabOrder = 0
-            Width = 162
+            Properties.DisplayFormat = ',0.00;(,0.00)'
+            HeaderAlignmentHorz = taCenter
+            Width = 119
           end
+          object cxGridColARSisa: TcxGridColumn
+            Caption = 'Sisa'
+            PropertiesClassName = 'TcxCurrencyEditProperties'
+            Properties.Alignment.Horz = taRightJustify
+            Properties.DisplayFormat = ',0.00;(,0.00)'
+            HeaderAlignmentHorz = taCenter
+            Width = 132
+          end
+          object cxGridColARNominalSettlement: TcxGridColumn
+            Caption = 'Nominal Settlement'
+            DataBinding.ValueType = 'Currency'
+            PropertiesClassName = 'TcxCurrencyEditProperties'
+            Properties.Alignment.Horz = taRightJustify
+            Properties.DisplayFormat = ',0.00;(,0.00)'
+            HeaderAlignmentHorz = taCenter
+            Width = 128
+          end
+        end
+        object cxgrdlvlARLevel: TcxGridLevel
+          Caption = 'AR (Piutang)'
+          GridView = cxGridTableAR
+        end
+      end
+      object cxGridAP: TcxGrid
+        AlignWithMargins = True
+        Left = 591
+        Top = 98
+        Width = 188
+        Height = 191
+        Align = alClient
+        TabOrder = 2
+        RootLevelOptions.DetailTabsPosition = dtpTop
+        object cxGridTableAP: TcxGridTableView
+          Navigator.Buttons.CustomButtons = <>
+          OnEditing = cxGridTableAPEditing
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <
+            item
+              Format = ',0.00;(,0.00)'
+              Kind = skSum
+              Column = cxGridColAPNominalSettlement
+            end>
+          DataController.Summary.SummaryGroups = <>
+          OptionsBehavior.FocusCellOnTab = True
+          OptionsBehavior.FocusFirstCellOnNewRecord = True
+          OptionsBehavior.GoToNextCellOnEnter = True
+          OptionsBehavior.FocusCellOnCycle = True
+          OptionsData.Appending = True
+          OptionsView.Footer = True
+          OptionsView.GroupByBox = False
+          Styles.ContentEven = ClientDataModule.cxstylGridEven
+          Styles.ContentOdd = ClientDataModule.cxstylGridOdd
+          Styles.Header = ClientDataModule.cxstylGridHeader
+          object cxGridColAPAP: TcxGridColumn
+            Caption = 'No Bukti'
+            PropertiesClassName = 'TcxExtLookupComboBoxProperties'
+            Properties.OnValidate = cxGridColAPAPPropertiesValidate
+            HeaderAlignmentHorz = taCenter
+            Width = 149
+          end
+          object cxGridColAPNominal: TcxGridColumn
+            Caption = 'Nominal'
+            PropertiesClassName = 'TcxCurrencyEditProperties'
+            Properties.Alignment.Horz = taRightJustify
+            Properties.DisplayFormat = ',0.00;(,0.00)'
+            HeaderAlignmentHorz = taCenter
+            Width = 119
+          end
+          object cxGridColAPSisa: TcxGridColumn
+            Caption = 'Sisa'
+            PropertiesClassName = 'TcxCurrencyEditProperties'
+            Properties.Alignment.Horz = taRightJustify
+            Properties.DisplayFormat = ',0.00;(,0.00)'
+            HeaderAlignmentHorz = taCenter
+            Width = 132
+          end
+          object cxGridColAPNominalSettlement: TcxGridColumn
+            Caption = 'Nominal Settlement'
+            DataBinding.ValueType = 'Currency'
+            PropertiesClassName = 'TcxCurrencyEditProperties'
+            Properties.Alignment.Horz = taRightJustify
+            Properties.DisplayFormat = ',0.00;(,0.00)'
+            HeaderAlignmentHorz = taCenter
+            Width = 128
+          end
+        end
+        object cxgrdlvlAP: TcxGridLevel
+          Caption = 'AP (Hutang)'
+          GridView = cxGridTableAP
         end
       end
     end
   end
-  inherited ActionListForm: TActionList
-    inherited ActionRefresh: TAction
-      OnExecute = ActionRefreshExecute
+  inherited pnlButton: TPanel
+    Top = 320
+    Width = 790
+    ExplicitTop = 320
+    ExplicitWidth = 790
+    inherited btnBaru: TcxButton
+      Left = 678
+      ExplicitLeft = 678
+    end
+    inherited btnHapus: TcxButton
+      Left = 554
+      ExplicitLeft = 554
+    end
+    inherited btnSave: TcxButton
+      Left = 438
+      ExplicitLeft = 438
+    end
+    inherited chkKonsolidasi1: TcxCheckBox
+      ExplicitWidth = 76
+      ExplicitHeight = 31
     end
   end
+  inherited ActionListForm: TActionList
+    inherited ActionSimpan: TAction
+      OnExecute = ActionSimpanExecute
+    end
+  end
+  inherited cxGridRepTransaksi: TcxGridViewRepository
+    Left = 688
+    Top = 24
+  end
+  inherited dsCabang: TDataSource
+    Left = 752
+    Top = 24
+  end
+  inherited DSPCabang: TDataSetProvider
+    Left = 720
+    Top = 72
+  end
+  inherited cdsCabang: TClientDataSet
+    Left = 696
+    Top = 64
+  end
+  inherited dlgSaveExportExcel: TSaveDialog
+    Left = 752
+    Top = 64
+  end
   inherited ilButton: TImageList
+    Left = 720
+    Top = 24
     Bitmap = {
-      494C010107000800F40018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800F80018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

@@ -8,7 +8,7 @@ uses
   uCustomerInvoice, uAR, uPenerimaanKas, uAccount, uRekBank,
   uTransferAntarGudang, uSettingApp, uTAGRequests, uTransferAntarCabang,
   uPengeluaranKas, FireDAC.Comp.Client, uSettingAppServer, uJurnal, uSupplier,
-  uPenerimaanBarang,uReturSupplier;
+  uPenerimaanBarang,uReturSupplier, uSettlementARAP;
 
 type
   {$METHODINFO ON}
@@ -437,6 +437,19 @@ type
     function BeforeSave(AAppObject : TAppObject): Boolean; override;
     function BeforeDelete(AAppObject : TAppObject): Boolean; override;
     function Retrieve(AID : String): TJurnal;
+  end;
+
+  TServerSerttlementARAP = class(TServerTransaction)
+  private
+    function UpdateAPTerbayar(ASettlementARAP : TSettlementARAP; AIsBayar :
+        Boolean): Boolean;
+    function UpdateARTerbayar(ASettlementARAP : TSettlementARAP; AIsBayar :
+        Boolean): Boolean;
+  public
+    function AfterSave(AAppObject : TAppObject): Boolean; override;
+    function BeforeDelete(AAppObject : TAppObject): Boolean; override;
+    function BeforeSave(AAppObject : TAppObject): Boolean; override;
+    function Retrieve(AID : String): TSettlementARAP;
   end;
 
 
@@ -3854,6 +3867,102 @@ function TServerJurnal.Retrieve(AID : String): TJurnal;
 begin
   Result      := TJurnal.Create;
   TDBUtils.LoadFromDB(Result, AID);
+end;
+
+function TServerSerttlementARAP.AfterSave(AAppObject : TAppObject): Boolean;
+begin
+  Result := False;
+
+  if AAppObject= nil then
+    Exit;
+
+  if UpdateARTerbayar(TSettlementARAP(AAppObject), True) then
+    if UpdateAPTerbayar(TSettlementARAP(AAppObject), True) then
+      Result := True;
+end;
+
+function TServerSerttlementARAP.BeforeDelete(AAppObject : TAppObject): Boolean;
+begin
+  Result := False;
+
+  if AAppObject= nil then
+    Exit;
+
+  if UpdateARTerbayar(TSettlementARAP(AAppObject), False) then
+    if UpdateAPTerbayar(TSettlementARAP(AAppObject), False) then
+      Result := True;
+end;
+
+function TServerSerttlementARAP.BeforeSave(AAppObject : TAppObject): Boolean;
+begin
+  Result := False;
+
+  if AAppObject= nil then
+    Exit;
+
+  if UpdateARTerbayar(TSettlementARAP(AAppObject), False) then
+    if UpdateAPTerbayar(TSettlementARAP(AAppObject), False) then
+      Result := True;
+end;
+
+function TServerSerttlementARAP.Retrieve(AID : String): TSettlementARAP;
+begin
+  Result := TSettlementARAP.Create;
+  TDBUtils.LoadFromDB(Result, AID);
+end;
+
+function TServerSerttlementARAP.UpdateAPTerbayar(ASettlementARAP :
+    TSettlementARAP; AIsBayar : Boolean): Boolean;
+var
+  sFilterID: string;
+  sOperator: string;
+  sSQL: string;
+begin
+  Result := False;
+
+  sOperator := '-';
+  if AIsBayar then
+    sOperator := '+';
+
+  if ASettlementARAP.ID = '' then
+    sFilterID := 'newid()'
+  else
+    sFilterID := QuotedStr(ASettlementARAP.ID);
+
+  sSQL := 'update a set a.terbayar = isnull(a.terbayar,0) ' + sOperator + ' b.nominal' +
+          ' from tap a ' +
+          ' INNER JOIN TSettlementARAPItemAP b on a.id = b.ap ' +
+          ' where b.SettlementARAP = ' + sFilterID;
+
+  if TDBUtils.ExecuteSQL(sSQL) then
+    Result := True;
+end;
+
+function TServerSerttlementARAP.UpdateARTerbayar(ASettlementARAP :
+    TSettlementARAP; AIsBayar : Boolean): Boolean;
+var
+  sFilterID: string;
+  sOperator: string;
+  sSQL: string;
+begin
+  Result := False;
+
+  sOperator := '-';
+  if AIsBayar then
+    sOperator := '+';
+
+  if ASettlementARAP.ID = '' then
+    sFilterID := 'newid()'
+  else
+    sFilterID := QuotedStr(ASettlementARAP.ID);
+
+  sSQL := 'update a set a.terbayar = isnull(a.terbayar,0) ' + sOperator + ' b.nominal' +
+          ' from tar a ' +
+          ' INNER JOIN TSettlementARAPItemAR b on a.id = b.ar ' +
+          ' where b.SettlementARAP = ' + sFilterID;
+
+  if TDBUtils.ExecuteSQL(sSQL) then
+    Result := True;
 end;
 
 

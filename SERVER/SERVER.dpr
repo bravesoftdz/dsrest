@@ -34,7 +34,8 @@ uses
   uSupplier in '..\model\uSupplier.pas',
   uReturSupplier in '..\model\uReturSupplier.pas',
   uPenerimaanBarang in '..\model\uPenerimaanBarang.pas',
-  ufrmSettingAppServer in 'ufrmSettingAppServer.pas' {frmSettingAppServer};
+  ufrmSettingAppServer in 'ufrmSettingAppServer.pas' {frmSettingAppServer},
+  uSettlementARAP in '..\model\uSettlementARAP.pas';
 
 {$R *.res}
 

@@ -68,7 +68,9 @@ uses
   ufrmKartuAP in 'form\ufrmKartuAP.pas' {frmKartuAP},
   ufrmLaporanAP in 'form\ufrmLaporanAP.pas' {frmLaporanAP},
   ufrmLaporanAR in 'form\ufrmLaporanAR.pas' {frmLaporanAR},
-  ufrmLaporanReturSupplier in 'form\ufrmLaporanReturSupplier.pas' {frmLaporanReturSupplier};
+  ufrmLaporanReturSupplier in 'form\ufrmLaporanReturSupplier.pas' {frmLaporanReturSupplier},
+  uSettlementARAP in '..\model\uSettlementARAP.pas',
+  ufrmSettlementARAP in 'form\ufrmSettlementARAP.pas' {frmSettlementARAP};
 
 {$R *.res}
 
@@ -78,5 +80,6 @@ begin
   Application.CreateForm(TClientDataModule, ClientDataModule);
   Application.CreateForm(TfrmMain, frmMain);
   Application.CreateForm(TDMReport, DMReport);
+  Application.CreateForm(TfrmSettlementARAP, frmSettlementARAP);
   Application.Run;
 end.

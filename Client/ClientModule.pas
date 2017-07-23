@@ -42,6 +42,7 @@ type
     FServerTransferAntarCabangKirimClient: TServerTransferAntarCabangKirimClient;
     FServerTransferAntarCabangTerimaClient: TServerTransferAntarCabangTerimaClient;
     FServerJurnalClient: TServerJurnalClient;
+    FServerSerttlementARAPClient: TServerSerttlementARAPClient;
     function GetCabang: tcabang;
     function GetServerUOMClient: TServerUOMClient;
     function GetServerSupplierClient: TServerSupplierClient;
@@ -70,6 +71,7 @@ type
     function GetServerTransferAntarCabangTerimaClient:
         TServerTransferAntarCabangTerimaClient;
     function GetServerJurnalClient: TServerJurnalClient;
+    function GetServerSerttlementARAPClient: TServerSerttlementARAPClient;
     { Private declarations }
   public
     constructor Create(AOwner: TComponent); override;
@@ -120,6 +122,8 @@ type
         FServerTransferAntarCabangTerimaClient;
     property ServerJurnalClient: TServerJurnalClient read GetServerJurnalClient
         write FServerJurnalClient;
+    property ServerSerttlementARAPClient: TServerSerttlementARAPClient read
+        GetServerSerttlementARAPClient write FServerSerttlementARAPClient;
 end;
 
 var
@@ -401,6 +405,16 @@ begin
 
   FServerJurnalClient:= TServerJurnalClient.Create(DSRestConnection, FInstanceOwner);
   Result := FServerJurnalClient;
+end;
+
+function TClientDataModule.GetServerSerttlementARAPClient:
+    TServerSerttlementARAPClient;
+begin
+  if FServerSerttlementARAPClient <> nil then
+    FreeAndNil(FServerSerttlementARAPClient);
+
+  FServerSerttlementARAPClient:= TServerSerttlementARAPClient.Create(DSRestConnection, FInstanceOwner);
+  Result := FServerSerttlementARAPClient;
 end;
 
 end.
