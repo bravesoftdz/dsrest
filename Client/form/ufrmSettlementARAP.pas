@@ -42,6 +42,8 @@ type
     cxgrdlvlAP: TcxGridLevel;
     lblKeterangan: TcxLabel;
     mmoKeterangan: TMemo;
+    procedure ActionBaruExecute(Sender: TObject);
+    procedure ActionRefreshExecute(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure ActionSimpanExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -66,6 +68,7 @@ type
     procedure LoadDataAR(AIDCustomer : String);
     procedure LoadDataAP(AIDCustomer : String);
     procedure LoadDataSettlementARAPItemARs;
+    procedure LoadDataSettlementARAPItemAPs;
     procedure UpdateSettlementARAPItemARs;
     procedure UpdateSettlementARAPItemAPs;
     { Private declarations }
@@ -83,6 +86,25 @@ implementation
 
 {$R *.dfm}
 
+procedure TfrmSettlementARAP.ActionBaruExecute(Sender: TObject);
+begin
+  inherited;
+  LoadDataSettlementARAP('');
+end;
+
+procedure TfrmSettlementARAP.ActionRefreshExecute(Sender: TObject);
+var
+  lcds: tclientDataSet;
+begin
+  inherited;
+
+  lcds := TDBUtils.DSToCDS(ClientDataModule.ServerSettlementARAPClient.RetrieveData(dtpAwal.DateTime, dtpAkhir.DateTime, 'XXX'), cxGridDBTableOverview);
+
+  cxGridDBTableOverview.SetDataset(lcds, True);
+  cxGridDBTableOverview.SetVisibleColumns([], False);
+  cxGridDBTableOverview.ApplyBestFit();
+end;
+
 procedure TfrmSettlementARAP.FormDestroy(Sender: TObject);
 begin
   inherited;
@@ -95,6 +117,9 @@ begin
   if not IsBisaSimpan then
     Exit;
 
+  if SettlementARAP.ID = '' then
+    edNoBukti.Text := ClientDataModule.ServerSettlementARAPClient.GenerateNoBukti(edTglBukti.Date, 'SET');
+
   SettlementARAP.NoBukti    := edNoBukti.Text;
   SettlementARAP.Supplier   := TSupplier.CreateID(cbbSupplier.EditValue);
   SettlementARAP.TglBukti   := edTglBukti.Date;
@@ -103,7 +128,7 @@ begin
   UpdateSettlementARAPItemARs;
   UpdateSettlementARAPItemAPs;
 
-  if ClientDataModule.ServerSerttlementARAPClient.Save(SettlementARAP) then
+  if ClientDataModule.ServerSettlementARAPClient.Save(SettlementARAP) then
   begin
     TAppUtils.InformationBerhasilSimpan;
     LoadDataSettlementARAP('');
@@ -186,26 +211,42 @@ begin
 end;
 
 function TfrmSettlementARAP.IsBisaSimpan: Boolean;
+var
+  dSummaryAP: Double;
+  dSummaryAR: Double;
 begin
+  Result := False;
+
+  dSummaryAR := cxGridTableAR.DataController.Summary.FooterSummaryValues[0];
+  dSummaryAP := cxGridTableAP.DataController.Summary.FooterSummaryValues[0];
+
+  if dSummaryAP <> dSummaryAR then
+  begin
+    TAppUtils.Warning('Nilai Settlement AR dan AP Berbeda');
+    Exit;
+  end;
+
   Result := True;
 end;
 
 procedure TfrmSettlementARAP.LoadDataSettlementARAP(const AID: string);
 begin
-  edNoBukti.Text := ClientDataModule.ServerSerttlementARAPClient.GenerateNoBukti(edTglBukti.Date, '');
-  cbbSupplier.EditValue := nil;
-  mmoKeterangan.Clear;
   FreeAndNil(FSettlementARAP);
+
+  edNoBukti.Text        := ClientDataModule.ServerSettlementARAPClient.GenerateNoBukti(edTglBukti.Date, 'SET');
+  cbbSupplier.EditValue := null;
+  mmoKeterangan.Clear;
 
   if AID = '' then
     Exit;
 
-  FSettlementARAP := ClientDataModule.ServerSerttlementARAPClient.Retrieve(AID);
-  edNoBukti.Text  := SettlementARAP.NoBukti;
+  FSettlementARAP       := ClientDataModule.ServerSettlementARAPClient.Retrieve(AID);
+  edNoBukti.Text        := SettlementARAP.NoBukti;
   cbbSupplier.EditValue := SettlementARAP.Supplier.ID;
-  mmoKeterangan.Text := SettlementARAP.Keterangan;
+  mmoKeterangan.Text    := SettlementARAP.Keterangan;
 
   LoadDataSettlementARAPItemARs;
+  LoadDataSettlementARAPItemAPs;
 
 
 end;
@@ -239,11 +280,24 @@ begin
 end;
 
 procedure TfrmSettlementARAP.LoadDataSettlementARAPItemARs;
+var
+  I: Integer;
 begin
   cxGridTableAR.ClearRows;
   for I := 0 to SettlementARAP.SettlementARAPItemARs.Count - 1 do
   begin
     cxGridTableAR.SetObjectData(SettlementARAP.SettlementARAPItemARs[i], i);
+  end;
+end;
+
+procedure TfrmSettlementARAP.LoadDataSettlementARAPItemAPs;
+var
+  I: Integer;
+begin
+  cxGridTableAP.ClearRows;
+  for I := 0 to SettlementARAP.SettlementARAPItemAPs.Count - 1 do
+  begin
+    cxGridTableAP.SetObjectData(SettlementARAP.SettlementARAPItemAPs[i], i);
   end;
 end;
 

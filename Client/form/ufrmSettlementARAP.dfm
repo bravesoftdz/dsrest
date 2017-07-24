@@ -3,7 +3,6 @@ inherited frmSettlementARAP: TfrmSettlementARAP
   ClientHeight = 373
   ClientWidth = 790
   OnDestroy = FormDestroy
-  ExplicitLeft = -17
   ExplicitWidth = 806
   ExplicitHeight = 412
   PixelsPerInch = 96
@@ -90,7 +89,6 @@ inherited frmSettlementARAP: TfrmSettlementARAP
         Height = 89
         Align = alTop
         TabOrder = 0
-        ExplicitTop = 0
         object lblNoBukti: TcxLabel
           Left = 47
           Top = 9
@@ -176,6 +174,7 @@ inherited frmSettlementARAP: TfrmSettlementARAP
           Styles.ContentOdd = ClientDataModule.cxstylGridOdd
           Styles.Header = ClientDataModule.cxstylGridHeader
           object cxGridColARAR: TcxGridColumn
+            AlternateCaption = 'AR'
             Caption = 'No Bukti'
             PropertiesClassName = 'TcxExtLookupComboBoxProperties'
             Properties.OnValidate = cxGridColARARPropertiesValidate
@@ -199,6 +198,7 @@ inherited frmSettlementARAP: TfrmSettlementARAP
             Width = 132
           end
           object cxGridColARNominalSettlement: TcxGridColumn
+            AlternateCaption = 'Nominal'
             Caption = 'Nominal Settlement'
             DataBinding.ValueType = 'Currency'
             PropertiesClassName = 'TcxCurrencyEditProperties'
@@ -244,6 +244,7 @@ inherited frmSettlementARAP: TfrmSettlementARAP
           Styles.ContentOdd = ClientDataModule.cxstylGridOdd
           Styles.Header = ClientDataModule.cxstylGridHeader
           object cxGridColAPAP: TcxGridColumn
+            AlternateCaption = 'AP'
             Caption = 'No Bukti'
             PropertiesClassName = 'TcxExtLookupComboBoxProperties'
             Properties.OnValidate = cxGridColAPAPPropertiesValidate
@@ -267,6 +268,7 @@ inherited frmSettlementARAP: TfrmSettlementARAP
             Width = 132
           end
           object cxGridColAPNominalSettlement: TcxGridColumn
+            AlternateCaption = 'Nominal'
             Caption = 'Nominal Settlement'
             DataBinding.ValueType = 'Currency'
             PropertiesClassName = 'TcxCurrencyEditProperties'
@@ -309,10 +311,13 @@ inherited frmSettlementARAP: TfrmSettlementARAP
     inherited ActionSimpan: TAction
       OnExecute = ActionSimpanExecute
     end
+    inherited ActionRefresh: TAction
+      OnExecute = ActionRefreshExecute
+    end
   end
   inherited cxGridRepTransaksi: TcxGridViewRepository
-    Left = 688
-    Top = 24
+    Left = 664
+    Top = 80
   end
   inherited dsCabang: TDataSource
     Left = 752
@@ -331,10 +336,10 @@ inherited frmSettlementARAP: TfrmSettlementARAP
     Top = 64
   end
   inherited ilButton: TImageList
-    Left = 720
-    Top = 24
+    Left = 608
+    Top = 88
     Bitmap = {
-      494C010107000800F80018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800000118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

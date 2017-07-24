@@ -42,7 +42,7 @@ type
     FServerTransferAntarCabangKirimClient: TServerTransferAntarCabangKirimClient;
     FServerTransferAntarCabangTerimaClient: TServerTransferAntarCabangTerimaClient;
     FServerJurnalClient: TServerJurnalClient;
-    FServerSerttlementARAPClient: TServerSerttlementARAPClient;
+    FServerSettlementARAPClient: TServerSettlementARAPClient;
     function GetCabang: tcabang;
     function GetServerUOMClient: TServerUOMClient;
     function GetServerSupplierClient: TServerSupplierClient;
@@ -71,7 +71,7 @@ type
     function GetServerTransferAntarCabangTerimaClient:
         TServerTransferAntarCabangTerimaClient;
     function GetServerJurnalClient: TServerJurnalClient;
-    function GetServerSerttlementARAPClient: TServerSerttlementARAPClient;
+    function GeTServerSettlementARAPClient: TServerSettlementARAPClient;
     { Private declarations }
   public
     constructor Create(AOwner: TComponent); override;
@@ -122,8 +122,8 @@ type
         FServerTransferAntarCabangTerimaClient;
     property ServerJurnalClient: TServerJurnalClient read GetServerJurnalClient
         write FServerJurnalClient;
-    property ServerSerttlementARAPClient: TServerSerttlementARAPClient read
-        GetServerSerttlementARAPClient write FServerSerttlementARAPClient;
+    property ServerSettlementARAPClient: TServerSettlementARAPClient read
+        GeTServerSettlementARAPClient write FServerSettlementARAPClient;
 end;
 
 var
@@ -407,14 +407,14 @@ begin
   Result := FServerJurnalClient;
 end;
 
-function TClientDataModule.GetServerSerttlementARAPClient:
-    TServerSerttlementARAPClient;
+function TClientDataModule.GeTServerSettlementARAPClient:
+    TServerSettlementARAPClient;
 begin
-  if FServerSerttlementARAPClient <> nil then
-    FreeAndNil(FServerSerttlementARAPClient);
+  if FServerSettlementARAPClient <> nil then
+    FreeAndNil(FServerSettlementARAPClient);
 
-  FServerSerttlementARAPClient:= TServerSerttlementARAPClient.Create(DSRestConnection, FInstanceOwner);
-  Result := FServerSerttlementARAPClient;
+  FServerSettlementARAPClient:= TServerSettlementARAPClient.Create(DSRestConnection, FInstanceOwner);
+  Result := FServerSettlementARAPClient;
 end;
 
 end.

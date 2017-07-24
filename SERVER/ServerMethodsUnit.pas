@@ -439,7 +439,7 @@ type
     function Retrieve(AID : String): TJurnal;
   end;
 
-  TServerSerttlementARAP = class(TServerTransaction)
+  TServerSettlementARAP = class(TServerTransaction)
   private
     function UpdateAPTerbayar(ASettlementARAP : TSettlementARAP; AIsBayar :
         Boolean): Boolean;
@@ -3869,7 +3869,7 @@ begin
   TDBUtils.LoadFromDB(Result, AID);
 end;
 
-function TServerSerttlementARAP.AfterSave(AAppObject : TAppObject): Boolean;
+function TServerSettlementARAP.AfterSave(AAppObject : TAppObject): Boolean;
 begin
   Result := False;
 
@@ -3881,7 +3881,7 @@ begin
       Result := True;
 end;
 
-function TServerSerttlementARAP.BeforeDelete(AAppObject : TAppObject): Boolean;
+function TServerSettlementARAP.BeforeDelete(AAppObject : TAppObject): Boolean;
 begin
   Result := False;
 
@@ -3893,7 +3893,7 @@ begin
       Result := True;
 end;
 
-function TServerSerttlementARAP.BeforeSave(AAppObject : TAppObject): Boolean;
+function TServerSettlementARAP.BeforeSave(AAppObject : TAppObject): Boolean;
 begin
   Result := False;
 
@@ -3905,13 +3905,13 @@ begin
       Result := True;
 end;
 
-function TServerSerttlementARAP.Retrieve(AID : String): TSettlementARAP;
+function TServerSettlementARAP.Retrieve(AID : String): TSettlementARAP;
 begin
   Result := TSettlementARAP.Create;
   TDBUtils.LoadFromDB(Result, AID);
 end;
 
-function TServerSerttlementARAP.UpdateAPTerbayar(ASettlementARAP :
+function TServerSettlementARAP.UpdateAPTerbayar(ASettlementARAP :
     TSettlementARAP; AIsBayar : Boolean): Boolean;
 var
   sFilterID: string;
@@ -3938,7 +3938,7 @@ begin
     Result := True;
 end;
 
-function TServerSerttlementARAP.UpdateARTerbayar(ASettlementARAP :
+function TServerSettlementARAP.UpdateARTerbayar(ASettlementARAP :
     TSettlementARAP; AIsBayar : Boolean): Boolean;
 var
   sFilterID: string;
