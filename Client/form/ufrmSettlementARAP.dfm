@@ -45,6 +45,8 @@ inherited frmSettlementARAP: TfrmSettlementARAP
             Height = 20
             Margins.Top = 6
             ExplicitLeft = 349
+            ExplicitTop = 7
+            ExplicitHeight = 20
           end
           inherited lblSD: TLabel
             AlignWithMargins = True
@@ -53,10 +55,12 @@ inherited frmSettlementARAP: TfrmSettlementARAP
             Height = 20
             Margins.Top = 6
             ExplicitLeft = 510
+            ExplicitTop = 7
+            ExplicitHeight = 20
           end
           inherited dtpAwal: TDateTimePicker
             Left = 396
-            ExplicitLeft = 402
+            ExplicitLeft = 396
           end
           inherited dtpAkhir: TDateTimePicker
             Left = 551
@@ -350,7 +354,7 @@ inherited frmSettlementARAP: TfrmSettlementARAP
     Left = 608
     Top = 88
     Bitmap = {
-      494C010107000800080118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C0101070008000C0118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

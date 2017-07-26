@@ -14,7 +14,7 @@ uses
   dxStatusBar, dxCore, cxDateUtils, cxDropDownEdit, cxLookupEdit,
   cxDBLookupEdit, cxDBExtLookupComboBox, cxMaskEdit, cxCalendar, cxTextEdit,
   cxLabel, ClientModule, uSettlementARAP, uAppUtils, System.DateUtils,
-  cxCurrencyEdit,uDBUtils, uSupplier;
+  cxCurrencyEdit,uDBUtils, uSupplier,Data.FireDACJSONReflect, uDMReport;
 
 type
   TfrmSettlementARAP = class(TfrmDefault)
@@ -75,6 +75,8 @@ type
     procedure UpdateSettlementARAPItemARs;
     procedure UpdateSettlementARAPItemAPs;
     { Private declarations }
+  protected
+    procedure CetakSlip; override;
   public
     procedure LoadData(AID: string);
     property SettlementARAP: TSettlementARAP read GetSettlementARAP write
@@ -147,6 +149,30 @@ begin
 
   cxGridTableAR.ClearRows;
   cxGridTableAP.ClearRows;
+end;
+
+procedure TfrmSettlementARAP.CetakSlip;
+var
+  lcds: TFDJSONDataSets;
+//  lcds: TClientDataSet;
+begin
+  inherited;
+
+  with dmReport do
+  begin
+    AddReportVariable('UserCetak', User);
+
+    if cxPCData.ActivePageIndex = 0 then
+      lcds := ClientDataModule.ServerSettlementARAPClient.RetrieveDataSlip(dtpAwal.DateTime, dtpAkhir.DateTime, 'XXX', 'XXX')
+    else
+      lcds := ClientDataModule.ServerSettlementARAPClient.RetrieveDataSlip(dtpAwal.DateTime - 1000, dtpAkhir.DateTime + 1000, 'XXX', cxGridDBTableOverview.DS.FieldByName('ID').AsString);
+
+
+    ExecuteReport( 'Reports/Slip_ServerSettlementARAP' ,
+      lcds
+
+    );
+  end;
 end;
 
 procedure TfrmSettlementARAP.cxGridColAPAPPropertiesValidate(Sender: TObject;
@@ -251,8 +277,9 @@ begin
   ClearByTag([0,1]);
 
   edNoBukti.Text        := ClientDataModule.ServerSettlementARAPClient.GenerateNoBukti(edTglBukti.Date, 'SET');
-//  cbbSupplier.EditValue := null;
-//  mmoKeterangan.Clear;
+  cxGridTableAR.ClearRows;
+  cxGridTableAP.ClearRows;
+
 
   if AID = '' then
     Exit;
@@ -265,9 +292,6 @@ begin
 
   LoadDataAR(cbbSupplier.EditValue);
   LoadDataAP(cbbSupplier.EditValue);
-
-  cxGridTableAR.ClearRows;
-  cxGridTableAP.ClearRows;
 
   LoadDataSettlementARAPItemARs;
   LoadDataSettlementARAPItemAPs;
