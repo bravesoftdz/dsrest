@@ -53,6 +53,9 @@ type
       var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
     procedure cxGridColAPAPPropertiesValidate(Sender: TObject;
       var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
+    procedure cxGridDBTableOverviewCellDblClick(Sender: TcxCustomGridTableView;
+        ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton; AShift:
+        TShiftState; var AHandled: Boolean);
     procedure cxGridTableAPEditing(Sender: TcxCustomGridTableView; AItem:
         TcxCustomGridTableItem; var AAllow: Boolean);
     procedure cxGridTableAREditing(Sender: TcxCustomGridTableView; AItem:
@@ -165,6 +168,19 @@ begin
   cxGridTableAR.SetValue(cxGridTableAR.FocusedIndex, cxGridColARSisa.Index, FCDSAR.FieldByName('sisa').AsFloat);
 end;
 
+procedure TfrmSettlementARAP.cxGridDBTableOverviewCellDblClick(Sender:
+    TcxCustomGridTableView; ACellViewInfo: TcxGridTableDataCellViewInfo;
+    AButton: TMouseButton; AShift: TShiftState; var AHandled: Boolean);
+begin
+  inherited;
+  try
+    LoadData(cxGridDBTableOverview.DS.FieldByName('ID').AsString);
+    cxPCData.ActivePageIndex := 1;
+  except
+    raise;
+  end;
+end;
+
 procedure TfrmSettlementARAP.cxGridTableAPEditing(Sender:
     TcxCustomGridTableView; AItem: TcxCustomGridTableItem; var AAllow: Boolean);
 begin
@@ -246,6 +262,13 @@ begin
   cbbSupplier.EditValue := SettlementARAP.Supplier.ID;
   mmoKeterangan.Text    := SettlementARAP.Keterangan;
 
+
+  LoadDataAR(cbbSupplier.EditValue);
+  LoadDataAP(cbbSupplier.EditValue);
+
+  cxGridTableAR.ClearRows;
+  cxGridTableAP.ClearRows;
+
   LoadDataSettlementARAPItemARs;
   LoadDataSettlementARAPItemAPs;
 
@@ -274,6 +297,7 @@ begin
   try
     FCDSAP := TDBUtils.DSToCDS(ClientDataModule.DSDataCLient.LoadAP(lSupplier), Self);
     TcxExtLookupComboBoxProperties(cxGridColAPAP.Properties).LoadFromCDS(FCDSAP, 'ID', 'NOBUKTI', ['ID','SUPPLIERID'],Self);
+
   finally
     lSupplier.Free;
   end;
@@ -287,7 +311,18 @@ begin
   cxGridTableAR.ClearRows;
   for I := 0 to SettlementARAP.SettlementARAPItemARs.Count - 1 do
   begin
+    cxGridTableAR.DataController.AppendRecord;
     cxGridTableAR.SetObjectData(SettlementARAP.SettlementARAPItemARs[i], i);
+
+    FCDSAR.Filter   := 'ID = ' + QuotedStr(SettlementARAP.SettlementARAPItemARs[i].AR.ID);
+    FCDSAR.Filtered := True;
+    try
+      cxGridTableAR.SetValue(i, cxGridColARNominal.Index, FCDSAR.FieldByName('nominal').AsFloat);
+      cxGridTableAR.SetValue(i, cxGridColARSisa.Index, FCDSAR.FieldByName('sisa').AsFloat + SettlementARAP.SettlementARAPItemARs[i].Nominal);
+    finally
+      FCDSAP.Filtered := False;
+    end;
+
   end;
 end;
 
@@ -298,7 +333,17 @@ begin
   cxGridTableAP.ClearRows;
   for I := 0 to SettlementARAP.SettlementARAPItemAPs.Count - 1 do
   begin
+    cxGridTableAP.DataController.AppendRecord;
     cxGridTableAP.SetObjectData(SettlementARAP.SettlementARAPItemAPs[i], i);
+
+    FCDSAP.Filter   := 'ID = ' + QuotedStr(SettlementARAP.SettlementARAPItemAPs[i].AP.ID);
+    FCDSAP.Filtered := True;
+    try
+      cxGridTableAP.SetValue(i, cxGridColAPNominal.Index, FCDSAP.FieldByName('nominal').AsFloat);
+      cxGridTableAP.SetValue(i, cxGridColAPSisa.Index, FCDSAP.FieldByName('sisa').AsFloat + SettlementARAP.SettlementARAPItemAPs[i].Nominal);
+    finally
+      FCDSAP.Filtered := False;
+    end;
   end;
 end;
 

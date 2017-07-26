@@ -80,6 +80,5 @@ begin
   Application.CreateForm(TClientDataModule, ClientDataModule);
   Application.CreateForm(TfrmMain, frmMain);
   Application.CreateForm(TDMReport, DMReport);
-  Application.CreateForm(TfrmSettlementARAP, frmSettlementARAP);
   Application.Run;
 end.

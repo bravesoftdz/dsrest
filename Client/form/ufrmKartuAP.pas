@@ -59,7 +59,7 @@ begin
 
   cxGridDBTableOverview.SetDataset(lDS, True);
   cxGridDBTableOverview.ApplyBestFit();
-  cxGridDBTableOverview.SetVisibleColumns(['urutan'], False);
+  cxGridDBTableOverview.SetVisibleColumns(['urutan','PERIODEAWAL','PERIODEAKHIR','CABANG','SUPPLIER'], False);
 
   dTotal := 0;
   while not lDS.Eof do

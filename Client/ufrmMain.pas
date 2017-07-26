@@ -149,6 +149,8 @@ type
     actDaftarAR: TAction;
     dxbrlrgbtnReturSupplier: TdxBarLargeButton;
     actLapReturSupplier: TAction;
+    dxbrlrgbtnsETTLEMENTarap: TdxBarLargeButton;
+    actSettlementARAP: TAction;
     procedure actAlatGantiCabangExecute(Sender: TObject);
     procedure actApplicationExitExecute(Sender: TObject);
     procedure actClosingInventoryExecute(Sender: TObject);
@@ -183,6 +185,7 @@ type
     procedure FormDblClick(Sender: TObject);
     procedure actPengeluaranKasExecute(Sender: TObject);
     procedure actLapReturSupplierExecute(Sender: TObject);
+    procedure actSettlementARAPExecute(Sender: TObject);
   private
     procedure UpdateStatusBar;
     { Private declarations }
@@ -198,7 +201,7 @@ uses
   ufrmSupplier, ufrmKoneksi,uAppUtils, ufrmBarang, ufrmPenerimaanBarang,
   ClientClassesUnit2, ClientModule, ufrmPilihCabang, ufrmLapMutasiBarangPerTransaksi,
   ufrmReturSupplier, udbutils, ufrmClosingInventory, ufrmLapStockSekarang,
-  ufrmGudang, ufrmAccount, uReport, ufrmTACTerima;
+  ufrmGudang, ufrmAccount, uReport, ufrmTACTerima, ufrmSettlementARAP;
 
 {$R *.dfm}
 
@@ -363,6 +366,11 @@ begin
     frmKoneksi := TfrmKoneksi.Create(Self);
     frmKoneksi.ShowModal;
   end;
+end;
+
+procedure TfrmMain.actSettlementARAPExecute(Sender: TObject);
+begin
+  frmSettlementARAP := TfrmSettlementARAP.Create(Self);
 end;
 
 procedure TfrmMain.actTACTerimaExecute(Sender: TObject);

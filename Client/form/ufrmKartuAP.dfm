@@ -1,6 +1,5 @@
 inherited frmKartuAP: TfrmKartuAP
   Caption = 'Kartu AP'
-  ExplicitTop = 7
   PixelsPerInch = 96
   TextHeight = 13
   inherited cxPCData: TcxPageControl
@@ -57,6 +56,7 @@ inherited frmKartuAP: TfrmKartuAP
         end
         inherited cxGrid: TcxGrid
           Height = 336
+          ExplicitHeight = 336
         end
         object pnlfOOTER: TPanel
           Left = 1
@@ -111,7 +111,7 @@ inherited frmKartuAP: TfrmKartuAP
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010107000800F40018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800F80018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

@@ -68,6 +68,7 @@ object frmMain: TfrmMain
       Index = 2
     end
     object dxrbntbAkuntansi: TdxRibbonTab
+      Active = True
       Caption = 'FA'
       Groups = <
         item
@@ -101,7 +102,6 @@ object frmMain: TfrmMain
       Index = 4
     end
     object dxrbntbPenerimaanBarangClosing: TdxRibbonTab
-      Active = True
       Caption = 'Alat'
       Groups = <
         item
@@ -485,6 +485,10 @@ object frmMain: TfrmMain
         item
           Visible = True
           ItemName = 'dxbrlrgbtnPengeluaranKas'
+        end
+        item
+          Visible = True
+          ItemName = 'dxbrlrgbtnsETTLEMENTarap'
         end>
       OneOnRow = False
       Row = 0
@@ -495,7 +499,7 @@ object frmMain: TfrmMain
     object dxbrmngrAMSBarFA: TdxBar
       Caption = 'FA'
       CaptionButtons = <>
-      DockedLeft = 335
+      DockedLeft = 0
       DockedTop = 0
       FloatLeft = 900
       FloatTop = 8
@@ -551,7 +555,7 @@ object frmMain: TfrmMain
     object dxbrJurnal: TdxBar
       Caption = 'Jurnal'
       CaptionButtons = <>
-      DockedLeft = 354
+      DockedLeft = 427
       DockedTop = 0
       FloatLeft = 799
       FloatTop = 8
@@ -809,6 +813,11 @@ object frmMain: TfrmMain
       Category = 0
       LargeImageIndex = 10
     end
+    object dxbrlrgbtnsETTLEMENTarap: TdxBarLargeButton
+      Action = actSettlementARAP
+      Category = 0
+      LargeImageIndex = 20
+    end
     object dxbrlrgbtnExit: TdxBarLargeButton
       Action = actApplicationExit
       Category = 1
@@ -1013,6 +1022,11 @@ object frmMain: TfrmMain
       Caption = 'Retur Supplier'
       OnExecute = actLapReturSupplierExecute
     end
+    object actSettlementARAP: TAction
+      Category = 'Keuangan'
+      Caption = 'Settlement AR-AP'
+      OnExecute = actSettlementARAPExecute
+    end
   end
   object ImgListMainLarge: TImageList
     ColorDepth = cd32Bit
@@ -1021,7 +1035,7 @@ object frmMain: TfrmMain
     Left = 688
     Top = 128
     Bitmap = {
-      494C0101160018005C0120002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010116001800600120002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000080000000C000000001002000000000000080
       0100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
