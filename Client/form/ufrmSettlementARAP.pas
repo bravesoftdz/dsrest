@@ -73,7 +73,7 @@ type
     procedure UpdateSettlementARAPItemAPs;
     { Private declarations }
   public
-    procedure LoadDataSettlementARAP(const AID: string);
+    procedure LoadData(AID: string);
     property SettlementARAP: TSettlementARAP read GetSettlementARAP write
         FSettlementARAP;
     { Public declarations }
@@ -89,7 +89,7 @@ implementation
 procedure TfrmSettlementARAP.ActionBaruExecute(Sender: TObject);
 begin
   inherited;
-  LoadDataSettlementARAP('');
+  LoadData('');
 end;
 
 procedure TfrmSettlementARAP.ActionRefreshExecute(Sender: TObject);
@@ -101,7 +101,7 @@ begin
   lcds := TDBUtils.DSToCDS(ClientDataModule.ServerSettlementARAPClient.RetrieveData(dtpAwal.DateTime, dtpAkhir.DateTime, 'XXX'), cxGridDBTableOverview);
 
   cxGridDBTableOverview.SetDataset(lcds, True);
-  cxGridDBTableOverview.SetVisibleColumns([], False);
+  cxGridDBTableOverview.SetVisibleColumns(['ID','SUPPLIER'], False);
   cxGridDBTableOverview.ApplyBestFit();
 end;
 
@@ -131,7 +131,7 @@ begin
   if ClientDataModule.ServerSettlementARAPClient.Save(SettlementARAP) then
   begin
     TAppUtils.InformationBerhasilSimpan;
-    LoadDataSettlementARAP('');
+    LoadData('');
   end;
 end;
 
@@ -229,13 +229,14 @@ begin
   Result := True;
 end;
 
-procedure TfrmSettlementARAP.LoadDataSettlementARAP(const AID: string);
+procedure TfrmSettlementARAP.LoadData(AID: string);
 begin
   FreeAndNil(FSettlementARAP);
+  ClearByTag([0,1]);
 
   edNoBukti.Text        := ClientDataModule.ServerSettlementARAPClient.GenerateNoBukti(edTglBukti.Date, 'SET');
-  cbbSupplier.EditValue := null;
-  mmoKeterangan.Clear;
+//  cbbSupplier.EditValue := null;
+//  mmoKeterangan.Clear;
 
   if AID = '' then
     Exit;

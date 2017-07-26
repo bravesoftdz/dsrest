@@ -21,8 +21,6 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
     ClientRectBottom = 309
     ClientRectRight = 731
     inherited cxTSOverview: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
       ExplicitWidth = 727
       ExplicitHeight = 285
       inherited splTransaksi: TSplitter
@@ -70,8 +68,6 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
       end
     end
     inherited cxTSInputData: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
       ExplicitWidth = 727
       ExplicitHeight = 285
       object pnlHeader: TPanel
@@ -335,10 +331,6 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
       Left = 383
       ExplicitLeft = 383
     end
-    inherited chkKonsolidasi1: TcxCheckBox
-      ExplicitWidth = 76
-      ExplicitHeight = 31
-    end
   end
   inherited ActionListForm: TActionList
     inherited ActionSimpan: TAction
@@ -362,7 +354,7 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
     Left = 584
     Top = 144
     Bitmap = {
-      494C010107000800040118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C0101070008000C0118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

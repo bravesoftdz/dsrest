@@ -1039,7 +1039,7 @@ begin
           ' where tglbukti between ' + TAppUtils.QuotDt(StartOfTheDay(APeriodeAwal)) +
           ' and ' + TAppUtils.QuotDt(EndOfTheDay(APeriodeAkhir));
 
-  if AIDCabang <> '' then
+  if (AIDCabang <> '') and (AIDCabang <> 'XXX') then
     sSQL := sSQL + ' and cabangid = ' + QuotedStr(AIDCabang);
 
   lcds   := TDBUtils.OpenDataset(sSQL);

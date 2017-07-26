@@ -85,7 +85,6 @@ object frmMain: TfrmMain
       Index = 3
     end
     object dxrbntbLaporan: TdxRibbonTab
-      Active = True
       Caption = 'Laporan'
       Groups = <
         item
@@ -102,6 +101,7 @@ object frmMain: TfrmMain
       Index = 4
     end
     object dxrbntbPenerimaanBarangClosing: TdxRibbonTab
+      Active = True
       Caption = 'Alat'
       Groups = <
         item
@@ -286,7 +286,7 @@ object frmMain: TfrmMain
     object dxbrApplication: TdxBar
       Caption = 'Apllication'
       CaptionButtons = <>
-      DockedLeft = 394
+      DockedLeft = 0
       DockedTop = 0
       FloatLeft = 340
       FloatTop = 244
@@ -495,7 +495,7 @@ object frmMain: TfrmMain
     object dxbrmngrAMSBarFA: TdxBar
       Caption = 'FA'
       CaptionButtons = <>
-      DockedLeft = 0
+      DockedLeft = 335
       DockedTop = 0
       FloatLeft = 900
       FloatTop = 8
@@ -1021,7 +1021,7 @@ object frmMain: TfrmMain
     Left = 688
     Top = 128
     Bitmap = {
-      494C010116001800580120002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C0101160018005C0120002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000080000000C000000001002000000000000080
       0100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

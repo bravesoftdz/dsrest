@@ -3,6 +3,7 @@ inherited frmSettlementARAP: TfrmSettlementARAP
   ClientHeight = 373
   ClientWidth = 790
   OnDestroy = FormDestroy
+  ExplicitTop = -17
   ExplicitWidth = 806
   ExplicitHeight = 412
   PixelsPerInch = 96
@@ -16,14 +17,11 @@ inherited frmSettlementARAP: TfrmSettlementARAP
   inherited cxPCData: TcxPageControl
     Width = 790
     Height = 320
-    Properties.ActivePage = cxTSInputData
     ExplicitWidth = 790
     ExplicitHeight = 320
     ClientRectBottom = 316
     ClientRectRight = 786
     inherited cxTSOverview: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
       ExplicitWidth = 782
       ExplicitHeight = 292
       inherited splTransaksi: TSplitter
@@ -68,8 +66,6 @@ inherited frmSettlementARAP: TfrmSettlementARAP
       end
     end
     inherited cxTSInputData: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
       ExplicitWidth = 782
       ExplicitHeight = 292
       object splARAP: TSplitter
@@ -302,10 +298,6 @@ inherited frmSettlementARAP: TfrmSettlementARAP
       Left = 438
       ExplicitLeft = 438
     end
-    inherited chkKonsolidasi1: TcxCheckBox
-      ExplicitWidth = 76
-      ExplicitHeight = 31
-    end
   end
   inherited ActionListForm: TActionList
     inherited ActionSimpan: TAction
@@ -339,7 +331,7 @@ inherited frmSettlementARAP: TfrmSettlementARAP
     Left = 608
     Top = 88
     Bitmap = {
-      494C010107000800000118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800040118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

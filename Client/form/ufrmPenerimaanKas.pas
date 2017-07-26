@@ -88,7 +88,7 @@ type
     { Private declarations }
   public
     destructor Destroy; override;
-    procedure LoadData(AID : String);
+    function LoadData(AID : String): Boolean;
     { Public declarations }
   end;
 
@@ -319,7 +319,7 @@ begin
   cbbRekBank.Properties.SetMultiPurposeLookup;
 end;
 
-procedure TfrmPenerimaanKas.LoadData(AID : String);
+function TfrmPenerimaanKas.LoadData(AID : String): Boolean;
 begin
   FreeAndNil(FPenerimaanKas);
   ClearByTag([0,1]);
@@ -350,6 +350,7 @@ begin
 
   cxPCData.ActivePageIndex := 1;
 
+  Result := True;
 end;
 
 procedure TfrmPenerimaanKas.LoadDataAR(AIDCustomer : String);

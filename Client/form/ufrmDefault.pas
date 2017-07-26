@@ -81,6 +81,7 @@ type
     function User: string;
     property IsLangsungPrint: Boolean read FIsLangsungPrint write FIsLangsungPrint;
   public
+    procedure LoadDataTransaksi(AID : String); virtual;
     { Public declarations }
   end;
 
@@ -151,6 +152,10 @@ begin
   InisialisasiCDSCabang;
   cxPCDataChange(Sender);
 
+  dtpAwal.DateTime := StartOfTheMonth(Now);
+  dtpAkhir.DateTime:= Now;
+
+  LoadDataTransaksi('');
   IsLangsungPrint := False;
 end;
 
@@ -187,6 +192,11 @@ begin
 //  cbbLUCabang.Enabled := ClientDataModule.Cabang.IsHO = 1;
 //  chkKonsolidasi.EditValue := False;
 //  chkKonsolidasi.Enabled := ClientDataModule.Cabang.IsHO = 1;
+end;
+
+procedure TfrmDefault.LoadDataTransaksi(AID : String);
+begin
+  ClearByTag([0,1]);
 end;
 
 function TfrmDefault.PanjangNoBukti: Integer;

@@ -19,7 +19,7 @@ uses
   uReturSupplier, uSupplier, ufrmPembayaranPOS;
 
 type
-  TfrmPenjualan = class(TfrmDefault, IForm)
+  TfrmPenjualan = class(TfrmDefault)
     pnlInput: TPanel;
     pgcHeader: TPageControl;
     tsHeader: TTabSheet;
@@ -118,7 +118,7 @@ type
     property Infix: string read FInfix write FInfix;
   public
     procedure CetakSlip; override;
-    function LoadData(AID : String): Boolean; stdcall;
+    procedure LoadData(AID : String); stdcall;
     property Penjualan: TPenjualan read GetPenjualan write FPenjualan;
     { Public declarations }
   end;
@@ -608,12 +608,10 @@ begin
   SetHarga('keliling');
 end;
 
-function TfrmPenjualan.LoadData(AID : String): Boolean;
+procedure TfrmPenjualan.LoadData(AID : String);
 var
   i: Integer;
 begin
-  Result := False;
-
   try
     with ClientDataModule.ServerPenjualanClient do
     begin
@@ -661,7 +659,7 @@ begin
       end;
     end;
 
-    Result := True;
+//    Result := True;
   except
     raise
   end;
