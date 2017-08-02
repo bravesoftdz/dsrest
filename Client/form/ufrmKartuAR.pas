@@ -14,12 +14,15 @@ uses
   cxDropDownEdit, cxLookupEdit, cxDBLookupEdit, cxDBExtLookupComboBox,
   Vcl.StdCtrls, cxButtons, Vcl.ComCtrls, Vcl.ExtCtrls, cxPC, dxStatusBar,
   uDBUtils, ClientModule, uAppUtils, uSupplier, uModel,
-  Data.FireDACJSONReflect, uModelHelper,uDMReport;
+  Data.FireDACJSONReflect, uModelHelper,uDMReport, cxCurrencyEdit;
 
 type
   TfrmKartuAR = class(TfrmDefaultLaporan)
     cbbCustomer: TcxExtLookupComboBox;
     lblCustomer: TLabel;
+    pnlfOOTER: TPanel;
+    lblTotal: TLabel;
+    edtOTAL: TcxCurrencyEdit;
     procedure ActionRefreshExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
   private
@@ -40,6 +43,7 @@ implementation
 
 procedure TfrmKartuAR.ActionRefreshExecute(Sender: TObject);
 var
+  dTotal: double;
   lCustomer: TSupplier;
   lDS: TClientDataSet;
   lCabang: TCabang;
@@ -55,8 +59,16 @@ begin
 
   cxGridDBTableOverview.SetDataset(lDS, True);
   cxGridDBTableOverview.ApplyBestFit();
-  cxGridDBTableOverview.SetVisibleColumns(['urutan'], False);
+  cxGridDBTableOverview.SetVisibleColumns(['urutan','PERIODEAWAL','PERIODEAKHIR','CABANG','CUSTOMER'], False);
 
+  dTotal := 0;
+  while not lDS.Eof do
+  begin
+    dTotal := dTotal + lDS.FieldByName('masuk').AsFloat - lDS.FieldByName('keluar').AsFloat;
+    lDS.Next;
+  end;
+
+  edtOTAL.Value := dTotal;
 end;
 
 procedure TfrmKartuAR.CetakSlip;

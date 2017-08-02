@@ -168,7 +168,7 @@ begin
       lcds := ClientDataModule.ServerSettlementARAPClient.RetrieveDataSlip(dtpAwal.DateTime - 1000, dtpAkhir.DateTime + 1000, 'XXX', cxGridDBTableOverview.DS.FieldByName('ID').AsString);
 
 
-    ExecuteReport( 'Reports/Slip_ServerSettlementARAP' ,
+    ExecuteReport( 'Reports/Slip_SettlementARAP' ,
       lcds
 
     );
