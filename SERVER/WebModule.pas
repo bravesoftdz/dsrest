@@ -314,6 +314,8 @@ begin
   TCustServerClass.Create(Self, DSServer1, TDSData, DSServerClass1.LifeCycle);
   TCustServerClass.Create(Self, DSServer1, TServerJurnal, DSServerClass1.LifeCycle);
   TCustServerClass.Create(Self, DSServer1, TServerSettlementARAP, DSServerClass1.LifeCycle);
+  TCustServerClass.Create(Self, DSServer1, TServerMenu, DSServerClass1.LifeCycle);
+  TCustServerClass.Create(Self, DSServer1, TServerUser, DSServerClass1.LifeCycle);
 end;
 
 procedure TWebModule2.SetIP(const Value: string);

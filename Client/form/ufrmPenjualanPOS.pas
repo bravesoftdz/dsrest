@@ -18,6 +18,7 @@ uses
 
 type
   TfrmPenjualanPOS = class(TfrmPenjualan)
+    procedure ActionSimpanExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
@@ -35,6 +36,14 @@ var
 implementation
 
 {$R *.dfm}
+
+procedure TfrmPenjualanPOS.ActionSimpanExecute(Sender: TObject);
+begin
+  cbbJenisPembayaran.ItemIndex := 0;
+  cbbFee.ItemIndex             := 1;
+  edTempo.Value                := 0;
+  inherited;
+end;
 
 procedure TfrmPenjualanPOS.FormCreate(Sender: TObject);
 begin

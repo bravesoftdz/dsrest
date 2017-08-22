@@ -22,10 +22,8 @@ type
     cxGridColAkunPiutangDagang: TcxGridColumn;
     cxGridColHutangDagang: TcxGridColumn;
   private
-    FSettingAppServer: TSettingAppServer;
-    function GetSettingAppServer: TSettingAppServer;
-    property SettingAppServer: TSettingAppServer read GetSettingAppServer write
-        FSettingAppServer;
+//    property SettingAppServer: TSettingAppServer read GetSettingAppServer write
+//        FSettingAppServer;
     { Private declarations }
   public
     { Public declarations }
@@ -37,13 +35,5 @@ var
 implementation
 
 {$R *.dfm}
-
-function TfrmSettingAppServer.GetSettingAppServer: TSettingAppServer;
-begin
-  if FSettingAppServer = nil then
-    FSettingAppServer := TSettingAppServer.Create;
-
-  Result := FSettingAppServer;
-end;
 
 end.

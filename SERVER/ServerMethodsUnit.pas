@@ -8,7 +8,7 @@ uses
   uCustomerInvoice, uAR, uPenerimaanKas, uAccount, uRekBank,
   uTransferAntarGudang, uSettingApp, uTAGRequests, uTransferAntarCabang,
   uPengeluaranKas, FireDAC.Comp.Client, uSettingAppServer, uJurnal, uSupplier,
-  uPenerimaanBarang,uReturSupplier, uSettlementARAP;
+  uPenerimaanBarang,uReturSupplier, uSettlementARAP, uUser;
 
 type
   {$METHODINFO ON}
@@ -32,7 +32,7 @@ type
     function LaporanKartok(ATglAwal , ATglAkhir : TDateTime; ABarang : TBarang;
         AGudang : TGudang): TFDJSONDataSets;
     function LaporanKarAP(ATglAwal , ATglAkhir : TDateTime; ASupplier : TSupplier;
-        ACabang : TCabang): TFDJSONDataSets;
+        ACabang : TCabang; ANoAP : String): TFDJSONDataSets;
     function LaporanStockSekarang(ACabang : TCabang): TDataset;
     function LookUpPenerimaan(ABulan, ATahun : Integer): TDataset;
     function RetrieveCDSTAGRequestKepada(ATglAwal , ATglAkhir : TDateTime;ACabang :
@@ -68,7 +68,7 @@ type
     function LaporanReturSupplier(ATglAwal , AtglAkhir : TDateTime; ACabang :
         TCabang): TFDJSONDataSets; overload;
     function LaporanKarAR(ATglAwal , ATglAkhir : TDateTime; ACustomer : TSupplier;
-        ACabang : TCabang): TFDJSONDataSets;
+        ACabang : TCabang; ANoAR : String): TFDJSONDataSets;
     function RetriveSettingApp(ACabang : TCabang): TDataset;
 
   end;
@@ -450,6 +450,16 @@ type
     function BeforeDelete(AAppObject : TAppObject): Boolean; override;
     function BeforeSave(AAppObject : TAppObject): Boolean; override;
     function Retrieve(AID : String): TSettlementARAP;
+  end;
+
+  TServerUser = class(TServerMaster)
+  public
+    function Retrieve(AID : String): TUser;
+  end;
+
+  TServerMenu = class(TServerMaster)
+  public
+    function Retrieve(AID : String): TMenu;
   end;
 
 
@@ -1243,7 +1253,7 @@ begin
 end;
 
 function TServerLaporan.LaporanKarAP(ATglAwal , ATglAkhir : TDateTime;
-    ASupplier : TSupplier; ACabang : TCabang): TFDJSONDataSets;
+    ASupplier : TSupplier; ACabang : TCabang; ANoAP : String): TFDJSONDataSets;
 var
   sSQL: string;
 begin
@@ -1259,6 +1269,10 @@ begin
           TAppUtils.QuotDt(EndOfTheDay(ATglAkhir)) + ',' +
           QuotedStr(ASupplier.ID) + ',' +
           QuotedStr(ACabang.ID) + ')';
+
+  if ANoAP <> 'XXX' then
+    sSQL := sSQL + ' where NO_AP = ' + QuotedStr(ANoAP);
+
 
   TFDJSONDataSetsWriter.ListAdd(Result, TDBUtils.OpenQuery(sSQL));
 end;
@@ -1628,7 +1642,7 @@ begin
 end;
 
 function TServerLaporan.LaporanKarAR(ATglAwal , ATglAkhir : TDateTime;
-    ACustomer : TSupplier; ACabang : TCabang): TFDJSONDataSets;
+    ACustomer : TSupplier; ACabang : TCabang; ANoAR : String): TFDJSONDataSets;
 var
   sSQL: string;
 begin
@@ -1644,6 +1658,9 @@ begin
           TAppUtils.QuotDt(EndOfTheDay(ATglAkhir)) + ',' +
           QuotedStr(ACustomer.ID) + ',' +
           QuotedStr(ACabang.ID) + ')';
+
+  if ANoAR <> 'XXX' then
+    sSQL := sSQL + ' where NO_AR = ' + QuotedStr(ANoAR);
 
   TFDJSONDataSetsWriter.ListAdd(Result, TDBUtils.OpenQuery(sSQL));
 end;
@@ -2880,7 +2897,12 @@ begin
   sSQL := 'select c.* from TTransferAntarGudang a' +
           ' inner join TTransferAntarGudangitem b on a.id = b.TransferAntarGudang' +
           ' inner join tbarangsatuanitem c on b.barang = c.barang and b.uom=c.uom' +
-          ' where a.id = ' + QuotedStr(AID);
+          ' where 1 = 1' ;
+
+  if (AID = '') or (UpperCase(AID) = 'xxx') then
+    sSQL := sSQL + ' and a.id = newid()'
+  else
+    sSQL := sSQL + ' and a.id = ' + QuotedStr(AID);
 
   with TDBUtils.OpenDataset(sSQL) do
   begin
@@ -3963,6 +3985,18 @@ begin
 
   if TDBUtils.ExecuteSQL(sSQL) then
     Result := True;
+end;
+
+function TServerUser.Retrieve(AID : String): TUser;
+begin
+  Result      := TUser.Create;
+  TDBUtils.LoadFromDB(Result, AID);
+end;
+
+function TServerMenu.Retrieve(AID : String): TMenu;
+begin
+  Result      := TMenu.Create;
+  TDBUtils.LoadFromDB(Result, AID);
 end;
 
 

@@ -23,10 +23,13 @@ type
     pnlfOOTER: TPanel;
     lblTotal: TLabel;
     edtOTAL: TcxCurrencyEdit;
+    lblNoAR: TLabel;
+    edNoAR: TcxTextEdit;
     procedure ActionRefreshExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
   private
     FCDSS: TFDJSONDataSets;
+    function GetNoAR: string;
     procedure InisialisasiCBBSupplier;
     { Private declarations }
   public
@@ -53,7 +56,7 @@ begin
   lCustomer := TSupplier.CreateID(cbbCustomer.EditValue);
   lCabang := TCabang.CreateID(cbbCabang.EditValue);
 
-  FCDSS := ClientDataModule.ServerLaporanClient.LaporanKarAR(dtpAwal.Date, dtpAkhir.Date,lCustomer, lCabang);
+  FCDSS := ClientDataModule.ServerLaporanClient.LaporanKarAR(dtpAwal.Date, dtpAkhir.Date,lCustomer, lCabang, GetNoAR);
 
   lDS := TDBUtils.DSToCDS(TDataSet(TFDJSONDataSetsReader.GetListValue(FCDSS, 1)), Self);
 
@@ -81,11 +84,12 @@ begin
   lCustomer := TSupplier.CreateID(cbbCustomer.EditValue);
   lCabang := TCabang.CreateID(cbbCabang.EditValue);
 
-  FCDSS := ClientDataModule.ServerLaporanClient.LaporanKarAR(dtpAwal.Date, dtpAkhir.Date,lCustomer, lCabang);
+  FCDSS := ClientDataModule.ServerLaporanClient.LaporanKarAR(dtpAwal.Date, dtpAkhir.Date,lCustomer, lCabang,GetNoAR);
 
   with dmReport do
   begin
     AddReportVariable('UserCetak', User);
+    AddReportVariable('NoBukti', GetNoAR);
 
     ExecuteReport( 'Reports/Lap_KarAR' ,
       FCDSS
@@ -99,6 +103,14 @@ begin
   InisialisasiCBBSupplier;
 
   cbbCabang.EditValue := ClientDataModule.Cabang.ID;
+end;
+
+function TfrmKartuAR.GetNoAR: string;
+begin
+  if Trim(edNoAR.Text) = '' then
+    Result := 'XXX'
+  else
+    Result := Trim(edNoAR.Text);
 end;
 
 procedure TfrmKartuAR.InisialisasiCBBSupplier;

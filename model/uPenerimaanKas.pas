@@ -3,12 +3,13 @@ unit uPenerimaanKas;
 interface
 
 uses
-  uModel, uRekBank, uAR, System.Generics.Collections,System.SysUtils, uSupplier;
+  uModel, uRekBank, uAR, System.Generics.Collections,System.SysUtils,
+  uSupplier, uAccount;
 
 type
   TPenerimaanKas = class;
   TPenerimaanKasAR = class;
-//  TPenerimaanKasAP = class;
+  TPenerimaanKasAPNew = class;
 
   TPenerimaanKasAR = class(TAppObjectItem)
   private
@@ -43,7 +44,9 @@ type
     FPetugas: string;
     FRekBank: TRekBank;
     FTglBukti: TDatetime;
+    FPenerimaanKasAPNewItems: TObjectList<TPenerimaanKasAPNew>;
     function GetPenerimaanKasARItems: TObjectlist<TPenerimaanKasAR>;
+    function GetPenerimaanKasAPNewItems: TObjectList<TPenerimaanKasAPNew>;
   public
     destructor Destroy; override;
   published
@@ -58,7 +61,23 @@ type
     property Petugas: string read FPetugas write FPetugas;
     property RekBank: TRekBank read FRekBank write FRekBank;
     property TglBukti: TDatetime read FTglBukti write FTglBukti;
+    property PenerimaanKasAPNewItems: TObjectList<TPenerimaanKasAPNew> read
+        GetPenerimaanKasAPNewItems write FPenerimaanKasAPNewItems;
   end;
+
+  TPenerimaanKasAPNew = class(TAppObjectItem)
+  private
+    FAccount: TAccount;
+    FKeterangan: Double;
+    FNominal: Double;
+    FPenerimaanKas: TPenerimaanKas;
+  published
+    property Account: TAccount read FAccount write FAccount;
+    property Keterangan: Double read FKeterangan write FKeterangan;
+    property Nominal: Double read FNominal write FNominal;
+    property PenerimaanKas: TPenerimaanKas read FPenerimaanKas write FPenerimaanKas;
+  end;
+
 implementation
 
 function TPenerimaanKasAR.GetHeaderField: string;
@@ -101,6 +120,15 @@ begin
     FPenerimaanKasARItems := TObjectList<TPenerimaanKasAR>.Create(False);
 
   Result := FPenerimaanKasARItems;
+end;
+
+function TPenerimaanKas.GetPenerimaanKasAPNewItems:
+    TObjectList<TPenerimaanKasAPNew>;
+begin
+  if FPenerimaanKasAPNewItems = nil then
+    FPenerimaanKasAPNewItems := TObjectList<TPenerimaanKasAPNew>.Create;
+
+  Result := FPenerimaanKasAPNewItems;
 end;
 
 end.

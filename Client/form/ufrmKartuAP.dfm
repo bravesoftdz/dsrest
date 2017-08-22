@@ -11,28 +11,50 @@ inherited frmKartuAP: TfrmKartuAP
             ExplicitTop = 2
           end
           inherited lblGudang: TLabel
-            Left = 362
+            Left = 221
             Width = 10
             Visible = False
             ExplicitLeft = 362
             ExplicitWidth = 10
           end
           inherited lblCabang: TLabel
-            Left = 141
+            Left = 37
             ExplicitLeft = 141
           end
           object lblCustomer: TLabel [4]
             AlignWithMargins = True
-            Left = 394
+            Left = 253
             Top = 4
             Width = 38
             Height = 23
             Align = alRight
             Caption = 'Supplier'
+            ExplicitLeft = 394
             ExplicitHeight = 13
           end
+          object lblNoAP: TLabel [5]
+            AlignWithMargins = True
+            Left = 448
+            Top = 4
+            Width = 19
+            Height = 23
+            Align = alRight
+            AutoSize = False
+            Caption = 'AP'
+            ExplicitLeft = 462
+          end
+          inherited dtpAwal: TDateTimePicker
+            TabOrder = 3
+          end
+          inherited dtpAkhir: TDateTimePicker
+            TabOrder = 4
+          end
+          inherited btnRefresh: TcxButton
+            TabOrder = 5
+          end
           inherited cbbGudang: TcxExtLookupComboBox
-            Left = 378
+            Left = 237
+            TabOrder = 6
             Visible = False
             ExplicitLeft = 378
             ExplicitWidth = 10
@@ -40,18 +62,32 @@ inherited frmKartuAP: TfrmKartuAP
             Width = 10
           end
           inherited cbbCabang: TcxExtLookupComboBox
-            Left = 211
-            ExplicitLeft = 211
+            Left = 107
+            TabOrder = 0
+            ExplicitLeft = 248
+            ExplicitWidth = 108
             ExplicitHeight = 23
+            Width = 108
           end
           object cbbCustomer: TcxExtLookupComboBox
             Tag = 1
             AlignWithMargins = True
-            Left = 438
+            Left = 297
             Top = 4
             Align = alRight
-            TabOrder = 5
+            TabOrder = 1
+            ExplicitLeft = 438
             Width = 145
+          end
+          object edNoAP: TcxTextEdit
+            AlignWithMargins = True
+            Left = 473
+            Top = 4
+            Align = alRight
+            TabOrder = 2
+            Text = 'edNoAP'
+            ExplicitLeft = 499
+            Width = 110
           end
         end
         inherited cxGrid: TcxGrid
@@ -111,7 +147,7 @@ inherited frmKartuAP: TfrmKartuAP
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010107000800F80018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800FC0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

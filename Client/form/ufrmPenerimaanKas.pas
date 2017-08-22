@@ -37,8 +37,7 @@ type
     cxgrdlvlAR: TcxGridLevel;
     cxGridColBayar: TcxGridColumn;
     btnLoadAR: TcxButton;
-    cxgrdlvlDP: TcxGridLevel;
-    cxGridTableGridDBARTableView1: TcxGridTableView;
+    cxgrdlvlAPNew: TcxGridLevel;
     cxgrdlvlOI: TcxGridLevel;
     cxGridTableGridDBARTableView2: TcxGridTableView;
     lblNominal: TLabel;
@@ -47,6 +46,11 @@ type
     cbbRekBank: TcxExtLookupComboBox;
     edNoRek: TcxTextEdit;
     edAlamatBank: TcxTextEdit;
+    cxGridTableAPNew: TcxGridTableView;
+    cxGridColAPNewKode: TcxGridColumn;
+    cxGridColAPNewNama: TcxGridColumn;
+    cxGridColAPNewKeterangan: TcxGridColumn;
+    cxGridColAPNewNominal: TcxGridColumn;
     procedure actCetakExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ActionBaruExecute(Sender: TObject);
@@ -65,22 +69,29 @@ type
       var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
     procedure cxGridColARPropertiesValidate(Sender: TObject;
       var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
+    procedure cxGridTableAPNewEditing(Sender: TcxCustomGridTableView; AItem:
+        TcxCustomGridTableItem; var AAllow: Boolean);
     procedure cxGridTableARDataControllerAfterInsert(
       ADataController: TcxCustomDataController);
     procedure cxGridTableARDataControllerAfterDelete(
       ADataController: TcxCustomDataController);
+    procedure cxGridColAPNewKodePropertiesValidate(Sender: TObject;
+      var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
   private
+    FCDSAccount: tclientDataSet;
     FCDSAP: tclientDataSet;
     FCDSRekBank: TClientDataSet;
     FPenerimaanKas: TPenerimaanKas;
     function GetPenerimaanKas: TPenerimaanKas;
     function GetTotalNominalGrid: Double;
+    procedure InisialisasiAccount;
     procedure InisialisasiCBBSalesman;
     procedure InisialisasiRekBank;
     procedure LoadDataAR(AIDCustomer : String);
     procedure LoadDataPenerimaanKasARItems;
     procedure SetStatusNominal;
     procedure SetUser;
+    procedure UpdatePenerimaanKasAPNewItems;
     procedure UpdatePenerimaanKasARItems;
     property CDSRekBank: TClientDataSet read FCDSRekBank write FCDSRekBank;
     property PenerimaanKas: TPenerimaanKas read GetPenerimaanKas write
@@ -135,6 +146,7 @@ begin
   inherited;
   InisialisasiCBBSalesman;
   InisialisasiRekBank;
+  InisialisasiAccount;
 
   ActionBaruExecute(Sender);
 
@@ -200,6 +212,7 @@ begin
   PenerimaanKas.Petugas        := edPenerima.Text;
 
   UpdatePenerimaanKasARItems;
+  UpdatePenerimaanKasAPNewItems;
 
   if ClientDataModule.ServerPenerimaanKasClient.Save(PenerimaanKas) then
   begin
@@ -225,6 +238,14 @@ begin
   edNoRek.Text      := CDSRekBank.FieldByName('norek').AsString;
 end;
 
+procedure TfrmPenerimaanKas.cxGridColAPNewKodePropertiesValidate(
+  Sender: TObject; var DisplayValue: Variant; var ErrorText: TCaption;
+  var Error: Boolean);
+begin
+  inherited;
+  cxGridTableAPNew.DataController.Values[cxGridTableAPNew.DataController.FocusedRecordIndex, cxGridColAPNewNama.Index] := cxGridTableAPNew.DataController.Values[cxGridTableAPNew.DataController.FocusedRecordIndex, cxGridColAPNewKode.Index];
+end;
+
 procedure TfrmPenerimaanKas.cxGridColARPropertiesValidate(Sender: TObject;
   var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
 begin
@@ -239,6 +260,15 @@ procedure TfrmPenerimaanKas.cxGridDBTableOverviewCellDblClick(Sender:
 begin
   inherited;
   LoadData(cxGridDBTableOverview.DS.FieldByName('ID').AsString);
+end;
+
+procedure TfrmPenerimaanKas.cxGridTableAPNewEditing(Sender:
+    TcxCustomGridTableView; AItem: TcxCustomGridTableItem; var AAllow: Boolean);
+begin
+  inherited;
+  AAllow := True;
+  if AItem.Index = cxGridColAPNewNama.Index then
+    AAllow := False;
 end;
 
 procedure TfrmPenerimaanKas.cxGridTableARDataControllerAfterDelete(
@@ -296,6 +326,13 @@ begin
     Result := Result + cxGridTableAR.GetDouble(i, cxGridColBayar.Index);
   end;
 
+end;
+
+procedure TfrmPenerimaanKas.InisialisasiAccount;
+begin
+  FCDSAccount := TDBUtils.DSToCDS(ClientDataModule.DSDataCLient.LoadAccountPengeluaranKasLain(), Self);
+  TcxExtLookupComboBoxProperties(cxGridColAPNewKode.Properties).LoadFromCDS(FCDSAccount, 'ID', 'Kode', ['id'], Self);
+  TcxExtLookupComboBoxProperties(cxGridColAPNewNama.Properties).LoadFromCDS(FCDSAccount, 'ID', 'Nama', ['id'], Self);
 end;
 
 procedure TfrmPenerimaanKas.InisialisasiCBBSalesman;
@@ -397,6 +434,21 @@ end;
 procedure TfrmPenerimaanKas.SetUser;
 begin
   edPenerima.Text := 'AKU';
+end;
+
+procedure TfrmPenerimaanKas.UpdatePenerimaanKasAPNewItems;
+var
+  I: Integer;
+  lPKAPNew: TPenerimaanKasAPNew;
+begin
+  PenerimaanKas.PenerimaanKasAPNewItems.Clear;
+  for I := 0 to cxGridTableAPNew.DataController.RecordCount - 1 do
+  begin
+    lPKAPNew               := TPenerimaanKasAPNew.Create;
+    cxGridTableAPNew.LoadObjectData(lPKAPNew,i);
+
+    PenerimaanKas.PenerimaanKasAPNewItems.Add(lPKAPNew);
+  end;
 end;
 
 procedure TfrmPenerimaanKas.UpdatePenerimaanKasARItems;

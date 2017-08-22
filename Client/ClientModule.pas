@@ -42,6 +42,8 @@ type
     FServerTransferAntarCabangKirimClient: TServerTransferAntarCabangKirimClient;
     FServerTransferAntarCabangTerimaClient: TServerTransferAntarCabangTerimaClient;
     FServerJurnalClient: TServerJurnalClient;
+    FServerMenuClient: TServerMenuClient;
+    FServerUserClient: TServerUserClient;
     FServerSettlementARAPClient: TServerSettlementARAPClient;
     function GetCabang: tcabang;
     function GetServerUOMClient: TServerUOMClient;
@@ -71,6 +73,8 @@ type
     function GetServerTransferAntarCabangTerimaClient:
         TServerTransferAntarCabangTerimaClient;
     function GetServerJurnalClient: TServerJurnalClient;
+    function GetServerMenuClient: TServerMenuClient;
+    function GetServerUserClient: TServerUserClient;
     function GeTServerSettlementARAPClient: TServerSettlementARAPClient;
     { Private declarations }
   public
@@ -122,8 +126,13 @@ type
         FServerTransferAntarCabangTerimaClient;
     property ServerJurnalClient: TServerJurnalClient read GetServerJurnalClient
         write FServerJurnalClient;
+    property ServerMenuClient: TServerMenuClient read GetServerMenuClient write
+        FServerMenuClient;
+    property ServerUserClient: TServerUserClient read GetServerUserClient write
+        FServerUserClient;
     property ServerSettlementARAPClient: TServerSettlementARAPClient read
         GeTServerSettlementARAPClient write FServerSettlementARAPClient;
+  published
 end;
 
 var
@@ -405,6 +414,24 @@ begin
 
   FServerJurnalClient:= TServerJurnalClient.Create(DSRestConnection, FInstanceOwner);
   Result := FServerJurnalClient;
+end;
+
+function TClientDataModule.GetServerMenuClient: TServerMenuClient;
+begin
+  if FServerMenuClient <> nil then
+    FreeAndNil(FServerMenuClient);
+
+  FServerMenuClient:= TServerMenuClient.Create(DSRestConnection, FInstanceOwner);
+  Result := FServerMenuClient;
+end;
+
+function TClientDataModule.GetServerUserClient: TServerUserClient;
+begin
+  if FServerUserClient <> nil then
+    FreeAndNil(FServerUserClient);
+
+  FServerUserClient:= TServerUserClient.Create(DSRestConnection, FInstanceOwner);
+  Result := FServerUserClient;
 end;
 
 function TClientDataModule.GeTServerSettlementARAPClient:

@@ -61,11 +61,11 @@
         <DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
-        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.299;InternalName=Motoroli Server;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=Motoroli Server;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.307;InternalName=Motoroli Server;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=Motoroli Server;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <Icon_MainIcon>$(BDS)\bin\delphi_PROJECTICON.ico</Icon_MainIcon>
         <VerInfo_AutoIncVersion>true</VerInfo_AutoIncVersion>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
-        <VerInfo_Build>299</VerInfo_Build>
+        <VerInfo_Build>307</VerInfo_Build>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <DCC_ExeOutput>..\bin</DCC_ExeOutput>
         <VerInfo_Locale>1033</VerInfo_Locale>
@@ -117,6 +117,7 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="..\model\uSettlementARAP.pas"/>
+        <DCCReference Include="..\model\uUser.pas"/>
         <None Include="js\base64.js"/>
         <None Include="js\connection.js"/>
         <None Include="js\ServerFunctionInvoker.js"/>

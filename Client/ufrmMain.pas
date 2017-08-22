@@ -187,6 +187,7 @@ type
     procedure actLapReturSupplierExecute(Sender: TObject);
     procedure actSettlementARAPExecute(Sender: TObject);
   private
+    procedure SimpanAndDisableDataMenu;
     procedure UpdateStatusBar;
     { Private declarations }
   public
@@ -201,7 +202,7 @@ uses
   ufrmSupplier, ufrmKoneksi,uAppUtils, ufrmBarang, ufrmPenerimaanBarang,
   ClientClassesUnit2, ClientModule, ufrmPilihCabang, ufrmLapMutasiBarangPerTransaksi,
   ufrmReturSupplier, udbutils, ufrmClosingInventory, ufrmLapStockSekarang,
-  ufrmGudang, ufrmAccount, uReport, ufrmTACTerima, ufrmSettlementARAP;
+  ufrmGudang, ufrmAccount, uReport, ufrmTACTerima, ufrmSettlementARAP, uUser;
 
 {$R *.dfm}
 
@@ -431,6 +432,9 @@ begin
 
         ClientDataModule.DSRestConnection.Host := TAppUtils.BacaRegistry('RestServer');
         ClientDataModule.DSRestConnection.Port := StrToInt(TAppUtils.BacaRegistry('RestPort'));
+
+
+        SimpanAndDisableDataMenu;
       except
         frmKoneksi.ShowModal;
       end;
@@ -477,6 +481,30 @@ begin
 //  finally
 //    lTSReport.Free;
 //  end;
+end;
+
+procedure TfrmMain.SimpanAndDisableDataMenu;
+var
+  I: Integer;
+  lMenu: TMenu;
+  sCaption: string;
+  sNama: string;
+begin
+  for I := 0 to actlstMainMenu.ActionCount - 1 do
+  begin
+//    actlstMainMenu.Actions[I].Enabled := False;
+//    sNama     := actlstMainMenu.Actions[I].Name;
+//    sCaption  := actlstMainMenu.Actions[I].Caption;
+//
+//    lMenu             := TMenu.Create;
+//    lMenu.MenuCaption := sCaption;
+//    lMenu.MenuName    := sNama;
+//
+//    ClientDataModule.ServerMenuClient.Save(lMenu);
+
+
+
+  end;
 end;
 
 procedure TfrmMain.UpdateStatusBar;

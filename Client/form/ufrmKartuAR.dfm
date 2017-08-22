@@ -1,6 +1,5 @@
 inherited frmKartuAR: TfrmKartuAR
   Caption = 'Kartu AR'
-  ExplicitTop = -87
   PixelsPerInch = 96
   TextHeight = 13
   inherited cxPCData: TcxPageControl
@@ -12,19 +11,19 @@ inherited frmKartuAR: TfrmKartuAR
             ExplicitTop = 2
           end
           inherited lblGudang: TLabel
-            Left = 362
+            Left = 221
             Width = 10
             Visible = False
             ExplicitLeft = 362
             ExplicitWidth = 10
           end
           inherited lblCabang: TLabel
-            Left = 141
+            Left = 0
             ExplicitLeft = 141
           end
           object lblCustomer: TLabel [4]
             AlignWithMargins = True
-            Left = 394
+            Left = 253
             Top = 4
             Width = 38
             Height = 23
@@ -32,29 +31,50 @@ inherited frmKartuAR: TfrmKartuAR
             Caption = 'Supplier'
             ExplicitHeight = 13
           end
+          object lblNoAR: TLabel [5]
+            AlignWithMargins = True
+            Left = 448
+            Top = 4
+            Width = 19
+            Height = 23
+            Align = alRight
+            AutoSize = False
+            Caption = 'AR'
+            ExplicitLeft = 481
+          end
           inherited cbbGudang: TcxExtLookupComboBox
-            Left = 378
+            Left = 237
             Visible = False
-            ExplicitLeft = 378
+            ExplicitLeft = 237
             ExplicitWidth = 10
             Width = 10
           end
           inherited cbbCabang: TcxExtLookupComboBox
-            Left = 211
-            ExplicitLeft = 211
+            Left = 70
+            ExplicitLeft = 70
           end
           object cbbCustomer: TcxExtLookupComboBox
             Tag = 1
             AlignWithMargins = True
-            Left = 438
+            Left = 297
             Top = 4
             Align = alRight
             TabOrder = 5
             Width = 145
           end
+          object edNoAR: TcxTextEdit
+            AlignWithMargins = True
+            Left = 473
+            Top = 4
+            Align = alRight
+            TabOrder = 6
+            Text = 'edNoAR'
+            Width = 110
+          end
         end
         inherited cxGrid: TcxGrid
           Height = 336
+          ExplicitHeight = 336
         end
         object pnlfOOTER: TPanel
           Left = 1
@@ -109,7 +129,7 @@ inherited frmKartuAR: TfrmKartuAR
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010107000800F40018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800FC0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

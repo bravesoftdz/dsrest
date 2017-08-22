@@ -70,7 +70,8 @@ uses
   ufrmLaporanAR in 'form\ufrmLaporanAR.pas' {frmLaporanAR},
   ufrmLaporanReturSupplier in 'form\ufrmLaporanReturSupplier.pas' {frmLaporanReturSupplier},
   uSettlementARAP in '..\model\uSettlementARAP.pas',
-  ufrmSettlementARAP in 'form\ufrmSettlementARAP.pas' {frmSettlementARAP};
+  ufrmSettlementARAP in 'form\ufrmSettlementARAP.pas' {frmSettlementARAP},
+  uUser in '..\model\uUser.pas';
 
 {$R *.res}
 
