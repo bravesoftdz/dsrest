@@ -39,7 +39,6 @@ type
     btnLoadAR: TcxButton;
     cxgrdlvlAPNew: TcxGridLevel;
     cxgrdlvlOI: TcxGridLevel;
-    cxGridTableGridDBARTableView2: TcxGridTableView;
     lblNominal: TLabel;
     edNominal: TcxCurrencyEdit;
     cxGridColKeterangan: TcxGridColumn;
@@ -51,6 +50,11 @@ type
     cxGridColAPNewNama: TcxGridColumn;
     cxGridColAPNewKeterangan: TcxGridColumn;
     cxGridColAPNewNominal: TcxGridColumn;
+    cxGridTableOI: TcxGridTableView;
+    cxGridColOIKode: TcxGridColumn;
+    cxGridColOINama: TcxGridColumn;
+    cxGridColOIKeterangan: TcxGridColumn;
+    cxGridColOINominal: TcxGridColumn;
     procedure actCetakExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ActionBaruExecute(Sender: TObject);
@@ -89,6 +93,7 @@ type
     procedure InisialisasiRekBank;
     procedure LoadDataAR(AIDCustomer : String);
     procedure LoadDataPenerimaanKasARItems;
+    procedure LoadDataPenerimaanKasAPNewItems;
     procedure SetStatusNominal;
     procedure SetUser;
     procedure UpdatePenerimaanKasAPNewItems;
@@ -243,7 +248,7 @@ procedure TfrmPenerimaanKas.cxGridColAPNewKodePropertiesValidate(
   var Error: Boolean);
 begin
   inherited;
-  cxGridTableAPNew.DataController.Values[cxGridTableAPNew.DataController.FocusedRecordIndex, cxGridColAPNewNama.Index] := cxGridTableAPNew.DataController.Values[cxGridTableAPNew.DataController.FocusedRecordIndex, cxGridColAPNewKode.Index];
+  cxGridTableAPNew.DataController.Values[cxGridTableAPNew.DataController.FocusedRecordIndex, cxGridColAPNewNama.Index] := DisplayValue;
 end;
 
 procedure TfrmPenerimaanKas.cxGridColARPropertiesValidate(Sender: TObject;
@@ -326,13 +331,21 @@ begin
     Result := Result + cxGridTableAR.GetDouble(i, cxGridColBayar.Index);
   end;
 
+  for i := 0 to cxGridTableAPNew.DataController.RecordCount - 1 do
+  begin
+    Result := Result + cxGridTableAPNew.GetDouble(i, cxGridColAPNewNominal.Index);
+  end;
+
 end;
 
 procedure TfrmPenerimaanKas.InisialisasiAccount;
 begin
   FCDSAccount := TDBUtils.DSToCDS(ClientDataModule.DSDataCLient.LoadAccountPengeluaranKasLain(), Self);
   TcxExtLookupComboBoxProperties(cxGridColAPNewKode.Properties).LoadFromCDS(FCDSAccount, 'ID', 'Kode', ['id'], Self);
-  TcxExtLookupComboBoxProperties(cxGridColAPNewNama.Properties).LoadFromCDS(FCDSAccount, 'ID', 'Nama', ['id'], Self);
+  TcxExtLookupComboBoxProperties(cxGridColAPNewNama.Properties).LoadFromCDS(FCDSAccount, 'Kode', 'Nama', ['id'], Self);
+
+  TcxExtLookupComboBoxProperties(cxGridColOIKode.Properties).LoadFromCDS(FCDSAccount, 'ID', 'Kode', ['id'], Self);
+  TcxExtLookupComboBoxProperties(cxGridColOINama.Properties).LoadFromCDS(FCDSAccount, 'Kode', 'Nama', ['id'], Self);
 end;
 
 procedure TfrmPenerimaanKas.InisialisasiCBBSalesman;
@@ -358,6 +371,8 @@ end;
 
 function TfrmPenerimaanKas.LoadData(AID : String): Boolean;
 begin
+  Result := False;
+
   FreeAndNil(FPenerimaanKas);
   ClearByTag([0,1]);
   edNoBukti.Text := ClientDataModule.ServerPenerimaanKasClient.GenerateNoBukti(edTglBukti.Date, ClientDataModule.Cabang.Kode);
@@ -384,6 +399,7 @@ begin
   memKeterangan.Text   := FPenerimaanKas.Keterangan;
 
   LoadDataPenerimaanKasARItems;
+  LoadDataPenerimaanKasAPNewItems;
 
   cxPCData.ActivePageIndex := 1;
 
@@ -416,6 +432,21 @@ begin
     cxGridTableAR.DataController.AppendRecord;
     cxGridTableAR.SetObjectData(PenerimaanKas.PenerimaanKasARItems[i], i);
     cxGridTableAR.SetValue(i, cxGridColNominal.Index, FCDSAP.FieldByName('nominal').AsFloat + PenerimaanKas.PenerimaanKasARItems[i].Nominal);
+  end;
+end;
+
+procedure TfrmPenerimaanKas.LoadDataPenerimaanKasAPNewItems;
+var
+  i: Integer;
+begin
+//  LoadDataAR(PenerimaanKas.Pembeli.ID);
+
+  cxGridTableAPNew.ClearRows;
+  for I := 0 to PenerimaanKas.PenerimaanKasAPNewItems.Count - 1 do
+  begin
+    cxGridTableAPNew.DataController.AppendRecord;
+    cxGridTableAPNew.SetObjectData(PenerimaanKas.PenerimaanKasAPNewItems[i], i);
+    cxGridTableAPNew.SetValue(i, cxGridColAPNewNama.Index, cxGridTableAPNew.DataController.DisplayTexts[i,cxGridColAPNewKode.Index]);
   end;
 end;
 
@@ -461,7 +492,6 @@ begin
   begin
     lPKAR               := TPenerimaanKasAR.Create;
     cxGridTableAR.LoadObjectData(lPKAR,i);
-
     PenerimaanKas.PenerimaanKasARItems.Add(lPKAR);
   end;
 end;

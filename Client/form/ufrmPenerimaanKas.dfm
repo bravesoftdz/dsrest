@@ -2,6 +2,7 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
   Caption = 'Penerimaan Kas'
   ClientHeight = 454
   ClientWidth = 735
+  ExplicitTop = -12
   ExplicitWidth = 751
   ExplicitHeight = 493
   PixelsPerInch = 96
@@ -9,7 +10,7 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
   inherited cxSBTransaksi: TdxStatusBar
     Top = 434
     Width = 735
-    ExplicitTop = 346
+    ExplicitTop = 434
     ExplicitWidth = 735
   end
   inherited cxPCData: TcxPageControl
@@ -17,12 +18,12 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
     Height = 401
     Properties.ActivePage = cxTSInputData
     ExplicitWidth = 735
-    ExplicitHeight = 313
+    ExplicitHeight = 401
     ClientRectBottom = 397
     ClientRectRight = 731
     inherited cxTSOverview: TcxTabSheet
       ExplicitWidth = 727
-      ExplicitHeight = 285
+      ExplicitHeight = 373
       inherited splTransaksi: TSplitter
         Height = 373
         ExplicitHeight = 285
@@ -31,7 +32,7 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
         Width = 719
         Height = 373
         ExplicitWidth = 719
-        ExplicitHeight = 285
+        ExplicitHeight = 373
         inherited pnlFilter: TPanel
           Width = 717
           ExplicitWidth = 717
@@ -60,7 +61,7 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
           Width = 717
           Height = 340
           ExplicitWidth = 717
-          ExplicitHeight = 252
+          ExplicitHeight = 340
           inherited cxGridDBTableOverview: TcxGridDBTableView
             OnCellDblClick = cxGridDBTableOverviewCellDblClick
           end
@@ -69,7 +70,7 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
     end
     inherited cxTSInputData: TcxTabSheet
       ExplicitWidth = 727
-      ExplicitHeight = 285
+      ExplicitHeight = 373
       object pnlHeader: TPanel
         Left = 0
         Top = 0
@@ -221,7 +222,6 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
         Align = alClient
         TabOrder = 1
         RootLevelOptions.DetailTabsPosition = dtpTop
-        ExplicitHeight = 124
         object cxGridTableAR: TcxGridTableView
           Navigator.Buttons.CustomButtons = <>
           OnEditing = cxGridTableAREditing
@@ -270,6 +270,12 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
             Options.Focusing = False
             Width = 126
           end
+          object cxGridColKeterangan: TcxGridColumn
+            AlternateCaption = 'Keterangan'
+            Caption = 'Keterangan'
+            HeaderAlignmentHorz = taCenter
+            Width = 121
+          end
           object cxGridColBayar: TcxGridColumn
             AlternateCaption = 'Nominal'
             Caption = 'Dibayar'
@@ -281,18 +287,6 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
             HeaderAlignmentHorz = taCenter
             Width = 101
           end
-          object cxGridColKeterangan: TcxGridColumn
-            AlternateCaption = 'Keterangan'
-            Caption = 'Keterangan'
-            HeaderAlignmentHorz = taCenter
-            Width = 121
-          end
-        end
-        object cxGridTableGridDBARTableView2: TcxGridTableView
-          Navigator.Buttons.CustomButtons = <>
-          DataController.Summary.DefaultGroupSummaryItems = <>
-          DataController.Summary.FooterSummaryItems = <>
-          DataController.Summary.SummaryGroups = <>
         end
         object cxGridTableAPNew: TcxGridTableView
           Navigator.Buttons.CustomButtons = <>
@@ -314,6 +308,7 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
           Styles.ContentEven = ClientDataModule.cxstylGridEven
           Styles.Header = ClientDataModule.cxstylGridHeader
           object cxGridColAPNewKode: TcxGridColumn
+            AlternateCaption = 'Account'
             Caption = 'Kode'
             PropertiesClassName = 'TcxExtLookupComboBoxProperties'
             Properties.ImmediatePost = True
@@ -328,11 +323,13 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
             Width = 131
           end
           object cxGridColAPNewKeterangan: TcxGridColumn
+            AlternateCaption = 'Keterangan'
             Caption = 'Keterangan'
             HeaderAlignmentHorz = taCenter
             Width = 151
           end
           object cxGridColAPNewNominal: TcxGridColumn
+            AlternateCaption = 'Nominal'
             Caption = 'Nominal'
             DataBinding.ValueType = 'Currency'
             PropertiesClassName = 'TcxCurrencyEditProperties'
@@ -340,6 +337,52 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
             Properties.DisplayFormat = ',0.00;(,0.00)'
             HeaderAlignmentHorz = taCenter
             Width = 76
+          end
+        end
+        object cxGridTableOI: TcxGridTableView
+          Navigator.Buttons.CustomButtons = <>
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <
+            item
+              Format = ',0.00;(,0.00)'
+              Kind = skSum
+              Column = cxGridColOINominal
+            end>
+          DataController.Summary.SummaryGroups = <>
+          OptionsBehavior.FocusFirstCellOnNewRecord = True
+          OptionsBehavior.GoToNextCellOnEnter = True
+          OptionsBehavior.FocusCellOnCycle = True
+          OptionsData.Appending = True
+          OptionsView.Footer = True
+          OptionsView.GroupByBox = False
+          Styles.ContentEven = ClientDataModule.cxstylGridEven
+          Styles.ContentOdd = ClientDataModule.cxstylGridOdd
+          Styles.Header = ClientDataModule.cxstylGridHeader
+          object cxGridColOIKode: TcxGridColumn
+            Caption = 'Kode'
+            PropertiesClassName = 'TcxExtLookupComboBoxProperties'
+            HeaderAlignmentHorz = taCenter
+            Width = 84
+          end
+          object cxGridColOINama: TcxGridColumn
+            Caption = 'Nama'
+            PropertiesClassName = 'TcxExtLookupComboBoxProperties'
+            HeaderAlignmentHorz = taCenter
+            Width = 99
+          end
+          object cxGridColOIKeterangan: TcxGridColumn
+            Caption = 'Keterangan'
+            HeaderAlignmentHorz = taCenter
+            Width = 140
+          end
+          object cxGridColOINominal: TcxGridColumn
+            Caption = 'Nominal'
+            DataBinding.ValueType = 'Currency'
+            PropertiesClassName = 'TcxCurrencyEditProperties'
+            Properties.Alignment.Horz = taRightJustify
+            Properties.DisplayFormat = ',0.00;(,0.00)'
+            HeaderAlignmentHorz = taCenter
+            Width = 125
           end
         end
         object cxgrdlvlAR: TcxGridLevel
@@ -352,7 +395,7 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
         end
         object cxgrdlvlOI: TcxGridLevel
           Caption = 'Penerimaan Lain'
-          GridView = cxGridTableGridDBARTableView2
+          GridView = cxGridTableOI
         end
       end
     end
@@ -360,7 +403,7 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
   inherited pnlButton: TPanel
     Top = 401
     Width = 735
-    ExplicitTop = 313
+    ExplicitTop = 401
     ExplicitWidth = 735
     inherited btnBaru: TcxButton
       Left = 623
@@ -397,7 +440,7 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
     Left = 584
     Top = 144
     Bitmap = {
-      494C010107000800100118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800140118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

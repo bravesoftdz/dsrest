@@ -68,12 +68,15 @@ type
   TPenerimaanKasAPNew = class(TAppObjectItem)
   private
     FAccount: TAccount;
-    FKeterangan: Double;
+    FKeterangan: string;
     FNominal: Double;
     FPenerimaanKas: TPenerimaanKas;
+  public
+    function GetHeaderField: string; override;
+    procedure SetHeaderProperty(AHeaderProperty : TAppObject); override;
   published
     property Account: TAccount read FAccount write FAccount;
-    property Keterangan: Double read FKeterangan write FKeterangan;
+    property Keterangan: string read FKeterangan write FKeterangan;
     property Nominal: Double read FNominal write FNominal;
     property PenerimaanKas: TPenerimaanKas read FPenerimaanKas write FPenerimaanKas;
   end;
@@ -129,6 +132,16 @@ begin
     FPenerimaanKasAPNewItems := TObjectList<TPenerimaanKasAPNew>.Create;
 
   Result := FPenerimaanKasAPNewItems;
+end;
+
+function TPenerimaanKasAPNew.GetHeaderField: string;
+begin
+  Result := 'PenerimaanKas';
+end;
+
+procedure TPenerimaanKasAPNew.SetHeaderProperty(AHeaderProperty : TAppObject);
+begin
+  Self.PenerimaanKas := TPenerimaanKas(AHeaderProperty);
 end;
 
 end.
