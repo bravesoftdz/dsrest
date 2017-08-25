@@ -22,6 +22,9 @@ type
     function DS_GudangLookUp: TDataset;
     function GetNamaku: string;
     function LoadAccountPengeluaranKasLain: TDataset;
+    function LoadAccountAPNew: TDataset;
+    function LoadAccountPenerimaanLain: TDataset;
+    function LoadAccountARNew: TDataset;
     function LoadAP(ASupplier : TSupplier): TDataSet;
     function LoadAR(ACustomer : TSupplier): TDataSet;
   end;
@@ -3570,6 +3573,30 @@ var
   sSQL: string;
 begin
   sSQL := 'select * from VAccountTransaksiPengeluaranLain order by kode';
+  Result := TDBUtils.OpenDataset(sSQL);
+end;
+
+function TDSData.LoadAccountAPNew: TDataset;
+var
+  sSQL: string;
+begin
+  sSQL := 'select * from vaccountapnew';
+  Result := TDBUtils.OpenDataset(sSQL);
+end;
+
+function TDSData.LoadAccountPenerimaanLain: TDataset;
+var
+  sSQL: string;
+begin
+  sSQL := 'select * from vaccountpenerimaanlain';
+  Result := TDBUtils.OpenDataset(sSQL);
+end;
+
+function TDSData.LoadAccountARNew: TDataset;
+var
+  sSQL: string;
+begin
+  sSQL := 'select * from vaccountapnew';
   Result := TDBUtils.OpenDataset(sSQL);
 end;
 

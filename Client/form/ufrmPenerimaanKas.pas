@@ -82,7 +82,8 @@ type
     procedure cxGridColAPNewKodePropertiesValidate(Sender: TObject;
       var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
   private
-    FCDSAccount: tclientDataSet;
+    FCDSAccountAPNew: tclientDataSet;
+    FCDSAccountPenerimaanLain: tclientDataSet;
     FCDSAP: tclientDataSet;
     FCDSRekBank: TClientDataSet;
     FPenerimaanKas: TPenerimaanKas;
@@ -340,12 +341,13 @@ end;
 
 procedure TfrmPenerimaanKas.InisialisasiAccount;
 begin
-  FCDSAccount := TDBUtils.DSToCDS(ClientDataModule.DSDataCLient.LoadAccountPengeluaranKasLain(), Self);
-  TcxExtLookupComboBoxProperties(cxGridColAPNewKode.Properties).LoadFromCDS(FCDSAccount, 'ID', 'Kode', ['id'], Self);
-  TcxExtLookupComboBoxProperties(cxGridColAPNewNama.Properties).LoadFromCDS(FCDSAccount, 'Kode', 'Nama', ['id'], Self);
+  FCDSAccountAPNew := TDBUtils.DSToCDS(ClientDataModule.DSDataCLient.LoadAccountAPNew(), Self);
+  TcxExtLookupComboBoxProperties(cxGridColAPNewKode.Properties).LoadFromCDS(FCDSAccountAPNew, 'ID', 'Kode', ['id'], Self);
+  TcxExtLookupComboBoxProperties(cxGridColAPNewNama.Properties).LoadFromCDS(FCDSAccountAPNew, 'Kode', 'Nama', ['id'], Self);
 
-  TcxExtLookupComboBoxProperties(cxGridColOIKode.Properties).LoadFromCDS(FCDSAccount, 'ID', 'Kode', ['id'], Self);
-  TcxExtLookupComboBoxProperties(cxGridColOINama.Properties).LoadFromCDS(FCDSAccount, 'Kode', 'Nama', ['id'], Self);
+  FCDSAccountPenerimaanLain := TDBUtils.DSToCDS(ClientDataModule.DSDataCLient.LoadAccountPenerimaanLain(), Self);
+  TcxExtLookupComboBoxProperties(cxGridColOIKode.Properties).LoadFromCDS(FCDSAccountPenerimaanLain, 'ID', 'Kode', ['id'], Self);
+  TcxExtLookupComboBoxProperties(cxGridColOINama.Properties).LoadFromCDS(FCDSAccountPenerimaanLain, 'Kode', 'Nama', ['id'], Self);
 end;
 
 procedure TfrmPenerimaanKas.InisialisasiCBBSalesman;

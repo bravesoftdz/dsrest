@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 8/22/2017 6:12:03 AM
+// 8/26/2017 6:45:21 AM
 //
 
 unit ClientClassesUnit2;
@@ -964,6 +964,12 @@ type
     FGetNamakuCommand: TDSRestCommand;
     FLoadAccountPengeluaranKasLainCommand: TDSRestCommand;
     FLoadAccountPengeluaranKasLainCommand_Cache: TDSRestCommand;
+    FLoadAccountAPNewCommand: TDSRestCommand;
+    FLoadAccountAPNewCommand_Cache: TDSRestCommand;
+    FLoadAccountPenerimaanLainCommand: TDSRestCommand;
+    FLoadAccountPenerimaanLainCommand_Cache: TDSRestCommand;
+    FLoadAccountARNewCommand: TDSRestCommand;
+    FLoadAccountARNewCommand_Cache: TDSRestCommand;
     FLoadAPCommand: TDSRestCommand;
     FLoadAPCommand_Cache: TDSRestCommand;
     FLoadARCommand: TDSRestCommand;
@@ -979,6 +985,12 @@ type
     function GetNamaku(const ARequestFilter: string = ''): string;
     function LoadAccountPengeluaranKasLain(const ARequestFilter: string = ''): TDataSet;
     function LoadAccountPengeluaranKasLain_Cache(const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function LoadAccountAPNew(const ARequestFilter: string = ''): TDataSet;
+    function LoadAccountAPNew_Cache(const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function LoadAccountPenerimaanLain(const ARequestFilter: string = ''): TDataSet;
+    function LoadAccountPenerimaanLain_Cache(const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function LoadAccountARNew(const ARequestFilter: string = ''): TDataSet;
+    function LoadAccountARNew_Cache(const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function LoadAP(ASupplier: TSupplier; const ARequestFilter: string = ''): TDataSet;
     function LoadAP_Cache(ASupplier: TSupplier; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function LoadAR(ACustomer: TSupplier; const ARequestFilter: string = ''): TDataSet;
@@ -3636,6 +3648,36 @@ const
   );
 
   TDSData_LoadAccountPengeluaranKasLain_Cache: array [0..0] of TDSRestParameterMetaData =
+  (
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TDSData_LoadAccountAPNew: array [0..0] of TDSRestParameterMetaData =
+  (
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TDSData_LoadAccountAPNew_Cache: array [0..0] of TDSRestParameterMetaData =
+  (
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TDSData_LoadAccountPenerimaanLain: array [0..0] of TDSRestParameterMetaData =
+  (
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TDSData_LoadAccountPenerimaanLain_Cache: array [0..0] of TDSRestParameterMetaData =
+  (
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TDSData_LoadAccountARNew: array [0..0] of TDSRestParameterMetaData =
+  (
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TDSData_LoadAccountARNew_Cache: array [0..0] of TDSRestParameterMetaData =
   (
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
@@ -13241,6 +13283,93 @@ begin
   Result := TDSRestCachedDataSet.Create(FLoadAccountPengeluaranKasLainCommand_Cache.Parameters[0].Value.GetString);
 end;
 
+function TDSDataClient.LoadAccountAPNew(const ARequestFilter: string): TDataSet;
+begin
+  if FLoadAccountAPNewCommand = nil then
+  begin
+    FLoadAccountAPNewCommand := FConnection.CreateCommand;
+    FLoadAccountAPNewCommand.RequestType := 'GET';
+    FLoadAccountAPNewCommand.Text := 'TDSData.LoadAccountAPNew';
+    FLoadAccountAPNewCommand.Prepare(TDSData_LoadAccountAPNew);
+  end;
+  FLoadAccountAPNewCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FLoadAccountAPNewCommand.Parameters[0].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FLoadAccountAPNewCommand.FreeOnExecute(Result);
+end;
+
+function TDSDataClient.LoadAccountAPNew_Cache(const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FLoadAccountAPNewCommand_Cache = nil then
+  begin
+    FLoadAccountAPNewCommand_Cache := FConnection.CreateCommand;
+    FLoadAccountAPNewCommand_Cache.RequestType := 'GET';
+    FLoadAccountAPNewCommand_Cache.Text := 'TDSData.LoadAccountAPNew';
+    FLoadAccountAPNewCommand_Cache.Prepare(TDSData_LoadAccountAPNew_Cache);
+  end;
+  FLoadAccountAPNewCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FLoadAccountAPNewCommand_Cache.Parameters[0].Value.GetString);
+end;
+
+function TDSDataClient.LoadAccountPenerimaanLain(const ARequestFilter: string): TDataSet;
+begin
+  if FLoadAccountPenerimaanLainCommand = nil then
+  begin
+    FLoadAccountPenerimaanLainCommand := FConnection.CreateCommand;
+    FLoadAccountPenerimaanLainCommand.RequestType := 'GET';
+    FLoadAccountPenerimaanLainCommand.Text := 'TDSData.LoadAccountPenerimaanLain';
+    FLoadAccountPenerimaanLainCommand.Prepare(TDSData_LoadAccountPenerimaanLain);
+  end;
+  FLoadAccountPenerimaanLainCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FLoadAccountPenerimaanLainCommand.Parameters[0].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FLoadAccountPenerimaanLainCommand.FreeOnExecute(Result);
+end;
+
+function TDSDataClient.LoadAccountPenerimaanLain_Cache(const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FLoadAccountPenerimaanLainCommand_Cache = nil then
+  begin
+    FLoadAccountPenerimaanLainCommand_Cache := FConnection.CreateCommand;
+    FLoadAccountPenerimaanLainCommand_Cache.RequestType := 'GET';
+    FLoadAccountPenerimaanLainCommand_Cache.Text := 'TDSData.LoadAccountPenerimaanLain';
+    FLoadAccountPenerimaanLainCommand_Cache.Prepare(TDSData_LoadAccountPenerimaanLain_Cache);
+  end;
+  FLoadAccountPenerimaanLainCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FLoadAccountPenerimaanLainCommand_Cache.Parameters[0].Value.GetString);
+end;
+
+function TDSDataClient.LoadAccountARNew(const ARequestFilter: string): TDataSet;
+begin
+  if FLoadAccountARNewCommand = nil then
+  begin
+    FLoadAccountARNewCommand := FConnection.CreateCommand;
+    FLoadAccountARNewCommand.RequestType := 'GET';
+    FLoadAccountARNewCommand.Text := 'TDSData.LoadAccountARNew';
+    FLoadAccountARNewCommand.Prepare(TDSData_LoadAccountARNew);
+  end;
+  FLoadAccountARNewCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FLoadAccountARNewCommand.Parameters[0].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FLoadAccountARNewCommand.FreeOnExecute(Result);
+end;
+
+function TDSDataClient.LoadAccountARNew_Cache(const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FLoadAccountARNewCommand_Cache = nil then
+  begin
+    FLoadAccountARNewCommand_Cache := FConnection.CreateCommand;
+    FLoadAccountARNewCommand_Cache.RequestType := 'GET';
+    FLoadAccountARNewCommand_Cache.Text := 'TDSData.LoadAccountARNew';
+    FLoadAccountARNewCommand_Cache.Prepare(TDSData_LoadAccountARNew_Cache);
+  end;
+  FLoadAccountARNewCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FLoadAccountARNewCommand_Cache.Parameters[0].Value.GetString);
+end;
+
 function TDSDataClient.LoadAP(ASupplier: TSupplier; const ARequestFilter: string): TDataSet;
 begin
   if FLoadAPCommand = nil then
@@ -13370,6 +13499,12 @@ begin
   FGetNamakuCommand.DisposeOf;
   FLoadAccountPengeluaranKasLainCommand.DisposeOf;
   FLoadAccountPengeluaranKasLainCommand_Cache.DisposeOf;
+  FLoadAccountAPNewCommand.DisposeOf;
+  FLoadAccountAPNewCommand_Cache.DisposeOf;
+  FLoadAccountPenerimaanLainCommand.DisposeOf;
+  FLoadAccountPenerimaanLainCommand_Cache.DisposeOf;
+  FLoadAccountARNewCommand.DisposeOf;
+  FLoadAccountARNewCommand_Cache.DisposeOf;
   FLoadAPCommand.DisposeOf;
   FLoadAPCommand_Cache.DisposeOf;
   FLoadARCommand.DisposeOf;
