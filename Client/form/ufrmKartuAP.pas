@@ -52,6 +52,17 @@ var
   lCabang: TCabang;
 begin
   inherited;
+  if VarIsNull(cbbCabang.EditValue) then
+  begin
+    TAppUtils.Warning('Cabang Belum Dipilih');
+    Exit;
+  end;
+
+  if VarIsNull(cbbCustomer.EditValue) then
+  begin
+    TAppUtils.Warning('Supplier Belum Dipilih');
+    Exit;
+  end;
 
   lSupplier := TSupplier.CreateID(cbbCustomer.EditValue);
   lCabang := TCabang.CreateID(cbbCabang.EditValue);

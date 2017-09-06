@@ -2,6 +2,7 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
   Caption = 'Penerimaan Kas'
   ClientHeight = 454
   ClientWidth = 735
+  ExplicitTop = -81
   ExplicitWidth = 751
   ExplicitHeight = 493
   PixelsPerInch = 96
@@ -21,6 +22,8 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
     ClientRectBottom = 397
     ClientRectRight = 731
     inherited cxTSOverview: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
       ExplicitWidth = 727
       ExplicitHeight = 373
       inherited splTransaksi: TSplitter
@@ -238,7 +241,7 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
             end>
           DataController.Summary.SummaryGroups = <>
           DataController.OnAfterDelete = cxGridTableARDataControllerAfterDelete
-          DataController.OnAfterInsert = cxGridTableARDataControllerAfterInsert
+          DataController.OnAfterPost = cxGridTableARDataControllerAfterPost
           OptionsBehavior.FocusFirstCellOnNewRecord = True
           OptionsBehavior.GoToNextCellOnEnter = True
           OptionsBehavior.FocusCellOnCycle = True
@@ -298,6 +301,8 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
               Column = cxGridColAPNewNominal
             end>
           DataController.Summary.SummaryGroups = <>
+          DataController.OnAfterDelete = cxGridTableAPNewDataControllerAfterDelete
+          DataController.OnAfterPost = cxGridTableAPNewDataControllerAfterPost
           OptionsBehavior.FocusFirstCellOnNewRecord = True
           OptionsBehavior.GoToNextCellOnEnter = True
           OptionsBehavior.FocusCellOnCycle = True
@@ -313,13 +318,13 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
             Properties.ImmediatePost = True
             Properties.OnValidate = cxGridColAPNewKodePropertiesValidate
             HeaderAlignmentHorz = taCenter
-            Width = 115
+            Width = 89
           end
           object cxGridColAPNewNama: TcxGridColumn
             Caption = 'Nama'
             PropertiesClassName = 'TcxExtLookupComboBoxProperties'
             HeaderAlignmentHorz = taCenter
-            Width = 131
+            Width = 244
           end
           object cxGridColAPNewKeterangan: TcxGridColumn
             AlternateCaption = 'Keterangan'
@@ -348,6 +353,8 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
               Column = cxGridColOINominal
             end>
           DataController.Summary.SummaryGroups = <>
+          DataController.OnAfterDelete = cxGridTableOIDataControllerAfterDelete
+          DataController.OnAfterPost = cxGridTableOIDataControllerAfterPost
           OptionsBehavior.FocusFirstCellOnNewRecord = True
           OptionsBehavior.GoToNextCellOnEnter = True
           OptionsBehavior.FocusCellOnCycle = True
@@ -358,8 +365,10 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
           Styles.ContentOdd = ClientDataModule.cxstylGridOdd
           Styles.Header = ClientDataModule.cxstylGridHeader
           object cxGridColOIKode: TcxGridColumn
+            AlternateCaption = 'Account'
             Caption = 'Kode'
             PropertiesClassName = 'TcxExtLookupComboBoxProperties'
+            Properties.OnValidate = cxGridColOIKodePropertiesValidate
             HeaderAlignmentHorz = taCenter
             Width = 84
           end
@@ -370,11 +379,13 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
             Width = 99
           end
           object cxGridColOIKeterangan: TcxGridColumn
+            AlternateCaption = 'Keterangan'
             Caption = 'Keterangan'
             HeaderAlignmentHorz = taCenter
             Width = 140
           end
           object cxGridColOINominal: TcxGridColumn
+            AlternateCaption = 'Nominal'
             Caption = 'Nominal'
             DataBinding.ValueType = 'Currency'
             PropertiesClassName = 'TcxCurrencyEditProperties'
@@ -439,7 +450,7 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
     Left = 584
     Top = 144
     Bitmap = {
-      494C010107000800180118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800240118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

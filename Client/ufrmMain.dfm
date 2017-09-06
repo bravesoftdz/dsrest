@@ -39,6 +39,7 @@ object frmMain: TfrmMain
       Index = 0
     end
     object dxrbnTabMaster: TdxRibbonTab
+      Active = True
       Caption = 'Master'
       Groups = <
         item
@@ -68,7 +69,6 @@ object frmMain: TfrmMain
       Index = 2
     end
     object dxrbntbAkuntansi: TdxRibbonTab
-      Active = True
       Caption = 'FA'
       Groups = <
         item
@@ -342,7 +342,7 @@ object frmMain: TfrmMain
           Visible = True
           ItemName = 'dxbrlrgbtnAssetCat'
         end>
-      OneOnRow = True
+      OneOnRow = False
       Row = 0
       UseOwnFont = True
       Visible = True
@@ -499,7 +499,7 @@ object frmMain: TfrmMain
     object dxbrmngrAMSBarFA: TdxBar
       Caption = 'FA'
       CaptionButtons = <>
-      DockedLeft = 0
+      DockedLeft = 347
       DockedTop = 0
       FloatLeft = 900
       FloatTop = 8
@@ -628,7 +628,7 @@ object frmMain: TfrmMain
     object dxbrlrgbtnBarLargeAsset: TdxBarLargeButton
       Action = actMasSupplier
       Category = 0
-      LargeImageIndex = 0
+      LargeImageIndex = 7
     end
     object dxbrlrgbtnBarLargeAssetProperty: TdxBarLargeButton
       Action = actMasterGudang
@@ -853,7 +853,7 @@ object frmMain: TfrmMain
     Top = 128
     object actMasSupplier: TAction
       Category = 'Master'
-      Caption = 'Supplier'
+      Caption = 'Organisasi'
       OnExecute = actMasSupplierExecute
     end
     object actMasAssetCategory: TAction
@@ -1035,7 +1035,7 @@ object frmMain: TfrmMain
     Left = 688
     Top = 128
     Bitmap = {
-      494C010116001800600120002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010116001800800120002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000080000000C000000001002000000000000080
       0100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

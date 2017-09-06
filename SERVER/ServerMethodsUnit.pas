@@ -14,6 +14,7 @@ type
   {$METHODINFO ON}
 
   TServerAR = class;
+  TServerAP = class;
   TServerPenerimaanKas = class;
   TDSData = class(TInterfacedPersistent)
 
@@ -299,11 +300,16 @@ type
   TServerPenerimaanKas = class(TServerTransaction)
   private
     FServerAR: TServerAR;
+    FServerAP: TServerAP;
     function GetServerAR: TServerAR;
+    function GetServerAP: TServerAP;
+    function HapusAP(AOBject: TAppObject): Boolean;
     function UpdateARTerbayar(APenerimaanKas : TPenerimaanKas; AIsBayar : Boolean):
         Boolean;
     property ServerAR: TServerAR read GetServerAR write FServerAR;
+    property ServerAP: TServerAP read GetServerAP write FServerAP;
   protected
+    function SimpanAPNew(AOBject: TAppObject): Boolean;
   public
     destructor Destroy; override;
     function AfterSave(AAppObject : TAppObject): Boolean; override;
@@ -472,6 +478,9 @@ type
 
 
 {$METHODINFO OFF}
+
+const
+  _CounterNoBukti : Integer = 4;
 
 implementation
 uses StrUtils, Provider,uAppUtils, System.DateUtils;
@@ -795,6 +804,11 @@ begin
   lServerAP := TServerAP.Create;
   try
     lAP := lServerAP.RetrieveTransaksi(lPB.ClassName, AOBject.ID);
+
+    if lAP.TerBayar > 0 then
+      raise Exception.Create('AP atas penerimaan Barang ' + lPB.NoBukti + ' Sudah Terbayar' + #13
+                               + 'Data Tidak Bisa Diubah');
+
     if lServerAP.DeleteNoCommit(lAP) then
       Result := True;
   finally
@@ -893,6 +907,11 @@ begin
   lServerAP := TServerAP.Create;
   try
     lAP := lServerAP.RetrieveTransaksi(lPB.ClassName, AOBject.ID);
+
+    if lAP.TerBayar > 0 then
+    raise Exception.Create('AP atas penerimaan Barang ' + lPB.NoBukti + ' Sudah Terbayar' + #13
+                               + 'Data Tidak Bisa Diubah');
+
     lAP.Cabang := TCabang.CreateID(lPB.Cabang.ID);
     lAP.Supplier := TSupplier.CreateID(lPB.Supplier.ID);
     lAP.IDTransaksi := lPB.ID;
@@ -1015,7 +1034,7 @@ var
   iCounter: Integer;
   sSQL: string;
 begin
-  Result := APrefix + '/' ;
+  Result := APrefix + '/' + FormatDateTime('YYMM', ATglBukti) + '/' ;
 
   iCounter := 0;
 
@@ -1027,12 +1046,12 @@ begin
     try
       if not IsEmpty then
       begin
-        iCounter := StrToIntDef(RightStr(FieldByName('nobukti').AsString,10), 0);
+        iCounter := StrToIntDef(RightStr(FieldByName('nobukti').AsString,_CounterNoBukti), 0);
       end;
 
       iCounter := iCounter + 1;
 
-      Result := Result + TAppUtils.TambahkanKarakterNol(iCounter,10);
+      Result := Result + TAppUtils.TambahkanKarakterNol(iCounter,_CounterNoBukti);
     finally
       Free;
     end;
@@ -2647,7 +2666,10 @@ begin
     Exit;
 
   if UpdateARTerbayar(TPenerimaanKas(AAppObject), True) then
-    Result := True;
+  begin
+    if SimpanAPNew(AAppObject) then
+      Result := True;
+  end;
 end;
 
 function TServerPenerimaanKas.BeforeDelete(AAppObject : TAppObject): Boolean;
@@ -2658,18 +2680,34 @@ begin
     Exit;
 
   if UpdateARTerbayar(TPenerimaanKas(AAppObject), False) then
-    Result := True;
+  begin
+    if HapusAP(AAppObject) then
+      Result := True;
+  end;
 end;
 
 function TServerPenerimaanKas.BeforeSave(AAppObject : TAppObject): Boolean;
+var
+  I: Integer;
+  lPK: TPenerimaanKas;
 begin
   Result := False;
 
   if AAppObject= nil then
     Exit;
 
+  lPK := TPenerimaanKas(AAppObject);
+
+
+  for I := 0 to lPK.PenerimaanKasAPNewItems.Count - 1 do
+  begin
+    lPK.PenerimaanKasAPNewItems[i].AP             := TAP.CreateID(TDBUtils.GetNextIDGUIDToString());
+    lPK.PenerimaanKasAPNewItems[i].AP.ObjectState := 1;
+  end;
+
   if UpdateARTerbayar(TPenerimaanKas(AAppObject), False) then
-    Result := True;
+    if HapusAP(AAppObject) then
+      Result := True;
 end;
 
 function TServerPenerimaanKas.GetServerAR: TServerAR;
@@ -2678,6 +2716,41 @@ begin
     FServerAR := TServerAR.Create;
 
   Result := FServerAR;
+end;
+
+function TServerPenerimaanKas.GetServerAP: TServerAP;
+begin
+  if FServerAP = nil then
+    FServerAP := TServerAP.Create;
+
+  Result := FServerAP;
+end;
+
+function TServerPenerimaanKas.HapusAP(AOBject: TAppObject): Boolean;
+var
+  lAP: TAP;
+  lPK: TPenerimaanKas;
+  I: Integer;
+begin
+  Result := False;
+
+  lPK       := Retrieve(AOBject.ID);
+  try
+    for I := 0 to lPK.PenerimaanKasAPNewItems.Count - 1 do
+    begin
+      lAP := ServerAP.RetrieveTransaksi(lPK.PenerimaanKasAPNewItems[i].ClassName, lPK.PenerimaanKasAPNewItems[i].ID);
+      if lAP.TerBayar > 0 then
+        raise Exception.Create('AP atas penerimaan Kas' + lPK.NoBukti + ' Sudah Terbayar' + #13
+                               + 'Data Tidak Bisa Diubah');
+
+      if ServerAP.DeleteNoCommit(lAP) then
+    end;
+
+    lPK.Free;
+    Result := True;
+  except
+    raise
+  end;
 end;
 
 function TServerPenerimaanKas.Retrieve(AID : String): TPenerimaanKas;
@@ -2736,6 +2809,42 @@ begin
     end;
   end;
 
+
+end;
+
+function TServerPenerimaanKas.SimpanAPNew(AOBject: TAppObject): Boolean;
+var
+  lAP: TAP;
+  lPK: TPenerimaanKas;
+  I: Integer;
+begin
+  Result := False;
+
+  lPK       := TPenerimaanKas(AOBject);
+  for I := 0 to lPK.PenerimaanKasAPNewItems.Count - 1 do
+  begin
+    try
+      with lPK.PenerimaanKasAPNewItems[i].AP do
+      begin
+        Cabang            := TCabang.CreateID(lPK.Cabang.ID);
+        Supplier          := TSupplier.CreateID(lPK.Pembeli.ID);
+        IDTransaksi       := lPK.PenerimaanKasAPNewItems[i].ID;
+
+        NoBukti           := lPK.NoBukti + '-' + IntToStr(i+1);
+        NoBuktiTransaksi  := NoBukti;
+
+        Nominal           := lPK.PenerimaanKasAPNewItems[i].Nominal;
+        Transaksi         := lPK.PenerimaanKasAPNewItems[i].ClassName;
+        JatuhTempo        := lPK.TglBukti + 7;
+
+        TglBukti          := lPK.TglBukti;
+
+        if ServerAP.SaveNoCommit(lPK.PenerimaanKasAPNewItems[i].AP) then
+          Result := True;
+      end;
+    finally
+    end;
+  end;
 
 end;
 

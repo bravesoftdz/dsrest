@@ -10,6 +10,7 @@ type
   TPenerimaanKas = class;
   TPenerimaanKasAR = class;
   TPenerimaanKasAPNew = class;
+  TPenerimaanKasLain = class;
 
   TPenerimaanKasAR = class(TAppObjectItem)
   private
@@ -45,8 +46,10 @@ type
     FRekBank: TRekBank;
     FTglBukti: TDatetime;
     FPenerimaanKasAPNewItems: TObjectList<TPenerimaanKasAPNew>;
+    FPenerimaanKasLainItems: TObjectList<TPenerimaanKasLain>;
     function GetPenerimaanKasARItems: TObjectlist<TPenerimaanKasAR>;
     function GetPenerimaanKasAPNewItems: TObjectList<TPenerimaanKasAPNew>;
+    function GetPenerimaanKasLainItems: TObjectList<TPenerimaanKasLain>;
   public
     destructor Destroy; override;
   published
@@ -63,9 +66,29 @@ type
     property TglBukti: TDatetime read FTglBukti write FTglBukti;
     property PenerimaanKasAPNewItems: TObjectList<TPenerimaanKasAPNew> read
         GetPenerimaanKasAPNewItems write FPenerimaanKasAPNewItems;
+    property PenerimaanKasLainItems: TObjectList<TPenerimaanKasLain> read
+        GetPenerimaanKasLainItems write FPenerimaanKasLainItems;
   end;
 
   TPenerimaanKasAPNew = class(TAppObjectItem)
+  private
+    FAccount: TAccount;
+    FAP: TAP;
+    FKeterangan: string;
+    FNominal: Double;
+    FPenerimaanKas: TPenerimaanKas;
+  public
+    function GetHeaderField: string; override;
+    procedure SetHeaderProperty(AHeaderProperty : TAppObject); override;
+  published
+    property Account: TAccount read FAccount write FAccount;
+    property AP: TAP read FAP write FAP;
+    property Keterangan: string read FKeterangan write FKeterangan;
+    property Nominal: Double read FNominal write FNominal;
+    property PenerimaanKas: TPenerimaanKas read FPenerimaanKas write FPenerimaanKas;
+  end;
+
+  TPenerimaanKasLain = class(TAppObjectItem)
   private
     FAccount: TAccount;
     FKeterangan: string;
@@ -134,12 +157,31 @@ begin
   Result := FPenerimaanKasAPNewItems;
 end;
 
+function TPenerimaanKas.GetPenerimaanKasLainItems:
+    TObjectList<TPenerimaanKasLain>;
+begin
+  if FPenerimaanKasLainItems = nil then
+    FPenerimaanKasLainItems := TObjectList<TPenerimaanKasLain>.Create;
+
+  Result := FPenerimaanKasLainItems;
+end;
+
 function TPenerimaanKasAPNew.GetHeaderField: string;
 begin
   Result := 'PenerimaanKas';
 end;
 
 procedure TPenerimaanKasAPNew.SetHeaderProperty(AHeaderProperty : TAppObject);
+begin
+  Self.PenerimaanKas := TPenerimaanKas(AHeaderProperty);
+end;
+
+function TPenerimaanKasLain.GetHeaderField: string;
+begin
+  Result := 'PenerimaanKas';
+end;
+
+procedure TPenerimaanKasLain.SetHeaderProperty(AHeaderProperty : TAppObject);
 begin
   Self.PenerimaanKas := TPenerimaanKas(AHeaderProperty);
 end;

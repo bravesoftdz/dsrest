@@ -29,7 +29,6 @@ inherited frmKartuAP: TfrmKartuAP
             Height = 23
             Align = alRight
             Caption = 'Supplier'
-            ExplicitLeft = 394
             ExplicitHeight = 13
           end
           object lblNoAP: TLabel [5]
@@ -56,7 +55,7 @@ inherited frmKartuAP: TfrmKartuAP
             Left = 237
             TabOrder = 6
             Visible = False
-            ExplicitLeft = 378
+            ExplicitLeft = 237
             ExplicitWidth = 10
             ExplicitHeight = 23
             Width = 10
@@ -64,7 +63,7 @@ inherited frmKartuAP: TfrmKartuAP
           inherited cbbCabang: TcxExtLookupComboBox
             Left = 107
             TabOrder = 0
-            ExplicitLeft = 248
+            ExplicitLeft = 107
             ExplicitWidth = 108
             ExplicitHeight = 23
             Width = 108
@@ -76,7 +75,6 @@ inherited frmKartuAP: TfrmKartuAP
             Top = 4
             Align = alRight
             TabOrder = 1
-            ExplicitLeft = 438
             Width = 145
           end
           object edNoAP: TcxTextEdit
@@ -86,7 +84,6 @@ inherited frmKartuAP: TfrmKartuAP
             Align = alRight
             TabOrder = 2
             Text = 'edNoAP'
-            ExplicitLeft = 499
             Width = 110
           end
         end
@@ -147,7 +144,7 @@ inherited frmKartuAP: TfrmKartuAP
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010107000800FC0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800000118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

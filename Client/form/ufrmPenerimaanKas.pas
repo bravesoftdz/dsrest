@@ -75,11 +75,21 @@ type
       var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
     procedure cxGridTableAPNewEditing(Sender: TcxCustomGridTableView; AItem:
         TcxCustomGridTableItem; var AAllow: Boolean);
-    procedure cxGridTableARDataControllerAfterInsert(
-      ADataController: TcxCustomDataController);
     procedure cxGridTableARDataControllerAfterDelete(
       ADataController: TcxCustomDataController);
     procedure cxGridColAPNewKodePropertiesValidate(Sender: TObject;
+      var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
+    procedure cxGridTableARDataControllerAfterPost(
+      ADataController: TcxCustomDataController);
+    procedure cxGridTableAPNewDataControllerAfterDelete(
+      ADataController: TcxCustomDataController);
+    procedure cxGridTableAPNewDataControllerAfterPost(
+      ADataController: TcxCustomDataController);
+    procedure cxGridTableOIDataControllerAfterDelete(
+      ADataController: TcxCustomDataController);
+    procedure cxGridTableOIDataControllerAfterPost(
+      ADataController: TcxCustomDataController);
+    procedure cxGridColOIKodePropertiesValidate(Sender: TObject;
       var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
   private
     FCDSAccountAPNew: tclientDataSet;
@@ -95,9 +105,11 @@ type
     procedure LoadDataAR(AIDCustomer : String);
     procedure LoadDataPenerimaanKasARItems;
     procedure LoadDataPenerimaanKasAPNewItems;
+    procedure LoadDataPenerimaanKasOIItems;
     procedure SetStatusNominal;
     procedure SetUser;
     procedure UpdatePenerimaanKasAPNewItems;
+    procedure UpdatePenerimaanKasAPLain;
     procedure UpdatePenerimaanKasARItems;
     property CDSRekBank: TClientDataSet read FCDSRekBank write FCDSRekBank;
     property PenerimaanKas: TPenerimaanKas read GetPenerimaanKas write
@@ -188,6 +200,7 @@ begin
   else
     lcds := TDBUtils.DSToCDS(ClientDataModule.ServerLaporanClient.RetrivePenerimaanKas(dtpAwal.DateTime, dtpAkhir.DateTime, ClientDataModule.Cabang), cxGridDBTableOverview);
 
+  cxGridDBTableOverview.ClearRows;
   cxGridDBTableOverview.SetDataset(lcds, True);
   cxGridDBTableOverview.SetVisibleColumns(['ID', 'CABANGID'], False);
   cxGridDBTableOverview.ApplyBestFit();
@@ -219,6 +232,7 @@ begin
 
   UpdatePenerimaanKasARItems;
   UpdatePenerimaanKasAPNewItems;
+  UpdatePenerimaanKasAPLain;
 
   if ClientDataModule.ServerPenerimaanKasClient.Save(PenerimaanKas) then
   begin
@@ -260,12 +274,33 @@ begin
   cxGridTableAR.SetValue(cxGridTableAR.FocusedIndex, cxGridColBayar.Index, FCDSAP.FieldByName('sisa').AsFloat);
 end;
 
+procedure TfrmPenerimaanKas.cxGridColOIKodePropertiesValidate(Sender: TObject;
+  var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
+begin
+  inherited;
+  cxGridTableOI.DataController.SetValue(cxGridTableOI.DataController.FocusedRecordIndex, cxGridColOINama.Index, DisplayValue);
+end;
+
 procedure TfrmPenerimaanKas.cxGridDBTableOverviewCellDblClick(Sender:
     TcxCustomGridTableView; ACellViewInfo: TcxGridTableDataCellViewInfo;
     AButton: TMouseButton; AShift: TShiftState; var AHandled: Boolean);
 begin
   inherited;
   LoadData(cxGridDBTableOverview.DS.FieldByName('ID').AsString);
+end;
+
+procedure TfrmPenerimaanKas.cxGridTableAPNewDataControllerAfterDelete(
+  ADataController: TcxCustomDataController);
+begin
+  inherited;
+  edNominal.Value := GetTotalNominalGrid;
+end;
+
+procedure TfrmPenerimaanKas.cxGridTableAPNewDataControllerAfterPost(
+  ADataController: TcxCustomDataController);
+begin
+  inherited;
+  edNominal.Value := GetTotalNominalGrid;
 end;
 
 procedure TfrmPenerimaanKas.cxGridTableAPNewEditing(Sender:
@@ -284,7 +319,7 @@ begin
   edNominal.Value := GetTotalNominalGrid;
 end;
 
-procedure TfrmPenerimaanKas.cxGridTableARDataControllerAfterInsert(
+procedure TfrmPenerimaanKas.cxGridTableARDataControllerAfterPost(
   ADataController: TcxCustomDataController);
 begin
   inherited;
@@ -300,6 +335,20 @@ begin
     AAllow := True;
 end;
 
+procedure TfrmPenerimaanKas.cxGridTableOIDataControllerAfterDelete(
+  ADataController: TcxCustomDataController);
+begin
+  inherited;
+  edNominal.Value := GetTotalNominalGrid;
+end;
+
+procedure TfrmPenerimaanKas.cxGridTableOIDataControllerAfterPost(
+  ADataController: TcxCustomDataController);
+begin
+  inherited;
+  edNominal.Value := GetTotalNominalGrid;
+end;
+
 procedure TfrmPenerimaanKas.edNominalPropertiesChange(Sender: TObject);
 begin
   inherited;
@@ -310,7 +359,7 @@ procedure TfrmPenerimaanKas.edTglBuktiExit(Sender: TObject);
 begin
   inherited;
   if PenerimaanKas.ID = '' then
-    edNoBukti.Text := ClientDataModule.ServerPenerimaanKasClient.GenerateNoBukti(edTglBukti.Date, ClientDataModule.Cabang.Kode);
+    edNoBukti.Text := ClientDataModule.ServerPenerimaanKasClient.GenerateNoBukti(edTglBukti.Date, ClientDataModule.Cabang.Kode + '/BKK');
 end;
 
 function TfrmPenerimaanKas.GetPenerimaanKas: TPenerimaanKas;
@@ -335,6 +384,11 @@ begin
   for i := 0 to cxGridTableAPNew.DataController.RecordCount - 1 do
   begin
     Result := Result + cxGridTableAPNew.GetDouble(i, cxGridColAPNewNominal.Index);
+  end;
+
+  for i := 0 to cxGridTableOI.DataController.RecordCount - 1 do
+  begin
+    Result := Result + cxGridTableOI.GetDouble(i, cxGridColOINominal.Index);
   end;
 
 end;
@@ -377,10 +431,13 @@ begin
 
   FreeAndNil(FPenerimaanKas);
   ClearByTag([0,1]);
-  edNoBukti.Text := ClientDataModule.ServerPenerimaanKasClient.GenerateNoBukti(edTglBukti.Date, ClientDataModule.Cabang.Kode);
+
+  edNoBukti.Text := ClientDataModule.ServerPenerimaanKasClient.GenerateNoBukti(edTglBukti.Date, ClientDataModule.Cabang.Kode + '/BKK');
   SetUser;
 
   cxGridTableAR.ClearRows;
+  cxGridTableAPNew.ClearRows;
+  cxGridTableOI.ClearRows;
 
   FPenerimaanKas := ClientDataModule.ServerPenerimaanKasClient.Retrieve(AID);
   if FPenerimaanKas = nil then
@@ -402,6 +459,7 @@ begin
 
   LoadDataPenerimaanKasARItems;
   LoadDataPenerimaanKasAPNewItems;
+  LoadDataPenerimaanKasOIItems;
 
   cxPCData.ActivePageIndex := 1;
 
@@ -452,6 +510,19 @@ begin
   end;
 end;
 
+procedure TfrmPenerimaanKas.LoadDataPenerimaanKasOIItems;
+var
+  I: Integer;
+begin
+   cxGridTableOI.ClearRows;
+   for I := 0 to PenerimaanKas.PenerimaanKasLainItems.Count - 1 do
+   begin
+     cxGridTableOI.DataController.AppendRecord;
+     cxGridTableOI.SetObjectData(PenerimaanKas.PenerimaanKasLainItems[i], i);
+     cxGridTableOI.SetValue(i, cxGridColOINama.Index, cxGridTableOI.DataController.DisplayTexts[i,cxGridColOIKode.Index]);
+   end;
+end;
+
 procedure TfrmPenerimaanKas.SetStatusNominal;
 begin
 //  if edNominal.Value = GetTotalNominalGrid then
@@ -481,6 +552,21 @@ begin
     cxGridTableAPNew.LoadObjectData(lPKAPNew,i);
 
     PenerimaanKas.PenerimaanKasAPNewItems.Add(lPKAPNew);
+  end;
+end;
+
+procedure TfrmPenerimaanKas.UpdatePenerimaanKasAPLain;
+var
+  I: Integer;
+  lPKAPLain: TPenerimaanKasLain;
+begin
+  PenerimaanKas.PenerimaanKasLainItems.Clear;
+  for I := 0 to cxGridTableOI.DataController.RecordCount - 1 do
+  begin
+    lPKAPLain               := TPenerimaanKasLain.Create;
+    cxGridTableOI.LoadObjectData(lPKAPLain,i);
+
+    PenerimaanKas.PenerimaanKasLainItems.Add(lPKAPLain);
   end;
 end;
 
