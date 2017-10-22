@@ -10,7 +10,9 @@ uses
   cxCustomData, cxFilter, cxData, cxDataStorage, cxEdit, cxNavigator, Data.DB,
   cxDBData, Datasnap.DBClient, Datasnap.Provider, cxGridCustomTableView,
   cxGridTableView, cxGridDBTableView, cxGridCustomView, dxBarExtDBItems,
-  cxCheckBox, System.ImageList, dxBarExtItems, cxBarEditItem;
+  cxCheckBox, System.ImageList, dxBarExtItems, cxBarEditItem, dxBarBuiltInMenu,
+  Vcl.Menus, cxContainer, cxGridLevel, Vcl.StdCtrls, cxButtons, Vcl.ComCtrls,
+  cxPC;
 
 type
   TfrmClosingInventory = class(TfrmDefault)

@@ -10,7 +10,9 @@ uses
   System.ImageList, Vcl.ImgList, Datasnap.DBClient, Datasnap.Provider,
   cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxClasses,
   cxGridCustomView, cxGrid, System.Actions, Vcl.ActnList, dxBar, dxBarExtItems,
-  cxBarEditItem, dxBarExtDBItems, Vcl.ExtCtrls, dxStatusBar;
+  cxBarEditItem, dxBarExtDBItems, Vcl.ExtCtrls, dxStatusBar, dxBarBuiltInMenu,
+  Vcl.Menus, cxContainer, cxGridLevel, Vcl.StdCtrls, cxButtons, Vcl.ComCtrls,
+  cxPC;
 
 type
   TfrmPembayaranPenjualan = class(TfrmDefault)

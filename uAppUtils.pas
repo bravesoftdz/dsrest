@@ -156,6 +156,7 @@ type
     function GetString(ARec, ACol : Integer): string;
     function GetInteger(ARec, ACol : Integer): Integer;
     function GetDate(ARec, ACol : Integer): TDatetime;
+    function GetBoolean(ARec, ACol : Integer): Boolean;
     procedure LoadObjectData(AObject : TAppObject; ARow : Integer);
     procedure SetObjectData(AObject : TAppObject; ARow : Integer);
     procedure SetDouble(ARec, ACol : Integer; AValue : Double);
@@ -1593,6 +1594,14 @@ end;
 function TcxGridTableViewHelper.GetDate(ARec, ACol : Integer): TDatetime;
 begin
   Result := Self.DataController.Values[ARec, ACol];
+end;
+
+function TcxGridTableViewHelper.GetBoolean(ARec, ACol : Integer): Boolean;
+begin
+  if Self.DataController.Values[ARec, ACol] = null  then
+    Result := False
+  else
+    Result := Self.DataController.Values[ARec, ACol];
 end;
 
 procedure TcxGridTableViewHelper.LoadObjectData(AObject : TAppObject; ARow :

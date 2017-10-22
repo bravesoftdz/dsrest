@@ -71,7 +71,8 @@ uses
   ufrmLaporanReturSupplier in 'form\ufrmLaporanReturSupplier.pas' {frmLaporanReturSupplier},
   uSettlementARAP in '..\model\uSettlementARAP.pas',
   ufrmSettlementARAP in 'form\ufrmSettlementARAP.pas' {frmSettlementARAP},
-  uUser in '..\model\uUser.pas';
+  uUser in '..\model\uUser.pas',
+  ufrmGenerateJurnal in 'form\ufrmGenerateJurnal.pas' {frmGenerateJurnal};
 
 {$R *.res}
 

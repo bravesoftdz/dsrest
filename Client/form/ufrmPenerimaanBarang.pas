@@ -550,10 +550,16 @@ end;
 function TfrmPenerimaanBarang.IsBisaSimpan: Boolean;
 begin
   Result := False;
+  if not ValidateEmptyCtrl([1]) then
+    Exit;
 
   if cbbSupplier.EditValue = null then
   begin
     TAppUtils.Warning('Supplier Belum Dipilih');
+    Exit;
+  end else if cbbGudang.EditValue = null then
+  begin
+    TAppUtils.Warning('Gudang Belum Dipilih');
     Exit;
   end else if not IsDetailValid then
   begin

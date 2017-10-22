@@ -4,7 +4,6 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
   ClientWidth = 984
   WindowState = wsMaximized
   OnShow = FormShow
-  ExplicitTop = -78
   ExplicitWidth = 1000
   ExplicitHeight = 473
   PixelsPerInch = 96
@@ -106,10 +105,6 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
           TabOrder = 0
           object tsHeader: TTabSheet
             Caption = 'Header Penerimaan'
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
             object lblNoBukti: TLabel
               Left = 17
               Top = 8
@@ -160,6 +155,7 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
               Caption = 'Tempo'
             end
             object edNoBukti: TcxTextEdit
+              Tag = 1
               Left = 62
               Top = 3
               Enabled = False
@@ -169,6 +165,7 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
               Width = 121
             end
             object edTglBukti: TcxDateEdit
+              Tag = 1
               Left = 62
               Top = 27
               TabOrder = 1
@@ -184,6 +181,7 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
               Width = 192
             end
             object cbbSupplier: TcxExtLookupComboBox
+              Tag = 1
               Left = 62
               Top = 52
               Properties.DropDownAutoSize = True
@@ -195,6 +193,7 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
               Width = 145
             end
             object cbbGudang: TcxExtLookupComboBox
+              Tag = 1
               Left = 318
               Top = 3
               Properties.DropDownAutoSize = True
@@ -206,6 +205,7 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
               Width = 192
             end
             object cbbJenisPembayaran: TcxComboBox
+              Tag = 1
               Left = 318
               Top = 27
               Properties.DropDownListStyle = lsFixedList
@@ -219,6 +219,7 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
               Width = 65
             end
             object edTempo: TcxCalcEdit
+              Tag = 1
               Left = 444
               Top = 27
               EditValue = 0.000000000000000000
@@ -238,10 +239,6 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
           TabOrder = 1
           object tsDetailPenerimaan: TTabSheet
             Caption = 'Detail Penerimaan'
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
             object cxGridDBPenerimaanBarang: TcxGrid
               Left = 0
               Top = 0
@@ -546,7 +543,7 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010105000800C40018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010105000800CC0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

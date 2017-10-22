@@ -12,7 +12,7 @@ uses
   System.Actions, Vcl.ActnList, cxBarEditItem, dxBar, dxBarExtDBItems,
   Vcl.ExtCtrls, dxStatusBar, ClientModule, ClientClassesUnit2, uModel,
   cxContainer, cxTextEdit, Vcl.ComCtrls, Vcl.StdCtrls, System.ImageList,
-  dxBarExtItems;
+  dxBarExtItems, dxBarBuiltInMenu, Vcl.Menus, cxGridLevel, cxButtons, cxPC;
 
 type
   TfrmPembayaranSupplier = class(TfrmDefault)

@@ -16,15 +16,23 @@ type
     FNoBukti: string;
     FPenerimaanBarangItems: TObjectList<TPenerimaanBarangItem>;
     FPeriode: Integer;
+    FPPN: Double;
+    FSubTotal: Double;
+    FDiskon: Double;
+    FIsJurnalized: Integer;
     FSupplier: TSupplier;
     FTglBukti: TDatetime;
     FTempo: Integer;
+    FTotal: Double;
     function GetPenerimaanBarangItems: TObjectList<TPenerimaanBarangItem>;
+    function GetPPN: Double;
+    function GetSubTotal: Double;
+    function GetDiskon: Double;
     function GetTotal: Double;
     procedure SetKeterangan(const Value: string);
     procedure SetTglBukti(const Value: TDatetime);
   public
-    property Total: Double read GetTotal;
+    constructor Create;
   published
     property Cabang: TCabang read FCabang write FCabang;
     property Gudang: TGudang read FGudang write FGudang;
@@ -34,9 +42,14 @@ type
     property PenerimaanBarangItems: TObjectList<TPenerimaanBarangItem> read
         GetPenerimaanBarangItems write FPenerimaanBarangItems;
     property Periode: Integer read FPeriode write FPeriode;
+    property PPN: Double read GetPPN write FPPN;
+    property SubTotal: Double read GetSubTotal write FSubTotal;
+    property Diskon: Double read GetDiskon write FDiskon;
+    property IsJurnalized: Integer read FIsJurnalized write FIsJurnalized;
     property Supplier: TSupplier read FSupplier write FSupplier;
     property TglBukti: TDatetime read FTglBukti write SetTglBukti;
     property Tempo: Integer read FTempo write FTempo;
+    property Total: Double read GetTotal write FTotal;
   end;
 
   TPenerimaanBarangItem = class(TAppObjectItem)
@@ -98,6 +111,12 @@ type
 
 implementation
 
+constructor TPenerimaanBarang.Create;
+begin
+  inherited;
+  IsJurnalized := 0;
+end;
+
 function TPenerimaanBarang.GetPenerimaanBarangItems:
     TObjectList<TPenerimaanBarangItem>;
 begin
@@ -107,21 +126,67 @@ begin
   Result := FPenerimaanBarangItems;
 end;
 
-function TPenerimaanBarang.GetTotal: Double;
+function TPenerimaanBarang.GetPPN: Double;
+var
+  dLinePPN: Double;
+  I: Integer;
+begin
+  FPPN := 0;
+
+  for I := 0 to PenerimaanBarangItems.Count - 1 do
+  begin
+    dLinePPN := PenerimaanBarangItems[i].Qty *
+                PenerimaanBarangItems[i].HargaBeli *
+                (100 - PenerimaanBarangItems[i].Diskon) / 100 *
+                PenerimaanBarangItems[i].PPN / 100;
+
+    FPPN  := FPPN + dLinePPN;
+  end;
+
+  Result := FPPN;
+end;
+
+function TPenerimaanBarang.GetSubTotal: Double;
 var
   dLinePrice: Double;
   I: Integer;
 begin
-  Result := 0;
+  FSubTotal := 0;
 
   for I := 0 to PenerimaanBarangItems.Count - 1 do
   begin
     dLinePrice := PenerimaanBarangItems[i].Qty *
-                  PenerimaanBarangItems[i].HargaSetelahDiskon;
+                  PenerimaanBarangItems[i].HargaBeli;
 
-    dLinePrice := (100 + PenerimaanBarangItems[i].PPN) / 100 * dLinePrice;
-    Result := Result + dLinePrice;
+    FSubTotal  := FSubTotal + dLinePrice;
   end;
+
+  Result := FSubTotal;
+end;
+
+function TPenerimaanBarang.GetDiskon: Double;
+var
+  dLineDisc: Double;
+  I: Integer;
+begin
+  FDiskon := 0;
+
+  for I := 0 to PenerimaanBarangItems.Count - 1 do
+  begin
+    dLineDisc := PenerimaanBarangItems[i].Qty *
+                 PenerimaanBarangItems[i].HargaBeli *
+                 PenerimaanBarangItems[i].Diskon / 100;
+
+    FDiskon  := FDiskon + dLineDisc;
+  end;
+
+  Result := FDiskon;
+end;
+
+function TPenerimaanBarang.GetTotal: Double;
+begin
+  FTotal := SubTotal - Diskon + PPN;
+  Result := FTotal;
 end;
 
 procedure TPenerimaanBarang.SetKeterangan(const Value: string);

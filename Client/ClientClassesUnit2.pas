@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 8/26/2017 6:45:21 AM
+// 10/17/2017 5:01:46 AM
 //
 
 unit ClientClassesUnit2;
@@ -181,9 +181,12 @@ type
     FRetrieveCDSlipCommand_Cache: TDSRestCommand;
     FRetrieveNoBuktiCommand: TDSRestCommand;
     FRetrieveNoBuktiCommand_Cache: TDSRestCommand;
+    FDoJournalCommand: TDSRestCommand;
     FGenerateNoBuktiCommand: TDSRestCommand;
     FRetrieveDataCommand: TDSRestCommand;
     FRetrieveDataCommand_Cache: TDSRestCommand;
+    FRetrieveDataSiapJurnalCommand: TDSRestCommand;
+    FRetrieveDataSiapJurnalCommand_Cache: TDSRestCommand;
     FRetrieveDataSlipCommand: TDSRestCommand;
     FRetrieveDataSlipCommand_Cache: TDSRestCommand;
     FDeleteCommand: TDSRestCommand;
@@ -203,9 +206,12 @@ type
     function RetrieveCDSlip_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function RetrieveNoBukti(ANoBukti: string; const ARequestFilter: string = ''): TCustomerInvoice;
     function RetrieveNoBukti_Cache(ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedTCustomerInvoice;
+    function DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string = ''): Boolean;
     function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
     function RetrieveData(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): TDataSet;
     function RetrieveData_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function RetrieveDataSiapJurnal(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string = ''): TDataSet;
+    function RetrieveDataSiapJurnal_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): TFDJSONDataSets;
     function RetrieveDataSlip_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
     function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
@@ -285,9 +291,12 @@ type
     FRetrieveCDSlipCommand_Cache: TDSRestCommand;
     FRetrieveNoBuktiCommand: TDSRestCommand;
     FRetrieveNoBuktiCommand_Cache: TDSRestCommand;
+    FDoJournalCommand: TDSRestCommand;
     FGenerateNoBuktiCommand: TDSRestCommand;
     FRetrieveDataCommand: TDSRestCommand;
     FRetrieveDataCommand_Cache: TDSRestCommand;
+    FRetrieveDataSiapJurnalCommand: TDSRestCommand;
+    FRetrieveDataSiapJurnalCommand_Cache: TDSRestCommand;
     FRetrieveDataSlipCommand: TDSRestCommand;
     FRetrieveDataSlipCommand_Cache: TDSRestCommand;
     FDeleteCommand: TDSRestCommand;
@@ -307,9 +316,12 @@ type
     function RetrieveCDSlip_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
     function RetrieveNoBukti(ANoBukti: string; const ARequestFilter: string = ''): TPenerimaanBarang;
     function RetrieveNoBukti_Cache(ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedTPenerimaanBarang;
+    function DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string = ''): Boolean;
     function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
     function RetrieveData(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): TDataSet;
     function RetrieveData_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function RetrieveDataSiapJurnal(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string = ''): TDataSet;
+    function RetrieveDataSiapJurnal_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): TFDJSONDataSets;
     function RetrieveDataSlip_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
     function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
@@ -403,9 +415,12 @@ type
     FRetrieveCommand_Cache: TDSRestCommand;
     FRetrieveNoBuktiCommand: TDSRestCommand;
     FRetrieveNoBuktiCommand_Cache: TDSRestCommand;
+    FDoJournalCommand: TDSRestCommand;
     FGenerateNoBuktiCommand: TDSRestCommand;
     FRetrieveDataCommand: TDSRestCommand;
     FRetrieveDataCommand_Cache: TDSRestCommand;
+    FRetrieveDataSiapJurnalCommand: TDSRestCommand;
+    FRetrieveDataSiapJurnalCommand_Cache: TDSRestCommand;
     FRetrieveDataSlipCommand: TDSRestCommand;
     FRetrieveDataSlipCommand_Cache: TDSRestCommand;
     FDeleteCommand: TDSRestCommand;
@@ -421,9 +436,12 @@ type
     function Retrieve_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedTReturSupplier;
     function RetrieveNoBukti(ANoBukti: string; const ARequestFilter: string = ''): TReturSupplier;
     function RetrieveNoBukti_Cache(ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedTReturSupplier;
+    function DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string = ''): Boolean;
     function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
     function RetrieveData(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): TDataSet;
     function RetrieveData_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function RetrieveDataSiapJurnal(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string = ''): TDataSet;
+    function RetrieveDataSiapJurnal_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): TFDJSONDataSets;
     function RetrieveDataSlip_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
     function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
@@ -514,9 +532,12 @@ type
     FRetrieveCDSlipCommand: TDSRestCommand;
     FRetrieveCDSlipCommand_Cache: TDSRestCommand;
     FSaveToDBDibayarCommand: TDSRestCommand;
+    FDoJournalCommand: TDSRestCommand;
     FGenerateNoBuktiCommand: TDSRestCommand;
     FRetrieveDataCommand: TDSRestCommand;
     FRetrieveDataCommand_Cache: TDSRestCommand;
+    FRetrieveDataSiapJurnalCommand: TDSRestCommand;
+    FRetrieveDataSiapJurnalCommand_Cache: TDSRestCommand;
     FRetrieveDataSlipCommand: TDSRestCommand;
     FRetrieveDataSlipCommand_Cache: TDSRestCommand;
     FDeleteCommand: TDSRestCommand;
@@ -535,9 +556,12 @@ type
     function RetrieveCDSlip(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; ANoBukti: string; const ARequestFilter: string = ''): TFDJSONDataSets;
     function RetrieveCDSlip_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
     function SaveToDBDibayar(APenjualan: TPenjualan; ADibayar: Double; const ARequestFilter: string = ''): Boolean;
+    function DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string = ''): Boolean;
     function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
     function RetrieveData(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): TDataSet;
     function RetrieveData_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function RetrieveDataSiapJurnal(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string = ''): TDataSet;
+    function RetrieveDataSiapJurnal_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): TFDJSONDataSets;
     function RetrieveDataSlip_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
     function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
@@ -557,9 +581,12 @@ type
     FRetrieveNoBuktiCommand_Cache: TDSRestCommand;
     FRetrieveTransaksiCommand: TDSRestCommand;
     FRetrieveTransaksiCommand_Cache: TDSRestCommand;
+    FDoJournalCommand: TDSRestCommand;
     FGenerateNoBuktiCommand: TDSRestCommand;
     FRetrieveDataCommand: TDSRestCommand;
     FRetrieveDataCommand_Cache: TDSRestCommand;
+    FRetrieveDataSiapJurnalCommand: TDSRestCommand;
+    FRetrieveDataSiapJurnalCommand_Cache: TDSRestCommand;
     FRetrieveDataSlipCommand: TDSRestCommand;
     FRetrieveDataSlipCommand_Cache: TDSRestCommand;
     FDeleteCommand: TDSRestCommand;
@@ -579,9 +606,12 @@ type
     function RetrieveNoBukti_Cache(ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedTAR;
     function RetrieveTransaksi(ATransaksi: string; AIDTransaksi: string; const ARequestFilter: string = ''): TAR;
     function RetrieveTransaksi_Cache(ATransaksi: string; AIDTransaksi: string; const ARequestFilter: string = ''): IDSRestCachedTAR;
+    function DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string = ''): Boolean;
     function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
     function RetrieveData(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): TDataSet;
     function RetrieveData_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function RetrieveDataSiapJurnal(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string = ''): TDataSet;
+    function RetrieveDataSiapJurnal_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): TFDJSONDataSets;
     function RetrieveDataSlip_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
     function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
@@ -597,9 +627,12 @@ type
     FRetrieveCommand_Cache: TDSRestCommand;
     FRetrieveTransaksiCommand: TDSRestCommand;
     FRetrieveTransaksiCommand_Cache: TDSRestCommand;
+    FDoJournalCommand: TDSRestCommand;
     FGenerateNoBuktiCommand: TDSRestCommand;
     FRetrieveDataCommand: TDSRestCommand;
     FRetrieveDataCommand_Cache: TDSRestCommand;
+    FRetrieveDataSiapJurnalCommand: TDSRestCommand;
+    FRetrieveDataSiapJurnalCommand_Cache: TDSRestCommand;
     FRetrieveDataSlipCommand: TDSRestCommand;
     FRetrieveDataSlipCommand_Cache: TDSRestCommand;
     FDeleteCommand: TDSRestCommand;
@@ -615,9 +648,12 @@ type
     function Retrieve_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedTAP;
     function RetrieveTransaksi(ATransaksi: string; AIDTransaksi: string; const ARequestFilter: string = ''): TAP;
     function RetrieveTransaksi_Cache(ATransaksi: string; AIDTransaksi: string; const ARequestFilter: string = ''): IDSRestCachedTAP;
+    function DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string = ''): Boolean;
     function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
     function RetrieveData(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): TDataSet;
     function RetrieveData_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function RetrieveDataSiapJurnal(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string = ''): TDataSet;
+    function RetrieveDataSiapJurnal_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): TFDJSONDataSets;
     function RetrieveDataSlip_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
     function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
@@ -688,9 +724,12 @@ type
     FRetrieveCDSlipCommand_Cache: TDSRestCommand;
     FRetrieveNoBuktiCommand: TDSRestCommand;
     FRetrieveNoBuktiCommand_Cache: TDSRestCommand;
+    FDoJournalCommand: TDSRestCommand;
     FGenerateNoBuktiCommand: TDSRestCommand;
     FRetrieveDataCommand: TDSRestCommand;
     FRetrieveDataCommand_Cache: TDSRestCommand;
+    FRetrieveDataSiapJurnalCommand: TDSRestCommand;
+    FRetrieveDataSiapJurnalCommand_Cache: TDSRestCommand;
     FRetrieveDataSlipCommand: TDSRestCommand;
     FRetrieveDataSlipCommand_Cache: TDSRestCommand;
     FDeleteCommand: TDSRestCommand;
@@ -713,9 +752,12 @@ type
     function RetrieveCDSlip_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
     function RetrieveNoBukti(ANoBukti: string; const ARequestFilter: string = ''): TPenerimaanKas;
     function RetrieveNoBukti_Cache(ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedTPenerimaanKas;
+    function DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string = ''): Boolean;
     function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
     function RetrieveData(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): TDataSet;
     function RetrieveData_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function RetrieveDataSiapJurnal(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string = ''): TDataSet;
+    function RetrieveDataSiapJurnal_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): TFDJSONDataSets;
     function RetrieveDataSlip_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
     function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
@@ -738,9 +780,12 @@ type
     FRetrieveCDSlipCommand_Cache: TDSRestCommand;
     FRetrieveNoBuktiCommand: TDSRestCommand;
     FRetrieveNoBuktiCommand_Cache: TDSRestCommand;
+    FDoJournalCommand: TDSRestCommand;
     FGenerateNoBuktiCommand: TDSRestCommand;
     FRetrieveDataCommand: TDSRestCommand;
     FRetrieveDataCommand_Cache: TDSRestCommand;
+    FRetrieveDataSiapJurnalCommand: TDSRestCommand;
+    FRetrieveDataSiapJurnalCommand_Cache: TDSRestCommand;
     FRetrieveDataSlipCommand: TDSRestCommand;
     FRetrieveDataSlipCommand_Cache: TDSRestCommand;
     FDeleteCommand: TDSRestCommand;
@@ -763,9 +808,12 @@ type
     function RetrieveCDSlip_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
     function RetrieveNoBukti(ANoBukti: string; const ARequestFilter: string = ''): TPengeluaranKas;
     function RetrieveNoBukti_Cache(ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedTPengeluaranKas;
+    function DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string = ''): Boolean;
     function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
     function RetrieveData(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): TDataSet;
     function RetrieveData_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function RetrieveDataSiapJurnal(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string = ''): TDataSet;
+    function RetrieveDataSiapJurnal_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): TFDJSONDataSets;
     function RetrieveDataSlip_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
     function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
@@ -810,9 +858,12 @@ type
     FRetrieveNoBuktiCommand: TDSRestCommand;
     FRetrieveNoBuktiCommand_Cache: TDSRestCommand;
     FSaveTransferAntarGudangCommand: TDSRestCommand;
+    FDoJournalCommand: TDSRestCommand;
     FGenerateNoBuktiCommand: TDSRestCommand;
     FRetrieveDataCommand: TDSRestCommand;
     FRetrieveDataCommand_Cache: TDSRestCommand;
+    FRetrieveDataSiapJurnalCommand: TDSRestCommand;
+    FRetrieveDataSiapJurnalCommand_Cache: TDSRestCommand;
     FRetrieveDataSlipCommand: TDSRestCommand;
     FRetrieveDataSlipCommand_Cache: TDSRestCommand;
     FDeleteCommand: TDSRestCommand;
@@ -831,9 +882,12 @@ type
     function RetrieveNoBukti(ANoBukti: string; const ARequestFilter: string = ''): TTransferAntarGudang;
     function RetrieveNoBukti_Cache(ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedTTransferAntarGudang;
     function SaveTransferAntarGudang(ATransferAntarGudang: TTransferAntarGudang; const ARequestFilter: string = ''): Boolean;
+    function DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string = ''): Boolean;
     function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
     function RetrieveData(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): TDataSet;
     function RetrieveData_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function RetrieveDataSiapJurnal(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string = ''): TDataSet;
+    function RetrieveDataSiapJurnal_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): TFDJSONDataSets;
     function RetrieveDataSlip_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
     function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
@@ -851,9 +905,12 @@ type
     FRetrieveCDSSlipCommand_Cache: TDSRestCommand;
     FRetrieveNoBuktiCommand: TDSRestCommand;
     FRetrieveNoBuktiCommand_Cache: TDSRestCommand;
+    FDoJournalCommand: TDSRestCommand;
     FGenerateNoBuktiCommand: TDSRestCommand;
     FRetrieveDataCommand: TDSRestCommand;
     FRetrieveDataCommand_Cache: TDSRestCommand;
+    FRetrieveDataSiapJurnalCommand: TDSRestCommand;
+    FRetrieveDataSiapJurnalCommand_Cache: TDSRestCommand;
     FRetrieveDataSlipCommand: TDSRestCommand;
     FRetrieveDataSlipCommand_Cache: TDSRestCommand;
     FDeleteCommand: TDSRestCommand;
@@ -871,9 +928,12 @@ type
     function RetrieveCDSSlip_Cache(ACabangID: string; AID: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function RetrieveNoBukti(ANoBukti: string; const ARequestFilter: string = ''): TTAGRequest;
     function RetrieveNoBukti_Cache(ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedTTAGRequest;
+    function DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string = ''): Boolean;
     function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
     function RetrieveData(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): TDataSet;
     function RetrieveData_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function RetrieveDataSiapJurnal(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string = ''): TDataSet;
+    function RetrieveDataSiapJurnal_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): TFDJSONDataSets;
     function RetrieveDataSlip_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
     function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
@@ -889,9 +949,12 @@ type
     FRetrieveCommand_Cache: TDSRestCommand;
     FRetrieveNoBuktiCommand: TDSRestCommand;
     FRetrieveNoBuktiCommand_Cache: TDSRestCommand;
+    FDoJournalCommand: TDSRestCommand;
     FGenerateNoBuktiCommand: TDSRestCommand;
     FRetrieveDataCommand: TDSRestCommand;
     FRetrieveDataCommand_Cache: TDSRestCommand;
+    FRetrieveDataSiapJurnalCommand: TDSRestCommand;
+    FRetrieveDataSiapJurnalCommand_Cache: TDSRestCommand;
     FRetrieveDataSlipCommand: TDSRestCommand;
     FRetrieveDataSlipCommand_Cache: TDSRestCommand;
     FDeleteCommand: TDSRestCommand;
@@ -907,9 +970,12 @@ type
     function Retrieve_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedTTransferAntarCabangKirim;
     function RetrieveNoBukti(ANoBukti: string; const ARequestFilter: string = ''): TTransferAntarCabangKirim;
     function RetrieveNoBukti_Cache(ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedTTransferAntarCabangKirim;
+    function DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string = ''): Boolean;
     function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
     function RetrieveData(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): TDataSet;
     function RetrieveData_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function RetrieveDataSiapJurnal(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string = ''): TDataSet;
+    function RetrieveDataSiapJurnal_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): TFDJSONDataSets;
     function RetrieveDataSlip_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
     function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
@@ -925,9 +991,12 @@ type
     FRetrieveCommand_Cache: TDSRestCommand;
     FRetrieveNoBuktiCommand: TDSRestCommand;
     FRetrieveNoBuktiCommand_Cache: TDSRestCommand;
+    FDoJournalCommand: TDSRestCommand;
     FGenerateNoBuktiCommand: TDSRestCommand;
     FRetrieveDataCommand: TDSRestCommand;
     FRetrieveDataCommand_Cache: TDSRestCommand;
+    FRetrieveDataSiapJurnalCommand: TDSRestCommand;
+    FRetrieveDataSiapJurnalCommand_Cache: TDSRestCommand;
     FRetrieveDataSlipCommand: TDSRestCommand;
     FRetrieveDataSlipCommand_Cache: TDSRestCommand;
     FDeleteCommand: TDSRestCommand;
@@ -943,9 +1012,12 @@ type
     function Retrieve_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedTTransferAntarCabangTerima;
     function RetrieveNoBukti(ANoBukti: string; const ARequestFilter: string = ''): TTransferAntarCabangTerima;
     function RetrieveNoBukti_Cache(ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedTTransferAntarCabangTerima;
+    function DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string = ''): Boolean;
     function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
     function RetrieveData(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): TDataSet;
     function RetrieveData_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function RetrieveDataSiapJurnal(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string = ''): TDataSet;
+    function RetrieveDataSiapJurnal_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): TFDJSONDataSets;
     function RetrieveDataSlip_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
     function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
@@ -1003,9 +1075,12 @@ type
     FBeforeDeleteCommand: TDSRestCommand;
     FRetrieveCommand: TDSRestCommand;
     FRetrieveCommand_Cache: TDSRestCommand;
+    FDoJournalCommand: TDSRestCommand;
     FGenerateNoBuktiCommand: TDSRestCommand;
     FRetrieveDataCommand: TDSRestCommand;
     FRetrieveDataCommand_Cache: TDSRestCommand;
+    FRetrieveDataSiapJurnalCommand: TDSRestCommand;
+    FRetrieveDataSiapJurnalCommand_Cache: TDSRestCommand;
     FRetrieveDataSlipCommand: TDSRestCommand;
     FRetrieveDataSlipCommand_Cache: TDSRestCommand;
     FDeleteCommand: TDSRestCommand;
@@ -1021,9 +1096,12 @@ type
     function BeforeDelete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
     function Retrieve(AID: string; const ARequestFilter: string = ''): TJurnal;
     function Retrieve_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedTJurnal;
+    function DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string = ''): Boolean;
     function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
     function RetrieveData(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): TDataSet;
     function RetrieveData_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function RetrieveDataSiapJurnal(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string = ''): TDataSet;
+    function RetrieveDataSiapJurnal_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): TFDJSONDataSets;
     function RetrieveDataSlip_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
     function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
@@ -1040,9 +1118,12 @@ type
     FBeforeSaveCommand: TDSRestCommand;
     FRetrieveCommand: TDSRestCommand;
     FRetrieveCommand_Cache: TDSRestCommand;
+    FDoJournalCommand: TDSRestCommand;
     FGenerateNoBuktiCommand: TDSRestCommand;
     FRetrieveDataCommand: TDSRestCommand;
     FRetrieveDataCommand_Cache: TDSRestCommand;
+    FRetrieveDataSiapJurnalCommand: TDSRestCommand;
+    FRetrieveDataSiapJurnalCommand_Cache: TDSRestCommand;
     FRetrieveDataSlipCommand: TDSRestCommand;
     FRetrieveDataSlipCommand_Cache: TDSRestCommand;
     FDeleteCommand: TDSRestCommand;
@@ -1059,9 +1140,12 @@ type
     function BeforeSave(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
     function Retrieve(AID: string; const ARequestFilter: string = ''): TSettlementARAP;
     function Retrieve_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedTSettlementARAP;
+    function DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string = ''): Boolean;
     function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
     function RetrieveData(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): TDataSet;
     function RetrieveData_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function RetrieveDataSiapJurnal(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string = ''): TDataSet;
+    function RetrieveDataSiapJurnal_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): TFDJSONDataSets;
     function RetrieveDataSlip_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
     function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
@@ -1746,6 +1830,13 @@ const
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
+  TServerCustomerInvoice_DoJournal: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'AModTransClass'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
   TServerCustomerInvoice_GenerateNoBukti: array [0..2] of TDSRestParameterMetaData =
   (
     (Name: 'ATglBukti'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
@@ -1766,6 +1857,20 @@ const
     (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'AIDCabang'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerCustomerInvoice_RetrieveDataSiapJurnal: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TServerCustomerInvoice_RetrieveDataSiapJurnal_Cache: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
@@ -1977,6 +2082,13 @@ const
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
+  TServerPenerimaanBarang_DoJournal: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'AModTransClass'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
   TServerPenerimaanBarang_GenerateNoBukti: array [0..2] of TDSRestParameterMetaData =
   (
     (Name: 'ATglBukti'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
@@ -1997,6 +2109,20 @@ const
     (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'AIDCabang'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerPenerimaanBarang_RetrieveDataSiapJurnal: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TServerPenerimaanBarang_RetrieveDataSiapJurnal_Cache: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
@@ -2211,6 +2337,13 @@ const
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
+  TServerReturSupplier_DoJournal: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'AModTransClass'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
   TServerReturSupplier_GenerateNoBukti: array [0..2] of TDSRestParameterMetaData =
   (
     (Name: 'ATglBukti'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
@@ -2231,6 +2364,20 @@ const
     (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'AIDCabang'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerReturSupplier_RetrieveDataSiapJurnal: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TServerReturSupplier_RetrieveDataSiapJurnal_Cache: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
@@ -2474,6 +2621,13 @@ const
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
   );
 
+  TServerPenjualan_DoJournal: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'AModTransClass'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
   TServerPenjualan_GenerateNoBukti: array [0..2] of TDSRestParameterMetaData =
   (
     (Name: 'ATglBukti'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
@@ -2494,6 +2648,20 @@ const
     (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'AIDCabang'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerPenjualan_RetrieveDataSiapJurnal: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TServerPenjualan_RetrieveDataSiapJurnal_Cache: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
@@ -2595,6 +2763,13 @@ const
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
+  TServerAR_DoJournal: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'AModTransClass'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
   TServerAR_GenerateNoBukti: array [0..2] of TDSRestParameterMetaData =
   (
     (Name: 'ATglBukti'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
@@ -2615,6 +2790,20 @@ const
     (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'AIDCabang'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerAR_RetrieveDataSiapJurnal: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TServerAR_RetrieveDataSiapJurnal_Cache: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
@@ -2692,6 +2881,13 @@ const
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
+  TServerAP_DoJournal: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'AModTransClass'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
   TServerAP_GenerateNoBukti: array [0..2] of TDSRestParameterMetaData =
   (
     (Name: 'ATglBukti'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
@@ -2712,6 +2908,20 @@ const
     (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'AIDCabang'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerAP_RetrieveDataSiapJurnal: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TServerAP_RetrieveDataSiapJurnal_Cache: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
@@ -2931,6 +3141,13 @@ const
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
+  TServerPenerimaanKas_DoJournal: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'AModTransClass'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
   TServerPenerimaanKas_GenerateNoBukti: array [0..2] of TDSRestParameterMetaData =
   (
     (Name: 'ATglBukti'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
@@ -2951,6 +3168,20 @@ const
     (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'AIDCabang'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerPenerimaanKas_RetrieveDataSiapJurnal: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TServerPenerimaanKas_RetrieveDataSiapJurnal_Cache: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
@@ -3074,6 +3305,13 @@ const
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
+  TServerPengeluaranKas_DoJournal: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'AModTransClass'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
   TServerPengeluaranKas_GenerateNoBukti: array [0..2] of TDSRestParameterMetaData =
   (
     (Name: 'ATglBukti'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
@@ -3094,6 +3332,20 @@ const
     (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'AIDCabang'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerPengeluaranKas_RetrieveDataSiapJurnal: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TServerPengeluaranKas_RetrieveDataSiapJurnal_Cache: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
@@ -3247,6 +3499,13 @@ const
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
   );
 
+  TServerTransferAntarGudang_DoJournal: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'AModTransClass'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
   TServerTransferAntarGudang_GenerateNoBukti: array [0..2] of TDSRestParameterMetaData =
   (
     (Name: 'ATglBukti'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
@@ -3267,6 +3526,20 @@ const
     (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'AIDCabang'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerTransferAntarGudang_RetrieveDataSiapJurnal: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TServerTransferAntarGudang_RetrieveDataSiapJurnal_Cache: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
@@ -3356,6 +3629,13 @@ const
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
+  TServerTAGRequest_DoJournal: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'AModTransClass'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
   TServerTAGRequest_GenerateNoBukti: array [0..2] of TDSRestParameterMetaData =
   (
     (Name: 'ATglBukti'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
@@ -3376,6 +3656,20 @@ const
     (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'AIDCabang'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerTAGRequest_RetrieveDataSiapJurnal: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TServerTAGRequest_RetrieveDataSiapJurnal_Cache: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
@@ -3451,6 +3745,13 @@ const
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
+  TServerTransferAntarCabangKirim_DoJournal: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'AModTransClass'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
   TServerTransferAntarCabangKirim_GenerateNoBukti: array [0..2] of TDSRestParameterMetaData =
   (
     (Name: 'ATglBukti'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
@@ -3471,6 +3772,20 @@ const
     (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'AIDCabang'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerTransferAntarCabangKirim_RetrieveDataSiapJurnal: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TServerTransferAntarCabangKirim_RetrieveDataSiapJurnal_Cache: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
@@ -3546,6 +3861,13 @@ const
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
+  TServerTransferAntarCabangTerima_DoJournal: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'AModTransClass'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
   TServerTransferAntarCabangTerima_GenerateNoBukti: array [0..2] of TDSRestParameterMetaData =
   (
     (Name: 'ATglBukti'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
@@ -3566,6 +3888,20 @@ const
     (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'AIDCabang'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerTransferAntarCabangTerima_RetrieveDataSiapJurnal: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TServerTransferAntarCabangTerima_RetrieveDataSiapJurnal_Cache: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
@@ -3730,6 +4066,13 @@ const
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
+  TServerJurnal_DoJournal: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'AModTransClass'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
   TServerJurnal_GenerateNoBukti: array [0..2] of TDSRestParameterMetaData =
   (
     (Name: 'ATglBukti'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
@@ -3750,6 +4093,20 @@ const
     (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'AIDCabang'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerJurnal_RetrieveDataSiapJurnal: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TServerJurnal_RetrieveDataSiapJurnal_Cache: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
@@ -3831,6 +4188,13 @@ const
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
+  TServerSettlementARAP_DoJournal: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'AModTransClass'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
   TServerSettlementARAP_GenerateNoBukti: array [0..2] of TDSRestParameterMetaData =
   (
     (Name: 'ATglBukti'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
@@ -3851,6 +4215,20 @@ const
     (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'AIDCabang'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerSettlementARAP_RetrieveDataSiapJurnal: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TServerSettlementARAP_RetrieveDataSiapJurnal_Cache: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
@@ -5967,6 +6345,21 @@ begin
   Result := TDSRestCachedTCustomerInvoice.Create(FRetrieveNoBuktiCommand_Cache.Parameters[1].Value.GetString);
 end;
 
+function TServerCustomerInvoiceClient.DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string): Boolean;
+begin
+  if FDoJournalCommand = nil then
+  begin
+    FDoJournalCommand := FConnection.CreateCommand;
+    FDoJournalCommand.RequestType := 'GET';
+    FDoJournalCommand.Text := 'TServerCustomerInvoice.DoJournal';
+    FDoJournalCommand.Prepare(TServerCustomerInvoice_DoJournal);
+  end;
+  FDoJournalCommand.Parameters[0].Value.SetWideString(ANoBukti);
+  FDoJournalCommand.Parameters[1].Value.SetWideString(AModTransClass);
+  FDoJournalCommand.Execute(ARequestFilter);
+  Result := FDoJournalCommand.Parameters[2].Value.GetBoolean;
+end;
+
 function TServerCustomerInvoiceClient.GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string): string;
 begin
   if FGenerateNoBuktiCommand = nil then
@@ -6015,6 +6408,39 @@ begin
   FRetrieveDataCommand_Cache.Parameters[2].Value.SetWideString(AIDCabang);
   FRetrieveDataCommand_Cache.ExecuteCache(ARequestFilter);
   Result := TDSRestCachedDataSet.Create(FRetrieveDataCommand_Cache.Parameters[3].Value.GetString);
+end;
+
+function TServerCustomerInvoiceClient.RetrieveDataSiapJurnal(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string): TDataSet;
+begin
+  if FRetrieveDataSiapJurnalCommand = nil then
+  begin
+    FRetrieveDataSiapJurnalCommand := FConnection.CreateCommand;
+    FRetrieveDataSiapJurnalCommand.RequestType := 'GET';
+    FRetrieveDataSiapJurnalCommand.Text := 'TServerCustomerInvoice.RetrieveDataSiapJurnal';
+    FRetrieveDataSiapJurnalCommand.Prepare(TServerCustomerInvoice_RetrieveDataSiapJurnal);
+  end;
+  FRetrieveDataSiapJurnalCommand.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataSiapJurnalCommand.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataSiapJurnalCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FRetrieveDataSiapJurnalCommand.Parameters[2].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FRetrieveDataSiapJurnalCommand.FreeOnExecute(Result);
+end;
+
+function TServerCustomerInvoiceClient.RetrieveDataSiapJurnal_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FRetrieveDataSiapJurnalCommand_Cache = nil then
+  begin
+    FRetrieveDataSiapJurnalCommand_Cache := FConnection.CreateCommand;
+    FRetrieveDataSiapJurnalCommand_Cache.RequestType := 'GET';
+    FRetrieveDataSiapJurnalCommand_Cache.Text := 'TServerCustomerInvoice.RetrieveDataSiapJurnal';
+    FRetrieveDataSiapJurnalCommand_Cache.Prepare(TServerCustomerInvoice_RetrieveDataSiapJurnal_Cache);
+  end;
+  FRetrieveDataSiapJurnalCommand_Cache.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataSiapJurnalCommand_Cache.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataSiapJurnalCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FRetrieveDataSiapJurnalCommand_Cache.Parameters[2].Value.GetString);
 end;
 
 function TServerCustomerInvoiceClient.RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string): TFDJSONDataSets;
@@ -6216,9 +6642,12 @@ begin
   FRetrieveCDSlipCommand_Cache.DisposeOf;
   FRetrieveNoBuktiCommand.DisposeOf;
   FRetrieveNoBuktiCommand_Cache.DisposeOf;
+  FDoJournalCommand.DisposeOf;
   FGenerateNoBuktiCommand.DisposeOf;
   FRetrieveDataCommand.DisposeOf;
   FRetrieveDataCommand_Cache.DisposeOf;
+  FRetrieveDataSiapJurnalCommand.DisposeOf;
+  FRetrieveDataSiapJurnalCommand_Cache.DisposeOf;
   FRetrieveDataSlipCommand.DisposeOf;
   FRetrieveDataSlipCommand_Cache.DisposeOf;
   FDeleteCommand.DisposeOf;
@@ -6873,6 +7302,21 @@ begin
   Result := TDSRestCachedTPenerimaanBarang.Create(FRetrieveNoBuktiCommand_Cache.Parameters[1].Value.GetString);
 end;
 
+function TServerPenerimaanBarangClient.DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string): Boolean;
+begin
+  if FDoJournalCommand = nil then
+  begin
+    FDoJournalCommand := FConnection.CreateCommand;
+    FDoJournalCommand.RequestType := 'GET';
+    FDoJournalCommand.Text := 'TServerPenerimaanBarang.DoJournal';
+    FDoJournalCommand.Prepare(TServerPenerimaanBarang_DoJournal);
+  end;
+  FDoJournalCommand.Parameters[0].Value.SetWideString(ANoBukti);
+  FDoJournalCommand.Parameters[1].Value.SetWideString(AModTransClass);
+  FDoJournalCommand.Execute(ARequestFilter);
+  Result := FDoJournalCommand.Parameters[2].Value.GetBoolean;
+end;
+
 function TServerPenerimaanBarangClient.GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string): string;
 begin
   if FGenerateNoBuktiCommand = nil then
@@ -6921,6 +7365,39 @@ begin
   FRetrieveDataCommand_Cache.Parameters[2].Value.SetWideString(AIDCabang);
   FRetrieveDataCommand_Cache.ExecuteCache(ARequestFilter);
   Result := TDSRestCachedDataSet.Create(FRetrieveDataCommand_Cache.Parameters[3].Value.GetString);
+end;
+
+function TServerPenerimaanBarangClient.RetrieveDataSiapJurnal(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string): TDataSet;
+begin
+  if FRetrieveDataSiapJurnalCommand = nil then
+  begin
+    FRetrieveDataSiapJurnalCommand := FConnection.CreateCommand;
+    FRetrieveDataSiapJurnalCommand.RequestType := 'GET';
+    FRetrieveDataSiapJurnalCommand.Text := 'TServerPenerimaanBarang.RetrieveDataSiapJurnal';
+    FRetrieveDataSiapJurnalCommand.Prepare(TServerPenerimaanBarang_RetrieveDataSiapJurnal);
+  end;
+  FRetrieveDataSiapJurnalCommand.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataSiapJurnalCommand.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataSiapJurnalCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FRetrieveDataSiapJurnalCommand.Parameters[2].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FRetrieveDataSiapJurnalCommand.FreeOnExecute(Result);
+end;
+
+function TServerPenerimaanBarangClient.RetrieveDataSiapJurnal_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FRetrieveDataSiapJurnalCommand_Cache = nil then
+  begin
+    FRetrieveDataSiapJurnalCommand_Cache := FConnection.CreateCommand;
+    FRetrieveDataSiapJurnalCommand_Cache.RequestType := 'GET';
+    FRetrieveDataSiapJurnalCommand_Cache.Text := 'TServerPenerimaanBarang.RetrieveDataSiapJurnal';
+    FRetrieveDataSiapJurnalCommand_Cache.Prepare(TServerPenerimaanBarang_RetrieveDataSiapJurnal_Cache);
+  end;
+  FRetrieveDataSiapJurnalCommand_Cache.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataSiapJurnalCommand_Cache.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataSiapJurnalCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FRetrieveDataSiapJurnalCommand_Cache.Parameters[2].Value.GetString);
 end;
 
 function TServerPenerimaanBarangClient.RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string): TFDJSONDataSets;
@@ -7122,9 +7599,12 @@ begin
   FRetrieveCDSlipCommand_Cache.DisposeOf;
   FRetrieveNoBuktiCommand.DisposeOf;
   FRetrieveNoBuktiCommand_Cache.DisposeOf;
+  FDoJournalCommand.DisposeOf;
   FGenerateNoBuktiCommand.DisposeOf;
   FRetrieveDataCommand.DisposeOf;
   FRetrieveDataCommand_Cache.DisposeOf;
+  FRetrieveDataSiapJurnalCommand.DisposeOf;
+  FRetrieveDataSiapJurnalCommand_Cache.DisposeOf;
   FRetrieveDataSlipCommand.DisposeOf;
   FRetrieveDataSlipCommand_Cache.DisposeOf;
   FDeleteCommand.DisposeOf;
@@ -7894,6 +8374,21 @@ begin
   Result := TDSRestCachedTReturSupplier.Create(FRetrieveNoBuktiCommand_Cache.Parameters[1].Value.GetString);
 end;
 
+function TServerReturSupplierClient.DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string): Boolean;
+begin
+  if FDoJournalCommand = nil then
+  begin
+    FDoJournalCommand := FConnection.CreateCommand;
+    FDoJournalCommand.RequestType := 'GET';
+    FDoJournalCommand.Text := 'TServerReturSupplier.DoJournal';
+    FDoJournalCommand.Prepare(TServerReturSupplier_DoJournal);
+  end;
+  FDoJournalCommand.Parameters[0].Value.SetWideString(ANoBukti);
+  FDoJournalCommand.Parameters[1].Value.SetWideString(AModTransClass);
+  FDoJournalCommand.Execute(ARequestFilter);
+  Result := FDoJournalCommand.Parameters[2].Value.GetBoolean;
+end;
+
 function TServerReturSupplierClient.GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string): string;
 begin
   if FGenerateNoBuktiCommand = nil then
@@ -7942,6 +8437,39 @@ begin
   FRetrieveDataCommand_Cache.Parameters[2].Value.SetWideString(AIDCabang);
   FRetrieveDataCommand_Cache.ExecuteCache(ARequestFilter);
   Result := TDSRestCachedDataSet.Create(FRetrieveDataCommand_Cache.Parameters[3].Value.GetString);
+end;
+
+function TServerReturSupplierClient.RetrieveDataSiapJurnal(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string): TDataSet;
+begin
+  if FRetrieveDataSiapJurnalCommand = nil then
+  begin
+    FRetrieveDataSiapJurnalCommand := FConnection.CreateCommand;
+    FRetrieveDataSiapJurnalCommand.RequestType := 'GET';
+    FRetrieveDataSiapJurnalCommand.Text := 'TServerReturSupplier.RetrieveDataSiapJurnal';
+    FRetrieveDataSiapJurnalCommand.Prepare(TServerReturSupplier_RetrieveDataSiapJurnal);
+  end;
+  FRetrieveDataSiapJurnalCommand.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataSiapJurnalCommand.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataSiapJurnalCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FRetrieveDataSiapJurnalCommand.Parameters[2].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FRetrieveDataSiapJurnalCommand.FreeOnExecute(Result);
+end;
+
+function TServerReturSupplierClient.RetrieveDataSiapJurnal_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FRetrieveDataSiapJurnalCommand_Cache = nil then
+  begin
+    FRetrieveDataSiapJurnalCommand_Cache := FConnection.CreateCommand;
+    FRetrieveDataSiapJurnalCommand_Cache.RequestType := 'GET';
+    FRetrieveDataSiapJurnalCommand_Cache.Text := 'TServerReturSupplier.RetrieveDataSiapJurnal';
+    FRetrieveDataSiapJurnalCommand_Cache.Prepare(TServerReturSupplier_RetrieveDataSiapJurnal_Cache);
+  end;
+  FRetrieveDataSiapJurnalCommand_Cache.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataSiapJurnalCommand_Cache.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataSiapJurnalCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FRetrieveDataSiapJurnalCommand_Cache.Parameters[2].Value.GetString);
 end;
 
 function TServerReturSupplierClient.RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string): TFDJSONDataSets;
@@ -8139,9 +8667,12 @@ begin
   FRetrieveCommand_Cache.DisposeOf;
   FRetrieveNoBuktiCommand.DisposeOf;
   FRetrieveNoBuktiCommand_Cache.DisposeOf;
+  FDoJournalCommand.DisposeOf;
   FGenerateNoBuktiCommand.DisposeOf;
   FRetrieveDataCommand.DisposeOf;
   FRetrieveDataCommand_Cache.DisposeOf;
+  FRetrieveDataSiapJurnalCommand.DisposeOf;
+  FRetrieveDataSiapJurnalCommand_Cache.DisposeOf;
   FRetrieveDataSlipCommand.DisposeOf;
   FRetrieveDataSlipCommand_Cache.DisposeOf;
   FDeleteCommand.DisposeOf;
@@ -8973,6 +9504,21 @@ begin
   Result := FSaveToDBDibayarCommand.Parameters[2].Value.GetBoolean;
 end;
 
+function TServerPenjualanClient.DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string): Boolean;
+begin
+  if FDoJournalCommand = nil then
+  begin
+    FDoJournalCommand := FConnection.CreateCommand;
+    FDoJournalCommand.RequestType := 'GET';
+    FDoJournalCommand.Text := 'TServerPenjualan.DoJournal';
+    FDoJournalCommand.Prepare(TServerPenjualan_DoJournal);
+  end;
+  FDoJournalCommand.Parameters[0].Value.SetWideString(ANoBukti);
+  FDoJournalCommand.Parameters[1].Value.SetWideString(AModTransClass);
+  FDoJournalCommand.Execute(ARequestFilter);
+  Result := FDoJournalCommand.Parameters[2].Value.GetBoolean;
+end;
+
 function TServerPenjualanClient.GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string): string;
 begin
   if FGenerateNoBuktiCommand = nil then
@@ -9021,6 +9567,39 @@ begin
   FRetrieveDataCommand_Cache.Parameters[2].Value.SetWideString(AIDCabang);
   FRetrieveDataCommand_Cache.ExecuteCache(ARequestFilter);
   Result := TDSRestCachedDataSet.Create(FRetrieveDataCommand_Cache.Parameters[3].Value.GetString);
+end;
+
+function TServerPenjualanClient.RetrieveDataSiapJurnal(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string): TDataSet;
+begin
+  if FRetrieveDataSiapJurnalCommand = nil then
+  begin
+    FRetrieveDataSiapJurnalCommand := FConnection.CreateCommand;
+    FRetrieveDataSiapJurnalCommand.RequestType := 'GET';
+    FRetrieveDataSiapJurnalCommand.Text := 'TServerPenjualan.RetrieveDataSiapJurnal';
+    FRetrieveDataSiapJurnalCommand.Prepare(TServerPenjualan_RetrieveDataSiapJurnal);
+  end;
+  FRetrieveDataSiapJurnalCommand.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataSiapJurnalCommand.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataSiapJurnalCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FRetrieveDataSiapJurnalCommand.Parameters[2].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FRetrieveDataSiapJurnalCommand.FreeOnExecute(Result);
+end;
+
+function TServerPenjualanClient.RetrieveDataSiapJurnal_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FRetrieveDataSiapJurnalCommand_Cache = nil then
+  begin
+    FRetrieveDataSiapJurnalCommand_Cache := FConnection.CreateCommand;
+    FRetrieveDataSiapJurnalCommand_Cache.RequestType := 'GET';
+    FRetrieveDataSiapJurnalCommand_Cache.Text := 'TServerPenjualan.RetrieveDataSiapJurnal';
+    FRetrieveDataSiapJurnalCommand_Cache.Prepare(TServerPenjualan_RetrieveDataSiapJurnal_Cache);
+  end;
+  FRetrieveDataSiapJurnalCommand_Cache.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataSiapJurnalCommand_Cache.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataSiapJurnalCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FRetrieveDataSiapJurnalCommand_Cache.Parameters[2].Value.GetString);
 end;
 
 function TServerPenjualanClient.RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string): TFDJSONDataSets;
@@ -9221,9 +9800,12 @@ begin
   FRetrieveCDSlipCommand.DisposeOf;
   FRetrieveCDSlipCommand_Cache.DisposeOf;
   FSaveToDBDibayarCommand.DisposeOf;
+  FDoJournalCommand.DisposeOf;
   FGenerateNoBuktiCommand.DisposeOf;
   FRetrieveDataCommand.DisposeOf;
   FRetrieveDataCommand_Cache.DisposeOf;
+  FRetrieveDataSiapJurnalCommand.DisposeOf;
+  FRetrieveDataSiapJurnalCommand_Cache.DisposeOf;
   FRetrieveDataSlipCommand.DisposeOf;
   FRetrieveDataSlipCommand_Cache.DisposeOf;
   FDeleteCommand.DisposeOf;
@@ -9387,6 +9969,21 @@ begin
   Result := TDSRestCachedTAR.Create(FRetrieveTransaksiCommand_Cache.Parameters[2].Value.GetString);
 end;
 
+function TServerARClient.DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string): Boolean;
+begin
+  if FDoJournalCommand = nil then
+  begin
+    FDoJournalCommand := FConnection.CreateCommand;
+    FDoJournalCommand.RequestType := 'GET';
+    FDoJournalCommand.Text := 'TServerAR.DoJournal';
+    FDoJournalCommand.Prepare(TServerAR_DoJournal);
+  end;
+  FDoJournalCommand.Parameters[0].Value.SetWideString(ANoBukti);
+  FDoJournalCommand.Parameters[1].Value.SetWideString(AModTransClass);
+  FDoJournalCommand.Execute(ARequestFilter);
+  Result := FDoJournalCommand.Parameters[2].Value.GetBoolean;
+end;
+
 function TServerARClient.GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string): string;
 begin
   if FGenerateNoBuktiCommand = nil then
@@ -9435,6 +10032,39 @@ begin
   FRetrieveDataCommand_Cache.Parameters[2].Value.SetWideString(AIDCabang);
   FRetrieveDataCommand_Cache.ExecuteCache(ARequestFilter);
   Result := TDSRestCachedDataSet.Create(FRetrieveDataCommand_Cache.Parameters[3].Value.GetString);
+end;
+
+function TServerARClient.RetrieveDataSiapJurnal(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string): TDataSet;
+begin
+  if FRetrieveDataSiapJurnalCommand = nil then
+  begin
+    FRetrieveDataSiapJurnalCommand := FConnection.CreateCommand;
+    FRetrieveDataSiapJurnalCommand.RequestType := 'GET';
+    FRetrieveDataSiapJurnalCommand.Text := 'TServerAR.RetrieveDataSiapJurnal';
+    FRetrieveDataSiapJurnalCommand.Prepare(TServerAR_RetrieveDataSiapJurnal);
+  end;
+  FRetrieveDataSiapJurnalCommand.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataSiapJurnalCommand.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataSiapJurnalCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FRetrieveDataSiapJurnalCommand.Parameters[2].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FRetrieveDataSiapJurnalCommand.FreeOnExecute(Result);
+end;
+
+function TServerARClient.RetrieveDataSiapJurnal_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FRetrieveDataSiapJurnalCommand_Cache = nil then
+  begin
+    FRetrieveDataSiapJurnalCommand_Cache := FConnection.CreateCommand;
+    FRetrieveDataSiapJurnalCommand_Cache.RequestType := 'GET';
+    FRetrieveDataSiapJurnalCommand_Cache.Text := 'TServerAR.RetrieveDataSiapJurnal';
+    FRetrieveDataSiapJurnalCommand_Cache.Prepare(TServerAR_RetrieveDataSiapJurnal_Cache);
+  end;
+  FRetrieveDataSiapJurnalCommand_Cache.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataSiapJurnalCommand_Cache.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataSiapJurnalCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FRetrieveDataSiapJurnalCommand_Cache.Parameters[2].Value.GetString);
 end;
 
 function TServerARClient.RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string): TFDJSONDataSets;
@@ -9636,9 +10266,12 @@ begin
   FRetrieveNoBuktiCommand_Cache.DisposeOf;
   FRetrieveTransaksiCommand.DisposeOf;
   FRetrieveTransaksiCommand_Cache.DisposeOf;
+  FDoJournalCommand.DisposeOf;
   FGenerateNoBuktiCommand.DisposeOf;
   FRetrieveDataCommand.DisposeOf;
   FRetrieveDataCommand_Cache.DisposeOf;
+  FRetrieveDataSiapJurnalCommand.DisposeOf;
+  FRetrieveDataSiapJurnalCommand_Cache.DisposeOf;
   FRetrieveDataSlipCommand.DisposeOf;
   FRetrieveDataSlipCommand_Cache.DisposeOf;
   FDeleteCommand.DisposeOf;
@@ -9731,6 +10364,21 @@ begin
   Result := TDSRestCachedTAP.Create(FRetrieveTransaksiCommand_Cache.Parameters[2].Value.GetString);
 end;
 
+function TServerAPClient.DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string): Boolean;
+begin
+  if FDoJournalCommand = nil then
+  begin
+    FDoJournalCommand := FConnection.CreateCommand;
+    FDoJournalCommand.RequestType := 'GET';
+    FDoJournalCommand.Text := 'TServerAP.DoJournal';
+    FDoJournalCommand.Prepare(TServerAP_DoJournal);
+  end;
+  FDoJournalCommand.Parameters[0].Value.SetWideString(ANoBukti);
+  FDoJournalCommand.Parameters[1].Value.SetWideString(AModTransClass);
+  FDoJournalCommand.Execute(ARequestFilter);
+  Result := FDoJournalCommand.Parameters[2].Value.GetBoolean;
+end;
+
 function TServerAPClient.GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string): string;
 begin
   if FGenerateNoBuktiCommand = nil then
@@ -9779,6 +10427,39 @@ begin
   FRetrieveDataCommand_Cache.Parameters[2].Value.SetWideString(AIDCabang);
   FRetrieveDataCommand_Cache.ExecuteCache(ARequestFilter);
   Result := TDSRestCachedDataSet.Create(FRetrieveDataCommand_Cache.Parameters[3].Value.GetString);
+end;
+
+function TServerAPClient.RetrieveDataSiapJurnal(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string): TDataSet;
+begin
+  if FRetrieveDataSiapJurnalCommand = nil then
+  begin
+    FRetrieveDataSiapJurnalCommand := FConnection.CreateCommand;
+    FRetrieveDataSiapJurnalCommand.RequestType := 'GET';
+    FRetrieveDataSiapJurnalCommand.Text := 'TServerAP.RetrieveDataSiapJurnal';
+    FRetrieveDataSiapJurnalCommand.Prepare(TServerAP_RetrieveDataSiapJurnal);
+  end;
+  FRetrieveDataSiapJurnalCommand.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataSiapJurnalCommand.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataSiapJurnalCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FRetrieveDataSiapJurnalCommand.Parameters[2].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FRetrieveDataSiapJurnalCommand.FreeOnExecute(Result);
+end;
+
+function TServerAPClient.RetrieveDataSiapJurnal_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FRetrieveDataSiapJurnalCommand_Cache = nil then
+  begin
+    FRetrieveDataSiapJurnalCommand_Cache := FConnection.CreateCommand;
+    FRetrieveDataSiapJurnalCommand_Cache.RequestType := 'GET';
+    FRetrieveDataSiapJurnalCommand_Cache.Text := 'TServerAP.RetrieveDataSiapJurnal';
+    FRetrieveDataSiapJurnalCommand_Cache.Prepare(TServerAP_RetrieveDataSiapJurnal_Cache);
+  end;
+  FRetrieveDataSiapJurnalCommand_Cache.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataSiapJurnalCommand_Cache.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataSiapJurnalCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FRetrieveDataSiapJurnalCommand_Cache.Parameters[2].Value.GetString);
 end;
 
 function TServerAPClient.RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string): TFDJSONDataSets;
@@ -9976,9 +10657,12 @@ begin
   FRetrieveCommand_Cache.DisposeOf;
   FRetrieveTransaksiCommand.DisposeOf;
   FRetrieveTransaksiCommand_Cache.DisposeOf;
+  FDoJournalCommand.DisposeOf;
   FGenerateNoBuktiCommand.DisposeOf;
   FRetrieveDataCommand.DisposeOf;
   FRetrieveDataCommand_Cache.DisposeOf;
+  FRetrieveDataSiapJurnalCommand.DisposeOf;
+  FRetrieveDataSiapJurnalCommand_Cache.DisposeOf;
   FRetrieveDataSlipCommand.DisposeOf;
   FRetrieveDataSlipCommand_Cache.DisposeOf;
   FDeleteCommand.DisposeOf;
@@ -10680,6 +11364,21 @@ begin
   Result := TDSRestCachedTPenerimaanKas.Create(FRetrieveNoBuktiCommand_Cache.Parameters[1].Value.GetString);
 end;
 
+function TServerPenerimaanKasClient.DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string): Boolean;
+begin
+  if FDoJournalCommand = nil then
+  begin
+    FDoJournalCommand := FConnection.CreateCommand;
+    FDoJournalCommand.RequestType := 'GET';
+    FDoJournalCommand.Text := 'TServerPenerimaanKas.DoJournal';
+    FDoJournalCommand.Prepare(TServerPenerimaanKas_DoJournal);
+  end;
+  FDoJournalCommand.Parameters[0].Value.SetWideString(ANoBukti);
+  FDoJournalCommand.Parameters[1].Value.SetWideString(AModTransClass);
+  FDoJournalCommand.Execute(ARequestFilter);
+  Result := FDoJournalCommand.Parameters[2].Value.GetBoolean;
+end;
+
 function TServerPenerimaanKasClient.GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string): string;
 begin
   if FGenerateNoBuktiCommand = nil then
@@ -10728,6 +11427,39 @@ begin
   FRetrieveDataCommand_Cache.Parameters[2].Value.SetWideString(AIDCabang);
   FRetrieveDataCommand_Cache.ExecuteCache(ARequestFilter);
   Result := TDSRestCachedDataSet.Create(FRetrieveDataCommand_Cache.Parameters[3].Value.GetString);
+end;
+
+function TServerPenerimaanKasClient.RetrieveDataSiapJurnal(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string): TDataSet;
+begin
+  if FRetrieveDataSiapJurnalCommand = nil then
+  begin
+    FRetrieveDataSiapJurnalCommand := FConnection.CreateCommand;
+    FRetrieveDataSiapJurnalCommand.RequestType := 'GET';
+    FRetrieveDataSiapJurnalCommand.Text := 'TServerPenerimaanKas.RetrieveDataSiapJurnal';
+    FRetrieveDataSiapJurnalCommand.Prepare(TServerPenerimaanKas_RetrieveDataSiapJurnal);
+  end;
+  FRetrieveDataSiapJurnalCommand.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataSiapJurnalCommand.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataSiapJurnalCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FRetrieveDataSiapJurnalCommand.Parameters[2].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FRetrieveDataSiapJurnalCommand.FreeOnExecute(Result);
+end;
+
+function TServerPenerimaanKasClient.RetrieveDataSiapJurnal_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FRetrieveDataSiapJurnalCommand_Cache = nil then
+  begin
+    FRetrieveDataSiapJurnalCommand_Cache := FConnection.CreateCommand;
+    FRetrieveDataSiapJurnalCommand_Cache.RequestType := 'GET';
+    FRetrieveDataSiapJurnalCommand_Cache.Text := 'TServerPenerimaanKas.RetrieveDataSiapJurnal';
+    FRetrieveDataSiapJurnalCommand_Cache.Prepare(TServerPenerimaanKas_RetrieveDataSiapJurnal_Cache);
+  end;
+  FRetrieveDataSiapJurnalCommand_Cache.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataSiapJurnalCommand_Cache.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataSiapJurnalCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FRetrieveDataSiapJurnalCommand_Cache.Parameters[2].Value.GetString);
 end;
 
 function TServerPenerimaanKasClient.RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string): TFDJSONDataSets;
@@ -10932,9 +11664,12 @@ begin
   FRetrieveCDSlipCommand_Cache.DisposeOf;
   FRetrieveNoBuktiCommand.DisposeOf;
   FRetrieveNoBuktiCommand_Cache.DisposeOf;
+  FDoJournalCommand.DisposeOf;
   FGenerateNoBuktiCommand.DisposeOf;
   FRetrieveDataCommand.DisposeOf;
   FRetrieveDataCommand_Cache.DisposeOf;
+  FRetrieveDataSiapJurnalCommand.DisposeOf;
+  FRetrieveDataSiapJurnalCommand_Cache.DisposeOf;
   FRetrieveDataSlipCommand.DisposeOf;
   FRetrieveDataSlipCommand_Cache.DisposeOf;
   FDeleteCommand.DisposeOf;
@@ -11204,6 +11939,21 @@ begin
   Result := TDSRestCachedTPengeluaranKas.Create(FRetrieveNoBuktiCommand_Cache.Parameters[1].Value.GetString);
 end;
 
+function TServerPengeluaranKasClient.DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string): Boolean;
+begin
+  if FDoJournalCommand = nil then
+  begin
+    FDoJournalCommand := FConnection.CreateCommand;
+    FDoJournalCommand.RequestType := 'GET';
+    FDoJournalCommand.Text := 'TServerPengeluaranKas.DoJournal';
+    FDoJournalCommand.Prepare(TServerPengeluaranKas_DoJournal);
+  end;
+  FDoJournalCommand.Parameters[0].Value.SetWideString(ANoBukti);
+  FDoJournalCommand.Parameters[1].Value.SetWideString(AModTransClass);
+  FDoJournalCommand.Execute(ARequestFilter);
+  Result := FDoJournalCommand.Parameters[2].Value.GetBoolean;
+end;
+
 function TServerPengeluaranKasClient.GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string): string;
 begin
   if FGenerateNoBuktiCommand = nil then
@@ -11252,6 +12002,39 @@ begin
   FRetrieveDataCommand_Cache.Parameters[2].Value.SetWideString(AIDCabang);
   FRetrieveDataCommand_Cache.ExecuteCache(ARequestFilter);
   Result := TDSRestCachedDataSet.Create(FRetrieveDataCommand_Cache.Parameters[3].Value.GetString);
+end;
+
+function TServerPengeluaranKasClient.RetrieveDataSiapJurnal(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string): TDataSet;
+begin
+  if FRetrieveDataSiapJurnalCommand = nil then
+  begin
+    FRetrieveDataSiapJurnalCommand := FConnection.CreateCommand;
+    FRetrieveDataSiapJurnalCommand.RequestType := 'GET';
+    FRetrieveDataSiapJurnalCommand.Text := 'TServerPengeluaranKas.RetrieveDataSiapJurnal';
+    FRetrieveDataSiapJurnalCommand.Prepare(TServerPengeluaranKas_RetrieveDataSiapJurnal);
+  end;
+  FRetrieveDataSiapJurnalCommand.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataSiapJurnalCommand.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataSiapJurnalCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FRetrieveDataSiapJurnalCommand.Parameters[2].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FRetrieveDataSiapJurnalCommand.FreeOnExecute(Result);
+end;
+
+function TServerPengeluaranKasClient.RetrieveDataSiapJurnal_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FRetrieveDataSiapJurnalCommand_Cache = nil then
+  begin
+    FRetrieveDataSiapJurnalCommand_Cache := FConnection.CreateCommand;
+    FRetrieveDataSiapJurnalCommand_Cache.RequestType := 'GET';
+    FRetrieveDataSiapJurnalCommand_Cache.Text := 'TServerPengeluaranKas.RetrieveDataSiapJurnal';
+    FRetrieveDataSiapJurnalCommand_Cache.Prepare(TServerPengeluaranKas_RetrieveDataSiapJurnal_Cache);
+  end;
+  FRetrieveDataSiapJurnalCommand_Cache.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataSiapJurnalCommand_Cache.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataSiapJurnalCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FRetrieveDataSiapJurnalCommand_Cache.Parameters[2].Value.GetString);
 end;
 
 function TServerPengeluaranKasClient.RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string): TFDJSONDataSets;
@@ -11456,9 +12239,12 @@ begin
   FRetrieveCDSlipCommand_Cache.DisposeOf;
   FRetrieveNoBuktiCommand.DisposeOf;
   FRetrieveNoBuktiCommand_Cache.DisposeOf;
+  FDoJournalCommand.DisposeOf;
   FGenerateNoBuktiCommand.DisposeOf;
   FRetrieveDataCommand.DisposeOf;
   FRetrieveDataCommand_Cache.DisposeOf;
+  FRetrieveDataSiapJurnalCommand.DisposeOf;
+  FRetrieveDataSiapJurnalCommand_Cache.DisposeOf;
   FRetrieveDataSlipCommand.DisposeOf;
   FRetrieveDataSlipCommand_Cache.DisposeOf;
   FDeleteCommand.DisposeOf;
@@ -11873,6 +12659,21 @@ begin
   Result := FSaveTransferAntarGudangCommand.Parameters[1].Value.GetBoolean;
 end;
 
+function TServerTransferAntarGudangClient.DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string): Boolean;
+begin
+  if FDoJournalCommand = nil then
+  begin
+    FDoJournalCommand := FConnection.CreateCommand;
+    FDoJournalCommand.RequestType := 'GET';
+    FDoJournalCommand.Text := 'TServerTransferAntarGudang.DoJournal';
+    FDoJournalCommand.Prepare(TServerTransferAntarGudang_DoJournal);
+  end;
+  FDoJournalCommand.Parameters[0].Value.SetWideString(ANoBukti);
+  FDoJournalCommand.Parameters[1].Value.SetWideString(AModTransClass);
+  FDoJournalCommand.Execute(ARequestFilter);
+  Result := FDoJournalCommand.Parameters[2].Value.GetBoolean;
+end;
+
 function TServerTransferAntarGudangClient.GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string): string;
 begin
   if FGenerateNoBuktiCommand = nil then
@@ -11921,6 +12722,39 @@ begin
   FRetrieveDataCommand_Cache.Parameters[2].Value.SetWideString(AIDCabang);
   FRetrieveDataCommand_Cache.ExecuteCache(ARequestFilter);
   Result := TDSRestCachedDataSet.Create(FRetrieveDataCommand_Cache.Parameters[3].Value.GetString);
+end;
+
+function TServerTransferAntarGudangClient.RetrieveDataSiapJurnal(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string): TDataSet;
+begin
+  if FRetrieveDataSiapJurnalCommand = nil then
+  begin
+    FRetrieveDataSiapJurnalCommand := FConnection.CreateCommand;
+    FRetrieveDataSiapJurnalCommand.RequestType := 'GET';
+    FRetrieveDataSiapJurnalCommand.Text := 'TServerTransferAntarGudang.RetrieveDataSiapJurnal';
+    FRetrieveDataSiapJurnalCommand.Prepare(TServerTransferAntarGudang_RetrieveDataSiapJurnal);
+  end;
+  FRetrieveDataSiapJurnalCommand.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataSiapJurnalCommand.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataSiapJurnalCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FRetrieveDataSiapJurnalCommand.Parameters[2].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FRetrieveDataSiapJurnalCommand.FreeOnExecute(Result);
+end;
+
+function TServerTransferAntarGudangClient.RetrieveDataSiapJurnal_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FRetrieveDataSiapJurnalCommand_Cache = nil then
+  begin
+    FRetrieveDataSiapJurnalCommand_Cache := FConnection.CreateCommand;
+    FRetrieveDataSiapJurnalCommand_Cache.RequestType := 'GET';
+    FRetrieveDataSiapJurnalCommand_Cache.Text := 'TServerTransferAntarGudang.RetrieveDataSiapJurnal';
+    FRetrieveDataSiapJurnalCommand_Cache.Prepare(TServerTransferAntarGudang_RetrieveDataSiapJurnal_Cache);
+  end;
+  FRetrieveDataSiapJurnalCommand_Cache.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataSiapJurnalCommand_Cache.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataSiapJurnalCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FRetrieveDataSiapJurnalCommand_Cache.Parameters[2].Value.GetString);
 end;
 
 function TServerTransferAntarGudangClient.RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string): TFDJSONDataSets;
@@ -12121,9 +12955,12 @@ begin
   FRetrieveNoBuktiCommand.DisposeOf;
   FRetrieveNoBuktiCommand_Cache.DisposeOf;
   FSaveTransferAntarGudangCommand.DisposeOf;
+  FDoJournalCommand.DisposeOf;
   FGenerateNoBuktiCommand.DisposeOf;
   FRetrieveDataCommand.DisposeOf;
   FRetrieveDataCommand_Cache.DisposeOf;
+  FRetrieveDataSiapJurnalCommand.DisposeOf;
+  FRetrieveDataSiapJurnalCommand_Cache.DisposeOf;
   FRetrieveDataSlipCommand.DisposeOf;
   FRetrieveDataSlipCommand_Cache.DisposeOf;
   FDeleteCommand.DisposeOf;
@@ -12247,6 +13084,21 @@ begin
   Result := TDSRestCachedTTAGRequest.Create(FRetrieveNoBuktiCommand_Cache.Parameters[1].Value.GetString);
 end;
 
+function TServerTAGRequestClient.DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string): Boolean;
+begin
+  if FDoJournalCommand = nil then
+  begin
+    FDoJournalCommand := FConnection.CreateCommand;
+    FDoJournalCommand.RequestType := 'GET';
+    FDoJournalCommand.Text := 'TServerTAGRequest.DoJournal';
+    FDoJournalCommand.Prepare(TServerTAGRequest_DoJournal);
+  end;
+  FDoJournalCommand.Parameters[0].Value.SetWideString(ANoBukti);
+  FDoJournalCommand.Parameters[1].Value.SetWideString(AModTransClass);
+  FDoJournalCommand.Execute(ARequestFilter);
+  Result := FDoJournalCommand.Parameters[2].Value.GetBoolean;
+end;
+
 function TServerTAGRequestClient.GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string): string;
 begin
   if FGenerateNoBuktiCommand = nil then
@@ -12295,6 +13147,39 @@ begin
   FRetrieveDataCommand_Cache.Parameters[2].Value.SetWideString(AIDCabang);
   FRetrieveDataCommand_Cache.ExecuteCache(ARequestFilter);
   Result := TDSRestCachedDataSet.Create(FRetrieveDataCommand_Cache.Parameters[3].Value.GetString);
+end;
+
+function TServerTAGRequestClient.RetrieveDataSiapJurnal(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string): TDataSet;
+begin
+  if FRetrieveDataSiapJurnalCommand = nil then
+  begin
+    FRetrieveDataSiapJurnalCommand := FConnection.CreateCommand;
+    FRetrieveDataSiapJurnalCommand.RequestType := 'GET';
+    FRetrieveDataSiapJurnalCommand.Text := 'TServerTAGRequest.RetrieveDataSiapJurnal';
+    FRetrieveDataSiapJurnalCommand.Prepare(TServerTAGRequest_RetrieveDataSiapJurnal);
+  end;
+  FRetrieveDataSiapJurnalCommand.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataSiapJurnalCommand.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataSiapJurnalCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FRetrieveDataSiapJurnalCommand.Parameters[2].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FRetrieveDataSiapJurnalCommand.FreeOnExecute(Result);
+end;
+
+function TServerTAGRequestClient.RetrieveDataSiapJurnal_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FRetrieveDataSiapJurnalCommand_Cache = nil then
+  begin
+    FRetrieveDataSiapJurnalCommand_Cache := FConnection.CreateCommand;
+    FRetrieveDataSiapJurnalCommand_Cache.RequestType := 'GET';
+    FRetrieveDataSiapJurnalCommand_Cache.Text := 'TServerTAGRequest.RetrieveDataSiapJurnal';
+    FRetrieveDataSiapJurnalCommand_Cache.Prepare(TServerTAGRequest_RetrieveDataSiapJurnal_Cache);
+  end;
+  FRetrieveDataSiapJurnalCommand_Cache.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataSiapJurnalCommand_Cache.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataSiapJurnalCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FRetrieveDataSiapJurnalCommand_Cache.Parameters[2].Value.GetString);
 end;
 
 function TServerTAGRequestClient.RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string): TFDJSONDataSets;
@@ -12494,9 +13379,12 @@ begin
   FRetrieveCDSSlipCommand_Cache.DisposeOf;
   FRetrieveNoBuktiCommand.DisposeOf;
   FRetrieveNoBuktiCommand_Cache.DisposeOf;
+  FDoJournalCommand.DisposeOf;
   FGenerateNoBuktiCommand.DisposeOf;
   FRetrieveDataCommand.DisposeOf;
   FRetrieveDataCommand_Cache.DisposeOf;
+  FRetrieveDataSiapJurnalCommand.DisposeOf;
+  FRetrieveDataSiapJurnalCommand_Cache.DisposeOf;
   FRetrieveDataSlipCommand.DisposeOf;
   FRetrieveDataSlipCommand_Cache.DisposeOf;
   FDeleteCommand.DisposeOf;
@@ -12587,6 +13475,21 @@ begin
   Result := TDSRestCachedTTransferAntarCabangKirim.Create(FRetrieveNoBuktiCommand_Cache.Parameters[1].Value.GetString);
 end;
 
+function TServerTransferAntarCabangKirimClient.DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string): Boolean;
+begin
+  if FDoJournalCommand = nil then
+  begin
+    FDoJournalCommand := FConnection.CreateCommand;
+    FDoJournalCommand.RequestType := 'GET';
+    FDoJournalCommand.Text := 'TServerTransferAntarCabangKirim.DoJournal';
+    FDoJournalCommand.Prepare(TServerTransferAntarCabangKirim_DoJournal);
+  end;
+  FDoJournalCommand.Parameters[0].Value.SetWideString(ANoBukti);
+  FDoJournalCommand.Parameters[1].Value.SetWideString(AModTransClass);
+  FDoJournalCommand.Execute(ARequestFilter);
+  Result := FDoJournalCommand.Parameters[2].Value.GetBoolean;
+end;
+
 function TServerTransferAntarCabangKirimClient.GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string): string;
 begin
   if FGenerateNoBuktiCommand = nil then
@@ -12635,6 +13538,39 @@ begin
   FRetrieveDataCommand_Cache.Parameters[2].Value.SetWideString(AIDCabang);
   FRetrieveDataCommand_Cache.ExecuteCache(ARequestFilter);
   Result := TDSRestCachedDataSet.Create(FRetrieveDataCommand_Cache.Parameters[3].Value.GetString);
+end;
+
+function TServerTransferAntarCabangKirimClient.RetrieveDataSiapJurnal(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string): TDataSet;
+begin
+  if FRetrieveDataSiapJurnalCommand = nil then
+  begin
+    FRetrieveDataSiapJurnalCommand := FConnection.CreateCommand;
+    FRetrieveDataSiapJurnalCommand.RequestType := 'GET';
+    FRetrieveDataSiapJurnalCommand.Text := 'TServerTransferAntarCabangKirim.RetrieveDataSiapJurnal';
+    FRetrieveDataSiapJurnalCommand.Prepare(TServerTransferAntarCabangKirim_RetrieveDataSiapJurnal);
+  end;
+  FRetrieveDataSiapJurnalCommand.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataSiapJurnalCommand.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataSiapJurnalCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FRetrieveDataSiapJurnalCommand.Parameters[2].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FRetrieveDataSiapJurnalCommand.FreeOnExecute(Result);
+end;
+
+function TServerTransferAntarCabangKirimClient.RetrieveDataSiapJurnal_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FRetrieveDataSiapJurnalCommand_Cache = nil then
+  begin
+    FRetrieveDataSiapJurnalCommand_Cache := FConnection.CreateCommand;
+    FRetrieveDataSiapJurnalCommand_Cache.RequestType := 'GET';
+    FRetrieveDataSiapJurnalCommand_Cache.Text := 'TServerTransferAntarCabangKirim.RetrieveDataSiapJurnal';
+    FRetrieveDataSiapJurnalCommand_Cache.Prepare(TServerTransferAntarCabangKirim_RetrieveDataSiapJurnal_Cache);
+  end;
+  FRetrieveDataSiapJurnalCommand_Cache.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataSiapJurnalCommand_Cache.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataSiapJurnalCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FRetrieveDataSiapJurnalCommand_Cache.Parameters[2].Value.GetString);
 end;
 
 function TServerTransferAntarCabangKirimClient.RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string): TFDJSONDataSets;
@@ -12832,9 +13768,12 @@ begin
   FRetrieveCommand_Cache.DisposeOf;
   FRetrieveNoBuktiCommand.DisposeOf;
   FRetrieveNoBuktiCommand_Cache.DisposeOf;
+  FDoJournalCommand.DisposeOf;
   FGenerateNoBuktiCommand.DisposeOf;
   FRetrieveDataCommand.DisposeOf;
   FRetrieveDataCommand_Cache.DisposeOf;
+  FRetrieveDataSiapJurnalCommand.DisposeOf;
+  FRetrieveDataSiapJurnalCommand_Cache.DisposeOf;
   FRetrieveDataSlipCommand.DisposeOf;
   FRetrieveDataSlipCommand_Cache.DisposeOf;
   FDeleteCommand.DisposeOf;
@@ -12925,6 +13864,21 @@ begin
   Result := TDSRestCachedTTransferAntarCabangTerima.Create(FRetrieveNoBuktiCommand_Cache.Parameters[1].Value.GetString);
 end;
 
+function TServerTransferAntarCabangTerimaClient.DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string): Boolean;
+begin
+  if FDoJournalCommand = nil then
+  begin
+    FDoJournalCommand := FConnection.CreateCommand;
+    FDoJournalCommand.RequestType := 'GET';
+    FDoJournalCommand.Text := 'TServerTransferAntarCabangTerima.DoJournal';
+    FDoJournalCommand.Prepare(TServerTransferAntarCabangTerima_DoJournal);
+  end;
+  FDoJournalCommand.Parameters[0].Value.SetWideString(ANoBukti);
+  FDoJournalCommand.Parameters[1].Value.SetWideString(AModTransClass);
+  FDoJournalCommand.Execute(ARequestFilter);
+  Result := FDoJournalCommand.Parameters[2].Value.GetBoolean;
+end;
+
 function TServerTransferAntarCabangTerimaClient.GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string): string;
 begin
   if FGenerateNoBuktiCommand = nil then
@@ -12973,6 +13927,39 @@ begin
   FRetrieveDataCommand_Cache.Parameters[2].Value.SetWideString(AIDCabang);
   FRetrieveDataCommand_Cache.ExecuteCache(ARequestFilter);
   Result := TDSRestCachedDataSet.Create(FRetrieveDataCommand_Cache.Parameters[3].Value.GetString);
+end;
+
+function TServerTransferAntarCabangTerimaClient.RetrieveDataSiapJurnal(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string): TDataSet;
+begin
+  if FRetrieveDataSiapJurnalCommand = nil then
+  begin
+    FRetrieveDataSiapJurnalCommand := FConnection.CreateCommand;
+    FRetrieveDataSiapJurnalCommand.RequestType := 'GET';
+    FRetrieveDataSiapJurnalCommand.Text := 'TServerTransferAntarCabangTerima.RetrieveDataSiapJurnal';
+    FRetrieveDataSiapJurnalCommand.Prepare(TServerTransferAntarCabangTerima_RetrieveDataSiapJurnal);
+  end;
+  FRetrieveDataSiapJurnalCommand.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataSiapJurnalCommand.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataSiapJurnalCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FRetrieveDataSiapJurnalCommand.Parameters[2].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FRetrieveDataSiapJurnalCommand.FreeOnExecute(Result);
+end;
+
+function TServerTransferAntarCabangTerimaClient.RetrieveDataSiapJurnal_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FRetrieveDataSiapJurnalCommand_Cache = nil then
+  begin
+    FRetrieveDataSiapJurnalCommand_Cache := FConnection.CreateCommand;
+    FRetrieveDataSiapJurnalCommand_Cache.RequestType := 'GET';
+    FRetrieveDataSiapJurnalCommand_Cache.Text := 'TServerTransferAntarCabangTerima.RetrieveDataSiapJurnal';
+    FRetrieveDataSiapJurnalCommand_Cache.Prepare(TServerTransferAntarCabangTerima_RetrieveDataSiapJurnal_Cache);
+  end;
+  FRetrieveDataSiapJurnalCommand_Cache.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataSiapJurnalCommand_Cache.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataSiapJurnalCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FRetrieveDataSiapJurnalCommand_Cache.Parameters[2].Value.GetString);
 end;
 
 function TServerTransferAntarCabangTerimaClient.RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string): TFDJSONDataSets;
@@ -13170,9 +14157,12 @@ begin
   FRetrieveCommand_Cache.DisposeOf;
   FRetrieveNoBuktiCommand.DisposeOf;
   FRetrieveNoBuktiCommand_Cache.DisposeOf;
+  FDoJournalCommand.DisposeOf;
   FGenerateNoBuktiCommand.DisposeOf;
   FRetrieveDataCommand.DisposeOf;
   FRetrieveDataCommand_Cache.DisposeOf;
+  FRetrieveDataSiapJurnalCommand.DisposeOf;
+  FRetrieveDataSiapJurnalCommand_Cache.DisposeOf;
   FRetrieveDataSlipCommand.DisposeOf;
   FRetrieveDataSlipCommand_Cache.DisposeOf;
   FDeleteCommand.DisposeOf;
@@ -13604,6 +14594,21 @@ begin
   Result := TDSRestCachedTJurnal.Create(FRetrieveCommand_Cache.Parameters[1].Value.GetString);
 end;
 
+function TServerJurnalClient.DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string): Boolean;
+begin
+  if FDoJournalCommand = nil then
+  begin
+    FDoJournalCommand := FConnection.CreateCommand;
+    FDoJournalCommand.RequestType := 'GET';
+    FDoJournalCommand.Text := 'TServerJurnal.DoJournal';
+    FDoJournalCommand.Prepare(TServerJurnal_DoJournal);
+  end;
+  FDoJournalCommand.Parameters[0].Value.SetWideString(ANoBukti);
+  FDoJournalCommand.Parameters[1].Value.SetWideString(AModTransClass);
+  FDoJournalCommand.Execute(ARequestFilter);
+  Result := FDoJournalCommand.Parameters[2].Value.GetBoolean;
+end;
+
 function TServerJurnalClient.GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string): string;
 begin
   if FGenerateNoBuktiCommand = nil then
@@ -13652,6 +14657,39 @@ begin
   FRetrieveDataCommand_Cache.Parameters[2].Value.SetWideString(AIDCabang);
   FRetrieveDataCommand_Cache.ExecuteCache(ARequestFilter);
   Result := TDSRestCachedDataSet.Create(FRetrieveDataCommand_Cache.Parameters[3].Value.GetString);
+end;
+
+function TServerJurnalClient.RetrieveDataSiapJurnal(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string): TDataSet;
+begin
+  if FRetrieveDataSiapJurnalCommand = nil then
+  begin
+    FRetrieveDataSiapJurnalCommand := FConnection.CreateCommand;
+    FRetrieveDataSiapJurnalCommand.RequestType := 'GET';
+    FRetrieveDataSiapJurnalCommand.Text := 'TServerJurnal.RetrieveDataSiapJurnal';
+    FRetrieveDataSiapJurnalCommand.Prepare(TServerJurnal_RetrieveDataSiapJurnal);
+  end;
+  FRetrieveDataSiapJurnalCommand.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataSiapJurnalCommand.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataSiapJurnalCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FRetrieveDataSiapJurnalCommand.Parameters[2].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FRetrieveDataSiapJurnalCommand.FreeOnExecute(Result);
+end;
+
+function TServerJurnalClient.RetrieveDataSiapJurnal_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FRetrieveDataSiapJurnalCommand_Cache = nil then
+  begin
+    FRetrieveDataSiapJurnalCommand_Cache := FConnection.CreateCommand;
+    FRetrieveDataSiapJurnalCommand_Cache.RequestType := 'GET';
+    FRetrieveDataSiapJurnalCommand_Cache.Text := 'TServerJurnal.RetrieveDataSiapJurnal';
+    FRetrieveDataSiapJurnalCommand_Cache.Prepare(TServerJurnal_RetrieveDataSiapJurnal_Cache);
+  end;
+  FRetrieveDataSiapJurnalCommand_Cache.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataSiapJurnalCommand_Cache.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataSiapJurnalCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FRetrieveDataSiapJurnalCommand_Cache.Parameters[2].Value.GetString);
 end;
 
 function TServerJurnalClient.RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string): TFDJSONDataSets;
@@ -13849,9 +14887,12 @@ begin
   FBeforeDeleteCommand.DisposeOf;
   FRetrieveCommand.DisposeOf;
   FRetrieveCommand_Cache.DisposeOf;
+  FDoJournalCommand.DisposeOf;
   FGenerateNoBuktiCommand.DisposeOf;
   FRetrieveDataCommand.DisposeOf;
   FRetrieveDataCommand_Cache.DisposeOf;
+  FRetrieveDataSiapJurnalCommand.DisposeOf;
+  FRetrieveDataSiapJurnalCommand_Cache.DisposeOf;
   FRetrieveDataSlipCommand.DisposeOf;
   FRetrieveDataSlipCommand_Cache.DisposeOf;
   FDeleteCommand.DisposeOf;
@@ -13980,6 +15021,21 @@ begin
   Result := TDSRestCachedTSettlementARAP.Create(FRetrieveCommand_Cache.Parameters[1].Value.GetString);
 end;
 
+function TServerSettlementARAPClient.DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string): Boolean;
+begin
+  if FDoJournalCommand = nil then
+  begin
+    FDoJournalCommand := FConnection.CreateCommand;
+    FDoJournalCommand.RequestType := 'GET';
+    FDoJournalCommand.Text := 'TServerSettlementARAP.DoJournal';
+    FDoJournalCommand.Prepare(TServerSettlementARAP_DoJournal);
+  end;
+  FDoJournalCommand.Parameters[0].Value.SetWideString(ANoBukti);
+  FDoJournalCommand.Parameters[1].Value.SetWideString(AModTransClass);
+  FDoJournalCommand.Execute(ARequestFilter);
+  Result := FDoJournalCommand.Parameters[2].Value.GetBoolean;
+end;
+
 function TServerSettlementARAPClient.GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string): string;
 begin
   if FGenerateNoBuktiCommand = nil then
@@ -14028,6 +15084,39 @@ begin
   FRetrieveDataCommand_Cache.Parameters[2].Value.SetWideString(AIDCabang);
   FRetrieveDataCommand_Cache.ExecuteCache(ARequestFilter);
   Result := TDSRestCachedDataSet.Create(FRetrieveDataCommand_Cache.Parameters[3].Value.GetString);
+end;
+
+function TServerSettlementARAPClient.RetrieveDataSiapJurnal(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string): TDataSet;
+begin
+  if FRetrieveDataSiapJurnalCommand = nil then
+  begin
+    FRetrieveDataSiapJurnalCommand := FConnection.CreateCommand;
+    FRetrieveDataSiapJurnalCommand.RequestType := 'GET';
+    FRetrieveDataSiapJurnalCommand.Text := 'TServerSettlementARAP.RetrieveDataSiapJurnal';
+    FRetrieveDataSiapJurnalCommand.Prepare(TServerSettlementARAP_RetrieveDataSiapJurnal);
+  end;
+  FRetrieveDataSiapJurnalCommand.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataSiapJurnalCommand.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataSiapJurnalCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FRetrieveDataSiapJurnalCommand.Parameters[2].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FRetrieveDataSiapJurnalCommand.FreeOnExecute(Result);
+end;
+
+function TServerSettlementARAPClient.RetrieveDataSiapJurnal_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FRetrieveDataSiapJurnalCommand_Cache = nil then
+  begin
+    FRetrieveDataSiapJurnalCommand_Cache := FConnection.CreateCommand;
+    FRetrieveDataSiapJurnalCommand_Cache.RequestType := 'GET';
+    FRetrieveDataSiapJurnalCommand_Cache.Text := 'TServerSettlementARAP.RetrieveDataSiapJurnal';
+    FRetrieveDataSiapJurnalCommand_Cache.Prepare(TServerSettlementARAP_RetrieveDataSiapJurnal_Cache);
+  end;
+  FRetrieveDataSiapJurnalCommand_Cache.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataSiapJurnalCommand_Cache.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataSiapJurnalCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FRetrieveDataSiapJurnalCommand_Cache.Parameters[2].Value.GetString);
 end;
 
 function TServerSettlementARAPClient.RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string): TFDJSONDataSets;
@@ -14226,9 +15315,12 @@ begin
   FBeforeSaveCommand.DisposeOf;
   FRetrieveCommand.DisposeOf;
   FRetrieveCommand_Cache.DisposeOf;
+  FDoJournalCommand.DisposeOf;
   FGenerateNoBuktiCommand.DisposeOf;
   FRetrieveDataCommand.DisposeOf;
   FRetrieveDataCommand_Cache.DisposeOf;
+  FRetrieveDataSiapJurnalCommand.DisposeOf;
+  FRetrieveDataSiapJurnalCommand_Cache.DisposeOf;
   FRetrieveDataSlipCommand.DisposeOf;
   FRetrieveDataSlipCommand_Cache.DisposeOf;
   FDeleteCommand.DisposeOf;

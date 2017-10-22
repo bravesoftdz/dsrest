@@ -17,7 +17,8 @@ uses
   ufrmSettingAplikasi, ufrmTransferAntarGudang, ufrmTAGRequest,
   Datasnap.DBClient, ufrmTACKirim, cxContainer, cxEdit, cxTextEdit, cxMaskEdit,
   cxDropDownEdit, ufrmPengeluaranKas, ufrmJurnal, ufrmLapPenerimaanBarang,
-  ufrmKartuAP, ufrmLaporanAP, ufrmKartuAR,ufrmLaporanAR, ufrmLaporanReturSupplier;
+  ufrmKartuAP, ufrmLaporanAP, ufrmKartuAR,ufrmLaporanAR,
+  ufrmLaporanReturSupplier, ufrmGenerateJurnal;
 
 type
   TfrmMain = class(TForm)
@@ -151,12 +152,16 @@ type
     actLapReturSupplier: TAction;
     dxbrlrgbtnsETTLEMENTarap: TdxBarLargeButton;
     actSettlementARAP: TAction;
+    dxbrbtnGenerateJurnal: TdxBarButton;
+    actGenerateJurnal: TAction;
+    dxbrlrgbtnGenerateJurnal: TdxBarLargeButton;
     procedure actAlatGantiCabangExecute(Sender: TObject);
     procedure actApplicationExitExecute(Sender: TObject);
     procedure actClosingInventoryExecute(Sender: TObject);
     procedure actCustomerInvoiceExecute(Sender: TObject);
     procedure actDaftarAPExecute(Sender: TObject);
     procedure actDaftarARExecute(Sender: TObject);
+    procedure actGenerateJurnalExecute(Sender: TObject);
     procedure actJurnalMemorialExecute(Sender: TObject);
     procedure actKartuAPExecute(Sender: TObject);
     procedure actKartuARExecute(Sender: TObject);
@@ -249,6 +254,11 @@ end;
 procedure TfrmMain.actDaftarARExecute(Sender: TObject);
 begin
   frmlaporanAR := TfrmLaporanAR.Create(Self);
+end;
+
+procedure TfrmMain.actGenerateJurnalExecute(Sender: TObject);
+begin
+  frmGenerateJurnal := TfrmGenerateJurnal.Create(Self);
 end;
 
 procedure TfrmMain.actJurnalMemorialExecute(Sender: TObject);

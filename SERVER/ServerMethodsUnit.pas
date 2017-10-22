@@ -103,9 +103,12 @@ type
   TServerTransaction = class(TCRUD)
   protected
   public
+    function DoJournal(ANoBukti : String; AModTransClass : String): Boolean;
     function GenerateNoBukti(ATglBukti : TdateTime; APrefix : String): string;
     function RetrieveData(aPeriodeAwal, APeriodeAkhir : TDateTime; AIDCabang :
         String): TDataSet; virtual;
+    function RetrieveDataSiapJurnal(aPeriodeAwal, APeriodeAkhir : TDateTime):
+        TDataSet; virtual;
     function RetrieveDataSlip(aPeriodeAwal, APeriodeAkhir : TDateTime; AIDCabang :
         String; AID : String): TFDJSONDataSets; virtual;
   end;
@@ -160,6 +163,7 @@ type
   protected
     function AfterSave(AOBject : TAppObject): Boolean; override;
     function AfterDelete(AOBject : TAppObject): Boolean; override;
+    function BeforeDelete(AOBject : TAppObject): Boolean; override;
     function BeforeSave(AOBject : TAppObject): Boolean; override;
     function SimpanAP(AOBject: TAppObject): Boolean;
   public
@@ -770,14 +774,29 @@ begin
         Result := True;
 end;
 
+function TServerPenerimaanBarang.BeforeDelete(AOBject : TAppObject): Boolean;
+begin
+  Result := False;
+
+  if TPenerimaanBarang(AOBject).IsJurnalized = 1 then
+    raise Exception.Create('Transaksi Sudah Dijurnal, Tidak Bisa Dihapus');
+
+  Result := True;
+end;
+
 function TServerPenerimaanBarang.BeforeSave(AOBject : TAppObject): Boolean;
 var
   lPBLama: TPenerimaanBarang;
 begin
   Result := False;
 
+
+
   lPBLama := Retrieve(AOBject.ID);
   try
+    if lPBLama.IsJurnalized = 1 then
+      raise Exception.Create('Transaksi Sudah Dijurnal, tidak bisa diedit');
+
     if AOBject.ObjectState <> 1 then
     begin
       if NOT SimpanStockSekarang(lPBLama, True) then
@@ -1028,6 +1047,25 @@ begin
 
 end;
 
+function TServerTransaction.DoJournal(ANoBukti : String; AModTransClass :
+    String): Boolean;
+var
+  sSQL: string;
+begin
+  Result := False;
+
+  sSQL := 'update tgudang set kode = kode where id = NEWID()';
+  if UpperCase(AModTransClass) = UpperCase(TPenerimaanBarang.ClassName) then
+    sSQL := 'EXEC SP_PENERIMAAN_BARANG ' + QuotedStr(ANoBukti);
+
+  try
+    if TDBUtils.ExecuteSQL(sSQL) then
+      Result := True;
+  except
+    raise
+  end;
+end;
+
 function TServerTransaction.GenerateNoBukti(ATglBukti : TdateTime; APrefix :
     String): string;
 var
@@ -1073,6 +1111,20 @@ begin
 
   if (AIDCabang <> '') and (AIDCabang <> 'XXX') then
     sSQL := sSQL + ' and cabangid = ' + QuotedStr(AIDCabang);
+
+  lcds   := TDBUtils.OpenDataset(sSQL);
+  Result := lcds;
+end;
+
+function TServerTransaction.RetrieveDataSiapJurnal(aPeriodeAwal, APeriodeAkhir
+    : TDateTime): TDataSet;
+var
+  lcds: TClientDataSet;
+  sSQL: string;
+begin
+  sSQL := 'select * from vtransaksisiapjurnal' +
+          ' where tglbukti between ' + TAppUtils.QuotDt(StartOfTheDay(APeriodeAwal)) +
+          ' and ' + TAppUtils.QuotDt(EndOfTheDay(APeriodeAkhir));
 
   lcds   := TDBUtils.OpenDataset(sSQL);
   Result := lcds;
@@ -2732,7 +2784,7 @@ var
   lPK: TPenerimaanKas;
   I: Integer;
 begin
-  Result := False;
+//  Result := False;
 
   lPK       := Retrieve(AOBject.ID);
   try
@@ -2814,7 +2866,7 @@ end;
 
 function TServerPenerimaanKas.SimpanAPNew(AOBject: TAppObject): Boolean;
 var
-  lAP: TAP;
+//  lAP: TAP;
   lPK: TPenerimaanKas;
   I: Integer;
 begin

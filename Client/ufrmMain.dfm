@@ -39,7 +39,6 @@ object frmMain: TfrmMain
       Index = 0
     end
     object dxrbnTabMaster: TdxRibbonTab
-      Active = True
       Caption = 'Master'
       Groups = <
         item
@@ -69,6 +68,7 @@ object frmMain: TfrmMain
       Index = 2
     end
     object dxrbntbAkuntansi: TdxRibbonTab
+      Active = True
       Caption = 'FA'
       Groups = <
         item
@@ -342,7 +342,7 @@ object frmMain: TfrmMain
           Visible = True
           ItemName = 'dxbrlrgbtnAssetCat'
         end>
-      OneOnRow = False
+      OneOnRow = True
       Row = 0
       UseOwnFont = True
       Visible = True
@@ -499,7 +499,7 @@ object frmMain: TfrmMain
     object dxbrmngrAMSBarFA: TdxBar
       Caption = 'FA'
       CaptionButtons = <>
-      DockedLeft = 347
+      DockedLeft = 0
       DockedTop = 0
       FloatLeft = 900
       FloatTop = 8
@@ -565,6 +565,10 @@ object frmMain: TfrmMain
         item
           Visible = True
           ItemName = 'dxbrlrgbtnJurnalMemorial'
+        end
+        item
+          Visible = True
+          ItemName = 'dxbrlrgbtnGenerateJurnal'
         end>
       OneOnRow = False
       Row = 0
@@ -818,6 +822,15 @@ object frmMain: TfrmMain
       Category = 0
       LargeImageIndex = 20
     end
+    object dxbrbtnGenerateJurnal: TdxBarButton
+      Action = actGenerateJurnal
+      Category = 0
+    end
+    object dxbrlrgbtnGenerateJurnal: TdxBarLargeButton
+      Action = actGenerateJurnal
+      Category = 0
+      LargeImageIndex = 5
+    end
     object dxbrlrgbtnExit: TdxBarLargeButton
       Action = actApplicationExit
       Category = 1
@@ -1027,6 +1040,11 @@ object frmMain: TfrmMain
       Caption = 'Settlement AR-AP'
       OnExecute = actSettlementARAPExecute
     end
+    object actGenerateJurnal: TAction
+      Category = 'Keuangan'
+      Caption = 'Generate Jurnal'
+      OnExecute = actGenerateJurnalExecute
+    end
   end
   object ImgListMainLarge: TImageList
     ColorDepth = cd32Bit
@@ -1035,7 +1053,7 @@ object frmMain: TfrmMain
     Left = 688
     Top = 128
     Bitmap = {
-      494C010116001800800120002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010116001800900120002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000080000000C000000001002000000000000080
       0100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
