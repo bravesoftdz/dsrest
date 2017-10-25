@@ -31,11 +31,13 @@ type
     cxgridColSiapJurnalClassName: TcxGridDBColumn;
     cxgridColSiapJurnalAkanDijurnal: TcxGridDBColumn;
     chkCheckAll: TcxCheckBox;
+    procedure ActionHapusExecute(Sender: TObject);
     procedure ActionRefreshExecute(Sender: TObject);
     procedure ActionSimpanExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnactCnPrefixWizardClick(Sender: TObject);
     procedure btnSimpanClick(Sender: TObject);
+    procedure chkCheckAllClick(Sender: TObject);
   private
     FCDS: tclientDataSet;
     { Private declarations }
@@ -49,6 +51,35 @@ var
 implementation
 
 {$R *.dfm}
+
+procedure TfrmGenerateJurnal.ActionHapusExecute(Sender: TObject);
+var
+  I: Integer;
+  sNamaKelas: string;
+  sNoBukti: string;
+begin
+  inherited;
+  if not TAppUtils.Confirm('Anda yakin akan menghapus jurnal ?') then
+    Exit;
+
+  TAppUtils.InisialisasiProgressBar(cxTSInputData, cxGridDBTableSiapJurnal.DataController.RecordCount, 0);
+  try
+    for I := 0 to cxGridDBTableSiapJurnal.DataController.RecordCount - 1 do
+    begin
+      if cxGridDBTableSiapJurnal.GetBoolean(i, cxgridColSiapJurnalAkanDijurnal.Index) then
+      begin
+        TAppUtils.IncStepProgressBar(1);
+        cxGridDBTableSiapJurnal.DataController.FocusedRecordIndex := i;
+        sNoBukti   := cxGridDBTableSiapJurnal.GetString(i,cxgridColSiapJurnalNo.Index);
+        sNamaKelas := cxGridDBTableSiapJurnal.GetString(i,cxgridColSiapJurnalClassName.Index);
+
+        ClientDataModule.ServerPenerimaanBarangClient.DoJournal(sNoBukti, sNamaKelas, 1);
+      end;
+    end;
+  finally
+    TAppUtils.FinalisasiProgressBar();
+  end;
+end;
 
 procedure TfrmGenerateJurnal.ActionRefreshExecute(Sender: TObject);
 begin
@@ -80,7 +111,7 @@ begin
         sNoBukti   := cxGridDBTableSiapJurnal.GetString(i,cxgridColSiapJurnalNo.Index);
         sNamaKelas := cxGridDBTableSiapJurnal.GetString(i,cxgridColSiapJurnalClassName.Index);
 
-        ClientDataModule.ServerPenerimaanBarangClient.DoJournal(sNoBukti, sNamaKelas);
+        ClientDataModule.ServerPenerimaanBarangClient.DoJournal(sNoBukti, sNamaKelas, 0);
       end;
 
     end;
@@ -105,29 +136,42 @@ begin
 
   cxGridDBTableSiapJurnal.SetDataset(lcds, True);
   cxGridDBTableSiapJurnal.SetVisibleColumns(['ID'], False);
-  cxGridDBTableSiapJurnal.ApplyBestFit();
+  cxGridDBTableSiapJurnal.ApplyBestFit(cxGridDBTableSiapJurnal.Columns[cxGridDBTableSiapJurnal.ColumnCount - 1]);
 
   chkCheckAll.Caption := 'Pilih Semua';
   cxgridColSiapJurnalAkanDijurnal.Caption := '';
+
+  chkCheckAll.OnClick(Sender);
 end;
 
 procedure TfrmGenerateJurnal.btnSimpanClick(Sender: TObject);
+//var
+//  I: Integer;
+//  sNamaKelas: string;
+//  sNoBukti: string;
+begin
+  inherited;
+//  for I := 0 to cxGridDBTableSiapJurnal.DataController.RecordCount - 1 do
+//  begin
+//    if cxGridDBTableSiapJurnal.GetBoolean(i, cxgridColSiapJurnalAkanDijurnal.Index) then
+//    begin
+//      sNoBukti   := cxGridDBTableSiapJurnal.GetString(i,cxgridColSiapJurnalNo.Index);
+//      sNamaKelas := cxGridDBTableSiapJurnal.GetString(i,cxgridColSiapJurnalClassName.Index);
+//
+//      ClientDataModule.ServerPenerimaanBarangClient.DoJournal(sNoBukti, sNamaKelas);
+//    end;
+//
+//  end;
+end;
+
+procedure TfrmGenerateJurnal.chkCheckAllClick(Sender: TObject);
 var
   I: Integer;
-  sNamaKelas: string;
-  sNoBukti: string;
 begin
   inherited;
   for I := 0 to cxGridDBTableSiapJurnal.DataController.RecordCount - 1 do
   begin
-    if cxGridDBTableSiapJurnal.GetBoolean(i, cxgridColSiapJurnalAkanDijurnal.Index) then
-    begin
-      sNoBukti   := cxGridDBTableSiapJurnal.GetString(i,cxgridColSiapJurnalNo.Index);
-      sNamaKelas := cxGridDBTableSiapJurnal.GetString(i,cxgridColSiapJurnalClassName.Index);
-
-      ClientDataModule.ServerPenerimaanBarangClient.DoJournal(sNoBukti, sNamaKelas);
-    end;
-
+    cxGridDBTableSiapJurnal.DataController.Values[i, cxgridColSiapJurnalAkanDijurnal.Index] := chkCheckAll.Checked;
   end;
 end;
 

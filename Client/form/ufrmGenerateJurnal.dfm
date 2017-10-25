@@ -111,7 +111,7 @@ inherited frmGenerateJurnal: TfrmGenerateJurnal
           DataController.Summary.SummaryGroups = <>
           OptionsView.GroupByBox = False
           object cxgridColSiapJurnalAkanDijurnal: TcxGridDBColumn
-            Caption = 'Akan Dijurnal ?'
+            Caption = 'AKAN DIJURNAL'
             DataBinding.FieldName = 'Akan_Dijurnal'
             PropertiesClassName = 'TcxCheckBoxProperties'
             HeaderAlignmentHorz = taCenter
@@ -121,7 +121,7 @@ inherited frmGenerateJurnal: TfrmGenerateJurnal
             Caption = 'No Bukti'
             DataBinding.FieldName = 'nobukti'
             HeaderAlignmentHorz = taCenter
-            Width = 101
+            Width = 133
           end
           object cxgridColSiapJurnalTglBukti: TcxGridDBColumn
             Caption = 'Tanggal'
@@ -133,13 +133,13 @@ inherited frmGenerateJurnal: TfrmGenerateJurnal
             Caption = 'Keterangan'
             DataBinding.FieldName = 'keterangan'
             HeaderAlignmentHorz = taCenter
-            Width = 80
+            Width = 134
           end
           object cxgridColSiapJurnalClassName: TcxGridDBColumn
             Caption = 'Transaksi'
             DataBinding.FieldName = 'ClassName'
             HeaderAlignmentHorz = taCenter
-            Width = 106
+            Width = 175
           end
         end
         object cxgrdlvlSiapJurnal: TcxGridLevel
@@ -151,6 +151,7 @@ inherited frmGenerateJurnal: TfrmGenerateJurnal
         Top = 48
         TabOrder = 2
         Transparent = True
+        OnClick = chkCheckAllClick
       end
     end
   end
@@ -170,6 +171,9 @@ inherited frmGenerateJurnal: TfrmGenerateJurnal
   inherited ActionListForm: TActionList
     inherited ActionSimpan: TAction
       OnExecute = ActionSimpanExecute
+    end
+    inherited ActionHapus: TAction
+      OnExecute = ActionHapusExecute
     end
     inherited ActionRefresh: TAction
       OnExecute = ActionRefreshExecute
@@ -194,7 +198,7 @@ inherited frmGenerateJurnal: TfrmGenerateJurnal
     Left = 240
     Top = 208
     Bitmap = {
-      494C0101070008000C0118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800180118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 10/17/2017 5:01:46 AM
+// 10/26/2017 5:03:13 AM
 //
 
 unit ClientClassesUnit2;
@@ -206,7 +206,7 @@ type
     function RetrieveCDSlip_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function RetrieveNoBukti(ANoBukti: string; const ARequestFilter: string = ''): TCustomerInvoice;
     function RetrieveNoBukti_Cache(ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedTCustomerInvoice;
-    function DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string = ''): Boolean;
+    function DoJournal(ANoBukti: string; AModTransClass: string; AIsHapusJurnal: Integer; const ARequestFilter: string = ''): Boolean;
     function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
     function RetrieveData(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): TDataSet;
     function RetrieveData_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
@@ -316,7 +316,7 @@ type
     function RetrieveCDSlip_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
     function RetrieveNoBukti(ANoBukti: string; const ARequestFilter: string = ''): TPenerimaanBarang;
     function RetrieveNoBukti_Cache(ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedTPenerimaanBarang;
-    function DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string = ''): Boolean;
+    function DoJournal(ANoBukti: string; AModTransClass: string; AIsHapusJurnal: Integer; const ARequestFilter: string = ''): Boolean;
     function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
     function RetrieveData(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): TDataSet;
     function RetrieveData_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
@@ -436,7 +436,7 @@ type
     function Retrieve_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedTReturSupplier;
     function RetrieveNoBukti(ANoBukti: string; const ARequestFilter: string = ''): TReturSupplier;
     function RetrieveNoBukti_Cache(ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedTReturSupplier;
-    function DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string = ''): Boolean;
+    function DoJournal(ANoBukti: string; AModTransClass: string; AIsHapusJurnal: Integer; const ARequestFilter: string = ''): Boolean;
     function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
     function RetrieveData(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): TDataSet;
     function RetrieveData_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
@@ -556,7 +556,7 @@ type
     function RetrieveCDSlip(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; ANoBukti: string; const ARequestFilter: string = ''): TFDJSONDataSets;
     function RetrieveCDSlip_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
     function SaveToDBDibayar(APenjualan: TPenjualan; ADibayar: Double; const ARequestFilter: string = ''): Boolean;
-    function DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string = ''): Boolean;
+    function DoJournal(ANoBukti: string; AModTransClass: string; AIsHapusJurnal: Integer; const ARequestFilter: string = ''): Boolean;
     function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
     function RetrieveData(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): TDataSet;
     function RetrieveData_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
@@ -606,7 +606,7 @@ type
     function RetrieveNoBukti_Cache(ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedTAR;
     function RetrieveTransaksi(ATransaksi: string; AIDTransaksi: string; const ARequestFilter: string = ''): TAR;
     function RetrieveTransaksi_Cache(ATransaksi: string; AIDTransaksi: string; const ARequestFilter: string = ''): IDSRestCachedTAR;
-    function DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string = ''): Boolean;
+    function DoJournal(ANoBukti: string; AModTransClass: string; AIsHapusJurnal: Integer; const ARequestFilter: string = ''): Boolean;
     function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
     function RetrieveData(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): TDataSet;
     function RetrieveData_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
@@ -648,7 +648,7 @@ type
     function Retrieve_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedTAP;
     function RetrieveTransaksi(ATransaksi: string; AIDTransaksi: string; const ARequestFilter: string = ''): TAP;
     function RetrieveTransaksi_Cache(ATransaksi: string; AIDTransaksi: string; const ARequestFilter: string = ''): IDSRestCachedTAP;
-    function DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string = ''): Boolean;
+    function DoJournal(ANoBukti: string; AModTransClass: string; AIsHapusJurnal: Integer; const ARequestFilter: string = ''): Boolean;
     function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
     function RetrieveData(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): TDataSet;
     function RetrieveData_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
@@ -752,7 +752,7 @@ type
     function RetrieveCDSlip_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
     function RetrieveNoBukti(ANoBukti: string; const ARequestFilter: string = ''): TPenerimaanKas;
     function RetrieveNoBukti_Cache(ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedTPenerimaanKas;
-    function DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string = ''): Boolean;
+    function DoJournal(ANoBukti: string; AModTransClass: string; AIsHapusJurnal: Integer; const ARequestFilter: string = ''): Boolean;
     function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
     function RetrieveData(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): TDataSet;
     function RetrieveData_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
@@ -808,7 +808,7 @@ type
     function RetrieveCDSlip_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
     function RetrieveNoBukti(ANoBukti: string; const ARequestFilter: string = ''): TPengeluaranKas;
     function RetrieveNoBukti_Cache(ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedTPengeluaranKas;
-    function DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string = ''): Boolean;
+    function DoJournal(ANoBukti: string; AModTransClass: string; AIsHapusJurnal: Integer; const ARequestFilter: string = ''): Boolean;
     function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
     function RetrieveData(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): TDataSet;
     function RetrieveData_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
@@ -882,7 +882,7 @@ type
     function RetrieveNoBukti(ANoBukti: string; const ARequestFilter: string = ''): TTransferAntarGudang;
     function RetrieveNoBukti_Cache(ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedTTransferAntarGudang;
     function SaveTransferAntarGudang(ATransferAntarGudang: TTransferAntarGudang; const ARequestFilter: string = ''): Boolean;
-    function DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string = ''): Boolean;
+    function DoJournal(ANoBukti: string; AModTransClass: string; AIsHapusJurnal: Integer; const ARequestFilter: string = ''): Boolean;
     function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
     function RetrieveData(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): TDataSet;
     function RetrieveData_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
@@ -928,7 +928,7 @@ type
     function RetrieveCDSSlip_Cache(ACabangID: string; AID: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function RetrieveNoBukti(ANoBukti: string; const ARequestFilter: string = ''): TTAGRequest;
     function RetrieveNoBukti_Cache(ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedTTAGRequest;
-    function DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string = ''): Boolean;
+    function DoJournal(ANoBukti: string; AModTransClass: string; AIsHapusJurnal: Integer; const ARequestFilter: string = ''): Boolean;
     function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
     function RetrieveData(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): TDataSet;
     function RetrieveData_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
@@ -970,7 +970,7 @@ type
     function Retrieve_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedTTransferAntarCabangKirim;
     function RetrieveNoBukti(ANoBukti: string; const ARequestFilter: string = ''): TTransferAntarCabangKirim;
     function RetrieveNoBukti_Cache(ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedTTransferAntarCabangKirim;
-    function DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string = ''): Boolean;
+    function DoJournal(ANoBukti: string; AModTransClass: string; AIsHapusJurnal: Integer; const ARequestFilter: string = ''): Boolean;
     function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
     function RetrieveData(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): TDataSet;
     function RetrieveData_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
@@ -1012,7 +1012,7 @@ type
     function Retrieve_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedTTransferAntarCabangTerima;
     function RetrieveNoBukti(ANoBukti: string; const ARequestFilter: string = ''): TTransferAntarCabangTerima;
     function RetrieveNoBukti_Cache(ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedTTransferAntarCabangTerima;
-    function DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string = ''): Boolean;
+    function DoJournal(ANoBukti: string; AModTransClass: string; AIsHapusJurnal: Integer; const ARequestFilter: string = ''): Boolean;
     function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
     function RetrieveData(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): TDataSet;
     function RetrieveData_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
@@ -1096,7 +1096,7 @@ type
     function BeforeDelete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
     function Retrieve(AID: string; const ARequestFilter: string = ''): TJurnal;
     function Retrieve_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedTJurnal;
-    function DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string = ''): Boolean;
+    function DoJournal(ANoBukti: string; AModTransClass: string; AIsHapusJurnal: Integer; const ARequestFilter: string = ''): Boolean;
     function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
     function RetrieveData(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): TDataSet;
     function RetrieveData_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
@@ -1140,7 +1140,7 @@ type
     function BeforeSave(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
     function Retrieve(AID: string; const ARequestFilter: string = ''): TSettlementARAP;
     function Retrieve_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedTSettlementARAP;
-    function DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string = ''): Boolean;
+    function DoJournal(ANoBukti: string; AModTransClass: string; AIsHapusJurnal: Integer; const ARequestFilter: string = ''): Boolean;
     function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
     function RetrieveData(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): TDataSet;
     function RetrieveData_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
@@ -1830,10 +1830,11 @@ const
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
-  TServerCustomerInvoice_DoJournal: array [0..2] of TDSRestParameterMetaData =
+  TServerCustomerInvoice_DoJournal: array [0..3] of TDSRestParameterMetaData =
   (
     (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
     (Name: 'AModTransClass'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'AIsHapusJurnal'; Direction: 1; DBXType: 6; TypeName: 'Integer'),
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
   );
 
@@ -2082,10 +2083,11 @@ const
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
-  TServerPenerimaanBarang_DoJournal: array [0..2] of TDSRestParameterMetaData =
+  TServerPenerimaanBarang_DoJournal: array [0..3] of TDSRestParameterMetaData =
   (
     (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
     (Name: 'AModTransClass'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'AIsHapusJurnal'; Direction: 1; DBXType: 6; TypeName: 'Integer'),
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
   );
 
@@ -2337,10 +2339,11 @@ const
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
-  TServerReturSupplier_DoJournal: array [0..2] of TDSRestParameterMetaData =
+  TServerReturSupplier_DoJournal: array [0..3] of TDSRestParameterMetaData =
   (
     (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
     (Name: 'AModTransClass'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'AIsHapusJurnal'; Direction: 1; DBXType: 6; TypeName: 'Integer'),
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
   );
 
@@ -2621,10 +2624,11 @@ const
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
   );
 
-  TServerPenjualan_DoJournal: array [0..2] of TDSRestParameterMetaData =
+  TServerPenjualan_DoJournal: array [0..3] of TDSRestParameterMetaData =
   (
     (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
     (Name: 'AModTransClass'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'AIsHapusJurnal'; Direction: 1; DBXType: 6; TypeName: 'Integer'),
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
   );
 
@@ -2763,10 +2767,11 @@ const
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
-  TServerAR_DoJournal: array [0..2] of TDSRestParameterMetaData =
+  TServerAR_DoJournal: array [0..3] of TDSRestParameterMetaData =
   (
     (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
     (Name: 'AModTransClass'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'AIsHapusJurnal'; Direction: 1; DBXType: 6; TypeName: 'Integer'),
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
   );
 
@@ -2881,10 +2886,11 @@ const
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
-  TServerAP_DoJournal: array [0..2] of TDSRestParameterMetaData =
+  TServerAP_DoJournal: array [0..3] of TDSRestParameterMetaData =
   (
     (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
     (Name: 'AModTransClass'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'AIsHapusJurnal'; Direction: 1; DBXType: 6; TypeName: 'Integer'),
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
   );
 
@@ -3141,10 +3147,11 @@ const
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
-  TServerPenerimaanKas_DoJournal: array [0..2] of TDSRestParameterMetaData =
+  TServerPenerimaanKas_DoJournal: array [0..3] of TDSRestParameterMetaData =
   (
     (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
     (Name: 'AModTransClass'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'AIsHapusJurnal'; Direction: 1; DBXType: 6; TypeName: 'Integer'),
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
   );
 
@@ -3305,10 +3312,11 @@ const
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
-  TServerPengeluaranKas_DoJournal: array [0..2] of TDSRestParameterMetaData =
+  TServerPengeluaranKas_DoJournal: array [0..3] of TDSRestParameterMetaData =
   (
     (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
     (Name: 'AModTransClass'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'AIsHapusJurnal'; Direction: 1; DBXType: 6; TypeName: 'Integer'),
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
   );
 
@@ -3499,10 +3507,11 @@ const
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
   );
 
-  TServerTransferAntarGudang_DoJournal: array [0..2] of TDSRestParameterMetaData =
+  TServerTransferAntarGudang_DoJournal: array [0..3] of TDSRestParameterMetaData =
   (
     (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
     (Name: 'AModTransClass'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'AIsHapusJurnal'; Direction: 1; DBXType: 6; TypeName: 'Integer'),
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
   );
 
@@ -3629,10 +3638,11 @@ const
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
-  TServerTAGRequest_DoJournal: array [0..2] of TDSRestParameterMetaData =
+  TServerTAGRequest_DoJournal: array [0..3] of TDSRestParameterMetaData =
   (
     (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
     (Name: 'AModTransClass'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'AIsHapusJurnal'; Direction: 1; DBXType: 6; TypeName: 'Integer'),
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
   );
 
@@ -3745,10 +3755,11 @@ const
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
-  TServerTransferAntarCabangKirim_DoJournal: array [0..2] of TDSRestParameterMetaData =
+  TServerTransferAntarCabangKirim_DoJournal: array [0..3] of TDSRestParameterMetaData =
   (
     (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
     (Name: 'AModTransClass'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'AIsHapusJurnal'; Direction: 1; DBXType: 6; TypeName: 'Integer'),
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
   );
 
@@ -3861,10 +3872,11 @@ const
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
-  TServerTransferAntarCabangTerima_DoJournal: array [0..2] of TDSRestParameterMetaData =
+  TServerTransferAntarCabangTerima_DoJournal: array [0..3] of TDSRestParameterMetaData =
   (
     (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
     (Name: 'AModTransClass'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'AIsHapusJurnal'; Direction: 1; DBXType: 6; TypeName: 'Integer'),
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
   );
 
@@ -4066,10 +4078,11 @@ const
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
-  TServerJurnal_DoJournal: array [0..2] of TDSRestParameterMetaData =
+  TServerJurnal_DoJournal: array [0..3] of TDSRestParameterMetaData =
   (
     (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
     (Name: 'AModTransClass'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'AIsHapusJurnal'; Direction: 1; DBXType: 6; TypeName: 'Integer'),
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
   );
 
@@ -4188,10 +4201,11 @@ const
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
-  TServerSettlementARAP_DoJournal: array [0..2] of TDSRestParameterMetaData =
+  TServerSettlementARAP_DoJournal: array [0..3] of TDSRestParameterMetaData =
   (
     (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
     (Name: 'AModTransClass'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'AIsHapusJurnal'; Direction: 1; DBXType: 6; TypeName: 'Integer'),
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
   );
 
@@ -6345,7 +6359,7 @@ begin
   Result := TDSRestCachedTCustomerInvoice.Create(FRetrieveNoBuktiCommand_Cache.Parameters[1].Value.GetString);
 end;
 
-function TServerCustomerInvoiceClient.DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string): Boolean;
+function TServerCustomerInvoiceClient.DoJournal(ANoBukti: string; AModTransClass: string; AIsHapusJurnal: Integer; const ARequestFilter: string): Boolean;
 begin
   if FDoJournalCommand = nil then
   begin
@@ -6356,8 +6370,9 @@ begin
   end;
   FDoJournalCommand.Parameters[0].Value.SetWideString(ANoBukti);
   FDoJournalCommand.Parameters[1].Value.SetWideString(AModTransClass);
+  FDoJournalCommand.Parameters[2].Value.SetInt32(AIsHapusJurnal);
   FDoJournalCommand.Execute(ARequestFilter);
-  Result := FDoJournalCommand.Parameters[2].Value.GetBoolean;
+  Result := FDoJournalCommand.Parameters[3].Value.GetBoolean;
 end;
 
 function TServerCustomerInvoiceClient.GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string): string;
@@ -7302,7 +7317,7 @@ begin
   Result := TDSRestCachedTPenerimaanBarang.Create(FRetrieveNoBuktiCommand_Cache.Parameters[1].Value.GetString);
 end;
 
-function TServerPenerimaanBarangClient.DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string): Boolean;
+function TServerPenerimaanBarangClient.DoJournal(ANoBukti: string; AModTransClass: string; AIsHapusJurnal: Integer; const ARequestFilter: string): Boolean;
 begin
   if FDoJournalCommand = nil then
   begin
@@ -7313,8 +7328,9 @@ begin
   end;
   FDoJournalCommand.Parameters[0].Value.SetWideString(ANoBukti);
   FDoJournalCommand.Parameters[1].Value.SetWideString(AModTransClass);
+  FDoJournalCommand.Parameters[2].Value.SetInt32(AIsHapusJurnal);
   FDoJournalCommand.Execute(ARequestFilter);
-  Result := FDoJournalCommand.Parameters[2].Value.GetBoolean;
+  Result := FDoJournalCommand.Parameters[3].Value.GetBoolean;
 end;
 
 function TServerPenerimaanBarangClient.GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string): string;
@@ -8374,7 +8390,7 @@ begin
   Result := TDSRestCachedTReturSupplier.Create(FRetrieveNoBuktiCommand_Cache.Parameters[1].Value.GetString);
 end;
 
-function TServerReturSupplierClient.DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string): Boolean;
+function TServerReturSupplierClient.DoJournal(ANoBukti: string; AModTransClass: string; AIsHapusJurnal: Integer; const ARequestFilter: string): Boolean;
 begin
   if FDoJournalCommand = nil then
   begin
@@ -8385,8 +8401,9 @@ begin
   end;
   FDoJournalCommand.Parameters[0].Value.SetWideString(ANoBukti);
   FDoJournalCommand.Parameters[1].Value.SetWideString(AModTransClass);
+  FDoJournalCommand.Parameters[2].Value.SetInt32(AIsHapusJurnal);
   FDoJournalCommand.Execute(ARequestFilter);
-  Result := FDoJournalCommand.Parameters[2].Value.GetBoolean;
+  Result := FDoJournalCommand.Parameters[3].Value.GetBoolean;
 end;
 
 function TServerReturSupplierClient.GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string): string;
@@ -9504,7 +9521,7 @@ begin
   Result := FSaveToDBDibayarCommand.Parameters[2].Value.GetBoolean;
 end;
 
-function TServerPenjualanClient.DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string): Boolean;
+function TServerPenjualanClient.DoJournal(ANoBukti: string; AModTransClass: string; AIsHapusJurnal: Integer; const ARequestFilter: string): Boolean;
 begin
   if FDoJournalCommand = nil then
   begin
@@ -9515,8 +9532,9 @@ begin
   end;
   FDoJournalCommand.Parameters[0].Value.SetWideString(ANoBukti);
   FDoJournalCommand.Parameters[1].Value.SetWideString(AModTransClass);
+  FDoJournalCommand.Parameters[2].Value.SetInt32(AIsHapusJurnal);
   FDoJournalCommand.Execute(ARequestFilter);
-  Result := FDoJournalCommand.Parameters[2].Value.GetBoolean;
+  Result := FDoJournalCommand.Parameters[3].Value.GetBoolean;
 end;
 
 function TServerPenjualanClient.GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string): string;
@@ -9969,7 +9987,7 @@ begin
   Result := TDSRestCachedTAR.Create(FRetrieveTransaksiCommand_Cache.Parameters[2].Value.GetString);
 end;
 
-function TServerARClient.DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string): Boolean;
+function TServerARClient.DoJournal(ANoBukti: string; AModTransClass: string; AIsHapusJurnal: Integer; const ARequestFilter: string): Boolean;
 begin
   if FDoJournalCommand = nil then
   begin
@@ -9980,8 +9998,9 @@ begin
   end;
   FDoJournalCommand.Parameters[0].Value.SetWideString(ANoBukti);
   FDoJournalCommand.Parameters[1].Value.SetWideString(AModTransClass);
+  FDoJournalCommand.Parameters[2].Value.SetInt32(AIsHapusJurnal);
   FDoJournalCommand.Execute(ARequestFilter);
-  Result := FDoJournalCommand.Parameters[2].Value.GetBoolean;
+  Result := FDoJournalCommand.Parameters[3].Value.GetBoolean;
 end;
 
 function TServerARClient.GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string): string;
@@ -10364,7 +10383,7 @@ begin
   Result := TDSRestCachedTAP.Create(FRetrieveTransaksiCommand_Cache.Parameters[2].Value.GetString);
 end;
 
-function TServerAPClient.DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string): Boolean;
+function TServerAPClient.DoJournal(ANoBukti: string; AModTransClass: string; AIsHapusJurnal: Integer; const ARequestFilter: string): Boolean;
 begin
   if FDoJournalCommand = nil then
   begin
@@ -10375,8 +10394,9 @@ begin
   end;
   FDoJournalCommand.Parameters[0].Value.SetWideString(ANoBukti);
   FDoJournalCommand.Parameters[1].Value.SetWideString(AModTransClass);
+  FDoJournalCommand.Parameters[2].Value.SetInt32(AIsHapusJurnal);
   FDoJournalCommand.Execute(ARequestFilter);
-  Result := FDoJournalCommand.Parameters[2].Value.GetBoolean;
+  Result := FDoJournalCommand.Parameters[3].Value.GetBoolean;
 end;
 
 function TServerAPClient.GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string): string;
@@ -11364,7 +11384,7 @@ begin
   Result := TDSRestCachedTPenerimaanKas.Create(FRetrieveNoBuktiCommand_Cache.Parameters[1].Value.GetString);
 end;
 
-function TServerPenerimaanKasClient.DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string): Boolean;
+function TServerPenerimaanKasClient.DoJournal(ANoBukti: string; AModTransClass: string; AIsHapusJurnal: Integer; const ARequestFilter: string): Boolean;
 begin
   if FDoJournalCommand = nil then
   begin
@@ -11375,8 +11395,9 @@ begin
   end;
   FDoJournalCommand.Parameters[0].Value.SetWideString(ANoBukti);
   FDoJournalCommand.Parameters[1].Value.SetWideString(AModTransClass);
+  FDoJournalCommand.Parameters[2].Value.SetInt32(AIsHapusJurnal);
   FDoJournalCommand.Execute(ARequestFilter);
-  Result := FDoJournalCommand.Parameters[2].Value.GetBoolean;
+  Result := FDoJournalCommand.Parameters[3].Value.GetBoolean;
 end;
 
 function TServerPenerimaanKasClient.GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string): string;
@@ -11939,7 +11960,7 @@ begin
   Result := TDSRestCachedTPengeluaranKas.Create(FRetrieveNoBuktiCommand_Cache.Parameters[1].Value.GetString);
 end;
 
-function TServerPengeluaranKasClient.DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string): Boolean;
+function TServerPengeluaranKasClient.DoJournal(ANoBukti: string; AModTransClass: string; AIsHapusJurnal: Integer; const ARequestFilter: string): Boolean;
 begin
   if FDoJournalCommand = nil then
   begin
@@ -11950,8 +11971,9 @@ begin
   end;
   FDoJournalCommand.Parameters[0].Value.SetWideString(ANoBukti);
   FDoJournalCommand.Parameters[1].Value.SetWideString(AModTransClass);
+  FDoJournalCommand.Parameters[2].Value.SetInt32(AIsHapusJurnal);
   FDoJournalCommand.Execute(ARequestFilter);
-  Result := FDoJournalCommand.Parameters[2].Value.GetBoolean;
+  Result := FDoJournalCommand.Parameters[3].Value.GetBoolean;
 end;
 
 function TServerPengeluaranKasClient.GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string): string;
@@ -12659,7 +12681,7 @@ begin
   Result := FSaveTransferAntarGudangCommand.Parameters[1].Value.GetBoolean;
 end;
 
-function TServerTransferAntarGudangClient.DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string): Boolean;
+function TServerTransferAntarGudangClient.DoJournal(ANoBukti: string; AModTransClass: string; AIsHapusJurnal: Integer; const ARequestFilter: string): Boolean;
 begin
   if FDoJournalCommand = nil then
   begin
@@ -12670,8 +12692,9 @@ begin
   end;
   FDoJournalCommand.Parameters[0].Value.SetWideString(ANoBukti);
   FDoJournalCommand.Parameters[1].Value.SetWideString(AModTransClass);
+  FDoJournalCommand.Parameters[2].Value.SetInt32(AIsHapusJurnal);
   FDoJournalCommand.Execute(ARequestFilter);
-  Result := FDoJournalCommand.Parameters[2].Value.GetBoolean;
+  Result := FDoJournalCommand.Parameters[3].Value.GetBoolean;
 end;
 
 function TServerTransferAntarGudangClient.GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string): string;
@@ -13084,7 +13107,7 @@ begin
   Result := TDSRestCachedTTAGRequest.Create(FRetrieveNoBuktiCommand_Cache.Parameters[1].Value.GetString);
 end;
 
-function TServerTAGRequestClient.DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string): Boolean;
+function TServerTAGRequestClient.DoJournal(ANoBukti: string; AModTransClass: string; AIsHapusJurnal: Integer; const ARequestFilter: string): Boolean;
 begin
   if FDoJournalCommand = nil then
   begin
@@ -13095,8 +13118,9 @@ begin
   end;
   FDoJournalCommand.Parameters[0].Value.SetWideString(ANoBukti);
   FDoJournalCommand.Parameters[1].Value.SetWideString(AModTransClass);
+  FDoJournalCommand.Parameters[2].Value.SetInt32(AIsHapusJurnal);
   FDoJournalCommand.Execute(ARequestFilter);
-  Result := FDoJournalCommand.Parameters[2].Value.GetBoolean;
+  Result := FDoJournalCommand.Parameters[3].Value.GetBoolean;
 end;
 
 function TServerTAGRequestClient.GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string): string;
@@ -13475,7 +13499,7 @@ begin
   Result := TDSRestCachedTTransferAntarCabangKirim.Create(FRetrieveNoBuktiCommand_Cache.Parameters[1].Value.GetString);
 end;
 
-function TServerTransferAntarCabangKirimClient.DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string): Boolean;
+function TServerTransferAntarCabangKirimClient.DoJournal(ANoBukti: string; AModTransClass: string; AIsHapusJurnal: Integer; const ARequestFilter: string): Boolean;
 begin
   if FDoJournalCommand = nil then
   begin
@@ -13486,8 +13510,9 @@ begin
   end;
   FDoJournalCommand.Parameters[0].Value.SetWideString(ANoBukti);
   FDoJournalCommand.Parameters[1].Value.SetWideString(AModTransClass);
+  FDoJournalCommand.Parameters[2].Value.SetInt32(AIsHapusJurnal);
   FDoJournalCommand.Execute(ARequestFilter);
-  Result := FDoJournalCommand.Parameters[2].Value.GetBoolean;
+  Result := FDoJournalCommand.Parameters[3].Value.GetBoolean;
 end;
 
 function TServerTransferAntarCabangKirimClient.GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string): string;
@@ -13864,7 +13889,7 @@ begin
   Result := TDSRestCachedTTransferAntarCabangTerima.Create(FRetrieveNoBuktiCommand_Cache.Parameters[1].Value.GetString);
 end;
 
-function TServerTransferAntarCabangTerimaClient.DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string): Boolean;
+function TServerTransferAntarCabangTerimaClient.DoJournal(ANoBukti: string; AModTransClass: string; AIsHapusJurnal: Integer; const ARequestFilter: string): Boolean;
 begin
   if FDoJournalCommand = nil then
   begin
@@ -13875,8 +13900,9 @@ begin
   end;
   FDoJournalCommand.Parameters[0].Value.SetWideString(ANoBukti);
   FDoJournalCommand.Parameters[1].Value.SetWideString(AModTransClass);
+  FDoJournalCommand.Parameters[2].Value.SetInt32(AIsHapusJurnal);
   FDoJournalCommand.Execute(ARequestFilter);
-  Result := FDoJournalCommand.Parameters[2].Value.GetBoolean;
+  Result := FDoJournalCommand.Parameters[3].Value.GetBoolean;
 end;
 
 function TServerTransferAntarCabangTerimaClient.GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string): string;
@@ -14594,7 +14620,7 @@ begin
   Result := TDSRestCachedTJurnal.Create(FRetrieveCommand_Cache.Parameters[1].Value.GetString);
 end;
 
-function TServerJurnalClient.DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string): Boolean;
+function TServerJurnalClient.DoJournal(ANoBukti: string; AModTransClass: string; AIsHapusJurnal: Integer; const ARequestFilter: string): Boolean;
 begin
   if FDoJournalCommand = nil then
   begin
@@ -14605,8 +14631,9 @@ begin
   end;
   FDoJournalCommand.Parameters[0].Value.SetWideString(ANoBukti);
   FDoJournalCommand.Parameters[1].Value.SetWideString(AModTransClass);
+  FDoJournalCommand.Parameters[2].Value.SetInt32(AIsHapusJurnal);
   FDoJournalCommand.Execute(ARequestFilter);
-  Result := FDoJournalCommand.Parameters[2].Value.GetBoolean;
+  Result := FDoJournalCommand.Parameters[3].Value.GetBoolean;
 end;
 
 function TServerJurnalClient.GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string): string;
@@ -15021,7 +15048,7 @@ begin
   Result := TDSRestCachedTSettlementARAP.Create(FRetrieveCommand_Cache.Parameters[1].Value.GetString);
 end;
 
-function TServerSettlementARAPClient.DoJournal(ANoBukti: string; AModTransClass: string; const ARequestFilter: string): Boolean;
+function TServerSettlementARAPClient.DoJournal(ANoBukti: string; AModTransClass: string; AIsHapusJurnal: Integer; const ARequestFilter: string): Boolean;
 begin
   if FDoJournalCommand = nil then
   begin
@@ -15032,8 +15059,9 @@ begin
   end;
   FDoJournalCommand.Parameters[0].Value.SetWideString(ANoBukti);
   FDoJournalCommand.Parameters[1].Value.SetWideString(AModTransClass);
+  FDoJournalCommand.Parameters[2].Value.SetInt32(AIsHapusJurnal);
   FDoJournalCommand.Execute(ARequestFilter);
-  Result := FDoJournalCommand.Parameters[2].Value.GetBoolean;
+  Result := FDoJournalCommand.Parameters[3].Value.GetBoolean;
 end;
 
 function TServerSettlementARAPClient.GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string): string;
