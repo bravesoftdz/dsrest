@@ -61,12 +61,13 @@ type
     lblNoPB: TLabel;
     edNoPB: TcxTextEdit;
     btnCari: TButton;
+    actCariBTB: TAction;
+    procedure actCariBTBExecute(Sender: TObject);
     procedure actCetakExecute(Sender: TObject);
     procedure ActionBaruExecute(Sender: TObject);
     procedure ActionHapusExecute(Sender: TObject);
     procedure ActionRefreshExecute(Sender: TObject);
     procedure ActionSimpanExecute(Sender: TObject);
-    procedure btnCariClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure cxGridTablePenerimaanBarangColumnSKUPropertiesValidate(
       Sender: TObject; var DisplayValue: Variant; var ErrorText: TCaption;
@@ -123,6 +124,26 @@ uses
   ClientModule, uDBUtils, uBarangUtils;
 
 {$R *.dfm}
+
+procedure TfrmReturSupplier.actCariBTBExecute(Sender: TObject);
+var
+  lPB: TPenerimaanBarang;
+  sIDPB: string;
+begin
+  inherited;
+  sIDPB := TfrmLookUpTransaksi.LookUp('Daftar Penerimaan Barang', TPenerimaanBarang.ClassName);
+
+  if sIDPB <> '' then
+  begin
+    lPB   := ClientDataModule.ServerPenerimaanBarangClient.Retrieve(sIDPB);
+    try
+      edNoPB.Text := lPB.NoBukti;
+      LoadDataPenerimaanBarang(lPB.NoBukti);
+    finally
+      FreeAndNil(lPB);
+    end;
+  end;
+end;
 
 procedure TfrmReturSupplier.actCetakExecute(Sender: TObject);
 begin
@@ -182,7 +203,7 @@ begin
   lcds := TDBUtils.DSToCDS(ClientDataModule.ServerReturSupplierClient.RetrieveData(dtpAwal.DateTime, dtpAkhir.DateTime, sIDCabang), Self);
   cxGridDBTableOverview.SetDataset(lcds, True);
   cxGridDBTableOverview.ApplyBestFit();
-  cxGridDBTableOverview.SetVisibleColumns([{'ID',} 'CABANGID'], False);
+  cxGridDBTableOverview.SetVisibleColumns(['ID', 'CABANGID'], False);
 end;
 
 procedure TfrmReturSupplier.ActionSimpanExecute(Sender: TObject);
@@ -234,26 +255,6 @@ begin
     finally
       FreeAndNil(FReturSupplier);
       Free;
-    end;
-  end;
-end;
-
-procedure TfrmReturSupplier.btnCariClick(Sender: TObject);
-var
-  lPB: TPenerimaanBarang;
-  sIDPB: string;
-begin
-  inherited;
-  sIDPB := TfrmLookUpTransaksi.LookUp('Daftar Penerimaan Barang', TPenerimaanBarang.ClassName);
-
-  if sIDPB <> '' then
-  begin
-    lPB   := ClientDataModule.ServerPenerimaanBarangClient.Retrieve(sIDPB);
-    try
-      edNoPB.Text := lPB.NoBukti;
-      LoadDataPenerimaanBarang(lPB.NoBukti);
-    finally
-      FreeAndNil(lPB);
     end;
   end;
 end;

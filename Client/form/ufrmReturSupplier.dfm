@@ -2,6 +2,7 @@ inherited frmReturSupplier: TfrmReturSupplier
   Caption = 'Retur ke Supplier'
   ClientHeight = 434
   ClientWidth = 984
+  KeyPreview = True
   WindowState = wsMaximized
   OnShow = FormShow
   ExplicitWidth = 1000
@@ -105,10 +106,6 @@ inherited frmReturSupplier: TfrmReturSupplier
           TabOrder = 0
           object tsHeader: TTabSheet
             Caption = 'Header Penerimaan'
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
             object lblNoBukti: TLabel
               Left = 36
               Top = 8
@@ -165,7 +162,7 @@ inherited frmReturSupplier: TfrmReturSupplier
               Lines.Strings = (
                 'memKeterangan')
               TabOrder = 4
-              Height = 21
+              Height = 46
               Width = 145
             end
             object cbbSupplier: TcxExtLookupComboBox
@@ -187,16 +184,15 @@ inherited frmReturSupplier: TfrmReturSupplier
               TabOrder = 2
               Text = 'EDNOBUKTI'
               OnKeyDown = edNoPBKeyDown
-              Width = 121
+              Width = 85
             end
             object btnCari: TButton
-              Left = 336
+              Left = 168
               Top = 51
-              Width = 145
+              Width = 33
               Height = 25
-              Caption = 'Cari'
+              Action = actCariBTB
               TabOrder = 5
-              OnClick = btnCariClick
             end
           end
         end
@@ -210,10 +206,6 @@ inherited frmReturSupplier: TfrmReturSupplier
           TabOrder = 1
           object tsDetailPenerimaan: TTabSheet
             Caption = 'Detail Penerimaan'
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
             object cxGridDBPenerimaanBarang: TcxGrid
               Left = 0
               Top = 0
@@ -411,6 +403,11 @@ inherited frmReturSupplier: TfrmReturSupplier
     inherited ActionRefresh: TAction
       OnExecute = ActionRefreshExecute
     end
+    object actCariBTB: TAction
+      Caption = 'F5'
+      ShortCut = 116
+      OnExecute = actCariBTBExecute
+    end
   end
   inherited cxGridRepTransaksi: TcxGridViewRepository
     object cxGridDBTableSupplier: TcxGridDBTableView
@@ -486,7 +483,7 @@ inherited frmReturSupplier: TfrmReturSupplier
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C0101050008009C0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010105000800A40018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
