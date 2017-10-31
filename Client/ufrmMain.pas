@@ -496,9 +496,9 @@ end;
 procedure TfrmMain.SimpanAndDisableDataMenu;
 var
   I: Integer;
-  lMenu: TMenu;
-  sCaption: string;
-  sNama: string;
+//  lMenu: TMenu;
+//  sCaption: string;
+//  sNama: string;
 begin
   for I := 0 to actlstMainMenu.ActionCount - 1 do
   begin

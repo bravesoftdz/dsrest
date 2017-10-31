@@ -136,10 +136,11 @@ begin
 
   cxGridDBTableSiapJurnal.SetDataset(lcds, True);
   cxGridDBTableSiapJurnal.SetVisibleColumns(['ID'], False);
-  cxGridDBTableSiapJurnal.ApplyBestFit(cxGridDBTableSiapJurnal.Columns[cxGridDBTableSiapJurnal.ColumnCount - 1]);
+  cxGridDBTableSiapJurnal.ApplyBestFit();
+  cxgridColSiapJurnalAkanDijurnal.Width := 128;
 
-  chkCheckAll.Caption := 'Pilih Semua';
-  cxgridColSiapJurnalAkanDijurnal.Caption := '';
+//  chkCheckAll.Caption := 'Pilih Semua';
+//  cxgridColSiapJurnalAkanDijurnal.Caption := '';
 
   chkCheckAll.OnClick(Sender);
 end;

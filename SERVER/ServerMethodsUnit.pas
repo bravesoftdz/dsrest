@@ -1058,7 +1058,7 @@ begin
   sSQL := 'update tgudang set kode = kode where id = NEWID()';
   if UpperCase(AModTransClass) = UpperCase(TPenerimaanBarang.ClassName) then
     sSQL := 'EXEC SP_PENERIMAAN_BARANG ' + QuotedStr(ANoBukti) + ',' + IntToStr(AIsHapusJurnal)
-  else if UpperCase(AModTransClass) = UpperCase(TPenerimaanBarang.ClassName) then
+  else if UpperCase(AModTransClass) = UpperCase(TReturSupplier.ClassName) then
     sSQL := 'EXEC SP_RETUR_SUPPLIER ' + QuotedStr(ANoBukti) + ',' + IntToStr(AIsHapusJurnal);
 
   try

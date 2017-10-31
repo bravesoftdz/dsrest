@@ -118,25 +118,25 @@ inherited frmGenerateJurnal: TfrmGenerateJurnal
             Width = 128
           end
           object cxgridColSiapJurnalNo: TcxGridDBColumn
-            Caption = 'No Bukti'
+            Caption = 'NO BUKTI'
             DataBinding.FieldName = 'nobukti'
             HeaderAlignmentHorz = taCenter
             Width = 133
           end
           object cxgridColSiapJurnalTglBukti: TcxGridDBColumn
-            Caption = 'Tanggal'
+            Caption = 'TANGGAL'
             DataBinding.FieldName = 'tglbukti'
             HeaderAlignmentHorz = taCenter
             Width = 83
           end
           object cxgridColSiapJurnalKeterangan: TcxGridDBColumn
-            Caption = 'Keterangan'
+            Caption = 'KETERANGAN'
             DataBinding.FieldName = 'keterangan'
             HeaderAlignmentHorz = taCenter
             Width = 134
           end
           object cxgridColSiapJurnalClassName: TcxGridDBColumn
-            Caption = 'Transaksi'
+            Caption = 'TRANSAKSI'
             DataBinding.FieldName = 'ClassName'
             HeaderAlignmentHorz = taCenter
             Width = 175
@@ -198,7 +198,7 @@ inherited frmGenerateJurnal: TfrmGenerateJurnal
     Left = 240
     Top = 208
     Bitmap = {
-      494C010107000800180118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C0101070008001C0118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
