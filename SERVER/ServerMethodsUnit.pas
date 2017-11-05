@@ -1059,7 +1059,9 @@ begin
   if UpperCase(AModTransClass) = UpperCase(TPenerimaanBarang.ClassName) then
     sSQL := 'EXEC SP_PENERIMAAN_BARANG ' + QuotedStr(ANoBukti) + ',' + IntToStr(AIsHapusJurnal)
   else if UpperCase(AModTransClass) = UpperCase(TReturSupplier.ClassName) then
-    sSQL := 'EXEC SP_RETUR_SUPPLIER ' + QuotedStr(ANoBukti) + ',' + IntToStr(AIsHapusJurnal);
+    sSQL := 'EXEC SP_RETUR_SUPPLIER ' + QuotedStr(ANoBukti) + ',' + IntToStr(AIsHapusJurnal)
+  else if UpperCase(AModTransClass) = UpperCase(TPenjualan.ClassName) then
+    sSQL := 'EXEC SP_PENJUALAN ' + QuotedStr(ANoBukti) + ',' + IntToStr(AIsHapusJurnal);;
 
   try
     if TDBUtils.ExecuteSQL(sSQL) then
