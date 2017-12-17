@@ -1,9 +1,9 @@
 //
 // Created by the DataSnap proxy generator.
-// 10/26/2017 5:03:13 AM
+// 11/28/2017 5:22:45 AM
 //
 
-unit ClientClassesUnit2;
+unit ClientClassesUnit;
 
 interface
 
@@ -89,6 +89,8 @@ type
     FLaporanReturSupplierCommand_Cache: TDSRestCommand;
     FLaporanKarARCommand: TDSRestCommand;
     FLaporanKarARCommand_Cache: TDSRestCommand;
+    FLaporanNeracaSaldoCommand: TDSRestCommand;
+    FLaporanNeracaSaldoCommand_Cache: TDSRestCommand;
     FRetriveSettingAppCommand: TDSRestCommand;
     FRetriveSettingAppCommand_Cache: TDSRestCommand;
   public
@@ -141,6 +143,8 @@ type
     function LaporanReturSupplier_Cache(ATglAwal: TDateTime; AtglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
     function LaporanKarAR(ATglAwal: TDateTime; ATglAkhir: TDateTime; ACustomer: TSupplier; ACabang: TCabang; ANoAR: string; const ARequestFilter: string = ''): TFDJSONDataSets;
     function LaporanKarAR_Cache(ATglAwal: TDateTime; ATglAkhir: TDateTime; ACustomer: TSupplier; ACabang: TCabang; ANoAR: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
+    function LaporanNeracaSaldo(ATglAwal: TDateTime; AtglAkhir: TDateTime; AIsKonsolidasi: Integer; ACabang: TCabang; const ARequestFilter: string = ''): TFDJSONDataSets;
+    function LaporanNeracaSaldo_Cache(ATglAwal: TDateTime; AtglAkhir: TDateTime; AIsKonsolidasi: Integer; ACabang: TCabang; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
     function RetriveSettingApp(ACabang: TCabang; const ARequestFilter: string = ''): TDataSet;
     function RetriveSettingApp_Cache(ACabang: TCabang; const ARequestFilter: string = ''): IDSRestCachedDataSet;
   end;
@@ -1713,6 +1717,24 @@ const
     (Name: 'ACustomer'; Direction: 1; DBXType: 37; TypeName: 'TSupplier'),
     (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
     (Name: 'ANoAR'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerLaporan_LaporanNeracaSaldo: array [0..4] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'AtglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'AIsKonsolidasi'; Direction: 1; DBXType: 6; TypeName: 'Integer'),
+    (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
+    (Name: ''; Direction: 4; DBXType: 37; TypeName: 'TFDJSONDataSets')
+  );
+
+  TServerLaporan_LaporanNeracaSaldo_Cache: array [0..4] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'AtglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'AIsKonsolidasi'; Direction: 1; DBXType: 6; TypeName: 'Integer'),
+    (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
@@ -5841,6 +5863,76 @@ begin
   Result := TDSRestCachedTFDJSONDataSets.Create(FLaporanKarARCommand_Cache.Parameters[5].Value.GetString);
 end;
 
+function TServerLaporanClient.LaporanNeracaSaldo(ATglAwal: TDateTime; AtglAkhir: TDateTime; AIsKonsolidasi: Integer; ACabang: TCabang; const ARequestFilter: string): TFDJSONDataSets;
+begin
+  if FLaporanNeracaSaldoCommand = nil then
+  begin
+    FLaporanNeracaSaldoCommand := FConnection.CreateCommand;
+    FLaporanNeracaSaldoCommand.RequestType := 'POST';
+    FLaporanNeracaSaldoCommand.Text := 'TServerLaporan."LaporanNeracaSaldo"';
+    FLaporanNeracaSaldoCommand.Prepare(TServerLaporan_LaporanNeracaSaldo);
+  end;
+  FLaporanNeracaSaldoCommand.Parameters[0].Value.AsDateTime := ATglAwal;
+  FLaporanNeracaSaldoCommand.Parameters[1].Value.AsDateTime := AtglAkhir;
+  FLaporanNeracaSaldoCommand.Parameters[2].Value.SetInt32(AIsKonsolidasi);
+  if not Assigned(ACabang) then
+    FLaporanNeracaSaldoCommand.Parameters[3].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FLaporanNeracaSaldoCommand.Parameters[3].ConnectionHandler).GetJSONMarshaler;
+    try
+      FLaporanNeracaSaldoCommand.Parameters[3].Value.SetJSONValue(FMarshal.Marshal(ACabang), True);
+      if FInstanceOwner then
+        ACabang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FLaporanNeracaSaldoCommand.Execute(ARequestFilter);
+  if not FLaporanNeracaSaldoCommand.Parameters[4].Value.IsNull then
+  begin
+    FUnMarshal := TDSRestCommand(FLaporanNeracaSaldoCommand.Parameters[4].ConnectionHandler).GetJSONUnMarshaler;
+    try
+      Result := TFDJSONDataSets(FUnMarshal.UnMarshal(FLaporanNeracaSaldoCommand.Parameters[4].Value.GetJSONValue(True)));
+      if FInstanceOwner then
+        FLaporanNeracaSaldoCommand.FreeOnExecute(Result);
+    finally
+      FreeAndNil(FUnMarshal)
+    end
+  end
+  else
+    Result := nil;
+end;
+
+function TServerLaporanClient.LaporanNeracaSaldo_Cache(ATglAwal: TDateTime; AtglAkhir: TDateTime; AIsKonsolidasi: Integer; ACabang: TCabang; const ARequestFilter: string): IDSRestCachedTFDJSONDataSets;
+begin
+  if FLaporanNeracaSaldoCommand_Cache = nil then
+  begin
+    FLaporanNeracaSaldoCommand_Cache := FConnection.CreateCommand;
+    FLaporanNeracaSaldoCommand_Cache.RequestType := 'POST';
+    FLaporanNeracaSaldoCommand_Cache.Text := 'TServerLaporan."LaporanNeracaSaldo"';
+    FLaporanNeracaSaldoCommand_Cache.Prepare(TServerLaporan_LaporanNeracaSaldo_Cache);
+  end;
+  FLaporanNeracaSaldoCommand_Cache.Parameters[0].Value.AsDateTime := ATglAwal;
+  FLaporanNeracaSaldoCommand_Cache.Parameters[1].Value.AsDateTime := AtglAkhir;
+  FLaporanNeracaSaldoCommand_Cache.Parameters[2].Value.SetInt32(AIsKonsolidasi);
+  if not Assigned(ACabang) then
+    FLaporanNeracaSaldoCommand_Cache.Parameters[3].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FLaporanNeracaSaldoCommand_Cache.Parameters[3].ConnectionHandler).GetJSONMarshaler;
+    try
+      FLaporanNeracaSaldoCommand_Cache.Parameters[3].Value.SetJSONValue(FMarshal.Marshal(ACabang), True);
+      if FInstanceOwner then
+        ACabang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FLaporanNeracaSaldoCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedTFDJSONDataSets.Create(FLaporanNeracaSaldoCommand_Cache.Parameters[4].Value.GetString);
+end;
+
 function TServerLaporanClient.RetriveSettingApp(ACabang: TCabang; const ARequestFilter: string): TDataSet;
 begin
   if FRetriveSettingAppCommand = nil then
@@ -5954,6 +6046,8 @@ begin
   FLaporanReturSupplierCommand_Cache.DisposeOf;
   FLaporanKarARCommand.DisposeOf;
   FLaporanKarARCommand_Cache.DisposeOf;
+  FLaporanNeracaSaldoCommand.DisposeOf;
+  FLaporanNeracaSaldoCommand_Cache.DisposeOf;
   FRetriveSettingAppCommand.DisposeOf;
   FRetriveSettingAppCommand_Cache.DisposeOf;
   inherited;

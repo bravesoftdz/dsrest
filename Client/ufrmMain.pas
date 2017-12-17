@@ -155,6 +155,10 @@ type
     dxbrbtnGenerateJurnal: TdxBarButton;
     actGenerateJurnal: TAction;
     dxbrlrgbtnGenerateJurnal: TdxBarLargeButton;
+    dxbrmngrAMSBar2: TdxBar;
+    dxBarButton1: TdxBarButton;
+    dxbrbtnNeracaSaldo: TdxBarButton;
+    actLapNeracaSaldo: TAction;
     procedure actAlatGantiCabangExecute(Sender: TObject);
     procedure actApplicationExitExecute(Sender: TObject);
     procedure actClosingInventoryExecute(Sender: TObject);
@@ -171,6 +175,7 @@ type
     procedure actPenerimaanBarangExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure actLapMutasiBarangExecute(Sender: TObject);
+    procedure actLapNeracaSaldoExecute(Sender: TObject);
     procedure actLapPenerimaanBarangExecute(Sender: TObject);
     procedure actLapStockSekarangExecute(Sender: TObject);
     procedure actMasterAccountExecute(Sender: TObject);
@@ -205,9 +210,10 @@ var
 implementation
 uses
   ufrmSupplier, ufrmKoneksi,uAppUtils, ufrmBarang, ufrmPenerimaanBarang,
-  ClientClassesUnit2, ClientModule, ufrmPilihCabang, ufrmLapMutasiBarangPerTransaksi,
+  ClientClassesUnit, ClientModule, ufrmPilihCabang, ufrmLapMutasiBarangPerTransaksi,
   ufrmReturSupplier, udbutils, ufrmClosingInventory, ufrmLapStockSekarang,
-  ufrmGudang, ufrmAccount, uReport, ufrmTACTerima, ufrmSettlementARAP, uUser;
+  ufrmGudang, ufrmAccount, uReport, ufrmTACTerima, ufrmSettlementARAP,
+  uUser, ufrmLaporanNeracaSaldo;
 
 {$R *.dfm}
 
@@ -284,6 +290,11 @@ end;
 procedure TfrmMain.actLapMutasiBarangExecute(Sender: TObject);
 begin
   frmLapMutasiBarangPerTransaksi := TfrmLapMutasiBarangPerTransaksi.Create(Self);
+end;
+
+procedure TfrmMain.actLapNeracaSaldoExecute(Sender: TObject);
+begin
+  frmLaporanNeracaSaldo := TfrmLaporanNeracaSaldo.Create(Self);
 end;
 
 procedure TfrmMain.actLapPenerimaanBarangExecute(Sender: TObject);

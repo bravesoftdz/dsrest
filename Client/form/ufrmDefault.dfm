@@ -46,6 +46,10 @@ object frmDefault: TfrmDefault
     object cxTSOverview: TcxTabSheet
       Caption = 'Overview'
       ImageIndex = 0
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object splTransaksi: TSplitter
         Left = 0
         Top = 0
@@ -166,6 +170,10 @@ object frmDefault: TfrmDefault
     object cxTSInputData: TcxTabSheet
       Caption = 'Input/Update/Delete'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
     end
   end
   object pnlButton: TPanel
@@ -335,7 +343,7 @@ object frmDefault: TfrmDefault
     Left = 216
     Top = 184
     Bitmap = {
-      494C010107000800EC0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800F00018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

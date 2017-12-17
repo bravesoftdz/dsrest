@@ -6,7 +6,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ufrmDefault, cxGraphics, cxControls, cxLookAndFeels,
   cxLookAndFeelPainters, cxStyles, cxClasses, ActnList, dxBar, ExtCtrls,
-  dxStatusBar, cxContainer, cxEdit, cxTextEdit, StdCtrls,  ClientClassesUnit2, ClientModule,
+  dxStatusBar, cxContainer, cxEdit, cxTextEdit, StdCtrls,  ClientClassesUnit, ClientModule,
   cxCustomData, cxFilter, cxData, cxDataStorage, DB, cxDBData,
   cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGridLevel,
   cxGridCustomView, cxGrid, Grids, DBGrids, DBClient, Provider,

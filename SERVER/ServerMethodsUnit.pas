@@ -73,6 +73,8 @@ type
         TCabang): TFDJSONDataSets; overload;
     function LaporanKarAR(ATglAwal , ATglAkhir : TDateTime; ACustomer : TSupplier;
         ACabang : TCabang; ANoAR : String): TFDJSONDataSets;
+    function LaporanNeracaSaldo(ATglAwal , AtglAkhir : TDateTime; AIsKonsolidasi :
+        Integer; ACabang : TCabang): TFDJSONDataSets; overload;
     function RetriveSettingApp(ACabang : TCabang): TDataset;
 
   end;
@@ -777,7 +779,7 @@ end;
 
 function TServerPenerimaanBarang.BeforeDelete(AOBject : TAppObject): Boolean;
 begin
-  Result := False;
+//  Result := False;
 
   if TPenerimaanBarang(AOBject).IsJurnalized = 1 then
     raise Exception.Create('Transaksi Sudah Dijurnal, Tidak Bisa Dihapus');
@@ -1740,6 +1742,35 @@ begin
 
   if ANoAR <> 'XXX' then
     sSQL := sSQL + ' where NO_AR = ' + QuotedStr(ANoAR);
+
+  TFDJSONDataSetsWriter.ListAdd(Result, TDBUtils.OpenQuery(sSQL));
+end;
+
+{ TLaporan }
+
+function TServerLaporan.LaporanNeracaSaldo(ATglAwal , AtglAkhir : TDateTime;
+    AIsKonsolidasi : Integer; ACabang : TCabang): TFDJSONDataSets;
+var
+  sSQL : String;
+begin
+  Result := TFDJSONDataSets.Create;
+
+  sSQL := 'select a.*' +
+          ' from vcabang a ' +
+          ' where 1 = 1';
+
+  if AIsKonsolidasi = 1 then
+    sSQL := sSQL + ' and is_ho = 1'
+  else
+    sSQL := sSQL + ' and a.id = ' + QuotedStr(ACabang.ID);
+
+  TFDJSONDataSetsWriter.ListAdd(Result, TDBUtils.OpenQuery(sSQL));
+
+  sSQL := 'select * from SP_NERACA_SALDO('  + TAppUtils.QuotDt(StartOfTheDay(ATglAwal)) + ','
+                                            + TAppUtils.QuotDt(EndOfTheDay(AtglAkhir)) + ','
+                                            + IntToStr(AIsKonsolidasi) + ','
+                                            + QuotedStr(ACabang.ID) + ')'
+                                            + ' ORDER BY kode';
 
   TFDJSONDataSetsWriter.ListAdd(Result, TDBUtils.OpenQuery(sSQL));
 end;

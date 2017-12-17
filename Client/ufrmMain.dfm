@@ -68,7 +68,6 @@ object frmMain: TfrmMain
       Index = 2
     end
     object dxrbntbAkuntansi: TdxRibbonTab
-      Active = True
       Caption = 'FA'
       Groups = <
         item
@@ -86,6 +85,7 @@ object frmMain: TfrmMain
       Index = 3
     end
     object dxrbntbLaporan: TdxRibbonTab
+      Active = True
       Caption = 'Laporan'
       Groups = <
         item
@@ -98,6 +98,9 @@ object frmMain: TfrmMain
         item
           Caption = 'Kas Masuk'
           ToolbarName = 'dxbrLapKasMasuk'
+        end
+        item
+          ToolbarName = 'dxbrmngrAMSBar2'
         end>
       Index = 4
     end
@@ -624,6 +627,30 @@ object frmMain: TfrmMain
       Visible = True
       WholeRow = False
     end
+    object dxbrmngrAMSBar2: TdxBar
+      Caption = 'Accounting'
+      CaptionButtons = <>
+      DockedLeft = 516
+      DockedTop = 0
+      FloatLeft = 1033
+      FloatTop = 8
+      FloatClientWidth = 0
+      FloatClientHeight = 0
+      ItemLinks = <
+        item
+          Visible = True
+          ItemName = 'dxBarButton1'
+        end
+        item
+          Visible = True
+          ItemName = 'dxbrbtnNeracaSaldo'
+        end>
+      OneOnRow = False
+      Row = 0
+      UseOwnFont = False
+      Visible = True
+      WholeRow = False
+    end
     object dxBarLargeButton: TdxBarLargeButton
       Action = actMasterBarang
       Category = 0
@@ -830,6 +857,16 @@ object frmMain: TfrmMain
       Action = actGenerateJurnal
       Category = 0
       LargeImageIndex = 5
+    end
+    object dxBarButton1: TdxBarButton
+      Caption = 'Saldo Kas & Bank'
+      Category = 0
+      Hint = 'Saldo Kas  Bank'
+      Visible = ivAlways
+    end
+    object dxbrbtnNeracaSaldo: TdxBarButton
+      Action = actLapNeracaSaldo
+      Category = 0
     end
     object dxbrlrgbtnExit: TdxBarLargeButton
       Action = actApplicationExit
@@ -1045,6 +1082,11 @@ object frmMain: TfrmMain
       Caption = 'Generate Jurnal'
       OnExecute = actGenerateJurnalExecute
     end
+    object actLapNeracaSaldo: TAction
+      Category = 'Laporan'
+      Caption = 'Neraca Saldo'
+      OnExecute = actLapNeracaSaldoExecute
+    end
   end
   object ImgListMainLarge: TImageList
     ColorDepth = cd32Bit
@@ -1053,7 +1095,7 @@ object frmMain: TfrmMain
     Left = 688
     Top = 128
     Bitmap = {
-      494C010116001800900120002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C0101160018009C0120002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000080000000C000000001002000000000000080
       0100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

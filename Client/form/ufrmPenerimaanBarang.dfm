@@ -105,6 +105,10 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
           TabOrder = 0
           object tsHeader: TTabSheet
             Caption = 'Header Penerimaan'
+            ExplicitLeft = 0
+            ExplicitTop = 0
+            ExplicitWidth = 0
+            ExplicitHeight = 0
             object lblNoBukti: TLabel
               Left = 17
               Top = 8
@@ -239,6 +243,10 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
           TabOrder = 1
           object tsDetailPenerimaan: TTabSheet
             Caption = 'Detail Penerimaan'
+            ExplicitLeft = 0
+            ExplicitTop = 0
+            ExplicitWidth = 0
+            ExplicitHeight = 0
             object cxGridDBPenerimaanBarang: TcxGrid
               Left = 0
               Top = 0
@@ -543,7 +551,7 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010105000800CC0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010105000800D00018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
