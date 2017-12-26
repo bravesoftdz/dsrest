@@ -110,6 +110,7 @@ type
   {$TYPEINFO OFF}
   private
     FBarang: TBarang;
+    FBarcode: string;
     FHargaJual: Double;
     FHargaJualBengkel: Double;
     FHargaJualGrosir: Double;
@@ -123,6 +124,7 @@ type
     procedure SetHeaderProperty(AHeaderProperty : TAppObject); override;
   published
     property Barang: TBarang read FBarang write FBarang;
+    property Barcode: string read FBarcode write FBarcode;
     property HargaJual: Double read FHargaJual write FHargaJual;
     property HargaJualBengkel: Double read FHargaJualBengkel write
         FHargaJualBengkel;

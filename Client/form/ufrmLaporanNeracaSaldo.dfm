@@ -20,12 +20,6 @@ inherited frmLaporanNeracaSaldo: TfrmLaporanNeracaSaldo
         end
       end
     end
-    inherited cxTSInputData: TcxTabSheet
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
-    end
   end
   inherited ActionListForm: TActionList
     inherited ActionRefresh: TAction
@@ -34,7 +28,7 @@ inherited frmLaporanNeracaSaldo: TfrmLaporanNeracaSaldo
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010107000800F80018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800FC0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

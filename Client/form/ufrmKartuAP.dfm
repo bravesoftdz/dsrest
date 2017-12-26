@@ -1,5 +1,7 @@
 inherited frmKartuAP: TfrmKartuAP
   Caption = 'Kartu AP'
+  ExplicitLeft = -235
+  ExplicitTop = -161
   PixelsPerInch = 96
   TextHeight = 13
   inherited cxPCData: TcxPageControl
@@ -100,7 +102,7 @@ inherited frmKartuAP: TfrmKartuAP
           TabOrder = 2
           object lblTotal: TLabel
             AlignWithMargins = True
-            Left = 735
+            Left = 652
             Top = 4
             Width = 83
             Height = 35
@@ -116,7 +118,7 @@ inherited frmKartuAP: TfrmKartuAP
           end
           object edtOTAL: TcxCurrencyEdit
             AlignWithMargins = True
-            Left = 824
+            Left = 741
             Top = 4
             Align = alRight
             EditValue = 90.000000000000000000
@@ -131,7 +133,7 @@ inherited frmKartuAP: TfrmKartuAP
             Style.Font.Style = []
             Style.IsFontAssigned = True
             TabOrder = 0
-            Width = 162
+            Width = 245
           end
         end
       end
@@ -144,7 +146,7 @@ inherited frmKartuAP: TfrmKartuAP
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010107000800000118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800040118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

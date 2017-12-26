@@ -24,6 +24,7 @@ type
     { Private declarations }
   protected
     function getDefaultHarga: string; override;
+    function JenisPembayaran: string; override;
     function JenisPenjualan: string; override;
     procedure SetInfix; override;
   public
@@ -71,6 +72,11 @@ end;
 function TfrmPenjualanPOS.getDefaultHarga: string;
 begin
   Result := 'umum';
+end;
+
+function TfrmPenjualanPOS.JenisPembayaran: string;
+begin
+  Result := 'CASH';
 end;
 
 function TfrmPenjualanPOS.JenisPenjualan: string;

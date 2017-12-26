@@ -11,6 +11,7 @@ type
     FCabang: TCabang;
     FGudangPenjualan: tgudang;
     FGudangTransit: tgudang;
+    FMaxBelanjaSantri: Double;
     procedure SetCabang(const Value: TCabang);
     procedure SetGudangPenjualan(const Value: tgudang);
     procedure SetGudangTransit(const Value: tgudang);
@@ -19,6 +20,8 @@ type
     property GudangPenjualan: tgudang read FGudangPenjualan write
         SetGudangPenjualan;
     property GudangTransit: tgudang read FGudangTransit write SetGudangTransit;
+    property MaxBelanjaSantri: Double read FMaxBelanjaSantri write
+        FMaxBelanjaSantri;
   end;
 
 implementation

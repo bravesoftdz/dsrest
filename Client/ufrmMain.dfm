@@ -404,6 +404,10 @@ object frmMain: TfrmMain
         item
           Visible = True
           ItemName = 'dxbrlrgbtnReturSupplier'
+        end
+        item
+          Visible = True
+          ItemName = 'dxbrlrgbtnLapPenjualan'
         end>
       OneOnRow = False
       Row = 0
@@ -502,7 +506,7 @@ object frmMain: TfrmMain
     object dxbrmngrAMSBarFA: TdxBar
       Caption = 'FA'
       CaptionButtons = <>
-      DockedLeft = 0
+      DockedLeft = 347
       DockedTop = 0
       FloatLeft = 900
       FloatTop = 8
@@ -582,7 +586,7 @@ object frmMain: TfrmMain
     object dxbrLapKasKeluar: TdxBar
       Caption = 'Kas Keluar'
       CaptionButtons = <>
-      DockedLeft = 310
+      DockedLeft = 378
       DockedTop = 0
       FloatLeft = 576
       FloatTop = 247
@@ -606,7 +610,7 @@ object frmMain: TfrmMain
     object dxbrLapKasMasuk: TdxBar
       Caption = 'Kas Masuk'
       CaptionButtons = <>
-      DockedLeft = 413
+      DockedLeft = 481
       DockedTop = 0
       FloatLeft = 1033
       FloatTop = 8
@@ -630,7 +634,7 @@ object frmMain: TfrmMain
     object dxbrmngrAMSBar2: TdxBar
       Caption = 'Accounting'
       CaptionButtons = <>
-      DockedLeft = 516
+      DockedLeft = 584
       DockedTop = 0
       FloatLeft = 1033
       FloatTop = 8
@@ -639,7 +643,7 @@ object frmMain: TfrmMain
       ItemLinks = <
         item
           Visible = True
-          ItemName = 'dxBarButton1'
+          ItemName = 'dxbrbtnBukuBesar'
         end
         item
           Visible = True
@@ -858,15 +862,18 @@ object frmMain: TfrmMain
       Category = 0
       LargeImageIndex = 5
     end
-    object dxBarButton1: TdxBarButton
-      Caption = 'Saldo Kas & Bank'
+    object dxbrbtnBukuBesar: TdxBarButton
+      Action = actLapBukuBesar
       Category = 0
-      Hint = 'Saldo Kas  Bank'
-      Visible = ivAlways
     end
     object dxbrbtnNeracaSaldo: TdxBarButton
       Action = actLapNeracaSaldo
       Category = 0
+    end
+    object dxbrlrgbtnLapPenjualan: TdxBarLargeButton
+      Action = actLapPenjualan
+      Category = 0
+      LargeImageIndex = 12
     end
     object dxbrlrgbtnExit: TdxBarLargeButton
       Action = actApplicationExit
@@ -979,7 +986,7 @@ object frmMain: TfrmMain
     end
     object actPenjualanSales: TAction
       Category = 'Penjualan'
-      Caption = 'Penjualan Salesman'
+      Caption = 'Penjualan Santri'
       OnExecute = actPenjualanSalesExecute
     end
     object actPenjualanPOS: TAction
@@ -1087,6 +1094,16 @@ object frmMain: TfrmMain
       Caption = 'Neraca Saldo'
       OnExecute = actLapNeracaSaldoExecute
     end
+    object actLapBukuBesar: TAction
+      Category = 'Laporan'
+      Caption = 'Buku Besar'
+      OnExecute = actLapBukuBesarExecute
+    end
+    object actLapPenjualan: TAction
+      Category = 'Laporan'
+      Caption = 'Penjualan'
+      OnExecute = actLapPenjualanExecute
+    end
   end
   object ImgListMainLarge: TImageList
     ColorDepth = cd32Bit
@@ -1095,7 +1112,7 @@ object frmMain: TfrmMain
     Left = 688
     Top = 128
     Bitmap = {
-      494C0101160018009C0120002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010116001800A40120002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000080000000C000000001002000000000000080
       0100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

@@ -73,7 +73,9 @@ uses
   uUser in '..\model\uUser.pas',
   ufrmGenerateJurnal in 'form\ufrmGenerateJurnal.pas' {frmGenerateJurnal},
   ufrmLaporanNeracaSaldo in 'form\ufrmLaporanNeracaSaldo.pas' {frmLaporanNeracaSaldo},
-  ClientClassesUnit in 'ClientClassesUnit.pas';
+  ClientClassesUnit in 'ClientClassesUnit.pas',
+  ufrmBukuBesar in 'form\ufrmBukuBesar.pas' {frmBukuBesar},
+  ufrmLaporanPenjualan in 'form\ufrmLaporanPenjualan.pas' {frmLaporanPenjualan};
 
 {$R *.res}
 

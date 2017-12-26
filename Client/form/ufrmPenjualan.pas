@@ -65,6 +65,11 @@ type
     lblFee: TLabel;
     cbbFee: TcxComboBox;
     cxgrdclmnGridTablePenjualanColumnJenisHarga: TcxGridColumn;
+    pnlPLU: TPanel;
+    lblPLU: TLabel;
+    edPLUNama: TcxTextEdit;
+    edPLU: TcxTextEdit;
+    edKodePembeli: TcxTextEdit;
     procedure FormCreate(Sender: TObject);
     procedure ActionBaruExecute(Sender: TObject);
     procedure ActionHapusExecute(Sender: TObject);
@@ -95,9 +100,14 @@ type
     procedure edTempoPropertiesChange(Sender: TObject);
     procedure edTglBuktiPropertiesChange(Sender: TObject);
     procedure cbbJenisPembayaranPropertiesChange(Sender: TObject);
+    procedure edKodePembeliKeyDown(Sender: TObject; var Key: Word; Shift:
+        TShiftState);
+    procedure edPLUKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
+    fCDSNama: tclientDataSet;
     FCDSPembeli: TClientDataset;
     FCDSSalesman: TClientDataset;
+    fCDSSKU: tclientDataSet;
     FInfix: string;
     FPenjualan: TPenjualan;
     function GetPenjualan: TPenjualan;
@@ -106,11 +116,13 @@ type
     procedure InisialisasiCBBPembeli;
     procedure InisialisasiCBBSKU;
     procedure InisialisasiCBBUOM;
+    function IsBisaSimpan: Boolean;
     function IsPenjualanItemValid: Boolean;
     { Private declarations }
   protected
     function getDefaultHarga: string; virtual;
     function JenisPenjualan: string; virtual;
+    function JenisPembayaran: string; virtual;
     procedure SetHarga(AJenisHarga : String);
     procedure SetInfix; virtual;
     property CDSPembeli: TClientDataset read FCDSPembeli write FCDSPembeli;
@@ -169,6 +181,7 @@ begin
 
   cxGridTablePenjualan.SetValue(iBaris, cxgrdclmnGridTablePenjualanColumnSKU.Index,lDSt.FieldByName('barang').AsString);
   cxGridTablePenjualan.SetValue(iBaris, cxgrdclmnGridTablePenjualanColumnSatuan.Index,lDSt.FieldByName('uom').AsString);
+
 
   cxGridTablePenjualan.SetValue(iBaris, cxgrdclmnGridTablePenjualanColumnHarga.Index,lDSt.FieldByName(getDefaultHarga).AsString);
   cxGridTablePenjualan.SetValue(iBaris, cxgrdclmnGridTablePenjualanColumnJenisHarga.Index,getDefaultHarga);
@@ -256,6 +269,20 @@ begin
   ActionBaruExecute(Sender);
 
   IsLangsungPrint := True;
+  cbbJenisPembayaran.ItemIndex := cbbJenisPembayaran.Properties.Items.IndexOf(JenisPembayaran);
+  cbbJenisPembayaran.Enabled   := False;
+
+  cbbFee.ItemIndex := 0;
+
+  CDSSalesman.Filter    := ' nama = ' + QuotedStr('Point Of Sales');
+  CDSSalesman.Filtered  := True;
+  try
+    cbbSalesman.EditValue := CDSSalesman.FieldByName('ID').AsString;
+    cbbSalesman.Enabled   := False;
+  finally
+    CDSSalesman.Filtered  := False;
+  end;
+
 end;
 
 procedure TfrmPenjualan.ActionBaruExecute(Sender: TObject);
@@ -365,6 +392,12 @@ begin
   begin
     lDibayar         := TfrmPembayaranPOS.Bayar(Penjualan.Total);
     IsBerhasilSimpan := ClientModule.ClientDataModule.ServerPenjualanClient.SaveToDBDibayar(Penjualan,lDibayar);
+  end else if cbbJenisPembayaran.Text = 'DEPOSIT' then
+  begin
+    if not IsBisaSimpan then
+      Exit;
+
+    IsBerhasilSimpan := ClientModule.ClientDataModule.ServerPenjualanClient.Save(Penjualan);
   end else
     IsBerhasilSimpan := ClientModule.ClientDataModule.ServerPenjualanClient.Save(Penjualan);
 
@@ -425,6 +458,63 @@ begin
   inherited;
   LoadData(cxGridDBTableOverview.DS.FieldByName('ID').AsString);
   cxPCData.ActivePageIndex := 1;
+end;
+
+procedure TfrmPenjualan.edKodePembeliKeyDown(Sender: TObject; var Key: Word;
+    Shift: TShiftState);
+begin
+  inherited;
+  if Key = VK_RETURN then
+  begin
+    FCDSPembeli.First;
+    while not FCDSPembeli.Eof do
+    begin
+      if FCDSPembeli.FieldByName('kode').AsString = edKodePembeli.Text then
+      begin
+        cbbPembeli.EditValue := FCDSPembeli.FieldByName('ID').AsString;
+        edPLU.SetFocus;
+      end;
+
+      FCDSPembeli.Next;
+    end;
+  end;
+
+end;
+
+procedure TfrmPenjualan.edPLUKeyDown(Sender: TObject; var Key: Word; Shift:
+    TShiftState);
+var
+  iBaris: Integer;
+begin
+  inherited;
+  if Key = VK_RETURN then
+  begin
+    fCDSSKU.First;
+    while not fCDSSKU.Eof do
+    begin
+      if fCDSSKU.FieldByName('SKU').AsString = edPLU.Text then
+      begin
+        cxGridTablePenjualan.DataController.RecordCount := cxGridTablePenjualan.DataController.RecordCount + 1;
+
+        iBaris := cxGridTablePenjualan.DataController.RecordCount - 1;
+        cxGridTablePenjualan.SetValue(iBaris, cxgrdclmnGridTablePenjualanColumnNama.Index,fCDSSKU.FieldByName('barang').AsString);
+        cxGridTablePenjualan.SetValue(iBaris, cxgrdclmnGridTablePenjualanColumnSKU.Index,fCDSSKU.FieldByName('barang').AsString);
+        cxGridTablePenjualan.SetValue(iBaris, cxgrdclmnGridTablePenjualanColumnSatuan.Index,fCDSSKU.FieldByName('uom').AsString);
+
+
+        cxGridTablePenjualan.SetValue(iBaris, cxgrdclmnGridTablePenjualanColumnHarga.Index,fCDSSKU.FieldByName(getDefaultHarga).AsString);
+        cxGridTablePenjualan.SetValue(iBaris, cxgrdclmnGridTablePenjualanColumnJenisHarga.Index,getDefaultHarga);
+        cxGridTablePenjualan.SetValue(iBaris, cxgrdclmnGridTablePenjualanColumnKonversi.Index,fCDSSKU.FieldByName('konversi').AsFloat);
+
+        cxGridTablePenjualan.SetValue(iBaris, cxgrdclmnGridTablePenjualanColumnQty.Index,1);
+        edPLU.Text := '';
+
+        Exit;
+      end;
+
+      fCDSSKU.Next;
+    end;
+  end;
 end;
 
 function TfrmPenjualan.getDefaultHarga: string;
@@ -518,30 +608,28 @@ end;
 
 procedure TfrmPenjualan.InisialisasiCBBSKU;
 var
-  lCDSSKU: TClientDataSet;
-  lCDSNama: TClientDataSet;
   sSQL: string;
 begin
 //  sSQL := 'select sku, Nama,ID from TBarang';
   sSQL := 'select b.nama, b.sku, c.uom as satuan, a.hargajual as Umum,' +
           ' a.hargajualbengkel as bengkel,' +
           ' a.hargajualkeliling as keliling, a.hargajualgrosir as grosir, ' +
-          ' a.konversi, a.id, a.barang, a.uom' +
+          ' a.konversi, a.id, a.barang, a.uom, a.barcode' +
           ' from tbarangsatuanitem a' +
           ' inner join tbarang b on a.barang = b.id ' +
           ' inner join tuom c on a.uom = c.id ' +
           ' order by b.nama';
 
-  lCDSSKU := TDBUtils.OpenDataset(sSQL);
+  fCDSSKU := TDBUtils.OpenDataset(sSQL);
 
-  TcxExtLookupComboBoxProperties(cxGridTablePenjualan.Columns[cxgrdclmnGridTablePenjualanColumnNama.Index].Properties).LoadFromCDS(lCDSSKU,'ID','Nama',['ID'],Self);
+  TcxExtLookupComboBoxProperties(cxGridTablePenjualan.Columns[cxgrdclmnGridTablePenjualanColumnNama.Index].Properties).LoadFromCDS(FCDSSKU,'ID','Nama',['ID'],Self);
   TcxExtLookupComboBoxProperties(cxGridTablePenjualan.Columns[cxgrdclmnGridTablePenjualanColumnNama.Index].Properties).SetMultiPurposeLookup();
   TcxExtLookupComboBoxProperties(cxGridTablePenjualan.Columns[cxgrdclmnGridTablePenjualanColumnNama.Index].Properties).cxDBTableGrid.SetVisibleColumns(['barang','uom','id','KONVERSI'], FALSE);
   TcxExtLookupComboBoxProperties(cxGridTablePenjualan.Columns[cxgrdclmnGridTablePenjualanColumnNama.Index].Properties).cxDBTableGrid.ApplyBestFit();
 
   sSQL := 'select Nama,sku, ID from TBarang';
-  lCDSNama := TDBUtils.OpenDataset(sSQL);
-  TcxExtLookupComboBoxProperties(cxGridTablePenjualan.Columns[cxgrdclmnGridTablePenjualanColumnSKU.Index].Properties).LoadFromCDS(lCDSNama,'ID','SKU',['ID'],Self);
+  fCDSNama := TDBUtils.OpenDataset(sSQL);
+  TcxExtLookupComboBoxProperties(cxGridTablePenjualan.Columns[cxgrdclmnGridTablePenjualanColumnSKU.Index].Properties).LoadFromCDS(FCDSNama,'ID','SKU',['ID'],Self);
   TcxExtLookupComboBoxProperties(cxGridTablePenjualan.Columns[cxgrdclmnGridTablePenjualanColumnSKU.Index].Properties).SetMultiPurposeLookup;
 
 end;
@@ -557,6 +645,35 @@ begin
   TcxExtLookupComboBoxProperties(cxGridTablePenjualan.Columns[cxgrdclmnGridTablePenjualanColumnSatuan.Index].Properties).LoadFromCDS(lCDSUOM,'ID','UOM',['ID'],Self);
   TcxExtLookupComboBoxProperties(cxGridTablePenjualan.Columns[cxgrdclmnGridTablePenjualanColumnSatuan.Index].Properties).SetMultiPurposeLookup;
 
+end;
+
+function TfrmPenjualan.IsBisaSimpan: Boolean;
+var
+  lBelanjaHarian: Double;
+  lDeposit: Double;
+begin
+  Result := False;
+
+  lBelanjaHarian  := ClientDataModule.ServerPenjualanClient.GetPenjualanPeriode(Penjualan.Pembeli, Penjualan.TglBukti, Penjualan.TglBukti, Penjualan.NoBukti);
+  lDeposit        := ClientDataModule.ServerPenjualanClient.GetSaldoDeposit(Penjualan.Pembeli, Penjualan.NoBukti);
+
+  if Penjualan.Total > lDeposit then
+  begin
+    TAppUtils.Warning('Penjualan Melebihi Sisa Deposit' + #13 +
+                      'Sisa Deposit Rp : ' + FormatFloat(',0.##;(,0.##)', lDeposit));
+    Exit;
+  end else if Penjualan.Total > ClientDataModule.SettingApp.MaxBelanjaSantri then
+  begin
+    TAppUtils.Warning('Penjualan Melebihi Kuota Perhari');
+    Exit;
+  end else if (Penjualan.Total + lBelanjaHarian) > ClientDataModule.SettingApp.MaxBelanjaSantri then
+  begin
+    TAppUtils.Warning('Penjualan Periode ' + TAppUtils.QuotDLong(Penjualan.TglBukti) + ' Melebihi Kuota');
+    Exit;
+  end;
+
+
+  Result := True;
 end;
 
 function TfrmPenjualan.IsPenjualanItemValid: Boolean;
@@ -600,6 +717,11 @@ end;
 function TfrmPenjualan.JenisPenjualan: string;
 begin
   Result := 'SALESMAN';
+end;
+
+function TfrmPenjualan.JenisPembayaran: string;
+begin
+  Result := 'DEPOSIT';
 end;
 
 procedure TfrmPenjualan.Keliling1Click(Sender: TObject);

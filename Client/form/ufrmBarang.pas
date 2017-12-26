@@ -53,6 +53,7 @@ type
     cxGridTableSatuanColumnHargaJualKeliling: TcxGridColumn;
     cxGridTableSatuanColumnHargaJualGrosir: TcxGridColumn;
     cxgrdlvlSatuan: TcxGridLevel;
+    cxGridTableSatuanColumnBarcode: TcxGridColumn;
     procedure FormCreate(Sender: TObject);
     procedure ActionBaruExecute(Sender: TObject);
     procedure ActionHapusExecute(Sender: TObject);

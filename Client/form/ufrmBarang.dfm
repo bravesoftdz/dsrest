@@ -15,6 +15,7 @@ inherited frmBarang: TfrmBarang
   inherited cxPCData: TcxPageControl
     Width = 919
     Height = 341
+    Properties.ActivePage = cxTSInputData
     ExplicitWidth = 919
     ExplicitHeight = 341
     ClientRectBottom = 337
@@ -149,7 +150,7 @@ inherited frmBarang: TfrmBarang
         Height = 313
         Align = alClient
         TabOrder = 0
-        Properties.ActivePage = cxTSHeader
+        Properties.ActivePage = cxTSSatuan
         Properties.CustomButtons.Buttons = <>
         ClientRectBottom = 309
         ClientRectLeft = 4
@@ -158,10 +159,6 @@ inherited frmBarang: TfrmBarang
         object cxTSHeader: TcxTabSheet
           Caption = 'Barang'
           ImageIndex = 0
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object lblKode: TLabel
             Left = 31
             Top = 18
@@ -247,10 +244,6 @@ inherited frmBarang: TfrmBarang
         object cxTSSatuan: TcxTabSheet
           Caption = 'Satuan'
           ImageIndex = 2
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object cxGridDBSatuan: TcxGrid
             Left = 0
             Top = 0
@@ -323,6 +316,12 @@ inherited frmBarang: TfrmBarang
                 Properties.DisplayFormat = ',0.00;(,0.00)'
                 HeaderAlignmentHorz = taCenter
                 Width = 113
+              end
+              object cxGridTableSatuanColumnBarcode: TcxGridColumn
+                AlternateCaption = 'Barcode'
+                Caption = 'Barcode'
+                HeaderAlignmentHorz = taCenter
+                Width = 90
               end
             end
             object cxgrdlvlSatuan: TcxGridLevel
@@ -429,7 +428,7 @@ inherited frmBarang: TfrmBarang
     Left = 232
     Top = 200
     Bitmap = {
-      494C010106000800BC0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010106000800C00018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
