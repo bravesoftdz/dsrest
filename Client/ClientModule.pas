@@ -13,6 +13,7 @@ type
     cxstylGridHeader: TcxStyle;
     cxstylGridOdd: TcxStyle;
     cxstylGridEven: TcxStyle;
+    cxstylGridFooter: TcxStyle;
     procedure DataModuleCreate(Sender: TObject);
   private
     FCabang: tcabang;

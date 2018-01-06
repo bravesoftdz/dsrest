@@ -75,16 +75,35 @@ uses
 procedure TfrmSupplier.FormCreate(Sender: TObject);
 begin
   inherited;
-  ActionBaruExecute(Sender);
-
   InisialisasiCBBAccount;
+
+  ActionBaruExecute(Sender);
 end;
 
 procedure TfrmSupplier.ActionBaruExecute(Sender: TObject);
+//var
+//  sAkunHutangSupplier: string;
+//  sAkunPiutangSupplier: string;
 begin
   inherited;
   LoadData('');
   cxPCData.ActivePageIndex := 1;
+
+  cbbAkunHutang.EditValue   := TAppUtils.BacaRegistry('AKUN_HUTANG_SUPPLIER');
+  cbbAkunPiutang.EditValue  := TAppUtils.BacaRegistry('AKUN_PIUTANG_SUPPLIER');
+
+  cdsAccount.Filtered      := False;
+  cdsAccount.Filter        := ' id = ' + QuotedStr(TAppUtils.BacaRegistry('AKUN_HUTANG_SUPPLIER'));
+  cdsAccount.Filtered      := True;
+  edAkunHutang.Text        := cdsAccount.FieldByName('nama').AsString;
+
+  cdsAccount.Filtered      := False;
+  cdsAccount.Filter        := ' id = ' + QuotedStr(TAppUtils.BacaRegistry('AKUN_PIUTANG_SUPPLIER'));
+  cdsAccount.Filtered      := True;
+  edAkunPiutang.Text       := cdsAccount.FieldByName('nama').AsString;
+
+  cdsAccount.Filtered      := False;
+
 end;
 
 procedure TfrmSupplier.ActionHapusExecute(Sender: TObject);
@@ -134,8 +153,8 @@ begin
   with TServerSupplierClient.Create(ClientDataModule.DSRestConnection, False) do
   begin
     try
-      Supplier.Kode       := edKode.Text;
-      Supplier.Nama       := edNama.Text;
+      Supplier.Kode       := UpperCase(edKode.Text);
+      Supplier.Nama       := UpperCase(edNama.Text);
       Supplier.Alamat     := memAlamt.Text;
       Supplier.IsSupplier := TAppUtils.BoolToInt(chkSupplier.Checked);
       Supplier.IsPembeli  := TAppUtils.BoolToInt(chkPembeli.Checked);
@@ -145,6 +164,9 @@ begin
 
       if Save(Supplier) then
       begin
+        TAppUtils.TulisRegistry('AKUN_HUTANG_SUPPLIER',cbbAkunHutang.EditValue);
+        TAppUtils.TulisRegistry('AKUN_PIUTANG_SUPPLIER',cbbAkunPiutang.EditValue);
+
         ActionBaruExecute(Sender);
         ActionRefreshExecute(Sender);
       end;

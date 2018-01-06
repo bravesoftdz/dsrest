@@ -125,6 +125,7 @@ end;
 
 procedure TfrmDefault.ActionBaruExecute(Sender: TObject);
 begin
+  //ClearByTag([0,1]);
   dtpAwal.DateTime := StartOfTheMonth(Now);
   dtpAkhir.DateTime:= EndOfTheDay(Now);
 

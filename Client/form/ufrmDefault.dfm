@@ -46,10 +46,6 @@ object frmDefault: TfrmDefault
     object cxTSOverview: TcxTabSheet
       Caption = 'Overview'
       ImageIndex = 0
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object splTransaksi: TSplitter
         Left = 0
         Top = 0
@@ -170,10 +166,6 @@ object frmDefault: TfrmDefault
     object cxTSInputData: TcxTabSheet
       Caption = 'Input/Update/Delete'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
     end
   end
   object pnlButton: TPanel
@@ -199,7 +191,6 @@ object frmDefault: TfrmDefault
       Height = 31
       Align = alLeft
       Action = actCetak
-      Caption = 'Cetak [Ctrl+P]'
       TabOrder = 1
     end
     object btnHapus: TcxButton
@@ -218,7 +209,6 @@ object frmDefault: TfrmDefault
       Height = 31
       Align = alLeft
       Action = actExport
-      Caption = 'Export [Ctrl+E]'
       TabOrder = 3
     end
     object btnSave: TcxButton
@@ -228,7 +218,6 @@ object frmDefault: TfrmDefault
       Height = 31
       Align = alRight
       Action = ActionSimpan
-      Caption = 'Simpan [Ctrl+S]'
       TabOrder = 4
     end
     object chkKonsolidasi1: TcxCheckBox
@@ -244,26 +233,26 @@ object frmDefault: TfrmDefault
     Left = 640
     Top = 8
     object ActionBaru: TAction
-      Caption = 'Baru [Ctrl+T]'
+      Caption = 'Baru [F3]'
       ImageIndex = 0
-      ShortCut = 16468
+      ShortCut = 114
       OnExecute = ActionBaruExecute
     end
     object ActionSimpan: TAction
-      Caption = 'Simpan'
+      Caption = 'Simpan [F5]'
       ImageIndex = 1
-      ShortCut = 16467
+      ShortCut = 116
     end
     object actCetak: TAction
-      Caption = 'Cetak'
+      Caption = 'Cetak [F1]'
       ImageIndex = 3
-      ShortCut = 16464
+      ShortCut = 112
       OnExecute = actCetakExecute
     end
     object ActionHapus: TAction
-      Caption = 'Hapus [Ctrl+Del]'
+      Caption = 'Hapus [F4]'
       ImageIndex = 2
-      ShortCut = 16430
+      ShortCut = 115
     end
     object ActionRefresh: TAction
       Caption = 'Refresh'
@@ -271,9 +260,9 @@ object frmDefault: TfrmDefault
       ShortCut = 116
     end
     object actExport: TAction
-      Caption = 'Export Excel'
+      Caption = 'Export [F2]'
       ImageIndex = 5
-      ShortCut = 16453
+      ShortCut = 113
       OnExecute = actExportExecute
     end
     object actNextTransaction: TAction
@@ -343,7 +332,7 @@ object frmDefault: TfrmDefault
     Left = 216
     Top = 184
     Bitmap = {
-      494C010107000800F00018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800F80018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
