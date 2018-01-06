@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<TfrxReport Version="5.3.16" DotMatrixReport="True" IniFile="\Software\Fast Reports" PreviewOptions.Buttons="4095" PreviewOptions.Modal="False" PreviewOptions.Zoom="1" PrintOptions.Printer="Default" PrintOptions.PrintOnSheet="0" ReportOptions.CreateDate="42851.6618599421" ReportOptions.Description.Text="" ReportOptions.LastChange="43100.3445026736" ScriptLanguage="PascalScript" ScriptText.Text="VAR&#13;&#10;  dTotal : Double;&#13;&#10;  Nomor : Integer;                                      &#13;&#10;procedure GroupHeader1OnAfterPrint(Sender: TfrxComponent);&#13;&#10;begin&#13;&#10;  dTotal := 0;&#13;&#10;  Nomor := 0;                            &#13;&#10;&#13;&#10;end;&#13;&#10;&#13;&#10;procedure MasterData1OnBeforePrint(Sender: TfrxComponent);&#13;&#10;begin&#13;&#10;  //dTotal := dTotal + &#60;IBQ2.&#34;MASUK&#34;&#62; - &#60;IBQ2.&#34;KELUAR&#34;&#62;;                                                        &#13;&#10;end;&#13;&#10;&#13;&#10;procedure GroupFooter2OnBeforePrint(Sender: TfrxComponent);&#13;&#10;begin&#13;&#10;  Nomor := Nomor + 1;                          &#13;&#10;end;&#13;&#10;&#13;&#10;procedure Page1OnBeforePrint(Sender: TfrxComponent);&#13;&#10;begin&#13;&#10;  //Page1.visible := &#60;isdetail&#62; = 1;  &#13;&#10;  //Page2.visible := &#60;isdetail&#62; = 1;                                   &#13;&#10;end;&#13;&#10;&#13;&#10;begin&#13;&#10;&#13;&#10;end.">
+  <Datasets>
+    <item DataSet="IBQ1" DataSetName="IBQ1"/>
+    <item DataSet="IBQ2" DataSetName="IBQ2"/>
+  </Datasets>
+  <TfrxDataPage Name="Data" Height="1000" Left="0" Top="0" Width="1000"/>
+  <TfrxDMPPage Name="Page1" PaperWidth="253.99983596" PaperHeight="179.91655047" PaperSize="256" LeftMargin="2.53999835958439" RightMargin="2.53999835958439" TopMargin="4.49791376176403" BottomMargin="4.49791376176403" ColumnWidth="0" ColumnPositions.Text="" HGuides.Text="" VGuides.Text="" OnBeforePrint="Page1OnBeforePrint" FontStyle="0">
+    <TfrxMasterData Name="MasterData1" FillType="ftBrush" FillGap.Top="0" FillGap.Left="0" FillGap.Bottom="0" FillGap.Right="0" Height="17" Left="0" Top="272" Visible="False" Width="940.800000005899" OnBeforePrint="MasterData1OnBeforePrint" ColumnWidth="0" ColumnGap="0" DataSet="IBQ2" DataSetName="IBQ2" RowCount="0"/>
+    <TfrxGroupHeader Name="GroupHeader1" FillType="ftBrush" FillGap.Top="0" FillGap.Left="0" FillGap.Bottom="0" FillGap.Right="0" Height="204" Left="0" Top="17" Width="940.800000005899" OnAfterPrint="GroupHeader1OnAfterPrint" Condition="IBQ1.&#34;cabang&#34;" StartNewPage="True">
+      <TfrxDMPMemoView Name="IBQ1cabang" Left="0" Top="0" Width="960" Height="17" DataSet="IBQ1" DataSetName="IBQ1" HAlign="haCenter" TruncOutboundText="False" Text="MOTOROLI - [IBQ1.&#34;cabang&#34;]"/>
+      <TfrxDMPMemoView Name="DMPMemo2" Left="48" Top="170" Width="211.2" Height="17" TruncOutboundText="False" Text="NAMA"/>
+      <TfrxDMPMemoView Name="DMPMemo6" Left="0" Top="187" Width="1200" Height="17" TruncOutboundText="False" Text="----------------------------------------------------------------------------------------------------------------------------------------"/>
+      <TfrxDMPMemoView Name="DMPMemo7" Left="0" Top="153" Width="1200" Height="17" TruncOutboundText="False" Text="----------------------------------------------------------------------------------------------------------------------------------------"/>
+      <TfrxDMPMemoView Name="IBQ1CABANGALAMAT" Left="0" Top="17" Width="960" Height="17" DataField="CABANGALAMAT" DataSet="IBQ1" DataSetName="IBQ1" HAlign="haCenter" TruncOutboundText="False" Text="[IBQ1.&#34;CABANGALAMAT&#34;]"/>
+      <TfrxDMPMemoView Name="IBQ1CABANGFAX" Left="0" Top="34" Width="960" Height="17" DataSet="IBQ1" DataSetName="IBQ1" HAlign="haCenter" TruncOutboundText="False" Text="TELP : [IBQ1.&#34;cabangTELP&#34;] FAX : [IBQ1.&#34;CABANGFAX&#34;]"/>
+      <TfrxDMPMemoView Name="DMPMemo36" Left="0" Top="51" Width="960" Height="17" TruncOutboundText="False" Text="----------------------------------------------------------------------------------------------------------------------------------------"/>
+      <TfrxDMPMemoView Name="IBQ1tglbukti" Left="86.4" Top="136" Width="489.6" Height="17" DataSet="IBQ1" DataSetName="IBQ1" TruncOutboundText="False" Text="[P1] s.d. [P2]">
+        <Formats>
+          <item/>
+          <item/>
+        </Formats>
+      </TfrxDMPMemoView>
+      <TfrxDMPMemoView Name="DMPMemo11" Left="0" Top="136" Width="76.8" Height="17" DisplayFormat.FormatStr="dd mmm yyyy" DisplayFormat.Kind="fkDateTime" TruncOutboundText="False" Text="PERIODE"/>
+      <TfrxDMPMemoView Name="DMPMemo20" Left="76.8" Top="136" Width="9.6" Height="17" DisplayFormat.FormatStr="dd mmm yyyy" DisplayFormat.Kind="fkDateTime" HAlign="haCenter" TruncOutboundText="False" Text=":"/>
+      <TfrxDMPMemoView Name="DMPMemo13" Left="0" Top="68" Width="960" Height="34" DataSet="IBQ1" DataSetName="IBQ1" HAlign="haCenter" TruncOutboundText="False" Text="PENJUALAN BY PEMBELI&#13;&#10;( GLOBAL )"/>
+      <TfrxDMPMemoView Name="DMPMemo3" Left="268.8" Top="170" Width="134.4" Height="17" HAlign="haRight" TruncOutboundText="False" Text="PENJUALAN"/>
+      <TfrxDMPMemoView Name="DMPMemo1" Left="0" Top="170" Width="38.4" Height="17" HAlign="haCenter" TruncOutboundText="False" Text="NO"/>
+    </TfrxGroupHeader>
+    <TfrxGroupFooter Name="GroupFooter1" FillType="ftBrush" FillGap.Top="0" FillGap.Left="0" FillGap.Bottom="0" FillGap.Right="0" Height="51" Left="0" Top="340" Width="940.800000005899">
+      <TfrxDMPMemoView Name="DMPMemo28" Left="0" Top="0" Width="1200" Height="17" TruncOutboundText="False" Text="----------------------------------------------------------------------------------------------------------------------------------------"/>
+      <TfrxDMPMemoView Name="DMPMemo4" Left="48" Top="17" Width="211.2" Height="17" DataSet="IBQ2" DataSetName="IBQ2" HAlign="haRight" TruncOutboundText="False" Text="TOTAL "/>
+      <TfrxDMPMemoView Name="DMPMemo5" Left="268.8" Top="17" Width="134.4" Height="17" DataSet="IBQ2" DataSetName="IBQ2" DisplayFormat.FormatStr="%2.0n" DisplayFormat.Kind="fkNumeric" HAlign="haRight" TruncOutboundText="False" Text="[SUM(&#60;IBQ2.&#34;total&#34;&#62;,MasterData1,3)]"/>
+      <TfrxDMPMemoView Name="DMPMemo8" Left="0" Top="34" Width="1200" Height="17" TruncOutboundText="False" Text="----------------------------------------------------------------------------------------------------------------------------------------"/>
+    </TfrxGroupFooter>
+    <TfrxPageFooter Name="PageFooter1" FillType="ftBrush" FillGap.Top="0" FillGap.Left="0" FillGap.Bottom="0" FillGap.Right="0" Height="51" Left="0" Top="425" Width="940.800000005899">
+      <TfrxDMPMemoView Name="DMPMemo26" Left="0" Top="17" Width="940.8" Height="17" TruncOutboundText="False" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo27" Left="0" Top="34" Width="940.8" Height="17" TruncOutboundText="False" Text=""/>
+    </TfrxPageFooter>
+    <TfrxGroupHeader Name="GroupHeader2" FillType="ftBrush" FillGap.Top="0" FillGap.Left="0" FillGap.Bottom="0" FillGap.Right="0" Height="17" Left="0" Top="238" Visible="False" Width="940.800000005899" Condition="IBQ2.&#34;pembeli&#34;"/>
+    <TfrxGroupFooter Name="GroupFooter2" FillType="ftBrush" FillGap.Top="0" FillGap.Left="0" FillGap.Bottom="0" FillGap.Right="0" Height="17" Left="0" Top="306" Width="940.800000005899" OnBeforePrint="GroupFooter2OnBeforePrint">
+      <TfrxDMPMemoView Name="IBQ2KODE" Left="48" Top="0" Width="211.2" Height="17" DataSet="IBQ2" DataSetName="IBQ2" TruncOutboundText="False" Text="[IBQ2.&#34;pembeli&#34;]"/>
+      <TfrxDMPMemoView Name="IBQ2total" Left="268.8" Top="0" Width="134.4" Height="17" DataSet="IBQ2" DataSetName="IBQ2" DisplayFormat.FormatStr="%2.0n" DisplayFormat.Kind="fkNumeric" HAlign="haRight" TruncOutboundText="False" Text="[SUM(&#60;IBQ2.&#34;total&#34;&#62;,MasterData1,1)]"/>
+      <TfrxDMPMemoView Name="Memo1" Left="0" Top="0" Width="38.4" Height="17" DataSet="IBQ2" DataSetName="IBQ2" HAlign="haRight" TruncOutboundText="False" Text="[Nomor]"/>
+    </TfrxGroupFooter>
+  </TfrxDMPPage>
+  <TfrxDMPPage Name="Page2" PaperWidth="507.999671916879" PaperHeight="179.916550470561" PaperSize="256" LeftMargin="2.53999835958439" RightMargin="2.53999835958439" TopMargin="4.49791376176403" BottomMargin="4.49791376176403" ColumnWidth="0" ColumnPositions.Text="" HGuides.Text="" VGuides.Text="" FontStyle="0">
+    <TfrxMasterData Name="MasterData2" FillType="ftBrush" FillGap.Top="0" FillGap.Left="0" FillGap.Bottom="0" FillGap.Right="0" Height="17" Left="0" Top="289" Width="1900.8" OnBeforePrint="MasterData1OnBeforePrint" ColumnWidth="0" ColumnGap="0" DataSet="IBQ2" DataSetName="IBQ2" RowCount="0">
+      <TfrxDMPMemoView Name="IBQ2nobukti" Left="0" Top="0" Width="163.2" Height="17" DataField="nobukti" DataSet="IBQ2" DataSetName="IBQ2" HAlign="haRight" TruncOutboundText="False" Text="[IBQ2.&#34;nobukti&#34;]"/>
+      <TfrxDMPMemoView Name="IBQ2tglbukti" Left="172.8" Top="0" Width="163.2" Height="17" DataField="tglbukti" DataSet="IBQ2" DataSetName="IBQ2" DisplayFormat.FormatStr="dd/mm/yyyy" DisplayFormat.Kind="fkDateTime" HAlign="haRight" TruncOutboundText="False" Text="[IBQ2.&#34;tglbukti&#34;]"/>
+      <TfrxDMPMemoView Name="IBQ2total1" Left="1075.2" Top="0" Width="124.8" Height="17" DataField="total" DataSet="IBQ2" DataSetName="IBQ2" DisplayFormat.FormatStr="%2.2n" DisplayFormat.Kind="fkNumeric" HAlign="haRight" TruncOutboundText="False" Text="[IBQ2.&#34;total&#34;]"/>
+      <TfrxDMPMemoView Name="Memo2" Left="355.2" Top="0" Width="105.6" Height="17" DataField="sku" DataSet="IBQ2" DataSetName="IBQ2" TruncOutboundText="False" Text="[IBQ2.&#34;sku&#34;]"/>
+      <TfrxDMPMemoView Name="IBQ2nama" Left="470.4" Top="0" Width="460.8" Height="17" DataField="nama" DataSet="IBQ2" DataSetName="IBQ2" TruncOutboundText="False" Text="[IBQ2.&#34;nama&#34;]"/>
+      <TfrxDMPMemoView Name="DMPMemo10" Left="940.8" Top="0" Width="124.8" Height="17" DataSet="IBQ2" DataSetName="IBQ2" DisplayFormat.FormatStr="%2.2n" DisplayFormat.Kind="fkNumeric" HAlign="haRight" TruncOutboundText="False" Text="[IBQ2.&#34;QTY&#34;]"/>
+    </TfrxMasterData>
+    <TfrxGroupHeader Name="GroupHeader3" FillType="ftBrush" FillGap.Top="0" FillGap.Left="0" FillGap.Bottom="0" FillGap.Right="0" Height="170" Left="0" Top="17" Width="1900.8" OnAfterPrint="GroupHeader1OnAfterPrint" Condition="IBQ1.&#34;cabang&#34;" StartNewPage="True">
+      <TfrxDMPMemoView Name="DMPMemo9" Left="0" Top="0" Width="1200" Height="17" DataSet="IBQ1" DataSetName="IBQ1" HAlign="haCenter" TruncOutboundText="False" Text="MOTOROLI - [IBQ1.&#34;cabang&#34;]"/>
+      <TfrxDMPMemoView Name="DMPMemo14" Left="0" Top="153" Width="1200" Height="17" TruncOutboundText="False" Text="----------------------------------------------------------------------------------------------------------------------------------------"/>
+      <TfrxDMPMemoView Name="DMPMemo15" Left="0" Top="17" Width="1200" Height="17" DataField="CABANGALAMAT" DataSet="IBQ1" DataSetName="IBQ1" HAlign="haCenter" TruncOutboundText="False" Text="[IBQ1.&#34;CABANGALAMAT&#34;]"/>
+      <TfrxDMPMemoView Name="DMPMemo16" Left="0" Top="34" Width="1200" Height="17" DataSet="IBQ1" DataSetName="IBQ1" HAlign="haCenter" TruncOutboundText="False" Text="TELP : [IBQ1.&#34;cabangTELP&#34;] FAX : [IBQ1.&#34;CABANGFAX&#34;]"/>
+      <TfrxDMPMemoView Name="DMPMemo17" Left="0" Top="51" Width="1200" Height="17" TruncOutboundText="False" Text="----------------------------------------------------------------------------------------------------------------------------------------"/>
+      <TfrxDMPMemoView Name="DMPMemo18" Left="86.4" Top="136" Width="489.6" Height="17" DataSet="IBQ1" DataSetName="IBQ1" TruncOutboundText="False" Text="[P1] s.d. [P2]">
+        <Formats>
+          <item/>
+          <item/>
+        </Formats>
+      </TfrxDMPMemoView>
+      <TfrxDMPMemoView Name="DMPMemo19" Left="0" Top="136" Width="76.8" Height="17" DisplayFormat.FormatStr="dd mmm yyyy" DisplayFormat.Kind="fkDateTime" TruncOutboundText="False" Text="PERIODE"/>
+      <TfrxDMPMemoView Name="DMPMemo21" Left="76.8" Top="136" Width="9.6" Height="17" DisplayFormat.FormatStr="dd mmm yyyy" DisplayFormat.Kind="fkDateTime" HAlign="haCenter" TruncOutboundText="False" Text=":"/>
+      <TfrxDMPMemoView Name="DMPMemo22" Left="0" Top="68" Width="1200" Height="34" DataSet="IBQ1" DataSetName="IBQ1" HAlign="haCenter" TruncOutboundText="False" Text="PENJUALAN BY PEMBELI&#13;&#10;( RINCI )"/>
+    </TfrxGroupHeader>
+    <TfrxGroupFooter Name="GroupFooter3" FillType="ftBrush" FillGap.Top="0" FillGap.Left="0" FillGap.Bottom="0" FillGap.Right="0" Height="51" Left="0" Top="374" Width="1900.8">
+      <TfrxDMPMemoView Name="DMPMemo25" Left="0" Top="0" Width="1200" Height="17" TruncOutboundText="False" Text="----------------------------------------------------------------------------------------------------------------------------------------"/>
+      <TfrxDMPMemoView Name="DMPMemo31" Left="0" Top="34" Width="1200" Height="17" TruncOutboundText="False" Text="----------------------------------------------------------------------------------------------------------------------------------------"/>
+      <TfrxDMPMemoView Name="DMPMemo44" Left="556.8" Top="17" Width="508.8" Height="17" DataSet="IBQ2" DataSetName="IBQ2" HAlign="haRight" TruncOutboundText="False" Text="TOTAL "/>
+      <TfrxDMPMemoView Name="DMPMemo45" Left="1075.2" Top="17" Width="124.8" Height="17" DataSet="IBQ2" DataSetName="IBQ2" DisplayFormat.FormatStr="%2.2n" DisplayFormat.Kind="fkNumeric" HAlign="haRight" TruncOutboundText="False" Text="[SUM(&#60;IBQ2.&#34;total&#34;&#62;,MasterData2,3)]"/>
+    </TfrxGroupFooter>
+    <TfrxPageFooter Name="PageFooter2" FillType="ftBrush" FillGap.Top="0" FillGap.Left="0" FillGap.Bottom="0" FillGap.Right="0" Height="51" Left="0" Top="459" Width="1900.8">
+      <TfrxDMPMemoView Name="DMPMemo32" Left="0" Top="17" Width="940.8" Height="17" TruncOutboundText="False" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo33" Left="0" Top="34" Width="940.8" Height="17" TruncOutboundText="False" Text=""/>
+    </TfrxPageFooter>
+    <TfrxGroupHeader Name="GroupHeader4" FillType="ftBrush" FillGap.Top="0" FillGap.Left="0" FillGap.Bottom="0" FillGap.Right="0" Height="68" Left="0" Top="204" Width="1900.8" Condition="IBQ2.&#34;pembeli&#34;">
+      <TfrxDMPMemoView Name="DMPMemo34" Left="0" Top="0" Width="211.2" Height="17" DataSet="IBQ2" DataSetName="IBQ2" TruncOutboundText="False" Text="[IBQ2.&#34;pembeli&#34;]"/>
+      <TfrxDMPMemoView Name="DMPMemo35" Left="220.8" Top="0" Width="134.4" Height="17" DataSet="IBQ2" DataSetName="IBQ2" DisplayFormat.FormatStr="%2.0n" DisplayFormat.Kind="fkNumeric" HAlign="haRight" TruncOutboundText="False" Text="[SUM(&#60;IBQ2.&#34;total&#34;&#62;,MasterData1,1)]"/>
+      <TfrxDMPMemoView Name="DMPMemo38" Left="0" Top="17" Width="1200" Height="17" TruncOutboundText="False" Text="----------------------------------------------------------------------------------------------------------------------------------------"/>
+      <TfrxDMPMemoView Name="DMPMemo39" Left="0" Top="34" Width="163.2" Height="17" HAlign="haRight" TruncOutboundText="False" Text="NO BUKTI"/>
+      <TfrxDMPMemoView Name="DMPMemo40" Left="172.8" Top="34" Width="163.2" Height="17" HAlign="haRight" TruncOutboundText="False" Text="TANGGAL"/>
+      <TfrxDMPMemoView Name="DMPMemo41" Left="1075.2" Top="34" Width="124.8" Height="17" HAlign="haRight" TruncOutboundText="False" Text="TOTAL"/>
+      <TfrxDMPMemoView Name="DMPMemo42" Left="355.2" Top="34" Width="105.6" Height="17" TruncOutboundText="False" Text="SKU"/>
+      <TfrxDMPMemoView Name="DMPMemo43" Left="470.4" Top="34" Width="460.8" Height="17" TruncOutboundText="False" Text="NAMA"/>
+      <TfrxDMPMemoView Name="DMPMemo46" Left="0" Top="51" Width="1200" Height="17" TruncOutboundText="False" Text="----------------------------------------------------------------------------------------------------------------------------------------"/>
+      <TfrxDMPMemoView Name="DMPMemo12" Left="940.8" Top="34" Width="124.8" Height="17" HAlign="haRight" TruncOutboundText="False" Text="QTY"/>
+    </TfrxGroupHeader>
+    <TfrxGroupFooter Name="GroupFooter4" FillType="ftBrush" FillGap.Top="0" FillGap.Left="0" FillGap.Bottom="0" FillGap.Right="0" Height="34" Left="0" Top="323" Width="1900.8" OnBeforePrint="GroupFooter2OnBeforePrint">
+      <TfrxDMPMemoView Name="DMPMemo29" Left="556.8" Top="17" Width="508.8" Height="17" DataSet="IBQ2" DataSetName="IBQ2" HAlign="haRight" TruncOutboundText="False" Text="TOTAL "/>
+      <TfrxDMPMemoView Name="DMPMemo30" Left="1075.2" Top="17" Width="124.8" Height="17" DataSet="IBQ2" DataSetName="IBQ2" DisplayFormat.FormatStr="%2.2n" DisplayFormat.Kind="fkNumeric" HAlign="haRight" TruncOutboundText="False" Text="[SUM(&#60;IBQ2.&#34;total&#34;&#62;,MasterData2,1)]"/>
+      <TfrxDMPMemoView Name="DMPMemo37" Left="0" Top="0" Width="1200" Height="17" TruncOutboundText="False" Text="----------------------------------------------------------------------------------------------------------------------------------------"/>
+    </TfrxGroupFooter>
+  </TfrxDMPPage>
+</TfrxReport>
