@@ -123,7 +123,6 @@ object frmDefault: TfrmDefault
             Height = 23
             Align = alRight
             Action = ActionRefresh
-            Caption = 'Refresh [F5]'
             TabOrder = 2
           end
         end
@@ -192,6 +191,7 @@ object frmDefault: TfrmDefault
       Align = alLeft
       Action = actCetak
       TabOrder = 1
+      Visible = False
     end
     object btnHapus: TcxButton
       Left = 481
@@ -226,6 +226,7 @@ object frmDefault: TfrmDefault
       Align = alLeft
       Caption = 'Konsolidasi'
       TabOrder = 5
+      Visible = False
     end
   end
   object ActionListForm: TActionList
@@ -255,9 +256,9 @@ object frmDefault: TfrmDefault
       ShortCut = 115
     end
     object ActionRefresh: TAction
-      Caption = 'Refresh'
+      Caption = 'Refresh [F12]'
       ImageIndex = 4
-      ShortCut = 116
+      ShortCut = 123
     end
     object actExport: TAction
       Caption = 'Export [F2]'
@@ -332,7 +333,7 @@ object frmDefault: TfrmDefault
     Left = 216
     Top = 184
     Bitmap = {
-      494C010107000800F80018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800FC0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
