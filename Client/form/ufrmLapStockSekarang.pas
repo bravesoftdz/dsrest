@@ -54,7 +54,7 @@ var
 
 implementation
 uses
-  uAppUtils, ClientModule, ClientClassesUnit2, uDBUtils,
+  uAppUtils, ClientModule, ClientClassesUnit, uDBUtils,
   System.StrUtils, System.DateUtils;
 
 {$R *.dfm}

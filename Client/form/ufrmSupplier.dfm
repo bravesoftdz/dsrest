@@ -1,5 +1,5 @@
 inherited frmSupplier: TfrmSupplier
-  Caption = 'Business Partner'
+  Caption = 'Pembeli/Pemasok'
   ClientHeight = 364
   ClientWidth = 771
   ExplicitWidth = 787
@@ -75,6 +75,8 @@ inherited frmSupplier: TfrmSupplier
       end
     end
     inherited cxTSInputData: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
       ExplicitWidth = 763
       ExplicitHeight = 283
       object lblKode: TLabel
@@ -116,16 +118,18 @@ inherited frmSupplier: TfrmSupplier
         Tag = 1
         Left = 49
         Top = 13
+        Properties.CharCase = ecUpperCase
         TabOrder = 0
-        Text = 'edKode'
+        Text = 'EDKODE'
         Width = 121
       end
       object edNama: TcxTextEdit
         Tag = 1
         Left = 49
         Top = 38
+        Properties.CharCase = ecUpperCase
         TabOrder = 1
-        Text = 'edNama'
+        Text = 'EDNAMA'
         Width = 185
       end
       object memAlamt: TcxMemo
@@ -165,8 +169,10 @@ inherited frmSupplier: TfrmSupplier
           Top = 62
           Width = 65
           Height = 17
+          TabStop = False
           Caption = 'Salesman'
           TabOrder = 2
+          Visible = False
         end
       end
       object edAkunHutang: TcxTextEdit
@@ -210,6 +216,7 @@ inherited frmSupplier: TfrmSupplier
     ExplicitWidth = 771
     inherited btnBaru: TcxButton
       Left = 659
+      OnClick = nil
       ExplicitLeft = 659
     end
     inherited btnHapus: TcxButton
@@ -219,6 +226,10 @@ inherited frmSupplier: TfrmSupplier
     inherited btnSave: TcxButton
       Left = 419
       ExplicitLeft = 419
+    end
+    inherited chkKonsolidasi1: TcxCheckBox
+      ExplicitWidth = 76
+      ExplicitHeight = 31
     end
   end
   inherited ActionListForm: TActionList
@@ -251,7 +262,7 @@ inherited frmSupplier: TfrmSupplier
   inherited ilButton: TImageList
     Left = 96
     Bitmap = {
-      494C010105000800740018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C0101050008007C0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

@@ -104,7 +104,6 @@
             <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
-        <DCCReference Include="ClientClassesUnit2.pas"/>
         <DCCReference Include="form\ufrmLapMutasiBarangPerTransaksi.pas">
             <Form>frmLapMutasiBarangPerTransaksi</Form>
             <FormType>dfm</FormType>
@@ -270,6 +269,19 @@
             <Form>frmGenerateJurnal</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="form\ufrmLaporanNeracaSaldo.pas">
+            <Form>frmLaporanNeracaSaldo</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="ClientClassesUnit.pas"/>
+        <DCCReference Include="form\ufrmBukuBesar.pas">
+            <Form>frmBukuBesar</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="form\ufrmLaporanPenjualan.pas">
+            <Form>frmLaporanPenjualan</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -327,7 +339,7 @@
                 <Platform value="Win32">True</Platform>
             </Platforms>
             <DataSnapProxyLookup>
-                <ClientClassesUnit2>{6D25B838-E6CA-4EB1-9BE6-44F1AC2252B4}</ClientClassesUnit2>
+                <ClientClassesUnit>{6D25B838-E6CA-4EB1-9BE6-44F1AC2252B4}</ClientClassesUnit>
             </DataSnapProxyLookup>
             <Deployment Version="2">
                 <DeployFile LocalName="..\bin\Client.exe" Configuration="Debug" Class="ProjectOutput">

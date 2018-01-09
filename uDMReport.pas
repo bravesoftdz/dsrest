@@ -13,7 +13,7 @@ uses
   cxGroupBox, Data.DB, Datasnap.DSClientRest, Datasnap.DSProxyRest,
   Data.FireDACJSONReflect, FireDAC.Stan.Intf, FireDAC.Stan.Option,
   FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
-  FireDAC.DApt.Intf, FireDAC.Comp.DataSet, FireDAC.Comp.Client, ClientClassesUnit2,
+  FireDAC.DApt.Intf, FireDAC.Comp.DataSet, FireDAC.Comp.Client, ClientClassesUnit,
   ClientModule, FireDAC.Stan.StorageJSON, FireDAC.Stan.StorageBin, uSelfFastReportFunction;
 
 type

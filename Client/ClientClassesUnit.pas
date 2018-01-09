@@ -1,9 +1,9 @@
 //
 // Created by the DataSnap proxy generator.
-// 10/26/2017 5:03:13 AM
+// 12/25/2017 6:38:16 AM
 //
 
-unit ClientClassesUnit2;
+unit ClientClassesUnit;
 
 interface
 
@@ -89,6 +89,10 @@ type
     FLaporanReturSupplierCommand_Cache: TDSRestCommand;
     FLaporanKarARCommand: TDSRestCommand;
     FLaporanKarARCommand_Cache: TDSRestCommand;
+    FLaporanNeracaSaldoCommand: TDSRestCommand;
+    FLaporanNeracaSaldoCommand_Cache: TDSRestCommand;
+    FLaporanPenjualanByPembeliCommand: TDSRestCommand;
+    FLaporanPenjualanByPembeliCommand_Cache: TDSRestCommand;
     FRetriveSettingAppCommand: TDSRestCommand;
     FRetriveSettingAppCommand_Cache: TDSRestCommand;
   public
@@ -141,6 +145,10 @@ type
     function LaporanReturSupplier_Cache(ATglAwal: TDateTime; AtglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
     function LaporanKarAR(ATglAwal: TDateTime; ATglAkhir: TDateTime; ACustomer: TSupplier; ACabang: TCabang; ANoAR: string; const ARequestFilter: string = ''): TFDJSONDataSets;
     function LaporanKarAR_Cache(ATglAwal: TDateTime; ATglAkhir: TDateTime; ACustomer: TSupplier; ACabang: TCabang; ANoAR: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
+    function LaporanNeracaSaldo(ATglAwal: TDateTime; AtglAkhir: TDateTime; AIsKonsolidasi: Integer; ACabang: TCabang; const ARequestFilter: string = ''): TFDJSONDataSets;
+    function LaporanNeracaSaldo_Cache(ATglAwal: TDateTime; AtglAkhir: TDateTime; AIsKonsolidasi: Integer; ACabang: TCabang; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
+    function LaporanPenjualanByPembeli(ATglAwal: TDateTime; AtglAkhir: TDateTime; AIsKonsolidasi: Integer; ACabang: TCabang; const ARequestFilter: string = ''): TFDJSONDataSets;
+    function LaporanPenjualanByPembeli_Cache(ATglAwal: TDateTime; AtglAkhir: TDateTime; AIsKonsolidasi: Integer; ACabang: TCabang; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
     function RetriveSettingApp(ACabang: TCabang; const ARequestFilter: string = ''): TDataSet;
     function RetriveSettingApp_Cache(ACabang: TCabang; const ARequestFilter: string = ''): IDSRestCachedDataSet;
   end;
@@ -525,6 +533,8 @@ type
 
   TServerPenjualanClient = class(TDSAdminRestClient)
   private
+    FGetSaldoDepositCommand: TDSRestCommand;
+    FGetPenjualanPeriodeCommand: TDSRestCommand;
     FRetrieveCommand: TDSRestCommand;
     FRetrieveCommand_Cache: TDSRestCommand;
     FRetrieveNoBuktiCommand: TDSRestCommand;
@@ -549,6 +559,8 @@ type
     constructor Create(ARestConnection: TDSRestConnection); overload;
     constructor Create(ARestConnection: TDSRestConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
+    function GetSaldoDeposit(ASupplier: TSupplier; AExcludeNo: string; const ARequestFilter: string = ''): Double;
+    function GetPenjualanPeriode(ASupplier: TSupplier; ATglAwal: TDateTime; ATglAkhir: TDateTime; AExcludeNo: string; const ARequestFilter: string = ''): Double;
     function Retrieve(AID: string; const ARequestFilter: string = ''): TPenjualan;
     function Retrieve_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedTPenjualan;
     function RetrieveNoBukti(ANoBukti: string; const ARequestFilter: string = ''): TPenjualan;
@@ -1716,6 +1728,42 @@ const
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
+  TServerLaporan_LaporanNeracaSaldo: array [0..4] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'AtglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'AIsKonsolidasi'; Direction: 1; DBXType: 6; TypeName: 'Integer'),
+    (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
+    (Name: ''; Direction: 4; DBXType: 37; TypeName: 'TFDJSONDataSets')
+  );
+
+  TServerLaporan_LaporanNeracaSaldo_Cache: array [0..4] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'AtglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'AIsKonsolidasi'; Direction: 1; DBXType: 6; TypeName: 'Integer'),
+    (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerLaporan_LaporanPenjualanByPembeli: array [0..4] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'AtglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'AIsKonsolidasi'; Direction: 1; DBXType: 6; TypeName: 'Integer'),
+    (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
+    (Name: ''; Direction: 4; DBXType: 37; TypeName: 'TFDJSONDataSets')
+  );
+
+  TServerLaporan_LaporanPenjualanByPembeli_Cache: array [0..4] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'AtglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'AIsKonsolidasi'; Direction: 1; DBXType: 6; TypeName: 'Integer'),
+    (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
   TServerLaporan_RetriveSettingApp: array [0..1] of TDSRestParameterMetaData =
   (
     (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
@@ -2573,6 +2621,22 @@ const
   (
     (Name: 'AOBject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
+  TServerPenjualan_GetSaldoDeposit: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'ASupplier'; Direction: 1; DBXType: 37; TypeName: 'TSupplier'),
+    (Name: 'AExcludeNo'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 7; TypeName: 'Double')
+  );
+
+  TServerPenjualan_GetPenjualanPeriode: array [0..4] of TDSRestParameterMetaData =
+  (
+    (Name: 'ASupplier'; Direction: 1; DBXType: 37; TypeName: 'TSupplier'),
+    (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ATglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'AExcludeNo'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 7; TypeName: 'Double')
   );
 
   TServerPenjualan_Retrieve: array [0..1] of TDSRestParameterMetaData =
@@ -5841,6 +5905,146 @@ begin
   Result := TDSRestCachedTFDJSONDataSets.Create(FLaporanKarARCommand_Cache.Parameters[5].Value.GetString);
 end;
 
+function TServerLaporanClient.LaporanNeracaSaldo(ATglAwal: TDateTime; AtglAkhir: TDateTime; AIsKonsolidasi: Integer; ACabang: TCabang; const ARequestFilter: string): TFDJSONDataSets;
+begin
+  if FLaporanNeracaSaldoCommand = nil then
+  begin
+    FLaporanNeracaSaldoCommand := FConnection.CreateCommand;
+    FLaporanNeracaSaldoCommand.RequestType := 'POST';
+    FLaporanNeracaSaldoCommand.Text := 'TServerLaporan."LaporanNeracaSaldo"';
+    FLaporanNeracaSaldoCommand.Prepare(TServerLaporan_LaporanNeracaSaldo);
+  end;
+  FLaporanNeracaSaldoCommand.Parameters[0].Value.AsDateTime := ATglAwal;
+  FLaporanNeracaSaldoCommand.Parameters[1].Value.AsDateTime := AtglAkhir;
+  FLaporanNeracaSaldoCommand.Parameters[2].Value.SetInt32(AIsKonsolidasi);
+  if not Assigned(ACabang) then
+    FLaporanNeracaSaldoCommand.Parameters[3].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FLaporanNeracaSaldoCommand.Parameters[3].ConnectionHandler).GetJSONMarshaler;
+    try
+      FLaporanNeracaSaldoCommand.Parameters[3].Value.SetJSONValue(FMarshal.Marshal(ACabang), True);
+      if FInstanceOwner then
+        ACabang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FLaporanNeracaSaldoCommand.Execute(ARequestFilter);
+  if not FLaporanNeracaSaldoCommand.Parameters[4].Value.IsNull then
+  begin
+    FUnMarshal := TDSRestCommand(FLaporanNeracaSaldoCommand.Parameters[4].ConnectionHandler).GetJSONUnMarshaler;
+    try
+      Result := TFDJSONDataSets(FUnMarshal.UnMarshal(FLaporanNeracaSaldoCommand.Parameters[4].Value.GetJSONValue(True)));
+      if FInstanceOwner then
+        FLaporanNeracaSaldoCommand.FreeOnExecute(Result);
+    finally
+      FreeAndNil(FUnMarshal)
+    end
+  end
+  else
+    Result := nil;
+end;
+
+function TServerLaporanClient.LaporanNeracaSaldo_Cache(ATglAwal: TDateTime; AtglAkhir: TDateTime; AIsKonsolidasi: Integer; ACabang: TCabang; const ARequestFilter: string): IDSRestCachedTFDJSONDataSets;
+begin
+  if FLaporanNeracaSaldoCommand_Cache = nil then
+  begin
+    FLaporanNeracaSaldoCommand_Cache := FConnection.CreateCommand;
+    FLaporanNeracaSaldoCommand_Cache.RequestType := 'POST';
+    FLaporanNeracaSaldoCommand_Cache.Text := 'TServerLaporan."LaporanNeracaSaldo"';
+    FLaporanNeracaSaldoCommand_Cache.Prepare(TServerLaporan_LaporanNeracaSaldo_Cache);
+  end;
+  FLaporanNeracaSaldoCommand_Cache.Parameters[0].Value.AsDateTime := ATglAwal;
+  FLaporanNeracaSaldoCommand_Cache.Parameters[1].Value.AsDateTime := AtglAkhir;
+  FLaporanNeracaSaldoCommand_Cache.Parameters[2].Value.SetInt32(AIsKonsolidasi);
+  if not Assigned(ACabang) then
+    FLaporanNeracaSaldoCommand_Cache.Parameters[3].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FLaporanNeracaSaldoCommand_Cache.Parameters[3].ConnectionHandler).GetJSONMarshaler;
+    try
+      FLaporanNeracaSaldoCommand_Cache.Parameters[3].Value.SetJSONValue(FMarshal.Marshal(ACabang), True);
+      if FInstanceOwner then
+        ACabang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FLaporanNeracaSaldoCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedTFDJSONDataSets.Create(FLaporanNeracaSaldoCommand_Cache.Parameters[4].Value.GetString);
+end;
+
+function TServerLaporanClient.LaporanPenjualanByPembeli(ATglAwal: TDateTime; AtglAkhir: TDateTime; AIsKonsolidasi: Integer; ACabang: TCabang; const ARequestFilter: string): TFDJSONDataSets;
+begin
+  if FLaporanPenjualanByPembeliCommand = nil then
+  begin
+    FLaporanPenjualanByPembeliCommand := FConnection.CreateCommand;
+    FLaporanPenjualanByPembeliCommand.RequestType := 'POST';
+    FLaporanPenjualanByPembeliCommand.Text := 'TServerLaporan."LaporanPenjualanByPembeli"';
+    FLaporanPenjualanByPembeliCommand.Prepare(TServerLaporan_LaporanPenjualanByPembeli);
+  end;
+  FLaporanPenjualanByPembeliCommand.Parameters[0].Value.AsDateTime := ATglAwal;
+  FLaporanPenjualanByPembeliCommand.Parameters[1].Value.AsDateTime := AtglAkhir;
+  FLaporanPenjualanByPembeliCommand.Parameters[2].Value.SetInt32(AIsKonsolidasi);
+  if not Assigned(ACabang) then
+    FLaporanPenjualanByPembeliCommand.Parameters[3].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FLaporanPenjualanByPembeliCommand.Parameters[3].ConnectionHandler).GetJSONMarshaler;
+    try
+      FLaporanPenjualanByPembeliCommand.Parameters[3].Value.SetJSONValue(FMarshal.Marshal(ACabang), True);
+      if FInstanceOwner then
+        ACabang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FLaporanPenjualanByPembeliCommand.Execute(ARequestFilter);
+  if not FLaporanPenjualanByPembeliCommand.Parameters[4].Value.IsNull then
+  begin
+    FUnMarshal := TDSRestCommand(FLaporanPenjualanByPembeliCommand.Parameters[4].ConnectionHandler).GetJSONUnMarshaler;
+    try
+      Result := TFDJSONDataSets(FUnMarshal.UnMarshal(FLaporanPenjualanByPembeliCommand.Parameters[4].Value.GetJSONValue(True)));
+      if FInstanceOwner then
+        FLaporanPenjualanByPembeliCommand.FreeOnExecute(Result);
+    finally
+      FreeAndNil(FUnMarshal)
+    end
+  end
+  else
+    Result := nil;
+end;
+
+function TServerLaporanClient.LaporanPenjualanByPembeli_Cache(ATglAwal: TDateTime; AtglAkhir: TDateTime; AIsKonsolidasi: Integer; ACabang: TCabang; const ARequestFilter: string): IDSRestCachedTFDJSONDataSets;
+begin
+  if FLaporanPenjualanByPembeliCommand_Cache = nil then
+  begin
+    FLaporanPenjualanByPembeliCommand_Cache := FConnection.CreateCommand;
+    FLaporanPenjualanByPembeliCommand_Cache.RequestType := 'POST';
+    FLaporanPenjualanByPembeliCommand_Cache.Text := 'TServerLaporan."LaporanPenjualanByPembeli"';
+    FLaporanPenjualanByPembeliCommand_Cache.Prepare(TServerLaporan_LaporanPenjualanByPembeli_Cache);
+  end;
+  FLaporanPenjualanByPembeliCommand_Cache.Parameters[0].Value.AsDateTime := ATglAwal;
+  FLaporanPenjualanByPembeliCommand_Cache.Parameters[1].Value.AsDateTime := AtglAkhir;
+  FLaporanPenjualanByPembeliCommand_Cache.Parameters[2].Value.SetInt32(AIsKonsolidasi);
+  if not Assigned(ACabang) then
+    FLaporanPenjualanByPembeliCommand_Cache.Parameters[3].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FLaporanPenjualanByPembeliCommand_Cache.Parameters[3].ConnectionHandler).GetJSONMarshaler;
+    try
+      FLaporanPenjualanByPembeliCommand_Cache.Parameters[3].Value.SetJSONValue(FMarshal.Marshal(ACabang), True);
+      if FInstanceOwner then
+        ACabang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FLaporanPenjualanByPembeliCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedTFDJSONDataSets.Create(FLaporanPenjualanByPembeliCommand_Cache.Parameters[4].Value.GetString);
+end;
+
 function TServerLaporanClient.RetriveSettingApp(ACabang: TCabang; const ARequestFilter: string): TDataSet;
 begin
   if FRetriveSettingAppCommand = nil then
@@ -5954,6 +6158,10 @@ begin
   FLaporanReturSupplierCommand_Cache.DisposeOf;
   FLaporanKarARCommand.DisposeOf;
   FLaporanKarARCommand_Cache.DisposeOf;
+  FLaporanNeracaSaldoCommand.DisposeOf;
+  FLaporanNeracaSaldoCommand_Cache.DisposeOf;
+  FLaporanPenjualanByPembeliCommand.DisposeOf;
+  FLaporanPenjualanByPembeliCommand_Cache.DisposeOf;
   FRetriveSettingAppCommand.DisposeOf;
   FRetriveSettingAppCommand_Cache.DisposeOf;
   inherited;
@@ -9344,6 +9552,62 @@ begin
   inherited;
 end;
 
+function TServerPenjualanClient.GetSaldoDeposit(ASupplier: TSupplier; AExcludeNo: string; const ARequestFilter: string): Double;
+begin
+  if FGetSaldoDepositCommand = nil then
+  begin
+    FGetSaldoDepositCommand := FConnection.CreateCommand;
+    FGetSaldoDepositCommand.RequestType := 'POST';
+    FGetSaldoDepositCommand.Text := 'TServerPenjualan."GetSaldoDeposit"';
+    FGetSaldoDepositCommand.Prepare(TServerPenjualan_GetSaldoDeposit);
+  end;
+  if not Assigned(ASupplier) then
+    FGetSaldoDepositCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FGetSaldoDepositCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FGetSaldoDepositCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(ASupplier), True);
+      if FInstanceOwner then
+        ASupplier.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FGetSaldoDepositCommand.Parameters[1].Value.SetWideString(AExcludeNo);
+  FGetSaldoDepositCommand.Execute(ARequestFilter);
+  Result := FGetSaldoDepositCommand.Parameters[2].Value.GetDouble;
+end;
+
+function TServerPenjualanClient.GetPenjualanPeriode(ASupplier: TSupplier; ATglAwal: TDateTime; ATglAkhir: TDateTime; AExcludeNo: string; const ARequestFilter: string): Double;
+begin
+  if FGetPenjualanPeriodeCommand = nil then
+  begin
+    FGetPenjualanPeriodeCommand := FConnection.CreateCommand;
+    FGetPenjualanPeriodeCommand.RequestType := 'POST';
+    FGetPenjualanPeriodeCommand.Text := 'TServerPenjualan."GetPenjualanPeriode"';
+    FGetPenjualanPeriodeCommand.Prepare(TServerPenjualan_GetPenjualanPeriode);
+  end;
+  if not Assigned(ASupplier) then
+    FGetPenjualanPeriodeCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FGetPenjualanPeriodeCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FGetPenjualanPeriodeCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(ASupplier), True);
+      if FInstanceOwner then
+        ASupplier.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FGetPenjualanPeriodeCommand.Parameters[1].Value.AsDateTime := ATglAwal;
+  FGetPenjualanPeriodeCommand.Parameters[2].Value.AsDateTime := ATglAkhir;
+  FGetPenjualanPeriodeCommand.Parameters[3].Value.SetWideString(AExcludeNo);
+  FGetPenjualanPeriodeCommand.Execute(ARequestFilter);
+  Result := FGetPenjualanPeriodeCommand.Parameters[4].Value.GetDouble;
+end;
+
 function TServerPenjualanClient.Retrieve(AID: string; const ARequestFilter: string): TPenjualan;
 begin
   if FRetrieveCommand = nil then
@@ -9811,6 +10075,8 @@ end;
 
 destructor TServerPenjualanClient.Destroy;
 begin
+  FGetSaldoDepositCommand.DisposeOf;
+  FGetPenjualanPeriodeCommand.DisposeOf;
   FRetrieveCommand.DisposeOf;
   FRetrieveCommand_Cache.DisposeOf;
   FRetrieveNoBuktiCommand.DisposeOf;

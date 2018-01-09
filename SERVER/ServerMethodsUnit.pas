@@ -73,6 +73,10 @@ type
         TCabang): TFDJSONDataSets; overload;
     function LaporanKarAR(ATglAwal , ATglAkhir : TDateTime; ACustomer : TSupplier;
         ACabang : TCabang; ANoAR : String): TFDJSONDataSets;
+    function LaporanNeracaSaldo(ATglAwal , AtglAkhir : TDateTime; AIsKonsolidasi :
+        Integer; ACabang : TCabang): TFDJSONDataSets; overload;
+    function LaporanPenjualanByPembeli(ATglAwal , AtglAkhir : TDateTime;
+        AIsKonsolidasi : Integer; ACabang : TCabang): TFDJSONDataSets; overload;
     function RetriveSettingApp(ACabang : TCabang): TDataset;
 
   end;
@@ -243,12 +247,16 @@ type
 
   private
     FServerAR: TServerAR;
+    FServerAp: TServerAP;
     FServerPenerimaanKas: TServerPenerimaanKas;
     function GetServerAR: TServerAR;
+    function GetServerAp: TServerAP;
     function GetServerPenerimaanKas: TServerPenerimaanKas;
-    function HapusAR(AOBject: TAppObject): Boolean;
+    function HapusARAP(AOBject: TAppObject): Boolean;
+    function SimpanARAP(AOBject: TAppObject): Boolean;
     function SimpanBayar(APenjualan : TPenjualan; ADibayar : Double): Boolean;
     property ServerAR: TServerAR read GetServerAR write FServerAR;
+    property ServerAp: TServerAP read GetServerAp write FServerAp;
     property ServerPenerimaanKas: TServerPenerimaanKas read GetServerPenerimaanKas
         write FServerPenerimaanKas;
   protected
@@ -260,9 +268,13 @@ type
     function BeforeDelete(AOBject : TAppObject): Boolean; override;
     function AfterSave(AOBject : TAppObject): Boolean; override;
     function BeforeSave(AOBject : TAppObject): Boolean; override;
-    function SimpanAR(AOBject: TAppObject): Boolean;
+//    function SimpanAR1(AOBject: TAppObject): Boolean;
+
   public
     destructor Destroy; override;
+    function GetSaldoDeposit(ASupplier : TSupplier; AExcludeNo : String): Double;
+    function GetPenjualanPeriode(ASupplier : TSupplier; ATglAwal, ATglAkhir :
+        TDateTime; AExcludeNo : String): Double;
     function Retrieve(AID : String): TPenjualan;
     function RetrieveNoBukti(ANoBukti : String): TPenjualan;
     function RetrieveCDSlip(ATglAwal , ATglAtglAkhir : TDateTime; ACabang :
@@ -777,7 +789,7 @@ end;
 
 function TServerPenerimaanBarang.BeforeDelete(AOBject : TAppObject): Boolean;
 begin
-  Result := False;
+//  Result := False;
 
   if TPenerimaanBarang(AOBject).IsJurnalized = 1 then
     raise Exception.Create('Transaksi Sudah Dijurnal, Tidak Bisa Dihapus');
@@ -1746,6 +1758,71 @@ end;
 
 { TLaporan }
 
+function TServerLaporan.LaporanNeracaSaldo(ATglAwal , AtglAkhir : TDateTime;
+    AIsKonsolidasi : Integer; ACabang : TCabang): TFDJSONDataSets;
+var
+  sSQL : String;
+begin
+  Result := TFDJSONDataSets.Create;
+
+  sSQL := 'select a.*' +
+          ' from vcabang a ' +
+          ' where 1 = 1';
+
+  if AIsKonsolidasi = 1 then
+    sSQL := sSQL + ' and is_ho = 1'
+  else
+    sSQL := sSQL + ' and a.id = ' + QuotedStr(ACabang.ID);
+
+  TFDJSONDataSetsWriter.ListAdd(Result, TDBUtils.OpenQuery(sSQL));
+
+  sSQL := 'select * from SP_NERACA_SALDO('  + TAppUtils.QuotDt(StartOfTheDay(ATglAwal)) + ','
+                                            + TAppUtils.QuotDt(EndOfTheDay(AtglAkhir)) + ','
+                                            + IntToStr(AIsKonsolidasi) + ','
+                                            + QuotedStr(ACabang.ID) + ')'
+                                            + ' ORDER BY kode';
+
+  TFDJSONDataSetsWriter.ListAdd(Result, TDBUtils.OpenQuery(sSQL));
+end;
+
+{ TLaporan }
+
+function TServerLaporan.LaporanPenjualanByPembeli(ATglAwal , AtglAkhir :
+    TDateTime; AIsKonsolidasi : Integer; ACabang : TCabang): TFDJSONDataSets;
+var
+  sSQL : String;
+begin
+  Result := TFDJSONDataSets.Create;
+
+  sSQL := 'select a.*' +
+          ' from vcabang a ' +
+          ' where 1 = 1';
+
+  if AIsKonsolidasi = 1 then
+    sSQL := sSQL + ' and is_ho = 1'
+  else
+    sSQL := sSQL + ' and a.id = ' + QuotedStr(ACabang.ID);
+
+  TFDJSONDataSetsWriter.ListAdd(Result, TDBUtils.OpenQuery(sSQL));
+
+  sSQL := 'select * from vpenjualan_detail' +
+          ' where tglbukti >= ' + TAppUtils.QuotDt(StartOfTheDay(ATglAwal)) +
+          ' and tglbukti <= ' +  TAppUtils.QuotDt(EndOfTheDay(AtglAkhir));
+
+  if AIsKonsolidasi = 1 then
+    sSQL := sSQL + ' and is_ho = 1'
+  else
+    sSQL := sSQL + ' and cabangid = ' + QuotedStr(ACabang.ID);
+
+  sSQL := sSQL + ' ORDER BY pembeli,tglbukti,nobukti';
+
+
+  TFDJSONDataSetsWriter.ListAdd(Result, TDBUtils.OpenQuery(sSQL));
+
+end;
+
+{ TLaporan }
+
 function TServerLaporan.RetriveSettingApp(ACabang : TCabang): TDataset;
 var
   sSQL : String;
@@ -2120,7 +2197,7 @@ function TServerPenjualan.BeforeDelete(AOBject : TAppObject): Boolean;
 begin
   Result := False;
 
-  if HapusAR(AOBject) then
+  if HapusARAP(AOBject) then
   begin
     Result := True;
   end;
@@ -2130,7 +2207,8 @@ function TServerPenjualan.AfterSave(AOBject : TAppObject): Boolean;
 begin
   Result := False;
 
-  if SimpanAR(AOBject) then
+
+  if SimpanARAP(AOBject) then
     Result := True;
 
 end;
@@ -2161,12 +2239,71 @@ begin
 
 end;
 
+function TServerPenjualan.GetSaldoDeposit(ASupplier : TSupplier; AExcludeNo :
+    String): Double;
+var
+  sSQL: string;
+begin
+//  Result := 0;
+
+  sSQL := 'select SUM(A.nominal-A.terbayar) as deposit' +
+          ' FROM tap a ' +
+          ' INNER JOIN tsupplier b on a.supplier = b.id ' +
+          ' where b.id = ' + QuotedStr(ASupplier.ID) +
+          ' and a.nobukti <> ' + QuotedStr(AExcludeNo);
+
+  with TDBUtils.OpenDataset(sSQL) do
+  begin
+    try
+      Result := FieldByName('deposit').AsFloat;
+    finally
+      Free;
+    end;
+  end;
+
+
+end;
+
+function TServerPenjualan.GetPenjualanPeriode(ASupplier : TSupplier; ATglAwal,
+    ATglAkhir : TDateTime; AExcludeNo : String): Double;
+var
+  sSQL: string;
+begin
+//  Result := 0;
+
+  sSQL := 'select sum(TOTAL) as Total from tpenjualan a' +
+          ' INNER JOIN tsupplier b on a.pembeli = b.id ' +
+          ' where a.tglbukti BETWEEN ' + TAppUtils.QuotDt(StartOfTheDay(ATglAwal)) +
+          ' and ' + TAppUtils.QuotDt(EndOfTheDay(ATglAkhir)) +
+          ' and a.nobukti <> ' + QuotedStr(AExcludeNo) +
+          ' and b.id = ' + QuotedStr(ASupplier.ID);
+
+  with TDBUtils.OpenDataset(sSQL) do
+  begin
+    try
+      Result := FieldByName('Total').AsFloat;
+    finally
+      Free;
+    end;
+  end;
+
+
+end;
+
 function TServerPenjualan.GetServerAR: TServerAR;
 begin
   if FServerAR = nil then
     FServerAR := TServerAR.Create;
 
   Result := FServerAR;
+end;
+
+function TServerPenjualan.GetServerAp: TServerAP;
+begin
+  if FServerAp = nil then
+    FServerAp := TServerAP.Create;
+
+  Result := FServerAp;
 end;
 
 function TServerPenjualan.GetServerPenerimaanKas: TServerPenerimaanKas;
@@ -2177,18 +2314,25 @@ begin
   Result := FServerPenerimaanKas;
 end;
 
-function TServerPenjualan.HapusAR(AOBject: TAppObject): Boolean;
+function TServerPenjualan.HapusARAP(AOBject: TAppObject): Boolean;
 var
+  lAP: TAP;
   lAR: TAR;
   lPJ: TPenjualan;
 begin
   Result := False;
 
   lPJ       := TPenjualan(AOBject);
-
-  lAR := ServerAR.RetrieveTransaksi(lPJ.ClassName, AOBject.ID);
-  if ServerAR.DeleteNoCommit(lAR) then
-    Result := True;
+  if lPJ.JenisPembayaran = 'DEPOSIT' then
+  begin
+    lAP := ServerAP.RetrieveTransaksi(lPJ.ClassName, AOBject.ID);
+    if ServerAP.DeleteNoCommit(lAP) then
+      Result := True;
+  end else begin
+    lAR := ServerAR.RetrieveTransaksi(lPJ.ClassName, AOBject.ID);
+    if ServerAR.DeleteNoCommit(lAR) then
+      Result := True;
+  end;
 end;
 
 function TServerPenjualan.HapusMutasi(ANoBukti : String): Boolean;
@@ -2308,8 +2452,9 @@ begin
   end;
 end;
 
-function TServerPenjualan.SimpanAR(AOBject: TAppObject): Boolean;
+function TServerPenjualan.SimpanARAP(AOBject: TAppObject): Boolean;
 var
+  lAP: TAP;
   lAR: TAR;
   lPJ: TPenjualan;
 begin
@@ -2317,19 +2462,36 @@ begin
 
   lPJ       := TPenjualan(AOBject);
 
-  lAR                   := ServerAR.RetrieveTransaksi(lPJ.ClassName, AOBject.ID);
-  lAR.Cabang            := TCabang.CreateID(lPJ.Cabang.ID);
-  lAR.Customer          := TSupplier.CreateID(lPJ.Pembeli.ID);
-  lAR.IDTransaksi       := lPJ.ID;
-  lAR.NoBukti           := lPJ.NoBukti;
-  lAR.Nominal           := lPJ.Total;
-  lAR.Transaksi         := lPJ.ClassName;
-  lAR.JatuhTempo        := lPJ.JatuhTempo;
-  lAR.NoBuktiTransaksi  := lPJ.NoBukti;
-  lAR.TglBukti          := lPJ.TglBukti;
+  if lPJ.JenisPembayaran = 'DEPOSIT' then
+  begin
+    lAP                   := ServerAP.RetrieveTransaksi(lPJ.ClassName, AOBject.ID);
+    lAP.Cabang            := TCabang.CreateID(lPJ.Cabang.ID);
+    lAP.Supplier          := TSupplier.CreateID(lPJ.Pembeli.ID);
+    lAP.IDTransaksi       := lPJ.ID;
+    lAP.NoBukti           := lPJ.NoBukti;
+    lAP.Nominal           := -1 * lPJ.Total;
+    lAP.Transaksi         := lPJ.ClassName;
+    lAP.JatuhTempo        := lPJ.JatuhTempo;
+    lAP.NoBuktiTransaksi  := lPJ.NoBukti;
+    lAP.TglBukti          := lPJ.TglBukti;
 
-  if ServerAR.SaveNoCommit(lAR) then
-    Result := True;
+    if ServerAp.SaveNoCommit(lAP) then
+      Result := True;
+  end else begin
+    lAR                   := ServerAR.RetrieveTransaksi(lPJ.ClassName, AOBject.ID);
+    lAR.Cabang            := TCabang.CreateID(lPJ.Cabang.ID);
+    lAR.Customer          := TSupplier.CreateID(lPJ.Pembeli.ID);
+    lAR.IDTransaksi       := lPJ.ID;
+    lAR.NoBukti           := lPJ.NoBukti;
+    lAR.Nominal           := lPJ.Total;
+    lAR.Transaksi         := lPJ.ClassName;
+    lAR.JatuhTempo        := lPJ.JatuhTempo;
+    lAR.NoBuktiTransaksi  := lPJ.NoBukti;
+    lAR.TglBukti          := lPJ.TglBukti;
+
+    if ServerAR.SaveNoCommit(lAR) then
+      Result := True;
+  end;
 
 end;
 

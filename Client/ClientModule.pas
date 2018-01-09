@@ -3,7 +3,7 @@ unit ClientModule;
 interface
 
 uses
-  System.SysUtils, System.Classes,  ClientClassesUnit2, IPPeerClient,
+  System.SysUtils, System.Classes,  ClientClassesUnit, IPPeerClient,
   Datasnap.DSClientRest, uModel, cxStyles, cxClasses, uSettingApp;
 
 type
@@ -13,6 +13,7 @@ type
     cxstylGridHeader: TcxStyle;
     cxstylGridOdd: TcxStyle;
     cxstylGridEven: TcxStyle;
+    cxstylGridFooter: TcxStyle;
     procedure DataModuleCreate(Sender: TObject);
   private
     FCabang: tcabang;

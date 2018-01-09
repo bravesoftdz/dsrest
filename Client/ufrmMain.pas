@@ -7,7 +7,7 @@ uses
   Dialogs, ExtCtrls, cxGraphics, cxControls, cxLookAndFeels,
   cxLookAndFeelPainters, cxPCdxBarPopupMenu, cxPC, Menus, ActnList, cxClasses,
   dxBar, dxBarApplicationMenu, dxRibbon, ImgList, dxRibbonSkins,
-  StdCtrls,
+  StdCtrls,ufrmLaporanPenjualan,
   ComCtrls, System.Actions, FireDAC.UI.Intf, FireDAC.VCLUI.Wait,
   FireDAC.Comp.UI, FireDAC.Phys.PG, FireDAC.Stan.Intf, FireDAC.Phys,
   FireDAC.Phys.ODBCBase, FireDAC.Phys.MSSQL, Firedac.Dapt,
@@ -18,7 +18,7 @@ uses
   Datasnap.DBClient, ufrmTACKirim, cxContainer, cxEdit, cxTextEdit, cxMaskEdit,
   cxDropDownEdit, ufrmPengeluaranKas, ufrmJurnal, ufrmLapPenerimaanBarang,
   ufrmKartuAP, ufrmLaporanAP, ufrmKartuAR,ufrmLaporanAR,
-  ufrmLaporanReturSupplier, ufrmGenerateJurnal;
+  ufrmLaporanReturSupplier, ufrmGenerateJurnal, ufrmBukuBesar;
 
 type
   TfrmMain = class(TForm)
@@ -155,6 +155,13 @@ type
     dxbrbtnGenerateJurnal: TdxBarButton;
     actGenerateJurnal: TAction;
     dxbrlrgbtnGenerateJurnal: TdxBarLargeButton;
+    dxbrmngrAMSBar2: TdxBar;
+    dxbrbtnBukuBesar: TdxBarButton;
+    dxbrbtnNeracaSaldo: TdxBarButton;
+    actLapNeracaSaldo: TAction;
+    actLapBukuBesar: TAction;
+    dxbrlrgbtnLapPenjualan: TdxBarLargeButton;
+    actLapPenjualan: TAction;
     procedure actAlatGantiCabangExecute(Sender: TObject);
     procedure actApplicationExitExecute(Sender: TObject);
     procedure actClosingInventoryExecute(Sender: TObject);
@@ -165,13 +172,16 @@ type
     procedure actJurnalMemorialExecute(Sender: TObject);
     procedure actKartuAPExecute(Sender: TObject);
     procedure actKartuARExecute(Sender: TObject);
+    procedure actLapBukuBesarExecute(Sender: TObject);
     procedure actLapKartokExecute(Sender: TObject);
     procedure actMasSupplierExecute(Sender: TObject);
     procedure actMasterBarangExecute(Sender: TObject);
     procedure actPenerimaanBarangExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure actLapMutasiBarangExecute(Sender: TObject);
+    procedure actLapNeracaSaldoExecute(Sender: TObject);
     procedure actLapPenerimaanBarangExecute(Sender: TObject);
+    procedure actLapPenjualanExecute(Sender: TObject);
     procedure actLapStockSekarangExecute(Sender: TObject);
     procedure actMasterAccountExecute(Sender: TObject);
     procedure actMasterBankExecute(Sender: TObject);
@@ -205,9 +215,10 @@ var
 implementation
 uses
   ufrmSupplier, ufrmKoneksi,uAppUtils, ufrmBarang, ufrmPenerimaanBarang,
-  ClientClassesUnit2, ClientModule, ufrmPilihCabang, ufrmLapMutasiBarangPerTransaksi,
+  ClientClassesUnit, ClientModule, ufrmPilihCabang, ufrmLapMutasiBarangPerTransaksi,
   ufrmReturSupplier, udbutils, ufrmClosingInventory, ufrmLapStockSekarang,
-  ufrmGudang, ufrmAccount, uReport, ufrmTACTerima, ufrmSettlementARAP, uUser;
+  ufrmGudang, ufrmAccount, uReport, ufrmTACTerima, ufrmSettlementARAP,
+  uUser, ufrmLaporanNeracaSaldo;
 
 {$R *.dfm}
 
@@ -276,6 +287,11 @@ begin
   frmKartuAR := TfrmKartuAR.Create(Self);
 end;
 
+procedure TfrmMain.actLapBukuBesarExecute(Sender: TObject);
+begin
+  frmBukuBesar := TfrmBukuBesar.Create(Self);
+end;
+
 procedure TfrmMain.actLapKartokExecute(Sender: TObject);
 begin
   frmLapKartuStock := TfrmLapKartuStock.Create(Self);
@@ -286,9 +302,19 @@ begin
   frmLapMutasiBarangPerTransaksi := TfrmLapMutasiBarangPerTransaksi.Create(Self);
 end;
 
+procedure TfrmMain.actLapNeracaSaldoExecute(Sender: TObject);
+begin
+  frmLaporanNeracaSaldo := TfrmLaporanNeracaSaldo.Create(Self);
+end;
+
 procedure TfrmMain.actLapPenerimaanBarangExecute(Sender: TObject);
 begin
   frmLapPenerimaanBarang := TfrmLapPenerimaanBarang.Create(Self);
+end;
+
+procedure TfrmMain.actLapPenjualanExecute(Sender: TObject);
+begin
+  frmLaporanPenjualan := TfrmLaporanPenjualan.Create(Self);
 end;
 
 procedure TfrmMain.actLapReturSupplierExecute(Sender: TObject);

@@ -1,21 +1,36 @@
-inherited frmLapPenerimaanBarang: TfrmLapPenerimaanBarang
-  Caption = 'Lap Penerimaan Barang'
-  ExplicitWidth = 320
-  ExplicitHeight = 240
+inherited frmLaporanPenjualan: TfrmLaporanPenjualan
+  Caption = 'Laporan Penjualan'
+  ExplicitTop = -87
   PixelsPerInch = 96
   TextHeight = 13
   inherited cxPCData: TcxPageControl
     inherited cxTSOverview: TcxTabSheet
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
+      inherited pnlListTransaksi: TPanel
+        inherited pnlFilter: TPanel
+          inherited lblGudang: TLabel
+            Visible = False
+          end
+          inherited cbbGudang: TcxExtLookupComboBox
+            Visible = False
+          end
+        end
+        inherited cxGrid: TcxGrid
+          inherited cxGridDBTableOverview: TcxGridDBTableView
+            OptionsView.Footer = True
+          end
+        end
+      end
     end
     inherited cxTSInputData: TcxTabSheet
       ExplicitLeft = 0
       ExplicitTop = 0
       ExplicitWidth = 0
       ExplicitHeight = 0
+    end
+  end
+  inherited pnlButton: TPanel
+    inherited btnCetak: TcxButton
+      DropDownMenu = pmcETAK
     end
   end
   inherited ActionListForm: TActionList
@@ -25,7 +40,7 @@ inherited frmLapPenerimaanBarang: TfrmLapPenerimaanBarang
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010107000800E40018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800F00018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -625,5 +640,17 @@ inherited frmLapPenerimaanBarang: TfrmLapPenerimaanBarang
       F0000F000001800003F3FF1FF8001F000003C00003F0003FFE007F800007E000
       07F8007FFFFFFFE0000FFFFFFFFFFFFF00000000000000000000000000000000
       000000000000}
+  end
+  object pmcETAK: TPopupMenu
+    Left = 496
+    Top = 256
+    object Global1: TMenuItem
+      Caption = 'Global'
+      OnClick = Global1Click
+    end
+    object Rinci1: TMenuItem
+      Caption = 'Rinci'
+      OnClick = Rinci1Click
+    end
   end
 end

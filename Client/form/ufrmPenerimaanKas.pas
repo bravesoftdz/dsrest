@@ -91,6 +91,7 @@ type
       ADataController: TcxCustomDataController);
     procedure cxGridColOIKodePropertiesValidate(Sender: TObject;
       var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
+    procedure FormShow(Sender: TObject);
   private
     FCDSAccountAPNew: tclientDataSet;
     FCDSAccountPenerimaanLain: tclientDataSet;
@@ -360,6 +361,19 @@ begin
   inherited;
   if PenerimaanKas.ID = '' then
     edNoBukti.Text := ClientDataModule.ServerPenerimaanKasClient.GenerateNoBukti(edTglBukti.Date, ClientDataModule.Cabang.Kode + '/BKK');
+end;
+
+procedure TfrmPenerimaanKas.FormShow(Sender: TObject);
+begin
+  inherited;
+  CDSRekBank.First;
+  while not CDSRekBank.Eof do
+  begin
+    if CDSRekBank.FieldByName('bank').AsString = 'CASH' then
+      Exit;
+
+    CDSRekBank.Next;
+  end;
 end;
 
 function TfrmPenerimaanKas.GetPenerimaanKas: TPenerimaanKas;

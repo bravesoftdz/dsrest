@@ -3,10 +3,16 @@ inherited frmLapKartuStock: TfrmLapKartuStock
   OnShow = FormShow
   ExplicitLeft = -235
   ExplicitTop = -87
+  ExplicitWidth = 320
+  ExplicitHeight = 240
   PixelsPerInch = 96
   TextHeight = 13
   inherited cxPCData: TcxPageControl
     inherited cxTSOverview: TcxTabSheet
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       inherited pnlListTransaksi: TPanel
         inherited pnlFilter: TPanel
           inherited lblCabang: TLabel
@@ -47,6 +53,7 @@ inherited frmLapKartuStock: TfrmLapKartuStock
             Properties.View = cxGridDBTableWarehouse
             Properties.ListFieldItem = cxGridColWHNama
             TabOrder = 5
+            ExplicitHeight = 21
             Width = 170
           end
         end
@@ -101,6 +108,12 @@ inherited frmLapKartuStock: TfrmLapKartuStock
         end
       end
     end
+    inherited cxTSInputData: TcxTabSheet
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
+    end
   end
   inherited ActionListForm: TActionList
     inherited ActionRefresh: TAction
@@ -109,7 +122,7 @@ inherited frmLapKartuStock: TfrmLapKartuStock
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010107000800F40018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800F80018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

@@ -13,7 +13,7 @@ uses
   cxGridLevel, cxClasses, cxGridCustomView, cxTextEdit, cxMaskEdit,
   cxDropDownEdit, cxLookupEdit, cxDBLookupEdit, cxDBExtLookupComboBox,
   Vcl.StdCtrls, cxButtons, Vcl.ComCtrls, Vcl.ExtCtrls, cxPC, dxStatusBar,
-  uDBUtils, ClientModule, uModel, ClientClassesUnit2, uAppUtils,
+  uDBUtils, ClientModule, uModel, ClientClassesUnit, uAppUtils,
   Data.FireDACJSONReflect, uDMReport, cxCurrencyEdit;
 
 type

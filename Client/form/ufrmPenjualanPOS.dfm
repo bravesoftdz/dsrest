@@ -1,7 +1,6 @@
 inherited frmPenjualanPOS: TfrmPenjualanPOS
   Caption = 'Penjualan Melalui POS (Point Of Sales)'
   ClientWidth = 796
-  ExplicitTop = -23
   ExplicitWidth = 812
   PixelsPerInch = 96
   TextHeight = 13
@@ -14,9 +13,10 @@ inherited frmPenjualanPOS: TfrmPenjualanPOS
     ExplicitWidth = 796
     ClientRectRight = 792
     inherited cxTSOverview: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
+      ExplicitLeft = 0
+      ExplicitTop = 0
       ExplicitWidth = 788
+      ExplicitHeight = 0
       inherited pnlListTransaksi: TPanel
         Width = 780
         ExplicitWidth = 780
@@ -51,8 +51,6 @@ inherited frmPenjualanPOS: TfrmPenjualanPOS
       end
     end
     inherited cxTSInputData: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
       ExplicitWidth = 788
       inherited pnlInput: TPanel
         Width = 788
@@ -61,18 +59,12 @@ inherited frmPenjualanPOS: TfrmPenjualanPOS
           Width = 786
           ExplicitWidth = 786
           inherited tsHeader: TTabSheet
-            ExplicitLeft = 4
-            ExplicitTop = 24
             ExplicitWidth = 778
-            ExplicitHeight = 108
             inherited lblSupplier: TLabel
               Enabled = False
             end
             inherited lblKeterangan: TLabel
               Visible = False
-            end
-            inherited lblPembeli: TLabel
-              Enabled = False
             end
             inherited lblJenisPembayaran: TLabel
               Visible = False
@@ -80,16 +72,10 @@ inherited frmPenjualanPOS: TfrmPenjualanPOS
             inherited lblTempo: TLabel
               Visible = False
             end
-            inherited lblFee: TLabel
-              Visible = False
-            end
             inherited memKeterangan: TcxMemo
               Visible = False
             end
             inherited cbbSalesman: TcxExtLookupComboBox
-              Enabled = False
-            end
-            inherited cbbPembeli: TcxExtLookupComboBox
               Enabled = False
             end
             inherited cbbJenisPembayaran: TcxComboBox
@@ -102,7 +88,6 @@ inherited frmPenjualanPOS: TfrmPenjualanPOS
             end
             inherited cbbFee: TcxComboBox
               Tag = 0
-              Visible = False
             end
           end
         end
@@ -110,15 +95,15 @@ inherited frmPenjualanPOS: TfrmPenjualanPOS
           Width = 786
           ExplicitWidth = 786
           inherited tsDetailPenerimaan: TTabSheet
-            ExplicitLeft = 4
-            ExplicitTop = 24
             ExplicitWidth = 778
-            ExplicitHeight = 182
             inherited cxGridDBPenjualan: TcxGrid
               Width = 778
               ExplicitWidth = 778
             end
           end
+        end
+        inherited pnlPLU: TPanel
+          Width = 786
         end
       end
     end
@@ -138,14 +123,10 @@ inherited frmPenjualanPOS: TfrmPenjualanPOS
       Left = 444
       ExplicitLeft = 444
     end
-    inherited chkKonsolidasi1: TcxCheckBox
-      ExplicitWidth = 76
-      ExplicitHeight = 31
-    end
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010106000800B40018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010106000800C00018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

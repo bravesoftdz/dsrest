@@ -2,6 +2,7 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
   Caption = 'Penerimaan Kas'
   ClientHeight = 454
   ClientWidth = 735
+  OnShow = FormShow
   ExplicitWidth = 751
   ExplicitHeight = 493
   PixelsPerInch = 96
@@ -15,6 +16,7 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
   inherited cxPCData: TcxPageControl
     Width = 735
     Height = 401
+    Properties.ActivePage = cxTSInputData
     ExplicitWidth = 735
     ExplicitHeight = 401
     ClientRectBottom = 397
@@ -454,7 +456,7 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
     Left = 584
     Top = 144
     Bitmap = {
-      494C010107000800280118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800300118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

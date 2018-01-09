@@ -7,7 +7,7 @@ uses
   Dialogs, ufrmDefault, cxGraphics, cxControls, cxLookAndFeels,
   cxLookAndFeelPainters, cxStyles, cxClasses, ActnList, dxBar, ExtCtrls,
   dxStatusBar, cxContainer, cxEdit, cxMaskEdit, cxDropDownEdit, cxLookupEdit,
-  cxDBLookupEdit, cxDBExtLookupComboBox, cxTextEdit, StdCtrls, ClientClassesUnit2,
+  cxDBLookupEdit, cxDBExtLookupComboBox, cxTextEdit, StdCtrls, ClientClassesUnit,
   ClientModule, cxCustomData, cxFilter, cxData, cxDataStorage, DB, cxDBData,
   cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGridCustomView,
   cxGrid, cxGridLevel, cxPCdxBarPopupMenu, cxPC, cxCurrencyEdit, ImgList, uModel,
@@ -53,6 +53,7 @@ type
     cxGridTableSatuanColumnHargaJualKeliling: TcxGridColumn;
     cxGridTableSatuanColumnHargaJualGrosir: TcxGridColumn;
     cxgrdlvlSatuan: TcxGridLevel;
+    cxGridTableSatuanColumnBarcode: TcxGridColumn;
     procedure FormCreate(Sender: TObject);
     procedure ActionBaruExecute(Sender: TObject);
     procedure ActionHapusExecute(Sender: TObject);

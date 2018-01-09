@@ -10,7 +10,7 @@ uses
   Datasnap.DBClient, Datasnap.Provider, Vcl.ImgList, cxGridCustomTableView,
   cxGridTableView, cxGridDBTableView, cxGridCustomView, cxGrid, cxClasses,
   System.Actions, Vcl.ActnList, cxBarEditItem, dxBar, dxBarExtDBItems,
-  Vcl.ExtCtrls, dxStatusBar, ClientModule, ClientClassesUnit2, uModel,
+  Vcl.ExtCtrls, dxStatusBar, ClientModule, ClientClassesUnit, uModel,
   cxContainer, cxTextEdit, Vcl.ComCtrls, Vcl.StdCtrls, System.ImageList,
   dxBarExtItems, dxBarBuiltInMenu, Vcl.Menus, cxGridLevel, cxButtons, cxPC;
 

@@ -27,23 +27,23 @@ inherited frmLapStockSekarang: TfrmLapStockSekarang
           Width = 698
           ExplicitWidth = 707
           inherited lblPeriode: TLabel
-            Left = 293
+            Left = 275
             ExplicitLeft = 333
           end
           inherited lblSD: TLabel
-            Left = 448
+            Left = 436
             ExplicitLeft = 488
           end
           inherited dtpAwal: TDateTimePicker
-            Left = 343
+            Left = 328
             ExplicitLeft = 352
           end
           inherited dtpAkhir: TDateTimePicker
-            Left = 486
+            Left = 477
             ExplicitLeft = 495
           end
           inherited btnRefresh: TcxButton
-            Left = 591
+            Left = 588
             ExplicitLeft = 600
           end
         end
@@ -54,9 +54,9 @@ inherited frmLapStockSekarang: TfrmLapStockSekarang
         end
         object cxGridDBStockSekarang: TcxGrid
           Left = 1
-          Top = 33
+          Top = 32
           Width = 698
-          Height = 231
+          Height = 232
           Align = alClient
           TabOrder = 2
           ExplicitTop = -265
@@ -127,12 +127,6 @@ inherited frmLapStockSekarang: TfrmLapStockSekarang
     end
   end
   inherited pnlButton: TPanel
-    inherited btnHapus: TcxButton
-      ExplicitLeft = 481
-    end
-    inherited btnSave: TcxButton
-      ExplicitLeft = 365
-    end
     inherited chkKonsolidasi1: TcxCheckBox
       ExplicitWidth = 76
       ExplicitHeight = 31
@@ -177,7 +171,7 @@ inherited frmLapStockSekarang: TfrmLapStockSekarang
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010105000800800018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010105000800840018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

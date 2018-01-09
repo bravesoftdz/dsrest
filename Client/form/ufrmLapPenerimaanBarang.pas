@@ -13,7 +13,7 @@ uses
   cxGridLevel, cxClasses, cxGridCustomView, cxTextEdit, cxMaskEdit,
   cxDropDownEdit, cxLookupEdit, cxDBLookupEdit, cxDBExtLookupComboBox,
   Vcl.StdCtrls, cxButtons, Vcl.ComCtrls, Vcl.ExtCtrls,
-  cxPC, dxStatusBar,ClientModule,ClientClassesUnit2, uDBUtils, uModel, uAppUtils;
+  cxPC, dxStatusBar,ClientModule,ClientClassesUnit, uDBUtils, uModel, uAppUtils;
 
 type
   TfrmLapPenerimaanBarang = class(TfrmDefaultLaporan)

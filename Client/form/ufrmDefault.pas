@@ -9,7 +9,7 @@ uses
   ImgList, System.Actions, dxBarExtDBItems, cxCustomData, cxFilter, cxData,
   cxDataStorage, cxEdit, cxNavigator, Data.DB, cxDBData, cxGridCustomTableView,
   cxGridTableView, cxGridDBTableView, cxGridCustomView, Datasnap.DBClient,
-  Datasnap.Provider, ClientModule, ClientClassesUnit2, uModel, cxCheckBox,
+  Datasnap.Provider, ClientModule, ClientClassesUnit, uModel, cxCheckBox,
   cxBarEditItem, cxDBExtLookupComboBox, dxPSGlbl, dxPSUtl, dxPSEngn, dxPrnPg,
   dxBkgnd, dxWrap, dxPrnDev, dxPSCompsProvider, dxPSFillPatterns,
   dxPSEdgePatterns, dxPSPDFExportCore, dxPSPDFExport, cxDrawTextUtils,
@@ -125,6 +125,7 @@ end;
 
 procedure TfrmDefault.ActionBaruExecute(Sender: TObject);
 begin
+  //ClearByTag([0,1]);
   dtpAwal.DateTime := StartOfTheMonth(Now);
   dtpAkhir.DateTime:= EndOfTheDay(Now);
 

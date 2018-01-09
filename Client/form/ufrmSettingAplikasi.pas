@@ -12,7 +12,7 @@ uses
   cxGrid, System.Actions, Vcl.ActnList, cxCheckBox, cxGridLevel, cxClasses,
   cxGridCustomView, Vcl.StdCtrls, cxButtons, Vcl.ComCtrls, Vcl.ExtCtrls, cxPC,
   dxStatusBar, cxTextEdit, cxMaskEdit, cxDropDownEdit, cxLookupEdit,
-  cxDBLookupEdit, cxDBExtLookupComboBox, uSettingApp;
+  cxDBLookupEdit, cxDBExtLookupComboBox, uSettingApp, cxCurrencyEdit;
 
 type
   TfrmSettingAplikasi = class(TfrmDefault)
@@ -22,6 +22,8 @@ type
     cbbCabang: TcxExtLookupComboBox;
     lblGudangTransit: TLabel;
     cbbGudangTransit: TcxExtLookupComboBox;
+    lblMaxBelanja: TLabel;
+    edMaxBelanjaHari: TcxCurrencyEdit;
     procedure ActionBaruExecute(Sender: TObject);
     procedure ActionRefreshExecute(Sender: TObject);
     procedure cxPCDataChange(Sender: TObject);
@@ -106,6 +108,7 @@ begin
   SettingApp.Cabang          := TCabang.CreateID(cbbCabang.EditValue);
   SettingApp.GudangPenjualan := TGudang.CreateID(cbbGudangPenjualan.EditValue);
   SettingApp.GudangTransit   := TGudang.CreateID(cbbGudangTransit.EditValue);
+  SettingApp.MaxBelanjaSantri:= edMaxBelanjaHari.Value;
 
   try
     if ClientDataModule.ServerSettingAppClient.Save(SettingApp) then
@@ -195,7 +198,7 @@ begin
   cbbCabang.EditValue          := FSettingApp.Cabang.ID;
   cbbGudangPenjualan.EditValue := FSettingApp.GudangPenjualan.ID;
   cbbGudangTransit.EditValue   := FSettingApp.GudangTransit.ID;
-
+  edMaxBelanjaHari.Value       := FSettingApp.MaxBelanjaSantri;
 
 
 end;

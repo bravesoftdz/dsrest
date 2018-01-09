@@ -1,29 +1,31 @@
 inherited frmPenjualan: TfrmPenjualan
   Caption = 'Penjualan'
   ClientHeight = 429
-  ClientWidth = 775
-  ExplicitWidth = 791
+  ClientWidth = 773
+  OnShow = FormShow
+  ExplicitTop = -23
+  ExplicitWidth = 789
   ExplicitHeight = 468
   PixelsPerInch = 96
   TextHeight = 13
   inherited cxSBTransaksi: TdxStatusBar
     Top = 409
-    Width = 775
+    Width = 773
     ExplicitTop = 409
-    ExplicitWidth = 775
+    ExplicitWidth = 773
   end
   inherited cxPCData: TcxPageControl
-    Width = 775
+    Width = 773
     Height = 376
     Properties.ActivePage = cxTSInputData
-    ExplicitWidth = 775
+    ExplicitWidth = 773
     ExplicitHeight = 376
     ClientRectBottom = 372
-    ClientRectRight = 771
+    ClientRectRight = 769
     inherited cxTSOverview: TcxTabSheet
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 767
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 765
       ExplicitHeight = 348
       inherited splTransaksi: TSplitter
         Height = 348
@@ -31,38 +33,38 @@ inherited frmPenjualan: TfrmPenjualan
         ExplicitHeight = 359
       end
       inherited pnlListTransaksi: TPanel
-        Width = 759
+        Width = 757
         Height = 348
-        ExplicitWidth = 759
+        ExplicitWidth = 757
         ExplicitHeight = 348
         inherited pnlFilter: TPanel
-          Width = 757
-          ExplicitWidth = 757
+          Width = 755
+          ExplicitWidth = 755
           inherited lblPeriode: TLabel
-            Left = 334
+            Left = 332
             ExplicitLeft = 383
           end
           inherited lblSD: TLabel
-            Left = 495
+            Left = 493
             ExplicitLeft = 538
           end
           inherited dtpAwal: TDateTimePicker
-            Left = 387
-            ExplicitLeft = 387
+            Left = 385
+            ExplicitLeft = 385
           end
           inherited dtpAkhir: TDateTimePicker
-            Left = 536
-            ExplicitLeft = 536
+            Left = 534
+            ExplicitLeft = 534
           end
           inherited btnRefresh: TcxButton
-            Left = 647
-            ExplicitLeft = 647
+            Left = 645
+            ExplicitLeft = 645
           end
         end
         inherited cxGrid: TcxGrid
-          Width = 757
+          Width = 755
           Height = 315
-          ExplicitWidth = 757
+          ExplicitWidth = 755
           ExplicitHeight = 315
           inherited cxGridDBTableOverview: TcxGridDBTableView
             OnCellDblClick = cxGridDBTableOverviewCellDblClick
@@ -72,31 +74,28 @@ inherited frmPenjualan: TfrmPenjualan
       end
     end
     inherited cxTSInputData: TcxTabSheet
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 767
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 765
       ExplicitHeight = 348
       object pnlInput: TPanel
         Left = 0
         Top = 0
-        Width = 767
+        Width = 765
         Height = 348
         Align = alClient
         TabOrder = 0
         object pgcHeader: TPageControl
           Left = 1
           Top = 1
-          Width = 765
-          Height = 136
+          Width = 763
+          Height = 152
           ActivePage = tsHeader
           Align = alTop
           TabOrder = 0
           object tsHeader: TTabSheet
             Caption = 'Penjualan'
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
+            ExplicitTop = 22
             object lblNoBukti: TLabel
               Left = 23
               Top = 8
@@ -119,7 +118,7 @@ inherited frmPenjualan: TfrmPenjualan
               Caption = 'Salesman'
             end
             object lblKeterangan: TLabel
-              Left = 314
+              Left = 373
               Top = 57
               Width = 56
               Height = 13
@@ -133,7 +132,7 @@ inherited frmPenjualan: TfrmPenjualan
               Caption = 'Pembeli'
             end
             object lblJthTempo: TLabel
-              Left = 450
+              Left = 509
               Top = 34
               Width = 50
               Height = 13
@@ -141,25 +140,33 @@ inherited frmPenjualan: TfrmPenjualan
               Visible = False
             end
             object lblJenisPembayaran: TLabel
-              Left = 307
+              Left = 366
               Top = 7
               Width = 60
               Height = 13
               Caption = 'Pembayaran'
             end
             object lblTempo: TLabel
-              Left = 338
+              Left = 397
               Top = 34
               Width = 32
               Height = 13
               Caption = 'Tempo'
             end
             object lblFee: TLabel
-              Left = 482
+              Left = 541
               Top = 7
               Width = 18
               Height = 13
               Caption = 'Fee'
+              Visible = False
+            end
+            object lblDeposit: TLabel
+              Left = 24
+              Top = 105
+              Width = 36
+              Height = 13
+              Caption = 'Deposit'
             end
             object edNoBukti: TcxTextEdit
               Tag = 1
@@ -180,11 +187,11 @@ inherited frmPenjualan: TfrmPenjualan
               Width = 121
             end
             object memKeterangan: TcxMemo
-              Left = 376
+              Left = 435
               Top = 56
               Lines.Strings = (
                 'memKeterangan')
-              TabOrder = 8
+              TabOrder = 10
               Height = 43
               Width = 217
             end
@@ -195,50 +202,52 @@ inherited frmPenjualan: TfrmPenjualan
               Properties.DropDownAutoSize = True
               Properties.FocusPopup = True
               TabOrder = 2
-              Width = 192
+              Width = 226
             end
             object cbbPembeli: TcxExtLookupComboBox
               Tag = 1
-              Left = 72
-              Top = 78
+              Left = 156
+              Top = 77
               Properties.DropDownAutoSize = True
               Properties.FocusPopup = True
-              TabOrder = 3
-              Width = 192
+              Properties.OnValidate = cbbPembeliPropertiesValidate
+              TabOrder = 4
+              Width = 142
             end
             object edJthTempo: TcxDateEdit
-              Left = 506
+              Left = 565
               Top = 30
-              TabOrder = 7
+              TabOrder = 9
               Visible = False
               Width = 87
             end
             object cbbJenisPembayaran: TcxComboBox
               Tag = 1
-              Left = 376
+              Left = 435
               Top = 3
               Properties.DropDownListStyle = lsFixedList
               Properties.Items.Strings = (
                 'CASH'
-                'KREDIT')
+                'KREDIT'
+                'DEPOSIT')
               Properties.OnChange = cbbJenisPembayaranPropertiesChange
-              TabOrder = 4
-              Text = 'KREDIT'
+              TabOrder = 6
+              Text = 'DEPOSIT'
               Width = 64
             end
             object edTempo: TcxCalcEdit
               Tag = 1
-              Left = 376
+              Left = 435
               Top = 30
               EditValue = 0.000000000000000000
               Properties.Alignment.Horz = taRightJustify
               Properties.OnChange = edTempoPropertiesChange
-              TabOrder = 6
+              TabOrder = 8
               Width = 64
             end
             object cbbFee: TcxComboBox
               Tag = 1
-              Left = 506
+              Left = 565
               Top = 3
               Properties.DropDownListStyle = lsFixedList
               Properties.Items.Strings = (
@@ -247,31 +256,46 @@ inherited frmPenjualan: TfrmPenjualan
                 'OLI'
                 'BUSI'
                 'BAN')
-              TabOrder = 5
+              TabOrder = 7
               Text = 'ASLI'
-              Width = 85
+              Visible = False
+              Width = 87
+            end
+            object edKodePembeli: TcxTextEdit
+              Left = 72
+              Top = 77
+              Properties.CharCase = ecUpperCase
+              TabOrder = 3
+              Text = 'EDKODEPEMBELI'
+              OnKeyDown = edKodePembeliKeyDown
+              Width = 80
+            end
+            object edDeposit: TcxCurrencyEdit
+              Left = 72
+              Top = 101
+              Enabled = False
+              Properties.Alignment.Horz = taRightJustify
+              Properties.DisplayFormat = ',0.00;(,0.00)'
+              TabOrder = 5
+              Width = 121
             end
           end
         end
         object pgcDetail: TPageControl
           Left = 1
-          Top = 137
-          Width = 765
-          Height = 210
+          Top = 153
+          Width = 763
+          Height = 163
           ActivePage = tsDetailPenerimaan
           Align = alClient
           TabOrder = 1
           object tsDetailPenerimaan: TTabSheet
             Caption = 'Detail Penerimaan'
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
             object cxGridDBPenjualan: TcxGrid
               Left = 0
               Top = 0
-              Width = 757
-              Height = 182
+              Width = 755
+              Height = 135
               Align = alClient
               TabOrder = 0
               object cxGridTablePenjualan: TcxGridTableView
@@ -298,6 +322,11 @@ inherited frmPenjualan: TfrmPenjualan
                     Format = ',0.00;(,0.00)'
                     Kind = skSum
                     Column = cxgrdclmnGridTablePenjualanColumnSubTotalRp
+                  end
+                  item
+                    Format = ',0.##;(,0.##)'
+                    Kind = skSum
+                    Column = cxgrdclmnGridTablePenjualanColumnQty
                   end>
                 DataController.Summary.SummaryGroups = <>
                 OptionsBehavior.FocusCellOnTab = True
@@ -312,6 +341,7 @@ inherited frmPenjualan: TfrmPenjualan
                 OptionsView.Indicator = True
                 Styles.ContentEven = ClientDataModule.cxstylGridEven
                 Styles.ContentOdd = ClientDataModule.cxstylGridOdd
+                Styles.Footer = ClientDataModule.cxstylGridFooter
                 Styles.Header = ClientDataModule.cxstylGridHeader
                 object cxgrdclmnGridTablePenjualanColumnNama: TcxGridColumn
                   Caption = 'Nama'
@@ -354,6 +384,7 @@ inherited frmPenjualan: TfrmPenjualan
                   Properties.DisplayFormat = ',0.##;(,0.##)'
                   Properties.OnValidate = cxgrdclmnGridTablePenjualanColumnQtyPropertiesValidate
                   HeaderAlignmentHorz = taCenter
+                  Width = 60
                 end
                 object cxgrdclmnGridTablePenjualanColumnDiskon: TcxGridColumn
                   Caption = 'Diskon %'
@@ -371,6 +402,7 @@ inherited frmPenjualan: TfrmPenjualan
                   Properties.Alignment.Horz = taRightJustify
                   Properties.DisplayFormat = ',0.##;(,0.##)'
                   Properties.OnValidate = cxgrdclmnGridTablePenjualanColumnPPNPropertiesValidate
+                  Visible = False
                   HeaderAlignmentHorz = taCenter
                 end
                 object cxgrdclmnGridTablePenjualanColumnSubTotalRp: TcxGridColumn
@@ -383,7 +415,7 @@ inherited frmPenjualan: TfrmPenjualan
                   FooterAlignmentHorz = taRightJustify
                   HeaderAlignmentHorz = taCenter
                   Options.Editing = False
-                  Width = 97
+                  Width = 150
                 end
                 object cxgrdclmnGridTablePenjualanColumnDiskonRp: TcxGridColumn
                   Caption = 'Dikon (Rp)'
@@ -395,7 +427,7 @@ inherited frmPenjualan: TfrmPenjualan
                   FooterAlignmentHorz = taRightJustify
                   HeaderAlignmentHorz = taCenter
                   Options.Editing = False
-                  Width = 94
+                  Width = 100
                 end
                 object cxgrdclmnGridTablePenjualanColumnPPNRp: TcxGridColumn
                   Caption = 'PPN (Rp)'
@@ -404,10 +436,11 @@ inherited frmPenjualan: TfrmPenjualan
                   Properties.Alignment.Horz = taRightJustify
                   Properties.DisplayFormat = ',0.##;(,0.##)'
                   Properties.ReadOnly = True
+                  Visible = False
                   FooterAlignmentHorz = taRightJustify
                   HeaderAlignmentHorz = taCenter
                   Options.Editing = False
-                  Width = 87
+                  Width = 100
                 end
                 object cxgrdclmnGridTablePenjualanColumnTotal: TcxGridColumn
                   Caption = 'Total (Rp)'
@@ -419,13 +452,15 @@ inherited frmPenjualan: TfrmPenjualan
                   FooterAlignmentHorz = taRightJustify
                   HeaderAlignmentHorz = taCenter
                   Options.Editing = False
-                  Width = 78
+                  Width = 150
                 end
                 object cxgrdclmnGridTablePenjualanColumnKonversi: TcxGridColumn
                   Caption = 'Konversi'
+                  Visible = False
                 end
                 object cxgrdclmnGridTablePenjualanColumnJenisHarga: TcxGridColumn
                   Caption = 'Jenis Harga'
+                  Visible = False
                 end
               end
               object cxgrdlvlPenerimaanBarang: TcxGridLevel
@@ -434,31 +469,70 @@ inherited frmPenjualan: TfrmPenjualan
             end
           end
         end
+        object pnlPLU: TPanel
+          Left = 1
+          Top = 316
+          Width = 763
+          Height = 31
+          Align = alBottom
+          TabOrder = 2
+          object lblPLU: TLabel
+            AlignWithMargins = True
+            Left = 4
+            Top = 9
+            Width = 40
+            Height = 18
+            Margins.Top = 8
+            Align = alLeft
+            AutoSize = False
+            Caption = 'PLU'
+          end
+          object edPLUNama: TcxTextEdit
+            AlignWithMargins = True
+            Left = 177
+            Top = 4
+            Align = alLeft
+            Enabled = False
+            TabOrder = 0
+            Text = 'edPLUNama'
+            Width = 368
+          end
+          object edPLU: TcxTextEdit
+            AlignWithMargins = True
+            Left = 50
+            Top = 4
+            Align = alLeft
+            TabOrder = 1
+            Text = 'edPLU'
+            OnKeyDown = edPLUKeyDown
+            Width = 121
+          end
+        end
       end
     end
   end
   inherited pnlButton: TPanel
     Top = 376
-    Width = 775
+    Width = 773
     ExplicitTop = 376
-    ExplicitWidth = 775
+    ExplicitWidth = 773
     inherited btnBaru: TcxButton
-      Left = 663
-      ExplicitLeft = 663
+      Left = 661
+      ExplicitLeft = 661
     end
     inherited btnHapus: TcxButton
-      Left = 539
-      ExplicitLeft = 539
+      Left = 537
+      ExplicitLeft = 537
     end
     inherited btnSave: TcxButton
-      Left = 423
-      ExplicitLeft = 423
+      Left = 421
+      ExplicitLeft = 421
     end
     inherited chkKonsolidasi1: TcxCheckBox
       Left = 307
       ExplicitLeft = 307
-      ExplicitWidth = 121
-      ExplicitHeight = 21
+      ExplicitWidth = 76
+      ExplicitHeight = 31
     end
     object btnInvoice: TcxButton
       Left = 232
@@ -471,8 +545,8 @@ inherited frmPenjualan: TfrmPenjualan
     end
   end
   inherited ActionListForm: TActionList
-    Left = 40
-    Top = 280
+    Left = 48
+    Top = 216
     inherited ActionSimpan: TAction
       OnExecute = ActionSimpanExecute
     end
@@ -488,30 +562,30 @@ inherited frmPenjualan: TfrmPenjualan
     end
   end
   inherited cxGridRepTransaksi: TcxGridViewRepository
-    Left = 8
-    Top = 280
+    Left = 16
+    Top = 216
   end
   inherited dsCabang: TDataSource
-    Left = 72
-    Top = 352
+    Left = 208
+    Top = 216
   end
   inherited DSPCabang: TDataSetProvider
-    Left = 8
-    Top = 320
+    Left = 80
+    Top = 216
   end
   inherited cdsCabang: TClientDataSet
-    Left = 40
-    Top = 320
+    Left = 112
+    Top = 216
   end
   inherited dlgSaveExportExcel: TSaveDialog
-    Left = 8
-    Top = 352
+    Left = 144
+    Top = 216
   end
   inherited ilButton: TImageList
-    Left = 40
-    Top = 352
+    Left = 176
+    Top = 216
     Bitmap = {
-      494C010106000800140118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010106000800380118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

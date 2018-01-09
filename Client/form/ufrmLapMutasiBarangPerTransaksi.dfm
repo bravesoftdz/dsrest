@@ -22,6 +22,8 @@ inherited frmLapMutasiBarangPerTransaksi: TfrmLapMutasiBarangPerTransaksi
     ClientRectBottom = 368
     ClientRectRight = 814
     inherited cxTSOverview: TcxTabSheet
+      ExplicitLeft = 0
+      ExplicitTop = 0
       ExplicitWidth = 810
       ExplicitHeight = 344
       inherited splTransaksi: TSplitter
@@ -48,14 +50,12 @@ inherited frmLapMutasiBarangPerTransaksi: TfrmLapMutasiBarangPerTransaksi
             Left = 192
             Width = 50
             ExplicitLeft = 207
-            ExplicitTop = 4
             ExplicitWidth = 50
           end
           inherited lblCabang: TLabel
             Left = 16
             Width = 50
             ExplicitLeft = 16
-            ExplicitTop = 4
             ExplicitWidth = 50
           end
           inherited dtpAwal: TDateTimePicker
@@ -127,7 +127,7 @@ inherited frmLapMutasiBarangPerTransaksi: TfrmLapMutasiBarangPerTransaksi
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010105000800700018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010105000800740018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

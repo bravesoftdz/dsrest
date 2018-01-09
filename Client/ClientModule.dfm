@@ -30,5 +30,14 @@ object ClientDataModule: TClientDataModule
     end
     object cxstylGridEven: TcxStyle
     end
+    object cxstylGridFooter: TcxStyle
+      AssignedValues = [svFont, svTextColor]
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clRed
+      Font.Height = -16
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      TextColor = clRed
+    end
   end
 end
