@@ -21,6 +21,8 @@ inherited frmSupplier: TfrmSupplier
     ClientRectBottom = 307
     ClientRectRight = 767
     inherited cxTSOverview: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
       ExplicitWidth = 763
       ExplicitHeight = 283
       inherited splTransaksi: TSplitter
@@ -114,6 +116,13 @@ inherited frmSupplier: TfrmSupplier
         Height = 13
         Caption = 'Akun Piutang'
       end
+      object lblKelas: TLabel
+        Left = 18
+        Top = 163
+        Width = 25
+        Height = 13
+        Caption = 'Kelas'
+      end
       object edKode: TcxTextEdit
         Tag = 1
         Left = 49
@@ -137,7 +146,7 @@ inherited frmSupplier: TfrmSupplier
         Top = 13
         Lines.Strings = (
           'memAlamt')
-        TabOrder = 2
+        TabOrder = 4
         Height = 46
         Width = 185
       end
@@ -147,7 +156,7 @@ inherited frmSupplier: TfrmSupplier
         Width = 185
         Height = 90
         Caption = 'Role'
-        TabOrder = 3
+        TabOrder = 2
         object chkSupplier: TCheckBox
           Left = 19
           Top = 16
@@ -180,7 +189,7 @@ inherited frmSupplier: TfrmSupplier
         Top = 88
         TabStop = False
         Enabled = False
-        TabOrder = 4
+        TabOrder = 6
         Text = 'edAkunHutang'
         Width = 185
       end
@@ -195,7 +204,7 @@ inherited frmSupplier: TfrmSupplier
         Left = 329
         Top = 115
         Properties.OnValidate = cbbAkunPiutangPropertiesValidate
-        TabOrder = 6
+        TabOrder = 7
         Width = 185
       end
       object edAkunPiutang: TcxTextEdit
@@ -203,8 +212,17 @@ inherited frmSupplier: TfrmSupplier
         Top = 138
         TabStop = False
         Enabled = False
-        TabOrder = 7
+        TabOrder = 8
         Text = 'edAkunHutang'
+        Width = 185
+      end
+      object edKelas: TcxTextEdit
+        Tag = 1
+        Left = 49
+        Top = 159
+        Properties.CharCase = ecUpperCase
+        TabOrder = 3
+        Text = 'EDNAMA'
         Width = 185
       end
     end
@@ -216,7 +234,6 @@ inherited frmSupplier: TfrmSupplier
     ExplicitWidth = 771
     inherited btnBaru: TcxButton
       Left = 659
-      OnClick = nil
       ExplicitLeft = 659
     end
     inherited btnHapus: TcxButton
@@ -244,25 +261,26 @@ inherited frmSupplier: TfrmSupplier
     end
   end
   inherited dsCabang: TDataSource
-    Left = 136
-    Top = 184
+    Left = 624
+    Top = 80
   end
   inherited DSPCabang: TDataSetProvider
-    Left = 168
-    Top = 184
+    Left = 656
+    Top = 80
   end
   inherited cdsCabang: TClientDataSet
-    Left = 200
-    Top = 184
+    Left = 688
+    Top = 80
   end
   inherited dlgSaveExportExcel: TSaveDialog
-    Left = 56
-    Top = 184
+    Left = 544
+    Top = 80
   end
   inherited ilButton: TImageList
-    Left = 96
+    Left = 584
+    Top = 80
     Bitmap = {
-      494C0101050008007C0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010105000800800018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

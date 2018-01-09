@@ -55,6 +55,7 @@ type
     cxGridColOINama: TcxGridColumn;
     cxGridColOIKeterangan: TcxGridColumn;
     cxGridColOINominal: TcxGridColumn;
+    edKelas: TcxTextEdit;
     procedure actCetakExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ActionBaruExecute(Sender: TObject);
@@ -92,11 +93,13 @@ type
     procedure cxGridColOIKodePropertiesValidate(Sender: TObject;
       var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
     procedure FormShow(Sender: TObject);
+    procedure cbbCustomerPropertiesInitPopup(Sender: TObject);
   private
     FCDSAccountAPNew: tclientDataSet;
     FCDSAccountPenerimaanLain: tclientDataSet;
     FCDSAP: tclientDataSet;
     FCDSRekBank: TClientDataSet;
+    FCDSSalesman: tclientDataSet;
     FPenerimaanKas: TPenerimaanKas;
     function GetPenerimaanKas: TPenerimaanKas;
     function GetTotalNominalGrid: Double;
@@ -242,6 +245,17 @@ begin
   end;
 
 
+end;
+
+procedure TfrmPenerimaanKas.cbbCustomerPropertiesInitPopup(Sender: TObject);
+begin
+  inherited;
+  FCDSSalesman.Filtered := False;
+  if Trim(edKelas.Text) = ''  then
+    Exit;
+
+  FCDSSalesman.Filter := ' kelas = ' + QuotedStr(Trim(edKelas.Text));
+  FCDSSalesman.Filtered := True;
 end;
 
 procedure TfrmPenerimaanKas.cbbCustomerPropertiesValidate(Sender: TObject;
@@ -420,12 +434,11 @@ end;
 
 procedure TfrmPenerimaanKas.InisialisasiCBBSalesman;
 var
-  lCDSSalesman: TClientDataSet;
   sSQL: string;
 begin
-  sSQL := 'select Nama,Kode,ID from TSupplier where ispembeli = 1';
-  lCDSSalesman := TDBUtils.OpenDataset(sSQL);
-  cbbCustomer.Properties.LoadFromCDS(lCDSSalesman,'ID','Nama',['ID'],Self);
+  sSQL := 'select Nama,Kode,kelas,ID from TSupplier where ispembeli = 1';
+  FCDSSalesman := TDBUtils.OpenDataset(sSQL);
+  cbbCustomer.Properties.LoadFromCDS(FCDSSalesman,'ID','Nama',['ID'],Self);
   cbbCustomer.Properties.SetMultiPurposeLookup;
 end;
 
@@ -468,6 +481,7 @@ begin
   cbbRekBank.EditValue := FPenerimaanKas.RekBank.ID;
   cbbRekBankExit(nil);
 
+  FCDSSalesman.Filtered:= False;
   cbbCustomer.EditValue:= FPenerimaanKas.Pembeli.ID;
   memKeterangan.Text   := FPenerimaanKas.Keterangan;
 

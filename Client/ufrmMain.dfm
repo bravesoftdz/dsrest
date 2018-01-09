@@ -39,7 +39,6 @@ object frmMain: TfrmMain
       Index = 0
     end
     object dxrbnTabMaster: TdxRibbonTab
-      Active = True
       Caption = 'Master'
       Groups = <
         item
@@ -69,7 +68,8 @@ object frmMain: TfrmMain
       Index = 2
     end
     object dxrbntbAkuntansi: TdxRibbonTab
-      Caption = 'FA'
+      Active = True
+      Caption = 'Keuangan'
       Groups = <
         item
           Caption = 'Master'
@@ -345,7 +345,7 @@ object frmMain: TfrmMain
           Visible = True
           ItemName = 'dxbrlrgbtnAssetCat'
         end>
-      OneOnRow = False
+      OneOnRow = True
       Row = 0
       UseOwnFont = True
       Visible = True
@@ -474,7 +474,7 @@ object frmMain: TfrmMain
     object dxbrmngrAMSBarKeuangan: TdxBar
       Caption = 'Keuangan'
       CaptionButtons = <>
-      DockedLeft = 114
+      DockedLeft = 0
       DockedTop = 0
       FloatLeft = 900
       FloatTop = 8
@@ -483,21 +483,13 @@ object frmMain: TfrmMain
       ItemLinks = <
         item
           Visible = True
-          ItemName = 'dxbrlrgbtn3'
-        end
-        item
-          Visible = True
           ItemName = 'dxbrlrgbtnPenerimaanKas'
         end
         item
           Visible = True
           ItemName = 'dxbrlrgbtnPengeluaranKas'
-        end
-        item
-          Visible = True
-          ItemName = 'dxbrlrgbtnsETTLEMENTarap'
         end>
-      OneOnRow = True
+      OneOnRow = False
       Row = 0
       UseOwnFont = False
       Visible = True
@@ -506,7 +498,7 @@ object frmMain: TfrmMain
     object dxbrmngrAMSBarFA: TdxBar
       Caption = 'FA'
       CaptionButtons = <>
-      DockedLeft = 388
+      DockedLeft = 0
       DockedTop = 0
       FloatLeft = 900
       FloatTop = 8
@@ -524,7 +516,7 @@ object frmMain: TfrmMain
       OneOnRow = False
       Row = 0
       UseOwnFont = False
-      Visible = True
+      Visible = False
       WholeRow = False
     end
     object dxbrTAG: TdxBar
@@ -772,6 +764,7 @@ object frmMain: TfrmMain
     object dxbrlrgbtn3: TdxBarLargeButton
       Action = actCustomerInvoice
       Category = 0
+      Enabled = False
       LargeImageIndex = 14
     end
     object dxbrlrgbtnPenerimaanKas: TdxBarLargeButton
@@ -1115,7 +1108,7 @@ object frmMain: TfrmMain
     Left = 688
     Top = 128
     Bitmap = {
-      494C010116001800B40120002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010116001800B80120002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000080000000C000000001002000000000000080
       0100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

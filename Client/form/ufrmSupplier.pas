@@ -33,6 +33,8 @@ type
     lblAkunPiutang: TLabel;
     cbbAkunPiutang: TcxExtLookupComboBox;
     edAkunPiutang: TcxTextEdit;
+    lblKelas: TLabel;
+    edKelas: TcxTextEdit;
     procedure FormCreate(Sender: TObject);
     procedure ActionBaruExecute(Sender: TObject);
     procedure ActionHapusExecute(Sender: TObject);
@@ -155,6 +157,7 @@ begin
     try
       Supplier.Kode       := UpperCase(edKode.Text);
       Supplier.Nama       := UpperCase(edNama.Text);
+      Supplier.Kelas      := UpperCase(edKelas.Text);
       Supplier.Alamat     := memAlamt.Text;
       Supplier.IsSupplier := TAppUtils.BoolToInt(chkSupplier.Checked);
       Supplier.IsPembeli  := TAppUtils.BoolToInt(chkPembeli.Checked);
@@ -247,6 +250,7 @@ begin
 
     edKode.Text              := FSupplier.Kode;
     edNama.Text              := FSupplier.Nama;
+    edKelas.Text             := FSupplier.Kelas;
     memAlamt.Text            := FSupplier.Alamat;
 
     chkSupplier.Checked      := FSupplier.IsSupplier =1;
