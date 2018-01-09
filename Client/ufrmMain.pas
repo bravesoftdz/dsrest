@@ -18,7 +18,8 @@ uses
   Datasnap.DBClient, ufrmTACKirim, cxContainer, cxEdit, cxTextEdit, cxMaskEdit,
   cxDropDownEdit, ufrmPengeluaranKas, ufrmJurnal, ufrmLapPenerimaanBarang,
   ufrmKartuAP, ufrmLaporanAP, ufrmKartuAR,ufrmLaporanAR,
-  ufrmLaporanReturSupplier, ufrmGenerateJurnal, ufrmBukuBesar;
+  ufrmLaporanReturSupplier, ufrmGenerateJurnal, ufrmBukuBesar,
+  Vcl.AppEvnts;
 
 type
   TfrmMain = class(TForm)
@@ -162,6 +163,7 @@ type
     actLapBukuBesar: TAction;
     dxbrlrgbtnLapPenjualan: TdxBarLargeButton;
     actLapPenjualan: TAction;
+    aplctnvntsApp: TApplicationEvents;
     procedure actAlatGantiCabangExecute(Sender: TObject);
     procedure actApplicationExitExecute(Sender: TObject);
     procedure actClosingInventoryExecute(Sender: TObject);
@@ -201,6 +203,7 @@ type
     procedure actPengeluaranKasExecute(Sender: TObject);
     procedure actLapReturSupplierExecute(Sender: TObject);
     procedure actSettlementARAPExecute(Sender: TObject);
+    procedure aplctnvntsAppException(Sender: TObject; E: Exception);
   private
     procedure SimpanAndDisableDataMenu;
     procedure UpdateStatusBar;
@@ -428,6 +431,11 @@ end;
 procedure TfrmMain.actTAGKirimExecute(Sender: TObject);
 begin
   frmTACKirim := TfrmTACKirim.Create(Self);
+end;
+
+procedure TfrmMain.aplctnvntsAppException(Sender: TObject; E: Exception);
+begin
+  TAppUtils.ShowException(E);
 end;
 
 procedure TfrmMain.btnCetakClick(Sender: TObject);

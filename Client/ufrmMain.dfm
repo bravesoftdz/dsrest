@@ -51,6 +51,7 @@ object frmMain: TfrmMain
       Index = 1
     end
     object dxrbntbPenerimaanBarangTransaksi: TdxRibbonTab
+      Active = True
       Caption = 'Inventory'
       Groups = <
         item
@@ -68,8 +69,7 @@ object frmMain: TfrmMain
       Index = 2
     end
     object dxrbntbAkuntansi: TdxRibbonTab
-      Active = True
-      Caption = 'Keuangan'
+      Caption = 'FA'
       Groups = <
         item
           Caption = 'Master'
@@ -474,7 +474,7 @@ object frmMain: TfrmMain
     object dxbrmngrAMSBarKeuangan: TdxBar
       Caption = 'Keuangan'
       CaptionButtons = <>
-      DockedLeft = 0
+      DockedLeft = 114
       DockedTop = 0
       FloatLeft = 900
       FloatTop = 8
@@ -483,11 +483,19 @@ object frmMain: TfrmMain
       ItemLinks = <
         item
           Visible = True
+          ItemName = 'dxbrlrgbtn3'
+        end
+        item
+          Visible = True
           ItemName = 'dxbrlrgbtnPenerimaanKas'
         end
         item
           Visible = True
           ItemName = 'dxbrlrgbtnPengeluaranKas'
+        end
+        item
+          Visible = True
+          ItemName = 'dxbrlrgbtnsETTLEMENTarap'
         end>
       OneOnRow = False
       Row = 0
@@ -516,7 +524,7 @@ object frmMain: TfrmMain
       OneOnRow = False
       Row = 0
       UseOwnFont = False
-      Visible = False
+      Visible = True
       WholeRow = False
     end
     object dxbrTAG: TdxBar
@@ -764,7 +772,6 @@ object frmMain: TfrmMain
     object dxbrlrgbtn3: TdxBarLargeButton
       Action = actCustomerInvoice
       Category = 0
-      Enabled = False
       LargeImageIndex = 14
     end
     object dxbrlrgbtnPenerimaanKas: TdxBarLargeButton
@@ -1108,7 +1115,7 @@ object frmMain: TfrmMain
     Left = 688
     Top = 128
     Bitmap = {
-      494C010116001800B80120002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010116001800C00120002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000080000000C000000001002000000000000080
       0100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -4295,5 +4302,10 @@ object frmMain: TfrmMain
     Provider = 'Forms'
     Left = 288
     Top = 264
+  end
+  object aplctnvntsApp: TApplicationEvents
+    OnException = aplctnvntsAppException
+    Left = 288
+    Top = 152
   end
 end
