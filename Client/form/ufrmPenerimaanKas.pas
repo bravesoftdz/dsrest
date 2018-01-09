@@ -14,7 +14,8 @@ uses
   dxStatusBar, uDBUtils, ClientModule, uAppUtils, dxCore, cxDateUtils,
   cxMaskEdit, cxDropDownEdit, cxCalendar, cxTextEdit, cxMemo, cxLookupEdit,
   cxDBLookupEdit, cxDBExtLookupComboBox, cxCurrencyEdit,uModel,uPenerimaanKas,
-  uReport, uRekBank,uDMReport, Data.FireDACJSONReflect, uReturSupplier, uSupplier;
+  uReport, uRekBank,uDMReport, Data.FireDACJSONReflect, uReturSupplier,
+  uSupplier, uAccount;
 
 type
   TfrmPenerimaanKas = class(TfrmDefault)
@@ -56,6 +57,8 @@ type
     cxGridColOIKeterangan: TcxGridColumn;
     cxGridColOINominal: TcxGridColumn;
     edKelas: TcxTextEdit;
+    lblAccount: TLabel;
+    cbbAccount: TcxExtLookupComboBox;
     procedure actCetakExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ActionBaruExecute(Sender: TObject);
@@ -178,6 +181,21 @@ procedure TfrmPenerimaanKas.ActionBaruExecute(Sender: TObject);
 begin
   inherited;
   LoadData('');
+
+  CDSRekBank.First;
+  while not CDSRekBank.Eof do
+  begin
+    if CDSRekBank.FieldByName('bank').AsString = 'CASH' then
+      Break;
+
+    CDSRekBank.Next;
+  end;
+
+  cbbRekBank.EditValue := CDSRekBank.FieldByName('id').AsString;
+
+  FCDSAccountAPNew.First;
+  cbbAccount.EditValue := FCDSAccountAPNew.FieldByName('id').AsString;
+
 end;
 
 procedure TfrmPenerimaanKas.ActionHapusExecute(Sender: TObject);
@@ -213,7 +231,7 @@ end;
 procedure TfrmPenerimaanKas.ActionSimpanExecute(Sender: TObject);
 begin
   inherited;
-  edNominal.Value := GetTotalNominalGrid;
+//  edNominal.Value := GetTotalNominalGrid;
 
   if not ValidateEmptyCtrl([1]) then
     Exit
@@ -424,6 +442,11 @@ end;
 procedure TfrmPenerimaanKas.InisialisasiAccount;
 begin
   FCDSAccountAPNew := TDBUtils.DSToCDS(ClientDataModule.DSDataCLient.LoadAccountAPNew(), Self);
+  cbbAccount.Properties.LoadFromCDS(FCDSAccountAPNew,'ID','Nama',['ID'],Self);
+  cbbAccount.Properties.SetMultiPurposeLookup;
+
+
+  Exit;
   TcxExtLookupComboBoxProperties(cxGridColAPNewKode.Properties).LoadFromCDS(FCDSAccountAPNew, 'ID', 'Kode', ['id'], Self);
   TcxExtLookupComboBoxProperties(cxGridColAPNewNama.Properties).LoadFromCDS(FCDSAccountAPNew, 'Kode', 'Nama', ['id'], Self);
 
@@ -450,6 +473,7 @@ begin
   CDSRekBank := TDBUtils.OpenDataset(sSQL);
   cbbRekBank.Properties.LoadFromCDS(CDSRekBank,'ID','bank',['ID'],Self);
   cbbRekBank.Properties.SetMultiPurposeLookup;
+
 end;
 
 function TfrmPenerimaanKas.LoadData(AID : String): Boolean;
@@ -532,6 +556,7 @@ begin
   cxGridTableAPNew.ClearRows;
   for I := 0 to PenerimaanKas.PenerimaanKasAPNewItems.Count - 1 do
   begin
+    cbbAccount.EditValue := PenerimaanKas.PenerimaanKasAPNewItems[i].Account.ID;
     cxGridTableAPNew.DataController.AppendRecord;
     cxGridTableAPNew.SetObjectData(PenerimaanKas.PenerimaanKasAPNewItems[i], i);
     cxGridTableAPNew.SetValue(i, cxGridColAPNewNama.Index, cxGridTableAPNew.DataController.DisplayTexts[i,cxGridColAPNewKode.Index]);
@@ -574,13 +599,17 @@ var
   lPKAPNew: TPenerimaanKasAPNew;
 begin
   PenerimaanKas.PenerimaanKasAPNewItems.Clear;
-  for I := 0 to cxGridTableAPNew.DataController.RecordCount - 1 do
-  begin
-    lPKAPNew               := TPenerimaanKasAPNew.Create;
-    cxGridTableAPNew.LoadObjectData(lPKAPNew,i);
+//  for I := 0 to cxGridTableAPNew.DataController.RecordCount - 1 do
+//  begin
+    lPKAPNew                := TPenerimaanKasAPNew.Create;
+    lPKAPNew.Account        := Taccount.CreateID(cbbAccount.EditValue);
+    lPKAPNew.Keterangan     := memKeterangan.Text;
+    lPKAPNew.Nominal        := edNominal.Value;
+    lPKAPNew.Urutan         := 0;
+//    cxGridTableAPNew.LoadObjectData(lPKAPNew,i);
 
     PenerimaanKas.PenerimaanKasAPNewItems.Add(lPKAPNew);
-  end;
+//  end;
 end;
 
 procedure TfrmPenerimaanKas.UpdatePenerimaanKasAPLain;

@@ -51,7 +51,6 @@ object frmMain: TfrmMain
       Index = 1
     end
     object dxrbntbPenerimaanBarangTransaksi: TdxRibbonTab
-      Active = True
       Caption = 'Inventory'
       Groups = <
         item
@@ -69,6 +68,7 @@ object frmMain: TfrmMain
       Index = 2
     end
     object dxrbntbAkuntansi: TdxRibbonTab
+      Active = True
       Caption = 'FA'
       Groups = <
         item
@@ -492,10 +492,6 @@ object frmMain: TfrmMain
         item
           Visible = True
           ItemName = 'dxbrlrgbtnPengeluaranKas'
-        end
-        item
-          Visible = True
-          ItemName = 'dxbrlrgbtnsETTLEMENTarap'
         end>
       OneOnRow = False
       Row = 0

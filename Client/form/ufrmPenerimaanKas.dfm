@@ -3,6 +3,7 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
   ClientHeight = 454
   ClientWidth = 735
   OnShow = FormShow
+  ExplicitTop = -31
   ExplicitWidth = 751
   ExplicitHeight = 493
   PixelsPerInch = 96
@@ -79,9 +80,10 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
         Left = 0
         Top = 0
         Width = 727
-        Height = 131
-        Align = alTop
+        Height = 280
+        Align = alClient
         TabOrder = 0
+        ExplicitHeight = 131
         object lblNoBukti: TLabel
           Left = 38
           Top = 9
@@ -111,8 +113,8 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
           Caption = 'Penerima'
         end
         object lblCustomer: TLabel
-          Left = 294
-          Top = 34
+          Left = 16
+          Top = 84
           Width = 61
           Height = 13
           Caption = 'Diterima Dari'
@@ -130,6 +132,13 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
           Width = 37
           Height = 13
           Caption = 'Nominal'
+        end
+        object lblAccount: TLabel
+          Left = 272
+          Top = 34
+          Width = 83
+          Height = 13
+          Caption = 'Jenis Penerimaan'
         end
         object edNoBukti: TcxTextEdit
           Tag = 1
@@ -157,11 +166,11 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
         end
         object cbbCustomer: TcxExtLookupComboBox
           Tag = 1
-          Left = 398
-          Top = 30
+          Left = 120
+          Top = 80
           Properties.OnInitPopup = cbbCustomerPropertiesInitPopup
           Properties.OnValidate = cbbCustomerPropertiesValidate
-          TabOrder = 7
+          TabOrder = 4
           Width = 108
         end
         object memKeterangan: TcxMemo
@@ -169,7 +178,7 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
           Top = 80
           Lines.Strings = (
             'memKeterangan')
-          TabOrder = 9
+          TabOrder = 8
           Height = 46
           Width = 145
         end
@@ -179,18 +188,18 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
           Width = 145
           Height = 25
           Caption = 'Load AR'
-          TabOrder = 10
+          TabOrder = 11
+          TabStop = False
           Visible = False
         end
         object edNominal: TcxCurrencyEdit
           Tag = 1
           Left = 361
           Top = 55
-          Enabled = False
           Properties.Alignment.Horz = taRightJustify
           Properties.DisplayFormat = ',0.00;(,0.00)'
           Properties.OnChange = edNominalPropertiesChange
-          TabOrder = 8
+          TabOrder = 7
           Width = 145
         end
         object cbbRekBank: TcxExtLookupComboBox
@@ -202,42 +211,51 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
           Width = 145
         end
         object edNoRek: TcxTextEdit
-          Left = 83
-          Top = 105
+          Left = 571
+          Top = 217
           TabStop = False
           Enabled = False
-          TabOrder = 4
+          TabOrder = 10
           Text = 'edNoBukti'
+          Visible = False
           Width = 145
         end
         object edAlamatBank: TcxTextEdit
-          Left = 83
-          Top = 80
+          Left = 571
+          Top = 192
           TabStop = False
           Enabled = False
-          TabOrder = 3
+          TabOrder = 9
           Text = 'edNoBukti'
+          Visible = False
           Width = 145
         end
         object edKelas: TcxTextEdit
+          Tag = 99
+          Left = 83
+          Top = 80
+          TabOrder = 3
+          Text = 'edNoBukti'
+          Width = 35
+        end
+        object cbbAccount: TcxExtLookupComboBox
           Tag = 1
           Left = 361
           Top = 30
           TabOrder = 6
-          Text = 'edNoBukti'
-          Width = 35
+          OnExit = cbbRekBankExit
+          Width = 145
         end
       end
       object cxGridDBAR: TcxGrid
         Left = 0
-        Top = 131
+        Top = 280
         Width = 727
-        Height = 242
-        Align = alClient
+        Height = 93
+        Align = alBottom
         TabOrder = 1
+        Visible = False
         RootLevelOptions.DetailTabsPosition = dtpTop
-        ExplicitTop = 161
-        ExplicitHeight = 212
         object cxGridTableAR: TcxGridTableView
           Navigator.Buttons.CustomButtons = <>
           OnEditing = cxGridTableAREditing
@@ -459,17 +477,26 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
     end
   end
   inherited dsCabang: TDataSource
-    Left = 528
+    Left = 664
+    Top = 64
+  end
+  inherited DSPCabang: TDataSetProvider
+    Left = 600
+    Top = 64
+  end
+  inherited cdsCabang: TClientDataSet
+    Left = 632
+    Top = 64
   end
   inherited dlgSaveExportExcel: TSaveDialog
-    Left = 560
-    Top = 144
+    Left = 696
+    Top = 64
   end
   inherited ilButton: TImageList
-    Left = 584
-    Top = 144
+    Left = 608
+    Top = 136
     Bitmap = {
-      494C010107000800340118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800380118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
