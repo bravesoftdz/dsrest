@@ -39,7 +39,6 @@ object frmMain: TfrmMain
       Index = 0
     end
     object dxrbnTabMaster: TdxRibbonTab
-      Active = True
       Caption = 'Master'
       Groups = <
         item
@@ -52,6 +51,7 @@ object frmMain: TfrmMain
       Index = 1
     end
     object dxrbntbPenerimaanBarangTransaksi: TdxRibbonTab
+      Active = True
       Caption = 'Inventory'
       Groups = <
         item
@@ -345,7 +345,7 @@ object frmMain: TfrmMain
           Visible = True
           ItemName = 'dxbrlrgbtnAssetCat'
         end>
-      OneOnRow = False
+      OneOnRow = True
       Row = 0
       UseOwnFont = True
       Visible = True
@@ -497,7 +497,7 @@ object frmMain: TfrmMain
           Visible = True
           ItemName = 'dxbrlrgbtnsETTLEMENTarap'
         end>
-      OneOnRow = True
+      OneOnRow = False
       Row = 0
       UseOwnFont = False
       Visible = True
@@ -506,7 +506,7 @@ object frmMain: TfrmMain
     object dxbrmngrAMSBarFA: TdxBar
       Caption = 'FA'
       CaptionButtons = <>
-      DockedLeft = 388
+      DockedLeft = 0
       DockedTop = 0
       FloatLeft = 900
       FloatTop = 8
@@ -1115,7 +1115,7 @@ object frmMain: TfrmMain
     Left = 688
     Top = 128
     Bitmap = {
-      494C010116001800B40120002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010116001800BC0120002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000080000000C000000001002000000000000080
       0100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -4302,5 +4302,10 @@ object frmMain: TfrmMain
     Provider = 'Forms'
     Left = 288
     Top = 264
+  end
+  object aplctnvntsApp: TApplicationEvents
+    OnException = aplctnvntsAppException
+    Left = 288
+    Top = 152
   end
 end

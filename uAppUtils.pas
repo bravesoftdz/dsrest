@@ -2,12 +2,13 @@ unit uAppUtils;
 
 interface
 uses
-  //AdvGrid,
+  System.SysUtils,
+  System.DateUtils,
   Rtti, cxGrid,cxGridDBTableView, cxTreeView,  Math, cxGridExportLink,
   cxExportPivotGridLink, cxGridDBBandedTableView, cxDBPivotGrid, cxCurrencyEdit,
   cxCustomPivotGrid, cxGridBandedTableView, cxDBExtLookupComboBox, cxCustomData,
   cxFilter, cxGridCustomTableView, cxDBTL, cxTLExportLink,cxCalendar, Dialogs,
-  SysUtils, cxGridDBDataDefinitions, System.Classes, DBClient,
+  cxGridDBDataDefinitions, System.Classes, DBClient,
 
   Vcl.Controls, Vcl.Forms, Windows, Messages, Variants, Graphics, ExtCtrls,
   ActnList, System.Actions, Vcl.StdCtrls, cxGraphics, cxControls,
@@ -20,7 +21,8 @@ uses
     SqlExpr, System.UITypes,System.TypInfo,
 
 
-    cxDropDownEdit,  System.Contnrs, cxMemo, System.Generics.Collections, uModel;
+    cxDropDownEdit,  System.Contnrs, cxMemo, System.Generics.Collections,
+    uModel, Datasnap.DSHTTPClient, REST.Json;
 
 type
   TTag = set of byte;
@@ -38,6 +40,14 @@ type
 //    public
 //
 //    end;
+
+  TRestExcept = class(TObject)
+  private
+    Ferror: String;
+  public
+    property error: String read Ferror write Ferror;
+  end;
+
 
   TAppUtils = class(TObject)
   private
@@ -141,6 +151,7 @@ type
         ANomorPB : Integer = 0);
     class procedure FinalisasiProgressBar(ANomorPB : Integer = 0);
     class function DecPeriode(APeriode : Integer): Integer;
+    class procedure ShowException(E: Exception; Header: String = '');
     class function StrToBytes(const value: string): TBytes;
   end;
 
@@ -1076,7 +1087,7 @@ end;
 
 class function TAppUtils.TambahkanKarakterNol(AAngka, ALength : Integer): string;
 begin
-  Result := SysUtils.Format('%.*d',[ALength, AAngka]);
+  Result := System.SysUtils.Format('%.*d',[ALength, AAngka]);
 end;
 
 class function TAppUtils.TulisRegistry(aName, aValue: String; sAppName : String = ''): Boolean;
@@ -1316,6 +1327,27 @@ begin
   else
     Result := APeriode + 1;
   end;
+end;
+
+class procedure TAppUtils.ShowException(E: Exception; Header: String = '');
+var
+  lObj: TRestExcept;
+  Msg: string;
+begin
+  if Header = '' then
+    Header := 'Ada kesalahan dengan pesan : ';
+
+  Msg := Header + #13 +  E.Message;
+  if E is EHTTPProtocolException then
+  begin
+    lObj := TJson.JsonToObject<TRestExcept>(EHTTPProtocolException(E).ErrorMessage);
+    try
+      Msg := Msg + #13 + lObj.error;
+    finally
+      lObj.Free;
+    end;
+  end;
+  TAppUtils.Error(Msg);
 end;
 
 class function TAppUtils.StrToBytes(const value: string): TBytes;
