@@ -89,3 +89,6 @@ Setting Aplikasi
 - Hilangkan cabang, gudang jual, gudang transit
 
 Closing, Ganti Cabang dihilangkan
+
+OTHER
+- semua caption report ambil dr setting

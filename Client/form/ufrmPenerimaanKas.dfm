@@ -3,7 +3,6 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
   ClientHeight = 454
   ClientWidth = 735
   OnShow = FormShow
-  ExplicitTop = -31
   ExplicitWidth = 751
   ExplicitHeight = 493
   PixelsPerInch = 96
@@ -83,7 +82,6 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
         Height = 280
         Align = alClient
         TabOrder = 0
-        ExplicitHeight = 131
         object lblNoBukti: TLabel
           Left = 38
           Top = 9
@@ -235,7 +233,6 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
           Left = 83
           Top = 80
           TabOrder = 3
-          Text = 'edNoBukti'
           Width = 35
         end
         object cbbAccount: TcxExtLookupComboBox
@@ -496,7 +493,7 @@ inherited frmPenerimaanKas: TfrmPenerimaanKas
     Left = 608
     Top = 136
     Bitmap = {
-      494C010107000800380118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C0101070008003C0118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

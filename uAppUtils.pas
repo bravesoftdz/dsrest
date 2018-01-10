@@ -420,7 +420,8 @@ class function TAppUtils.ConfirmBerhasilSimpanCetakReport(ANamaLaporan :
     String): Boolean;
 begin
   Result := TAppUtils.Confirm(_MSG_BERHASIL_SIMPAN + #13
-                              + 'Apakah Anda Akan Cetak Laporan/Slip ' + ANamaLaporan);
+                              + 'Apakah Anda Akan Cetak Laporan/Slip ' + ANamaLaporan
+                              + ' ?');
 end;
 
 class function TAppUtils.ConfirmHapus: Boolean;
