@@ -1,0 +1,91 @@
+1. 
+2. Deposit tidak perlu memilih Cash/Bank
+3. Input qty bisa disamakan pada saat scan barcode mis : 5*Barcode
+4. Informasi melebihi quota ditambah nominalnya (Pembelhinan melebihi quota sebesar Rp ....)
+
+Master
+1. Caption business partner diubah Input data pembeli/pemasok
+2. Role cukup pembeli dan pemasok
+3. Akun disederhanakan , tampilkan yg diperlukan saja, diberi default
+4. Tombol cetak, ekspor, dan konsolidasi dihilangkan (Untuk semua form yg tidak perlu cetak laporan)
+
+
+Master Barang
+1. SKU : Barcode
+2. Input data di depan otomatis setting satuan terisi,karena 1 barang hanya 1 satuan
+3. Group : Kelompok barang
+4. PPN hilangkan
+5. gROUP BARANG
+
+Master Gudang : 
+1. Ditiadakan
+
+Master FA
+1. Dihilangkan
+Pembelian
+1. Gudang dihilangkan
+2. Detail pembelian
+	- SKU > Barcode
+	- Diskon, diskon Rp hilang
+	- PPN, PPN Rp  hilang
+	
+Retur Supplier
+1. Menjadi Hutang minus
+2. PPN, PPN Rp dihilangkan
+3. Semua kata Supplier diubah menjadi Pemasok
+
+Penjualan
+1. Simpan langsung cetak
+2. Invoice hilang
+3. Pada saat input penjualan tombol cetak hilang, hanya muncul ketika di tab overview
+4. Tombol POS diubah jadi Umum
+5. Kolom SKU diubah mjd Barcode
+6. Tdk boleh melebihi stock (Cek stock)
+
+POS Umum
+1. Salesman dihilangkan aja
+2. Deposit dihilangkan
+3. Pembeli diberi default UMUM
+4. SKU >Barcode
+
+FA
+1. FA diubah menjadi Keuangan
+2. Menu Bank, Account dihilangkan
+3. Tagihan penjualan dihilangkan
+
+Penerimaan Kas/Desposit
+1. Kas/Bank ditiadkan ok
+2. Diterima dari OK
+3. Daftar santri diberi filter kelas ok
+4. Detail Penerimaan berdasarkan nominal di atas ok
+5. Load AR dihilangkan ok
+6. Slip penerimaan :
+	a. diterima dari
+	b. Tanggal
+	c. Nominal
+	d. Posisi deposit
+	c. Ukuran seperti struk belanja
+	
+7. Simpan langsung cetak
+
+Pengeluaran KAS
+1. Pembayaran diubah mjd  Pengeluaran Kas 
+2. Kas Bank diberi default KAS
+3. NO BG, Jenis dihilangkan
+4. Penerima diberi filter Santri/Supplier di atasnya
+5. Ditambahkan tab penarikan deposit, diberidefault akun penarikan deposit
+6. AP diubah menjadi Pembayaran Hutang
+7. Lain-lain diberi default Pembayaran Gaji
+8. Ukuran slip disesuaikan dengan struk belanja
+
+SettlementAR-AP dihilangkan ok
+
+Kartu Deposit
+- Supplier diganti Nama Santri
+- AP dihilangkan
+
+Kartu Piutang dan daftar Piutang dihilangkan
+Setting Aplikasi
+- Hilangkan cabang, gudang jual, gudang transit
+
+Closing, Ganti Cabang dihilangkan
