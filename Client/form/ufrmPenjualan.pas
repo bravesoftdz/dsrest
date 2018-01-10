@@ -504,36 +504,41 @@ begin
   inherited;
   if Key = VK_RETURN then
   begin
-    if not IsPLUKetemu(trim(edPLU.Text), dQTYInput) then
-      Exit;
-
-    iBaris := GetBaris(fCDSSKU.FieldByName('id').AsString);
-    if iBaris < 0 then
+    if trim(edPLU.Text) = '' then
     begin
-      cxGridTablePenjualan.DataController.RecordCount := cxGridTablePenjualan.DataController.RecordCount + 1;
-      iBaris := cxGridTablePenjualan.DataController.RecordCount - 1;
+      btnSave.SetFocus;
+    end else begin
+      if not IsPLUKetemu(trim(edPLU.Text), dQTYInput) then
+        Exit;
+
+      iBaris := GetBaris(fCDSSKU.FieldByName('id').AsString);
+      if iBaris < 0 then
+      begin
+        cxGridTablePenjualan.DataController.RecordCount := cxGridTablePenjualan.DataController.RecordCount + 1;
+        iBaris := cxGridTablePenjualan.DataController.RecordCount - 1;
+      end;
+
+
+      cxGridTablePenjualan.DataController.FocusedRecordIndex := iBaris;
+
+      cxGridTablePenjualan.SetValue(iBaris, cxgrdclmnGridTablePenjualanColumnNama.Index,fCDSSKU.FieldByName('ID').AsString);
+      cxGridTablePenjualan.SetValue(iBaris, cxgrdclmnGridTablePenjualanColumnSKU.Index,fCDSSKU.FieldByName('barang').AsString);
+      cxGridTablePenjualan.SetValue(iBaris, cxgrdclmnGridTablePenjualanColumnSatuan.Index,fCDSSKU.FieldByName('uom').AsString);
+
+      cxGridTablePenjualan.SetValue(iBaris, cxgrdclmnGridTablePenjualanColumnHarga.Index,fCDSSKU.FieldByName(getDefaultHarga).AsString);
+      cxGridTablePenjualan.SetValue(iBaris, cxgrdclmnGridTablePenjualanColumnJenisHarga.Index,getDefaultHarga);
+      cxGridTablePenjualan.SetValue(iBaris, cxgrdclmnGridTablePenjualanColumnKonversi.Index,fCDSSKU.FieldByName('konversi').AsFloat);
+
+      dQty    := cxGridTablePenjualan.GetDouble(iBaris, cxgrdclmnGridTablePenjualanColumnQty.Index);
+      dDiskon := cxGridTablePenjualan.GetDouble(iBaris, cxgrdclmnGridTablePenjualanColumnDiskon.Index);
+
+      cxGridTablePenjualan.SetValue(iBaris, cxgrdclmnGridTablePenjualanColumnQty.Index, dQty + dQTYInput);
+      cxGridTablePenjualan.SetValue(iBaris, cxgrdclmnGridTablePenjualanColumnDiskon.Index, dDiskon);
+
+      HitungNilaiNilaiPerBaris(dDiskon, cxgrdclmnGridTablePenjualanColumnDiskon.Index);
+
+      edPLU.Text := '';
     end;
-
-
-    cxGridTablePenjualan.DataController.FocusedRecordIndex := iBaris;
-
-    cxGridTablePenjualan.SetValue(iBaris, cxgrdclmnGridTablePenjualanColumnNama.Index,fCDSSKU.FieldByName('ID').AsString);
-    cxGridTablePenjualan.SetValue(iBaris, cxgrdclmnGridTablePenjualanColumnSKU.Index,fCDSSKU.FieldByName('barang').AsString);
-    cxGridTablePenjualan.SetValue(iBaris, cxgrdclmnGridTablePenjualanColumnSatuan.Index,fCDSSKU.FieldByName('uom').AsString);
-
-    cxGridTablePenjualan.SetValue(iBaris, cxgrdclmnGridTablePenjualanColumnHarga.Index,fCDSSKU.FieldByName(getDefaultHarga).AsString);
-    cxGridTablePenjualan.SetValue(iBaris, cxgrdclmnGridTablePenjualanColumnJenisHarga.Index,getDefaultHarga);
-    cxGridTablePenjualan.SetValue(iBaris, cxgrdclmnGridTablePenjualanColumnKonversi.Index,fCDSSKU.FieldByName('konversi').AsFloat);
-
-    dQty    := cxGridTablePenjualan.GetDouble(iBaris, cxgrdclmnGridTablePenjualanColumnQty.Index);
-    dDiskon := cxGridTablePenjualan.GetDouble(iBaris, cxgrdclmnGridTablePenjualanColumnDiskon.Index);
-
-    cxGridTablePenjualan.SetValue(iBaris, cxgrdclmnGridTablePenjualanColumnQty.Index, dQty + dQTYInput);
-    cxGridTablePenjualan.SetValue(iBaris, cxgrdclmnGridTablePenjualanColumnDiskon.Index, dDiskon);
-
-    HitungNilaiNilaiPerBaris(dDiskon, cxgrdclmnGridTablePenjualanColumnDiskon.Index);
-
-    edPLU.Text := '';
   end;
 end;
 

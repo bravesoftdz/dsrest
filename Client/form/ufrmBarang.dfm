@@ -15,7 +15,6 @@ inherited frmBarang: TfrmBarang
   inherited cxPCData: TcxPageControl
     Width = 919
     Height = 341
-    Properties.ActivePage = cxTSInputData
     ExplicitWidth = 919
     ExplicitHeight = 341
     ClientRectBottom = 337
@@ -95,12 +94,12 @@ inherited frmBarang: TfrmBarang
             DataController.Summary.DefaultGroupSummaryItems = <>
             DataController.Summary.FooterSummaryItems = <>
             DataController.Summary.SummaryGroups = <>
+            FilterRow.Visible = True
             OptionsData.CancelOnExit = False
             OptionsData.Deleting = False
             OptionsData.DeletingConfirmation = False
             OptionsData.Editing = False
             OptionsData.Inserting = False
-            OptionsView.GroupByBox = False
             Styles.ContentEven = ClientDataModule.cxstylGridEven
             Styles.ContentOdd = ClientDataModule.cxstylGridOdd
             Styles.Header = ClientDataModule.cxstylGridHeader
@@ -150,7 +149,7 @@ inherited frmBarang: TfrmBarang
         Height = 313
         Align = alClient
         TabOrder = 0
-        Properties.ActivePage = cxTSSatuan
+        Properties.ActivePage = cxTSHeader
         Properties.CustomButtons.Buttons = <>
         ClientRectBottom = 309
         ClientRectLeft = 4
@@ -160,29 +159,29 @@ inherited frmBarang: TfrmBarang
           Caption = 'Barang'
           ImageIndex = 0
           object lblKode: TLabel
-            Left = 31
+            Left = 47
             Top = 18
-            Width = 19
+            Width = 39
             Height = 13
-            Caption = 'SKU'
+            Caption = 'Barcode'
           end
           object lblNama: TLabel
-            Left = 23
+            Left = 59
             Top = 42
             Width = 27
             Height = 13
             Caption = 'Nama'
           end
           object lblGroup: TLabel
-            Left = 21
+            Left = 4
             Top = 66
-            Width = 29
+            Width = 82
             Height = 13
-            Caption = 'Group'
+            Caption = 'Kelompok Barang'
           end
           object lblPPN: TLabel
             Left = 292
-            Top = 43
+            Top = 67
             Width = 19
             Height = 13
             Caption = 'PPN'
@@ -194,23 +193,29 @@ inherited frmBarang: TfrmBarang
             Height = 13
             Caption = 'Satuan Stock'
           end
+          object lblHarga: TLabel
+            Left = 282
+            Top = 43
+            Width = 29
+            Height = 13
+            Caption = 'Harga'
+          end
           object edKode: TcxTextEdit
-            Left = 61
+            Left = 90
             Top = 15
             TabOrder = 0
-            Text = 'edKode'
             OnKeyDown = edKodeKeyDown
             Width = 121
           end
           object edNama: TcxTextEdit
-            Left = 61
+            Left = 90
             Top = 39
             TabOrder = 1
             Text = 'edNama'
-            Width = 121
+            Width = 145
           end
           object cbbGroup: TcxExtLookupComboBox
-            Left = 61
+            Left = 90
             Top = 63
             Properties.DropDownAutoSize = True
             Properties.FocusPopup = True
@@ -222,12 +227,12 @@ inherited frmBarang: TfrmBarang
           end
           object cbbPPN: TcxComboBox
             Left = 320
-            Top = 39
+            Top = 63
             Properties.DropDownListStyle = lsFixedList
             Properties.Items.Strings = (
               'PPN'
               'NON PPN')
-            TabOrder = 4
+            TabOrder = 5
             Text = 'NON PPN'
             Width = 121
           end
@@ -240,10 +245,19 @@ inherited frmBarang: TfrmBarang
             TabOrder = 3
             Width = 121
           end
+          object edHarga: TcxCurrencyEdit
+            Left = 320
+            Top = 39
+            Properties.Alignment.Horz = taRightJustify
+            Properties.DisplayFormat = ',0.00;(,0.00)'
+            TabOrder = 4
+            Width = 121
+          end
         end
         object cxTSSatuan: TcxTabSheet
           Caption = 'Satuan'
           ImageIndex = 2
+          TabVisible = False
           object cxGridDBSatuan: TcxGrid
             Left = 0
             Top = 0
@@ -291,11 +305,12 @@ inherited frmBarang: TfrmBarang
                 Width = 95
               end
               object cxGridTableSatuanColumnHargaJualBengkel: TcxGridColumn
-                Caption = 'Harga Jual Bengkel'
+                Caption = 'Harga A'
                 DataBinding.ValueType = 'Currency'
                 PropertiesClassName = 'TcxCurrencyEditProperties'
                 Properties.Alignment.Horz = taRightJustify
                 Properties.DisplayFormat = ',0.00;(,0.00)'
+                Visible = False
                 HeaderAlignmentHorz = taCenter
                 Width = 131
               end
@@ -305,6 +320,7 @@ inherited frmBarang: TfrmBarang
                 PropertiesClassName = 'TcxCurrencyEditProperties'
                 Properties.Alignment.Horz = taRightJustify
                 Properties.DisplayFormat = ',0.00;(,0.00)'
+                Visible = False
                 HeaderAlignmentHorz = taCenter
                 Width = 140
               end
@@ -314,6 +330,7 @@ inherited frmBarang: TfrmBarang
                 PropertiesClassName = 'TcxCurrencyEditProperties'
                 Properties.Alignment.Horz = taRightJustify
                 Properties.DisplayFormat = ',0.00;(,0.00)'
+                Visible = False
                 HeaderAlignmentHorz = taCenter
                 Width = 113
               end
@@ -428,7 +445,7 @@ inherited frmBarang: TfrmBarang
     Left = 232
     Top = 200
     Bitmap = {
-      494C010106000800C00018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010106000800C40018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

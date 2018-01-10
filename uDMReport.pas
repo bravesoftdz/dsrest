@@ -357,7 +357,8 @@ end;
 
 procedure TDMReport.FormShow(Sender: TObject);
 begin
-  FocusedPreview.SetFocus;
+  //FocusedPreview.SetFocus;
+  btnFastPrint.SetFocus;
 end;
 
 procedure TDMReport.frxPreview1PageChanged(Sender: TfrxPreview; PageNo:

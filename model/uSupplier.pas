@@ -14,6 +14,7 @@ type
     FIsPembeli: Integer;
     FIsSalesman: Integer;
     FIsSupplier: Integer;
+    FKelas: string;
     FKode: string;
     FNama: string;
   public
@@ -24,6 +25,7 @@ type
     property IsPembeli: Integer read FIsPembeli write FIsPembeli;
     property IsSalesman: Integer read FIsSalesman write FIsSalesman;
     property IsSupplier: Integer read FIsSupplier write FIsSupplier;
+    property Kelas: string read FKelas write FKelas;
     property Kode: string read FKode write FKode;
     property Nama: string read FNama write FNama;
   end;
