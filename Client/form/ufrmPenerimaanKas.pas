@@ -159,7 +159,7 @@ begin
       lcds := ClientDataModule.ServerPenerimaanKasClient.RetrieveCDSlip(dtpAwal.DateTime, dtpAkhir.DateTime, ClientDataModule.Cabang, PenerimaanKas.NoBukti);
 
 
-    ExecuteReport( 'Reports/Slip_PenerimaanKas' ,
+    ExecuteReport( 'Reports/Slip_Deposit' ,
       lcds
 
     );
@@ -258,7 +258,11 @@ begin
 
   if ClientDataModule.ServerPenerimaanKasClient.Save(PenerimaanKas) then
   begin
-    TAppUtils.InformationBerhasilSimpan;
+    if TAppUtils.ConfirmBerhasilSimpanCetakReport('Slip Deposit') then
+    begin
+      actCetakExecute(Sender);
+    end;
+
     ActionBaruExecute(Sender);
   end;
 
