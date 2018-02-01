@@ -1,0 +1,9 @@
+1. Kartok tab filter tdk urut
+
+POS
+1. Pilih barang dg SKU tdk bisa
+2. Simpan tdk boleh kosong padahal sdh isi semua
+
+TAG
+1. Gagal simpan, gagal konversi varchar > uniqueidentifier OK
+2. vTAG tdk ada,gagal load overview OK
