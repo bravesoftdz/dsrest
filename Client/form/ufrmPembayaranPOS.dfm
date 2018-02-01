@@ -2,8 +2,8 @@ object frmPembayaranPOS: TfrmPembayaranPOS
   Left = 0
   Top = 0
   Caption = 'Pembayaran'
-  ClientHeight = 148
-  ClientWidth = 293
+  ClientHeight = 223
+  ClientWidth = 368
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -15,84 +15,118 @@ object frmPembayaranPOS: TfrmPembayaranPOS
   PixelsPerInch = 96
   TextHeight = 13
   object lblTotal: TLabel
-    Left = 27
-    Top = 12
-    Width = 29
-    Height = 13
+    Left = 48
+    Top = 13
+    Width = 60
+    Height = 33
     Caption = 'Total'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -11
+    Font.Height = -27
     Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
+    Font.Style = []
     ParentFont = False
   end
   object lblDibayar: TLabel
-    Left = 12
-    Top = 39
-    Width = 44
-    Height = 13
+    Left = 18
+    Top = 62
+    Width = 90
+    Height = 33
     Caption = 'Dibayar'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -11
+    Font.Height = -27
     Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
+    Font.Style = []
     ParentFont = False
   end
   object lblSisa: TLabel
-    Left = 33
-    Top = 66
-    Width = 23
-    Height = 13
+    Left = 61
+    Top = 111
+    Width = 47
+    Height = 33
     Caption = 'Sisa'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -11
+    Font.Height = -27
     Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
+    Font.Style = []
     ParentFont = False
   end
   object edTotal: TcxCurrencyEdit
-    Left = 86
+    Left = 129
     Top = 9
     Enabled = False
+    ParentFont = False
     Properties.DisplayFormat = ',0.00;(,0.00)'
+    Style.Font.Charset = DEFAULT_CHARSET
+    Style.Font.Color = clWindowText
+    Style.Font.Height = -27
+    Style.Font.Name = 'Tahoma'
+    Style.Font.Style = []
+    Style.IsFontAssigned = True
     TabOrder = 0
-    Width = 199
+    Width = 230
   end
   object edDibayar: TcxCurrencyEdit
-    Left = 86
-    Top = 36
+    Left = 129
+    Top = 58
+    ParentFont = False
     Properties.DisplayFormat = ',0.00;(,0.00)'
     Properties.OnChange = edDibayarPropertiesChange
+    Style.Font.Charset = DEFAULT_CHARSET
+    Style.Font.Color = clWindowText
+    Style.Font.Height = -27
+    Style.Font.Name = 'Tahoma'
+    Style.Font.Style = []
+    Style.IsFontAssigned = True
     TabOrder = 1
-    Width = 199
+    OnKeyDown = edDibayarKeyDown
+    Width = 230
   end
   object edSisa: TcxCurrencyEdit
-    Left = 86
-    Top = 63
+    Left = 129
+    Top = 107
+    Enabled = False
+    ParentFont = False
     Properties.DisplayFormat = ',0.00;(,0.00)'
+    Style.Font.Charset = DEFAULT_CHARSET
+    Style.Font.Color = clWindowText
+    Style.Font.Height = -27
+    Style.Font.Name = 'Tahoma'
+    Style.Font.Style = []
+    Style.IsFontAssigned = True
     TabOrder = 2
-    Width = 199
+    Width = 230
   end
   object btnSave: TcxButton
-    Left = 85
-    Top = 90
-    Width = 93
-    Height = 31
-    Caption = 'Simpan [Ctrl+S]'
-    ModalResult = 1
+    Left = 129
+    Top = 156
+    Width = 105
+    Height = 44
+    Caption = 'Simpan'
     TabOrder = 3
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -27
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
     OnClick = btnSaveClick
   end
   object btnHapus: TcxButton
-    Left = 184
-    Top = 90
-    Width = 101
-    Height = 31
-    Caption = 'Hapus [Ctrl+X]'
+    Left = 246
+    Top = 156
+    Width = 113
+    Height = 44
+    Caption = 'Batal'
     ModalResult = 2
     TabOrder = 4
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -27
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
   end
 end

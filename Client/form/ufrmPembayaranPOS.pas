@@ -20,6 +20,7 @@ type
     btnHapus: TcxButton;
     procedure edDibayarPropertiesChange(Sender: TObject);
     procedure btnSaveClick(Sender: TObject);
+    procedure edDibayarKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
     FDibayar: Double;
     { Private declarations }
@@ -52,7 +53,22 @@ end;
 
 procedure TfrmPembayaranPOS.btnSaveClick(Sender: TObject);
 begin
-  Dibayar := edDibayar.Value;
+  if edTotal.Value <= edDibayar.Value then
+  begin
+    Dibayar := edDibayar.Value;
+    ModalResult := mrOk;
+  end else
+    ShowMessage('Pembayaran Kurang');
+
+end;
+
+procedure TfrmPembayaranPOS.edDibayarKeyDown(Sender: TObject; var Key: Word;
+    Shift: TShiftState);
+begin
+  if Key = VK_RETURN then
+  begin
+    btnSave.SetFocus;
+  end;
 end;
 
 procedure TfrmPembayaranPOS.edDibayarPropertiesChange(Sender: TObject);

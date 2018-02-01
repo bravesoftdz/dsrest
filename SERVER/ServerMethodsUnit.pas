@@ -2444,8 +2444,10 @@ begin
       begin
         ADConnection.Commit;
         Result := True;
-      end;
-    end;
+      end else
+        ADConnection.Rollback;
+    end else
+      ADConnection.Rollback;
   except
     ADConnection.Rollback;
     raise
@@ -3040,6 +3042,12 @@ begin
   Result := False;
 
   lPK       := TPenerimaanKas(AOBject);
+  if lPK.PenerimaanKasAPNewItems.Count = 0 then
+  begin
+    Result := True;
+    Exit;
+  end;
+
   for I := 0 to lPK.PenerimaanKasAPNewItems.Count - 1 do
   begin
     try

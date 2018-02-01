@@ -3,7 +3,6 @@ inherited frmPenjualan: TfrmPenjualan
   ClientHeight = 429
   ClientWidth = 773
   OnShow = FormShow
-  ExplicitTop = -73
   ExplicitWidth = 789
   ExplicitHeight = 468
   PixelsPerInch = 96
@@ -181,6 +180,7 @@ inherited frmPenjualan: TfrmPenjualan
               Tag = 1
               Left = 72
               Top = 28
+              Enabled = False
               Properties.OnChange = edTglBuktiPropertiesChange
               TabOrder = 1
               Width = 121
@@ -584,7 +584,7 @@ inherited frmPenjualan: TfrmPenjualan
     Left = 176
     Top = 216
     Bitmap = {
-      494C0101060008003C0118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010106000800440118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

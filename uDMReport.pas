@@ -103,8 +103,8 @@ type
     procedure SetReportPath(const Value: string);
   public
     procedure AddReportVariable(AVariableName: String; AVariableValue: String);
-    procedure ExecuteReport(aReportName: String; aListDataset: TFDJSONDataSets);
-        overload;
+    procedure ExecuteReport(aReportName: String; aListDataset: TFDJSONDataSets;
+        ADirectPrint : Boolean = False); overload;
     function IsBisaDesignReport: Boolean;
     property BisaDesignReport: Boolean read FBisaDesignReport write
         FBisaDesignReport;
@@ -219,7 +219,7 @@ begin
 end;
 
 procedure TDMReport.ExecuteReport(aReportName: String; aListDataset:
-    TFDJSONDataSets);
+    TFDJSONDataSets; ADirectPrint : Boolean = False);
 var
   sTextReportFile: string;
 //  sSQL: string;
@@ -285,9 +285,17 @@ begin
   begin
     If frxReport1.DataSets.Count=0 then
       frxReport1.DataSets.Add(Self.ibq1);
-    frxReport2.ShowReport;
-    pgcReport.ActivePage := tsDotMatrix;
-    ShowModal;
+
+    if ADirectPrint then
+    begin
+      frxReport2.PrepareReport();
+      frxReport2.PrintOptions.ShowDialog := False;
+      frxReport2.Print;
+    end else begin
+      frxReport2.ShowReport;
+      pgcReport.ActivePage := tsDotMatrix;
+      ShowModal;
+    end;
 //    frxReport1.DesignReport;
   end else begin
     frxReport2.LoadFromFile(frxReport2.FileName);
@@ -295,15 +303,22 @@ begin
     If frxReport1.DataSets.Count=0 then
       frxReport1.DataSets.Add(Self.ibq1);
 
-    frxReport1.PrepareReport;
-    frxReport2.PrepareReport;
-    frxReport1.ShowReport;
-    frxReport2.ShowReport;
-    if AisTextReport then
-      pgcReport.ActivePage := tsDotMatrix
-    else
-      pgcReport.ActivePage := tsGraphic;
-    ShowModal;
+    if ADirectPrint then
+    begin
+      frxReport2.PrepareReport;
+      frxReport2.PrintOptions.ShowDialog := False;
+      frxReport2.Print;
+    end else begin
+      frxReport1.PrepareReport;
+      frxReport2.PrepareReport;
+      frxReport1.ShowReport;
+      frxReport2.ShowReport;
+      if AisTextReport then
+        pgcReport.ActivePage := tsDotMatrix
+      else
+        pgcReport.ActivePage := tsGraphic;
+      ShowModal;
+    end;
   end;
 end;
 

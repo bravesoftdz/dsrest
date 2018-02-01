@@ -18,8 +18,10 @@ uses
 
 type
   TfrmPenjualanPOS = class(TfrmPenjualan)
+    procedure ActionBaruExecute(Sender: TObject);
     procedure ActionSimpanExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
   protected
@@ -37,6 +39,14 @@ var
 implementation
 
 {$R *.dfm}
+
+procedure TfrmPenjualanPOS.ActionBaruExecute(Sender: TObject);
+begin
+  inherited;
+  edKodePembeli.Text := 'POS';
+  LoadDataPembeli(edKodePembeli.Text);
+  edPLU.SetFocus;
+end;
 
 procedure TfrmPenjualanPOS.ActionSimpanExecute(Sender: TObject);
 begin
@@ -67,6 +77,14 @@ begin
   finally
     CDSPembeli.Filtered  := False;
   end;
+end;
+
+procedure TfrmPenjualanPOS.FormShow(Sender: TObject);
+begin
+  inherited;
+  edPLU.SetFocus;
+  edKodePembeli.Text := 'POS';
+  LoadDataPembeli(edKodePembeli.Text);
 end;
 
 function TfrmPenjualanPOS.getDefaultHarga: string;

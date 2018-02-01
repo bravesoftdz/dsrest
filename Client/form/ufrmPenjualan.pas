@@ -115,6 +115,8 @@ type
     FInfix: string;
     FPenjualan: TPenjualan;
     function GetBaris(AID : String): Integer;
+    function GetCDSPembeli: TClientDataset;
+    function GetCDSSalesman: TClientDataset;
     function GetPenjualan: TPenjualan;
     procedure HitungNilaiNilaiPerBaris(dNilai: Double; Acolumn : Integer);
     procedure InisialisasiCBBSalesman;
@@ -129,10 +131,11 @@ type
     function getDefaultHarga: string; virtual;
     function JenisPenjualan: string; virtual;
     function JenisPembayaran: string; virtual;
+    procedure LoadDataPembeli(AKode : String);
     procedure SetHarga(AJenisHarga : String);
     procedure SetInfix; virtual;
-    property CDSPembeli: TClientDataset read FCDSPembeli write FCDSPembeli;
-    property CDSSalesman: TClientDataset read FCDSSalesman write FCDSSalesman;
+    property CDSPembeli: TClientDataset read GetCDSPembeli write FCDSPembeli;
+    property CDSSalesman: TClientDataset read GetCDSSalesman write FCDSSalesman;
     property Infix: string read FInfix write FInfix;
   public
     procedure CetakSlip; override;
@@ -396,7 +399,10 @@ begin
   if cbbJenisPembayaran.Text = 'CASH' then
   begin
     lDibayar         := TfrmPembayaranPOS.Bayar(Penjualan.Total);
-    IsBerhasilSimpan := ClientModule.ClientDataModule.ServerPenjualanClient.SaveToDBDibayar(Penjualan,lDibayar);
+    if lDibayar <> 0 then
+    begin
+      IsBerhasilSimpan := ClientModule.ClientDataModule.ServerPenjualanClient.SaveToDBDibayar(Penjualan,lDibayar);
+    end;
   end else if cbbJenisPembayaran.Text = 'DEPOSIT' then
   begin
     if not IsBisaSimpan then
@@ -449,7 +455,7 @@ begin
 //
 //      )
 //    else
-      ExecuteReport('Reports/Slip_Penjualan_POS' ,lcds);
+      ExecuteReport('Reports/Slip_Penjualan_POS' ,lcds, True);
   end;
 end;
 
@@ -470,25 +476,8 @@ begin
   inherited;
   if Key = VK_RETURN then
   begin
-    FCDSPembeli.First;
-    while not FCDSPembeli.Eof do
-    begin
-      if FCDSPembeli.FieldByName('kode').AsString = edKodePembeli.Text then
-      begin
-        cbbPembeli.EditValue := FCDSPembeli.FieldByName('ID').AsString;
-
-        lPembeli        := TSupplier.CreateID(cbbPembeli.EditValue);
-        try
-          edDeposit.Value := ClientDataModule.ServerPenjualanClient.GetSaldoDeposit(lPembeli, edNoBukti.Text);
-        finally
-          lPembeli.Free;
-        end;
-
-        edPLU.SetFocus;
-      end;
-
-      FCDSPembeli.Next;
-    end;
+    LoadDataPembeli(edKodePembeli.Text);
+    edPLU.SetFocus;
   end;
 
 end;
@@ -583,6 +572,32 @@ begin
   end;
 end;
 
+function TfrmPenjualan.GetCDSPembeli: TClientDataset;
+var
+  sSQL: string;
+begin
+  if FCDSPembeli = nil then
+  begin
+    sSQL := 'select * from vbusinesspartner where is_pembeli = 1';
+    FCDSPembeli := TDBUtils.OpenDataset(sSQL, Self);
+  end;
+
+  Result := FCDSPembeli;
+end;
+
+function TfrmPenjualan.GetCDSSalesman: TClientDataset;
+var
+  sSQL: string;
+begin
+  if FCDSSalesman = nil then
+  begin
+    sSQL := 'select Nama,Kode,ID from vbusinesspartner where is_salesman = 1';
+    FCDSSalesman := TDBUtils.OpenDataset(sSQL);
+  end;
+
+  Result := FCDSSalesman;
+end;
+
 function TfrmPenjualan.getDefaultHarga: string;
 begin
   Result := 'keliling';
@@ -653,21 +668,15 @@ begin
 end;
 
 procedure TfrmPenjualan.InisialisasiCBBSalesman;
-var
-  sSQL: string;
 begin
-  sSQL := 'select Nama,Kode,ID from vbusinesspartner where is_salesman = 1';
-  CDSSalesman := TDBUtils.OpenDataset(sSQL);
+//  sSQL := 'select Nama,Kode,ID from vbusinesspartner where is_salesman = 1';
+//  CDSSalesman := TDBUtils.OpenDataset(sSQL);
   cbbSalesman.Properties.LoadFromCDS(CDSSalesman,'ID','Nama',['ID'],Self);
   cbbSalesman.Properties.SetMultiPurposeLookup;
 end;
 
 procedure TfrmPenjualan.InisialisasiCBBPembeli;
-var
-  sSQL: string;
 begin
-  sSQL := 'select * from vbusinesspartner where is_pembeli = 1';
-  CDSPembeli := TDBUtils.OpenDataset(sSQL, Self);
   cbbPembeli.Properties.LoadFromCDS(CDSPembeli,'ID','Nama',['ID','is_pembeli','is_salesman','is_supplier'],Self);
   cbbPembeli.Properties.SetMultiPurposeLookup;
 end;
@@ -884,6 +893,29 @@ begin
 //    Result := True;
   except
     raise
+  end;
+end;
+
+procedure TfrmPenjualan.LoadDataPembeli(AKode : String);
+var
+  lPembeli: TSupplier;
+begin
+  FCDSPembeli.First;
+  while not FCDSPembeli.Eof do
+  begin
+    if FCDSPembeli.FieldByName('kode').AsString = AKode then
+    begin
+      cbbPembeli.EditValue := FCDSPembeli.FieldByName('ID').AsString;
+
+      lPembeli        := TSupplier.CreateID(cbbPembeli.EditValue);
+      try
+        edDeposit.Value := ClientDataModule.ServerPenjualanClient.GetSaldoDeposit(lPembeli, edNoBukti.Text);
+      finally
+        lPembeli.Free;
+      end;
+    end;
+
+    FCDSPembeli.Next;
   end;
 end;
 
