@@ -69,8 +69,8 @@ Penerimaan Kas/Desposit
 7. Simpan langsung cetak
 
 Pengeluaran KAS
-1. Pembayaran diubah mjd  Pengeluaran Kas 
-2. Kas Bank diberi default KAS
+1. Pembayaran diubah mjd  Pengeluaran Kas OK
+2. Kas Bank diberi default KAS 
 3. NO BG, Jenis dihilangkan
 4. Penerima diberi filter Santri/Supplier di atasnya
 5. Ditambahkan tab penarikan deposit, diberidefault akun penarikan deposit

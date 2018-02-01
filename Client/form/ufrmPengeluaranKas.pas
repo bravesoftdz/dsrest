@@ -224,6 +224,7 @@ begin
   if ClientDataModule.ServerPengeluaranKasClient.Save(PengeluaranKas) then
   begin
     TAppUtils.InformationBerhasilSimpan;
+    TAppUtils.TulisRegistry('AKUNKASBANK', cbbRekBank.EditValue);
     ActionBaruExecute(Sender);
   end;
 
@@ -422,6 +423,9 @@ begin
 
   cxGridTableAP.ClearRows;
   cxGridTableNonAP.ClearRows;
+
+  cbbRekBank.EditValue := TAppUtils.BacaRegistry('AKUNKASBANK');
+  cbbRekBankExit(nil);
 
   FPengeluaranKas := ClientDataModule.ServerPengeluaranKasClient.Retrieve(AID);
   if FPengeluaranKas = nil then

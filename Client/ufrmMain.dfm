@@ -51,7 +51,6 @@ object frmMain: TfrmMain
       Index = 1
     end
     object dxrbntbPenerimaanBarangTransaksi: TdxRibbonTab
-      Active = True
       Caption = 'Inventory'
       Groups = <
         item
@@ -69,6 +68,7 @@ object frmMain: TfrmMain
       Index = 2
     end
     object dxrbntbAkuntansi: TdxRibbonTab
+      Active = True
       Caption = 'FA'
       Groups = <
         item
@@ -819,6 +819,7 @@ object frmMain: TfrmMain
     end
     object dxbrlrgbtnPengeluaranKas: TdxBarLargeButton
       Action = actPengeluaranKas
+      Caption = 'Pengeluaran Kas'
       Category = 0
       LargeImageIndex = 18
     end
@@ -1111,7 +1112,7 @@ object frmMain: TfrmMain
     Left = 688
     Top = 128
     Bitmap = {
-      494C010116001800C80120002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010116001800CC0120002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000080000000C000000001002000000000000080
       0100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

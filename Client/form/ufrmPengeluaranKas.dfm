@@ -136,6 +136,7 @@ inherited frmPengeluaranKas: TfrmPengeluaranKas
           Width = 29
           Height = 13
           Caption = 'No BG'
+          Visible = False
         end
         object lblTglJthTempo: TLabel
           Left = 253
@@ -247,6 +248,7 @@ inherited frmPengeluaranKas: TfrmPengeluaranKas
           Top = 30
           TabOrder = 6
           Text = 'edNoBukti'
+          Visible = False
           Width = 145
         end
         object edTglJthTempo: TcxDateEdit
@@ -453,7 +455,7 @@ inherited frmPengeluaranKas: TfrmPengeluaranKas
     Left = 648
     Top = 248
     Bitmap = {
-      494C0101070008003C0118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800400118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
