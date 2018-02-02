@@ -39,6 +39,7 @@ object frmMain: TfrmMain
       Index = 0
     end
     object dxrbnTabMaster: TdxRibbonTab
+      Active = True
       Caption = 'Master'
       Groups = <
         item
@@ -68,8 +69,7 @@ object frmMain: TfrmMain
       Index = 2
     end
     object dxrbntbAkuntansi: TdxRibbonTab
-      Active = True
-      Caption = 'FA'
+      Caption = 'Keuangan'
       Groups = <
         item
           Caption = 'Master'
@@ -345,7 +345,7 @@ object frmMain: TfrmMain
           Visible = True
           ItemName = 'dxbrlrgbtnAssetCat'
         end>
-      OneOnRow = True
+      OneOnRow = False
       Row = 0
       UseOwnFont = True
       Visible = True
@@ -483,17 +483,13 @@ object frmMain: TfrmMain
       ItemLinks = <
         item
           Visible = True
-          ItemName = 'dxbrlrgbtn3'
-        end
-        item
-          Visible = True
           ItemName = 'dxbrlrgbtnPenerimaanKas'
         end
         item
           Visible = True
           ItemName = 'dxbrlrgbtnPengeluaranKas'
         end>
-      OneOnRow = False
+      OneOnRow = True
       Row = 0
       UseOwnFont = False
       Visible = True
@@ -1112,7 +1108,7 @@ object frmMain: TfrmMain
     Left = 688
     Top = 128
     Bitmap = {
-      494C010116001800CC0120002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010116001800D00120002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000080000000C000000001002000000000000080
       0100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

@@ -4,9 +4,10 @@ interface
 
 uses
   uModel, uRekBank, uAR, uAccount, System.Generics.Collections,
-  System.SysUtils, uSupplier;
+  System.SysUtils, uSupplier, uPenerimaanKas;
 
 type
+  TPengeluaranKasAPNew = class;
   TPengeluaranKasAP = class;
   TPengeluaranKasNonAP = class;
 
@@ -21,11 +22,13 @@ type
     FNominal: Double;
     FPenerima: TSupplier;
     FPengeluaranKasAPs: TobjectList<TPengeluaranKasAP>;
+    FPengeluaranKasAPNews: TobjectList<TPengeluaranKasAPNew>;
     FPengeluaranKasNonAPs: TobjectList<TPengeluaranKasNonAP>;
     FPetugas: string;
     FRekBank: TRekBank;
     FTglBukti: TDatetime;
     function GetPengeluaranKasAPs: TobjectList<TPengeluaranKasAP>;
+    function GetPengeluaranKasAPNews: TobjectList<TPengeluaranKasAPNew>;
     function GetPengeluaranKasNonAPs: TobjectList<TPengeluaranKasNonAP>;
     procedure SetCabang(const Value: TCabang);
   published
@@ -39,6 +42,8 @@ type
     property Penerima: TSupplier read FPenerima write FPenerima;
     property PengeluaranKasAPs: TobjectList<TPengeluaranKasAP> read
         GetPengeluaranKasAPs write FPengeluaranKasAPs;
+    property PengeluaranKasAPNews: TobjectList<TPengeluaranKasAPNew> read
+        GetPengeluaranKasAPNews write FPengeluaranKasAPNews;
     property PengeluaranKasNonAPs: TobjectList<TPengeluaranKasNonAP> read
         GetPengeluaranKasNonAPs write FPengeluaranKasNonAPs;
     property Petugas: string read FPetugas write FPetugas;
@@ -80,6 +85,25 @@ type
         FPengeluaranKas;
   end;
 
+  TPengeluaranKasAPNew = class(TAppObjectItem)
+  private
+    FAccount: TAccount;
+    FAP: TAP;
+    FKeterangan: string;
+    FNominal: Double;
+    FPengeluaranKas: TPengeluaranKas;
+  public
+    function GetHeaderField: string; override;
+    procedure SetHeaderProperty(AHeaderProperty : TAppObject); override;
+  published
+    property Account: TAccount read FAccount write FAccount;
+    property AP: TAP read FAP write FAP;
+    property Keterangan: string read FKeterangan write FKeterangan;
+    property Nominal: Double read FNominal write FNominal;
+    property PengeluaranKas: TPengeluaranKas read FPengeluaranKas write
+        FPengeluaranKas;
+  end;
+
 implementation
 
 function TPengeluaranKas.GetPengeluaranKasAPs: TobjectList<TPengeluaranKasAP>;
@@ -88,6 +112,15 @@ begin
     FPengeluaranKasAPs := TObjectList<TPengeluaranKasAP>.Create();
 
   Result := FPengeluaranKasAPs;
+end;
+
+function TPengeluaranKas.GetPengeluaranKasAPNews:
+    TobjectList<TPengeluaranKasAPNew>;
+begin
+  if FPengeluaranKasAPNews = nil then
+    FPengeluaranKasAPNews := TObjectList<TPengeluaranKasAPNew>.Create();
+
+  Result := FPengeluaranKasAPNews;
 end;
 
 function TPengeluaranKas.GetPengeluaranKasNonAPs:
@@ -125,6 +158,16 @@ begin
 end;
 
 procedure TPengeluaranKasNonAP.SetHeaderProperty(AHeaderProperty : TAppObject);
+begin
+  Self.PengeluaranKas := TPengeluaranKas(AHeaderProperty);
+end;
+
+function TPengeluaranKasAPNew.GetHeaderField: string;
+begin
+  Result := 'PengeluaranKas';
+end;
+
+procedure TPengeluaranKasAPNew.SetHeaderProperty(AHeaderProperty : TAppObject);
 begin
   Self.PengeluaranKas := TPengeluaranKas(AHeaderProperty);
 end;

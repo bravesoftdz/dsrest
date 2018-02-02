@@ -1,72 +1,73 @@
 inherited frmBarang: TfrmBarang
   Caption = 'Barang'
-  ClientHeight = 394
-  ClientWidth = 919
-  ExplicitWidth = 935
-  ExplicitHeight = 433
+  ClientHeight = 240
+  ClientWidth = 519
+  ExplicitWidth = 535
+  ExplicitHeight = 279
   PixelsPerInch = 96
   TextHeight = 13
   inherited cxSBTransaksi: TdxStatusBar
-    Top = 374
-    Width = 919
+    Top = 220
+    Width = 519
     ExplicitTop = 374
     ExplicitWidth = 919
   end
   inherited cxPCData: TcxPageControl
-    Width = 919
-    Height = 341
+    Width = 519
+    Height = 187
+    Properties.ActivePage = cxTSInputData
     ExplicitWidth = 919
     ExplicitHeight = 341
-    ClientRectBottom = 337
-    ClientRectRight = 915
+    ClientRectBottom = 183
+    ClientRectRight = 515
     inherited cxTSOverview: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
       ExplicitWidth = 911
       ExplicitHeight = 313
       inherited splTransaksi: TSplitter
-        Height = 313
+        Height = 159
         ExplicitLeft = 369
         ExplicitHeight = 324
       end
       inherited pnlListTransaksi: TPanel
-        Width = 903
-        Height = 313
+        Width = 503
+        Height = 159
         ExplicitWidth = 903
         ExplicitHeight = 313
         inherited pnlFilter: TPanel
-          Width = 901
+          Width = 501
           TabOrder = 2
           ExplicitWidth = 901
           inherited lblPeriode: TLabel
-            Left = 478
+            Left = 78
             Visible = False
             ExplicitLeft = 527
           end
           inherited lblSD: TLabel
-            Left = 639
+            Left = 239
             Visible = False
             ExplicitLeft = 682
           end
           inherited dtpAwal: TDateTimePicker
-            Left = 531
+            Left = 131
             Visible = False
             ExplicitLeft = 531
           end
           inherited dtpAkhir: TDateTimePicker
-            Left = 680
+            Left = 280
             Visible = False
             ExplicitLeft = 680
           end
           inherited btnRefresh: TcxButton
-            Left = 791
+            Left = 391
             ExplicitLeft = 791
           end
         end
         inherited cxGrid: TcxGrid
           Top = 72
-          Width = 901
-          Height = 240
+          Width = 501
+          Height = 86
           TabOrder = 3
           ExplicitTop = 72
           ExplicitWidth = 901
@@ -75,19 +76,22 @@ inherited frmBarang: TfrmBarang
         object pnlFilterBarang: TPanel
           Left = 1
           Top = 32
-          Width = 901
+          Width = 501
           Height = 40
           Align = alTop
           TabOrder = 0
           Visible = False
+          ExplicitWidth = 901
         end
         object cxGridDBDaftarBarang: TcxGrid
           Left = 1
           Top = 72
-          Width = 901
-          Height = 240
+          Width = 501
+          Height = 86
           Align = alClient
           TabOrder = 1
+          ExplicitWidth = 901
+          ExplicitHeight = 240
           object cxGridDBTableBarang: TcxGridDBTableView
             Navigator.Buttons.CustomButtons = <>
             OnCellDblClick = cxGridDBTableBarangCellDblClick
@@ -145,19 +149,23 @@ inherited frmBarang: TfrmBarang
       object cxPCHeader: TcxPageControl
         Left = 0
         Top = 0
-        Width = 911
-        Height = 313
+        Width = 511
+        Height = 159
         Align = alClient
         TabOrder = 0
         Properties.ActivePage = cxTSHeader
         Properties.CustomButtons.Buttons = <>
-        ClientRectBottom = 309
+        ExplicitWidth = 911
+        ExplicitHeight = 313
+        ClientRectBottom = 155
         ClientRectLeft = 4
-        ClientRectRight = 907
+        ClientRectRight = 507
         ClientRectTop = 24
         object cxTSHeader: TcxTabSheet
           Caption = 'Barang'
           ImageIndex = 0
+          ExplicitWidth = 903
+          ExplicitHeight = 285
           object lblKode: TLabel
             Left = 47
             Top = 18
@@ -185,6 +193,7 @@ inherited frmBarang: TfrmBarang
             Width = 19
             Height = 13
             Caption = 'PPN'
+            Visible = False
           end
           object lblSatuanStock: TLabel
             Left = 248
@@ -234,6 +243,7 @@ inherited frmBarang: TfrmBarang
               'NON PPN')
             TabOrder = 5
             Text = 'NON PPN'
+            Visible = False
             Width = 121
           end
           object cbbSatuanStock: TcxExtLookupComboBox
@@ -258,13 +268,17 @@ inherited frmBarang: TfrmBarang
           Caption = 'Satuan'
           ImageIndex = 2
           TabVisible = False
+          ExplicitWidth = 903
+          ExplicitHeight = 285
           object cxGridDBSatuan: TcxGrid
             Left = 0
             Top = 0
-            Width = 903
-            Height = 285
+            Width = 503
+            Height = 131
             Align = alClient
             TabOrder = 0
+            ExplicitWidth = 903
+            ExplicitHeight = 285
             object cxGridTableSatuan: TcxGridTableView
               Navigator.Buttons.CustomButtons = <>
               DataController.Summary.DefaultGroupSummaryItems = <>
@@ -350,20 +364,20 @@ inherited frmBarang: TfrmBarang
     end
   end
   inherited pnlButton: TPanel
-    Top = 341
-    Width = 919
+    Top = 187
+    Width = 519
     ExplicitTop = 341
     ExplicitWidth = 919
     inherited btnBaru: TcxButton
-      Left = 807
+      Left = 407
       ExplicitLeft = 807
     end
     inherited btnHapus: TcxButton
-      Left = 683
+      Left = 283
       ExplicitLeft = 683
     end
     inherited btnSave: TcxButton
-      Left = 567
+      Left = 167
       ExplicitLeft = 567
     end
     inherited chkKonsolidasi1: TcxCheckBox
@@ -445,7 +459,7 @@ inherited frmBarang: TfrmBarang
     Left = 232
     Top = 200
     Bitmap = {
-      494C010106000800C40018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010106000800C80018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

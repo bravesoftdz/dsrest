@@ -35,8 +35,8 @@ Retur Supplier
 3. Semua kata Supplier diubah menjadi Pemasok
 
 Penjualan
-1. Simpan langsung cetak
-2. Invoice hilang
+1. Simpan langsung cetak OK
+2. Invoice hilang OK
 3. Pada saat input penjualan tombol cetak hilang, hanya muncul ketika di tab overview
 4. Tombol POS diubah jadi Umum
 5. Kolom SKU diubah mjd Barcode
@@ -49,9 +49,9 @@ POS Umum
 4. SKU >Barcode
 
 FA
-1. FA diubah menjadi Keuangan
+1. FA diubah menjadi Keuangan OK
 2. Menu Bank, Account dihilangkan
-3. Tagihan penjualan dihilangkan
+3. Tagihan penjualan dihilangkan OK
 
 Penerimaan Kas/Desposit
 1. Kas/Bank ditiadkan ok
@@ -70,9 +70,9 @@ Penerimaan Kas/Desposit
 
 Pengeluaran KAS
 1. Pembayaran diubah mjd  Pengeluaran Kas OK
-2. Kas Bank diberi default KAS 
-3. NO BG, Jenis dihilangkan
-4. Penerima diberi filter Santri/Supplier di atasnya
+2. Kas Bank diberi default KAS OK 
+3. NO BG, Jenis dihilangkan OK
+4. Penerima diberi filter Santri/Supplier di atasnya OK
 5. Ditambahkan tab penarikan deposit, diberidefault akun penarikan deposit
 6. AP diubah menjadi Pembayaran Hutang
 7. Lain-lain diberi default Pembayaran Gaji

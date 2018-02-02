@@ -54,6 +54,13 @@ type
     edTglJthTempo: TcxDateEdit;
     lblTglJthTempo: TLabel;
     lblJenisTransaksi: TLabel;
+    edKelas: TcxTextEdit;
+    cxgrdlvlAPNew: TcxGridLevel;
+    cxGridTableAPNew: TcxGridTableView;
+    cxGridColAPNewKode: TcxGridColumn;
+    cxGridColAPNewNama: TcxGridColumn;
+    cxGridColAPNewKeterangan: TcxGridColumn;
+    cxGridColAPNewNominal: TcxGridColumn;
     procedure actCetakExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ActionBaruExecute(Sender: TObject);
@@ -84,11 +91,14 @@ type
       var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
     procedure cxGridColNonAPNamaPropertiesValidate(Sender: TObject;
       var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
+    procedure cbbCustomerPropertiesInitPopup(Sender: TObject);
   private
     FCDSAccountPengeluaranKasLain: tclientDataSet;
     FCDSAP: TClientDataSet;
     FCDSRekBank: TClientDataSet;
+    FCDSSalesman: TClientDataset;
     FPengeluaranKas: TPengeluaranKas;
+    function GetCDSSalesman: TClientDataset;
     function GetPengeluaranKas: TPengeluaranKas;
     function GetTotalNominalGrid: Double;
     procedure InisialisasiAccount;
@@ -105,6 +115,7 @@ type
   public
     destructor Destroy; override;
     procedure LoadData(AID : String);
+    property CDSSalesman: TClientDataset read GetCDSSalesman write FCDSSalesman;
     { Public declarations }
   end;
 
@@ -225,6 +236,8 @@ begin
   begin
     TAppUtils.InformationBerhasilSimpan;
     TAppUtils.TulisRegistry('AKUNKASBANK', cbbRekBank.EditValue);
+
+    TAppUtils.TulisRegistry('JENISTRANSAKSIKASKELUAR', cbbJenisTransaksi.EditValue);
     ActionBaruExecute(Sender);
   end;
 
@@ -265,6 +278,17 @@ begin
 //  finally
 //    lds.Free;
 //  end;
+end;
+
+procedure TfrmPengeluaranKas.cbbCustomerPropertiesInitPopup(Sender: TObject);
+begin
+  inherited;
+  CDSSalesman.Filtered := False;
+  if Trim(edKelas.Text) = ''  then
+    Exit;
+
+  CDSSalesman.Filter := ' kelas = ' + QuotedStr(Trim(edKelas.Text));
+  CDSSalesman.Filtered := True;
 end;
 
 procedure TfrmPengeluaranKas.cbbCustomerPropertiesValidate(Sender: TObject;
@@ -358,6 +382,19 @@ begin
     edNoBukti.Text := ClientDataModule.ServerPengeluaranKasClient.GenerateNoBukti(edTglBukti.Date, ClientDataModule.Cabang.Kode);
 end;
 
+function TfrmPengeluaranKas.GetCDSSalesman: TClientDataset;
+var
+  sSQL: string;
+begin
+  if FCDSSalesman = nil then
+  begin
+    sSQL := 'select Nama,Kode,kelas, ID from TSupplier';
+    CDSSalesman := TDBUtils.OpenDataset(sSQL);
+  end;
+
+  Result := FCDSSalesman;
+end;
+
 function TfrmPengeluaranKas.GetPengeluaranKas: TPengeluaranKas;
 begin
   if FPengeluaranKas = nil then
@@ -389,16 +426,17 @@ begin
   FCDSAccountPengeluaranKasLain := TDBUtils.DSToCDS(ClientDataModule.DSDataCLient.LoadAccountPengeluaranKasLain(), Self);
   TcxExtLookupComboBoxProperties(cxGridColNonAPKode.Properties).LoadFromCDS(FCDSAccountPengeluaranKasLain, 'ID', 'Kode', ['id'], Self);
   TcxExtLookupComboBoxProperties(cxGridColNonAPNama.Properties).LoadFromCDS(FCDSAccountPengeluaranKasLain, 'ID', 'Nama', ['id'], Self);
+
+  TcxExtLookupComboBoxProperties(cxGridColAPNewKode.Properties).LoadFromCDS(FCDSAccountPengeluaranKasLain, 'ID', 'Kode', ['id'], Self);
+  TcxExtLookupComboBoxProperties(cxGridColAPNewNama.Properties).LoadFromCDS(FCDSAccountPengeluaranKasLain, 'ID', 'Nama', ['id'], Self);
 end;
 
 procedure TfrmPengeluaranKas.InisialisasiCBBSupplier;
 var
-  lCDSSalesman: TClientDataSet;
+//  lCDSSalesman: TClientDataSet;
   sSQL: string;
 begin
-  sSQL := 'select Nama,Kode,ID from TSupplier';
-  lCDSSalesman := TDBUtils.OpenDataset(sSQL);
-  cbbCustomer.Properties.LoadFromCDS(lCDSSalesman,'ID','Nama',['ID'],Self);
+  cbbCustomer.Properties.LoadFromCDS(CDSSalesman,'ID','Nama',['ID'],Self);
   cbbCustomer.Properties.SetMultiPurposeLookup;
 end;
 
@@ -426,6 +464,8 @@ begin
 
   cbbRekBank.EditValue := TAppUtils.BacaRegistry('AKUNKASBANK');
   cbbRekBankExit(nil);
+
+  cbbJenisTransaksi.EditingText := TAppUtils.BacaRegistry('JENISTRANSAKSIKASKELUAR');
 
   FPengeluaranKas := ClientDataModule.ServerPengeluaranKasClient.Retrieve(AID);
   if FPengeluaranKas = nil then

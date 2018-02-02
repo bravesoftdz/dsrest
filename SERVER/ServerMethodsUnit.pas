@@ -423,6 +423,7 @@ type
   public
     function Retrieve(AID : String): TAP;
     function RetrieveTransaksi(ATransaksi : String; AIDTransaksi : String): TAP;
+//    function RetrieveDeposit(ASupplierID : String): TAP;
   end;
 
   TServerPengeluaranKas = class(TServerTransaction)
@@ -2922,7 +2923,7 @@ begin
 
   for I := 0 to lPK.PenerimaanKasAPNewItems.Count - 1 do
   begin
-    lPK.PenerimaanKasAPNewItems[i].AP             := TAP.CreateID(TDBUtils.GetNextIDGUIDToString());
+    lPK.PenerimaanKasAPNewItems[i].AP             := TAP.CreateID(TDBUtils.GetNextIDGUIDToString);
     lPK.PenerimaanKasAPNewItems[i].AP.ObjectState := 1;
   end;
 
@@ -4011,6 +4012,42 @@ begin
     end;
   end;
 end;
+
+{
+function TServerAP.RetrieveDeposit(ASupplierID : String): TAP;
+var
+  sID: string;
+  sSQL: string;
+begin
+  sSQL   := 'select ID from tap' +
+            ' where nobukti = ' + QuotedStr('DEPOSIT') +
+            ' and supplier = ' + QuotedStr(ASupplierID);
+
+  sID := '';
+  with TDBUtils.OpenDataset(sSQL) do
+  begin
+    try
+      while not Eof do
+      begin
+        sID := FieldByName('id').AsString;
+        Next;
+      end;
+    finally
+      Free;
+    end;
+  end;
+
+  with TServerAP.Create do
+  begin
+    try
+      Result := Retrieve(sID);
+      Result.NoBukti := 'DEPOSIT';
+    finally
+      Free;
+    end;
+  end;
+end;
+}
 
 destructor TServerPengeluaranKas.Destroy;
 begin

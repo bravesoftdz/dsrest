@@ -104,14 +104,14 @@ inherited frmPengeluaranKas: TfrmPengeluaranKas
         end
         object lblPenerima: TLabel
           Left = 264
-          Top = 84
+          Top = 61
           Width = 39
           Height = 13
           Caption = 'Petugas'
         end
         object lblCustomer: TLabel
           Left = 259
-          Top = 109
+          Top = 86
           Width = 44
           Height = 13
           Caption = 'Penerima'
@@ -132,15 +132,14 @@ inherited frmPengeluaranKas: TfrmPengeluaranKas
         end
         object lblNoBG: TLabel
           Left = 274
-          Top = 34
+          Top = 113
           Width = 29
           Height = 13
           Caption = 'No BG'
-          Visible = False
         end
         object lblTglJthTempo: TLabel
           Left = 253
-          Top = 59
+          Top = 36
           Width = 50
           Height = 13
           Caption = 'Jth Tempo'
@@ -171,25 +170,26 @@ inherited frmPengeluaranKas: TfrmPengeluaranKas
         object edPenerima: TcxTextEdit
           Tag = 1
           Left = 309
-          Top = 80
-          TabOrder = 8
+          Top = 57
+          TabOrder = 7
           Text = 'edNoBukti'
           Width = 145
         end
         object cbbCustomer: TcxExtLookupComboBox
           Tag = 1
-          Left = 309
-          Top = 105
+          Left = 352
+          Top = 82
+          Properties.OnInitPopup = cbbCustomerPropertiesInitPopup
           Properties.OnValidate = cbbCustomerPropertiesValidate
           TabOrder = 9
-          Width = 145
+          Width = 102
         end
         object memKeterangan: TcxMemo
           Left = 537
           Top = 30
           Lines.Strings = (
             'memKeterangan')
-          TabOrder = 11
+          TabOrder = 12
           Height = 98
           Width = 145
         end
@@ -200,7 +200,7 @@ inherited frmPengeluaranKas: TfrmPengeluaranKas
           Enabled = False
           Properties.Alignment.Horz = taRightJustify
           Properties.DisplayFormat = ',0.00;(,0.00)'
-          TabOrder = 10
+          TabOrder = 11
           Width = 145
         end
         object cbbRekBank: TcxExtLookupComboBox
@@ -245,19 +245,26 @@ inherited frmPengeluaranKas: TfrmPengeluaranKas
         object edNoBG: TcxTextEdit
           Tag = 1
           Left = 309
-          Top = 30
-          TabOrder = 6
+          Top = 109
+          TabStop = False
+          TabOrder = 10
           Text = 'edNoBukti'
-          Visible = False
           Width = 145
         end
         object edTglJthTempo: TcxDateEdit
           Tag = 1
           Left = 309
-          Top = 55
-          TabOrder = 7
+          Top = 32
+          TabOrder = 6
           OnExit = edTglBuktiExit
           Width = 145
+        end
+        object edKelas: TcxTextEdit
+          Tag = 99
+          Left = 309
+          Top = 82
+          TabOrder = 8
+          Width = 39
         end
       end
       object cxGridDBAR: TcxGrid
@@ -385,13 +392,56 @@ inherited frmPengeluaranKas: TfrmPengeluaranKas
             Width = 178
           end
         end
+        object cxGridTableAPNew: TcxGridTableView
+          Navigator.Buttons.CustomButtons = <>
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.SummaryGroups = <>
+          OptionsBehavior.FocusCellOnTab = True
+          OptionsBehavior.FocusFirstCellOnNewRecord = True
+          OptionsBehavior.GoToNextCellOnEnter = True
+          OptionsData.Appending = True
+          OptionsView.GroupByBox = False
+          Styles.ContentEven = ClientDataModule.cxstylGridEven
+          Styles.ContentOdd = ClientDataModule.cxstylGridOdd
+          Styles.Header = ClientDataModule.cxstylGridHeader
+          object cxGridColAPNewKode: TcxGridColumn
+            Caption = 'Kode'
+            PropertiesClassName = 'TcxExtLookupComboBoxProperties'
+            HeaderAlignmentHorz = taCenter
+            Width = 129
+          end
+          object cxGridColAPNewNama: TcxGridColumn
+            Caption = 'Nama'
+            PropertiesClassName = 'TcxExtLookupComboBoxProperties'
+            HeaderAlignmentHorz = taCenter
+            Width = 138
+          end
+          object cxGridColAPNewKeterangan: TcxGridColumn
+            Caption = 'Keterangan'
+            HeaderAlignmentHorz = taCenter
+            Width = 189
+          end
+          object cxGridColAPNewNominal: TcxGridColumn
+            Caption = 'Nominal'
+            PropertiesClassName = 'TcxCurrencyEditProperties'
+            Properties.Alignment.Horz = taRightJustify
+            Properties.DisplayFormat = ',0.00;(,0.00)'
+            HeaderAlignmentHorz = taCenter
+            Width = 98
+          end
+        end
         object cxgrdlvlAR: TcxGridLevel
-          Caption = 'AP'
+          Caption = 'Pembayaran Hutang'
           GridView = cxGridTableAP
         end
         object cxgrdlvlDP: TcxGridLevel
           Caption = 'Lain-lain'
           GridView = cxGridTableNonAP
+        end
+        object cxgrdlvlAPNew: TcxGridLevel
+          Caption = 'Penarikan Deposit'
+          GridView = cxGridTableAPNew
         end
       end
     end
@@ -455,7 +505,7 @@ inherited frmPengeluaranKas: TfrmPengeluaranKas
     Left = 648
     Top = 248
     Bitmap = {
-      494C010107000800400118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800440118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

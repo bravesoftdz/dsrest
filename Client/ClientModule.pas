@@ -46,6 +46,7 @@ type
     FServerMenuClient: TServerMenuClient;
     FServerUserClient: TServerUserClient;
     FServerSettlementARAPClient: TServerSettlementARAPClient;
+    FServerAPClient: TServerAPClient;
     function GetCabang: tcabang;
     function GetServerUOMClient: TServerUOMClient;
     function GetServerSupplierClient: TServerSupplierClient;
@@ -77,6 +78,7 @@ type
     function GetServerMenuClient: TServerMenuClient;
     function GetServerUserClient: TServerUserClient;
     function GeTServerSettlementARAPClient: TServerSettlementARAPClient;
+    function GetServerAPClient: TServerAPClient;
     { Private declarations }
   public
     constructor Create(AOwner: TComponent); override;
@@ -133,6 +135,8 @@ type
         FServerUserClient;
     property ServerSettlementARAPClient: TServerSettlementARAPClient read
         GeTServerSettlementARAPClient write FServerSettlementARAPClient;
+    property ServerAPClient: TServerAPClient read GetServerAPClient write
+        FServerAPClient;
   published
 end;
 
@@ -443,6 +447,15 @@ begin
 
   FServerSettlementARAPClient:= TServerSettlementARAPClient.Create(DSRestConnection, FInstanceOwner);
   Result := FServerSettlementARAPClient;
+end;
+
+function TClientDataModule.GetServerAPClient: TServerAPClient;
+begin
+  if FServerAPClient <> nil then
+    FreeAndNil(FServerAPClient);
+
+  FServerAPClient:= TServerAPClient.Create(DSRestConnection, FInstanceOwner);
+  Result := FServerAPClient;
 end;
 
 end.

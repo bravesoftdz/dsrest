@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 12/25/2017 6:38:16 AM
+// 2/2/2018 6:33:04 PM
 //
 
 unit ClientClassesUnit;
@@ -639,6 +639,8 @@ type
     FRetrieveCommand_Cache: TDSRestCommand;
     FRetrieveTransaksiCommand: TDSRestCommand;
     FRetrieveTransaksiCommand_Cache: TDSRestCommand;
+    FRetrieveDepositCommand: TDSRestCommand;
+    FRetrieveDepositCommand_Cache: TDSRestCommand;
     FDoJournalCommand: TDSRestCommand;
     FGenerateNoBuktiCommand: TDSRestCommand;
     FRetrieveDataCommand: TDSRestCommand;
@@ -660,6 +662,8 @@ type
     function Retrieve_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedTAP;
     function RetrieveTransaksi(ATransaksi: string; AIDTransaksi: string; const ARequestFilter: string = ''): TAP;
     function RetrieveTransaksi_Cache(ATransaksi: string; AIDTransaksi: string; const ARequestFilter: string = ''): IDSRestCachedTAP;
+    function RetrieveDeposit(ASupplierID: string; const ARequestFilter: string = ''): TAP;
+    function RetrieveDeposit_Cache(ASupplierID: string; const ARequestFilter: string = ''): IDSRestCachedTAP;
     function DoJournal(ANoBukti: string; AModTransClass: string; AIsHapusJurnal: Integer; const ARequestFilter: string = ''): Boolean;
     function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
     function RetrieveData(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): TDataSet;
@@ -2947,6 +2951,18 @@ const
   (
     (Name: 'ATransaksi'; Direction: 1; DBXType: 26; TypeName: 'string'),
     (Name: 'AIDTransaksi'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerAP_RetrieveDeposit: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'ASupplierID'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 37; TypeName: 'TAP')
+  );
+
+  TServerAP_RetrieveDeposit_Cache: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'ASupplierID'; Direction: 1; DBXType: 26; TypeName: 'string'),
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
@@ -10649,6 +10665,46 @@ begin
   Result := TDSRestCachedTAP.Create(FRetrieveTransaksiCommand_Cache.Parameters[2].Value.GetString);
 end;
 
+function TServerAPClient.RetrieveDeposit(ASupplierID: string; const ARequestFilter: string): TAP;
+begin
+  if FRetrieveDepositCommand = nil then
+  begin
+    FRetrieveDepositCommand := FConnection.CreateCommand;
+    FRetrieveDepositCommand.RequestType := 'GET';
+    FRetrieveDepositCommand.Text := 'TServerAP.RetrieveDeposit';
+    FRetrieveDepositCommand.Prepare(TServerAP_RetrieveDeposit);
+  end;
+  FRetrieveDepositCommand.Parameters[0].Value.SetWideString(ASupplierID);
+  FRetrieveDepositCommand.Execute(ARequestFilter);
+  if not FRetrieveDepositCommand.Parameters[1].Value.IsNull then
+  begin
+    FUnMarshal := TDSRestCommand(FRetrieveDepositCommand.Parameters[1].ConnectionHandler).GetJSONUnMarshaler;
+    try
+      Result := TAP(FUnMarshal.UnMarshal(FRetrieveDepositCommand.Parameters[1].Value.GetJSONValue(True)));
+      if FInstanceOwner then
+        FRetrieveDepositCommand.FreeOnExecute(Result);
+    finally
+      FreeAndNil(FUnMarshal)
+    end
+  end
+  else
+    Result := nil;
+end;
+
+function TServerAPClient.RetrieveDeposit_Cache(ASupplierID: string; const ARequestFilter: string): IDSRestCachedTAP;
+begin
+  if FRetrieveDepositCommand_Cache = nil then
+  begin
+    FRetrieveDepositCommand_Cache := FConnection.CreateCommand;
+    FRetrieveDepositCommand_Cache.RequestType := 'GET';
+    FRetrieveDepositCommand_Cache.Text := 'TServerAP.RetrieveDeposit';
+    FRetrieveDepositCommand_Cache.Prepare(TServerAP_RetrieveDeposit_Cache);
+  end;
+  FRetrieveDepositCommand_Cache.Parameters[0].Value.SetWideString(ASupplierID);
+  FRetrieveDepositCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedTAP.Create(FRetrieveDepositCommand_Cache.Parameters[1].Value.GetString);
+end;
+
 function TServerAPClient.DoJournal(ANoBukti: string; AModTransClass: string; AIsHapusJurnal: Integer; const ARequestFilter: string): Boolean;
 begin
   if FDoJournalCommand = nil then
@@ -10943,6 +10999,8 @@ begin
   FRetrieveCommand_Cache.DisposeOf;
   FRetrieveTransaksiCommand.DisposeOf;
   FRetrieveTransaksiCommand_Cache.DisposeOf;
+  FRetrieveDepositCommand.DisposeOf;
+  FRetrieveDepositCommand_Cache.DisposeOf;
   FDoJournalCommand.DisposeOf;
   FGenerateNoBuktiCommand.DisposeOf;
   FRetrieveDataCommand.DisposeOf;
