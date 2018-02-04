@@ -39,7 +39,6 @@ object frmMain: TfrmMain
       Index = 0
     end
     object dxrbnTabMaster: TdxRibbonTab
-      Active = True
       Caption = 'Master'
       Groups = <
         item
@@ -69,6 +68,7 @@ object frmMain: TfrmMain
       Index = 2
     end
     object dxrbntbAkuntansi: TdxRibbonTab
+      Active = True
       Caption = 'Keuangan'
       Groups = <
         item
@@ -345,7 +345,7 @@ object frmMain: TfrmMain
           Visible = True
           ItemName = 'dxbrlrgbtnAssetCat'
         end>
-      OneOnRow = False
+      OneOnRow = True
       Row = 0
       UseOwnFont = True
       Visible = True
@@ -488,8 +488,12 @@ object frmMain: TfrmMain
         item
           Visible = True
           ItemName = 'dxbrlrgbtnPengeluaranKas'
+        end
+        item
+          Visible = True
+          ItemName = 'dxbrlrgbtnPenarikanDeposit'
         end>
-      OneOnRow = True
+      OneOnRow = False
       Row = 0
       UseOwnFont = False
       Visible = True
@@ -871,6 +875,16 @@ object frmMain: TfrmMain
       Category = 0
       LargeImageIndex = 12
     end
+    object dxbrbtnPengambilanDeposit: TdxBarButton
+      Action = actPengambilanDeposit
+      Category = 0
+      LargeImageIndex = 16
+    end
+    object dxbrlrgbtnPenarikanDeposit: TdxBarLargeButton
+      Action = actPengambilanDeposit
+      Category = 0
+      LargeImageIndex = 14
+    end
     object dxbrlrgbtnExit: TdxBarLargeButton
       Action = actApplicationExit
       Category = 1
@@ -1100,6 +1114,10 @@ object frmMain: TfrmMain
       Caption = 'Penjualan'
       OnExecute = actLapPenjualanExecute
     end
+    object actPengambilanDeposit: TAction
+      Caption = 'Penarikan Deposit'
+      OnExecute = actPengambilanDepositExecute
+    end
   end
   object ImgListMainLarge: TImageList
     ColorDepth = cd32Bit
@@ -1108,7 +1126,7 @@ object frmMain: TfrmMain
     Left = 688
     Top = 128
     Bitmap = {
-      494C010116001800D00120002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010116001800D40120002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000080000000C000000001002000000000000080
       0100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

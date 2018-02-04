@@ -599,7 +599,7 @@ end;
 
 procedure TfrmPenerimaanKas.UpdatePenerimaanKasAPNewItems;
 var
-  I: Integer;
+//  I: Integer;
   lPKAPNew: TPenerimaanKasAPNew;
 begin
   PenerimaanKas.PenerimaanKasAPNewItems.Clear;

@@ -8,7 +8,7 @@ uses
   uCustomerInvoice, uAR, uPenerimaanKas, uAccount, uRekBank,
   uTransferAntarGudang, uSettingApp, uTAGRequests, uTransferAntarCabang,
   uPengeluaranKas, FireDAC.Comp.Client, uSettingAppServer, uJurnal, uSupplier,
-  uPenerimaanBarang,uReturSupplier, uSettlementARAP, uUser;
+  uPenerimaanBarang,uReturSupplier, uSettlementARAP, uUser, uPenarikanDeposit;
 
 type
   {$METHODINFO ON}
@@ -489,6 +489,20 @@ type
     function Retrieve(AID : String): TMenu;
   end;
 
+  TServerPenarikanDeposit = class(TServerTransaction)
+  private
+    FServerAP: TServerAP;
+    function GetServerAP: TServerAP;
+    property ServerAP: TServerAP read GetServerAP write FServerAP;
+  protected
+    function BeforeSave(AOBject : TAppObject): Boolean; override;
+    function AfterSave(AOBject : TAppObject): Boolean; override;
+    function AfterDelete(AOBject : TAppObject): Boolean; override;
+    function BeforeDelete(AOBject : TAppObject): Boolean; override;
+  public
+    function Retrieve(AID : String): TPenarikanDeposit;
+  end;
+
 
 
 
@@ -630,10 +644,16 @@ begin
 
   try
     if not BeforeSave(AOBject) then
+    begin
+      ADConnection.Rollback;
       Exit;
+    end;
 
     if not TDBUtils.ExecuteSQL(TDBUtils.GenerateSQL(AOBject)) then
+    begin
+      ADConnection.Rollback;
       Exit;
+    end;
 
     if AfterSave(AOBject) then
     begin
@@ -4396,6 +4416,66 @@ end;
 function TServerMenu.Retrieve(AID : String): TMenu;
 begin
   Result      := TMenu.Create;
+  TDBUtils.LoadFromDB(Result, AID);
+end;
+
+function TServerPenarikanDeposit.BeforeSave(AOBject : TAppObject): Boolean;
+begin
+  Result := False;
+  with TPenarikanDeposit(AOBject) do
+  begin
+    try
+      if AP.ID = '' then
+      begin
+        AP.ID := TDBUtils.GetNextIDGUIDToString;
+        Result := True;
+      end;
+    except
+
+    end;
+  end;
+end;
+
+function TServerPenarikanDeposit.AfterSave(AOBject : TAppObject): Boolean;
+begin
+  Result := False;
+
+  if ServerAP.SaveNoCommit(TPenarikanDeposit(AOBject).AP) then
+    Result := True;
+end;
+
+function TServerPenarikanDeposit.AfterDelete(AOBject : TAppObject): Boolean;
+begin
+  Result := False;
+
+  if ServerAP.DeleteNoCommit(TPenarikanDeposit(AOBject).AP) then
+    Result := True;
+end;
+
+function TServerPenarikanDeposit.BeforeDelete(AOBject : TAppObject): Boolean;
+begin
+//  Result := False;
+  with TPenarikanDeposit(AOBject) do
+  begin
+    if AP.TerBayar > 0 then
+    begin
+      raise Exception.Create('Data sudah tidak bisa dihapus');
+    end else
+      Result := True;
+  end;
+end;
+
+function TServerPenarikanDeposit.GetServerAP: TServerAP;
+begin
+  if FServerAP = nil then
+    FServerAP := TServerAP.Create;
+
+  Result := FServerAP;
+end;
+
+function TServerPenarikanDeposit.Retrieve(AID : String): TPenarikanDeposit;
+begin
+  Result := TPenarikanDeposit.Create;
   TDBUtils.LoadFromDB(Result, AID);
 end;
 

@@ -138,7 +138,7 @@ end;
 
 procedure TfrmBarang.ActionSimpanExecute(Sender: TObject);
 var
-  i: Integer;
+//  i: Integer;
   lBarangSatuanItem: TBarangSatuanItem;
 begin
   inherited;
@@ -321,8 +321,8 @@ begin
 end;
 
 procedure TfrmBarang.LoadDataBarang(AID : String);
-var
-  i: Integer;
+//var
+//  i: Integer;
 begin
   with ClientDataModule.ServerBarangClient do
   begin

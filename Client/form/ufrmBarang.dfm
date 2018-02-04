@@ -164,6 +164,8 @@ inherited frmBarang: TfrmBarang
         object cxTSHeader: TcxTabSheet
           Caption = 'Barang'
           ImageIndex = 0
+          ExplicitLeft = 0
+          ExplicitTop = 0
           ExplicitWidth = 903
           ExplicitHeight = 285
           object lblKode: TLabel
@@ -268,6 +270,8 @@ inherited frmBarang: TfrmBarang
           Caption = 'Satuan'
           ImageIndex = 2
           TabVisible = False
+          ExplicitLeft = 0
+          ExplicitTop = 0
           ExplicitWidth = 903
           ExplicitHeight = 285
           object cxGridDBSatuan: TcxGrid
@@ -459,7 +463,7 @@ inherited frmBarang: TfrmBarang
     Left = 232
     Top = 200
     Bitmap = {
-      494C010106000800C80018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010106000800CC0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

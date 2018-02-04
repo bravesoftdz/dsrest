@@ -75,7 +75,9 @@ uses
   ufrmLaporanNeracaSaldo in 'form\ufrmLaporanNeracaSaldo.pas' {frmLaporanNeracaSaldo},
   ClientClassesUnit in 'ClientClassesUnit.pas',
   ufrmBukuBesar in 'form\ufrmBukuBesar.pas' {frmBukuBesar},
-  ufrmLaporanPenjualan in 'form\ufrmLaporanPenjualan.pas' {frmLaporanPenjualan};
+  ufrmLaporanPenjualan in 'form\ufrmLaporanPenjualan.pas' {frmLaporanPenjualan},
+  uPenarikanDeposit in '..\model\uPenarikanDeposit.pas',
+  ufrmPenarikanDeposit in 'form\ufrmPenarikanDeposit.pas' {frmPenarikanDeposit};
 
 {$R *.res}
 

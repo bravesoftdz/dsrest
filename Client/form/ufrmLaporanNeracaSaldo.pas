@@ -59,8 +59,8 @@ begin
 end;
 
 procedure TfrmLaporanNeracaSaldo.CetakSlip;
-var
-  lCabang: TCabang;
+//var
+//  lCabang: TCabang;
 begin
   inherited;
 

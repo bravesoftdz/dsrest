@@ -20,6 +20,7 @@ type
   public
     constructor Create; reintroduce;
     constructor CreateID(AID : String);
+    class procedure PokeRTTI;
     property ObjectState: Integer read FObjectState write FObjectState;   // 1 Baru, 3 Edit, 5 Hapus
   published
     property ID: string read FID write FID;
@@ -316,6 +317,11 @@ begin
   Self    := inherited Create;
   Self.ID := AID;
 
+end;
+
+class procedure TAppObject.PokeRTTI;
+begin
+  // Do Nothing
 end;
 
 function TMutasiStock.GetPeriode: Integer;

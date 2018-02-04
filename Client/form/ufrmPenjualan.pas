@@ -396,6 +396,7 @@ begin
     Penjualan.PenjualanItems.Add(lPenjualanItem);
   end;
 
+  IsBerhasilSimpan := False;
   if cbbJenisPembayaran.Text = 'CASH' then
   begin
     lDibayar         := TfrmPembayaranPOS.Bayar(Penjualan.Total);
@@ -470,8 +471,8 @@ end;
 
 procedure TfrmPenjualan.edKodePembeliKeyDown(Sender: TObject; var Key: Word;
     Shift: TShiftState);
-var
-  lPembeli: TSupplier;
+//var
+//  lPembeli: TSupplier;
 begin
   inherited;
   if Key = VK_RETURN then

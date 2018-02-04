@@ -1,598 +1,135 @@
-inherited frmPenjualan: TfrmPenjualan
-  Caption = 'Penjualan'
-  ClientHeight = 429
-  ClientWidth = 773
-  OnShow = FormShow
-  ExplicitWidth = 789
-  ExplicitHeight = 468
+inherited frmPenarikanDeposit: TfrmPenarikanDeposit
+  Caption = 'Penarikan Deposit'
+  ExplicitWidth = 733
+  ExplicitHeight = 385
   PixelsPerInch = 96
   TextHeight = 13
-  inherited cxSBTransaksi: TdxStatusBar
-    Top = 409
-    Width = 773
-    ExplicitTop = 409
-    ExplicitWidth = 773
-  end
   inherited cxPCData: TcxPageControl
-    Width = 773
-    Height = 376
     Properties.ActivePage = cxTSInputData
-    ExplicitWidth = 773
-    ExplicitHeight = 376
-    ClientRectBottom = 372
-    ClientRectRight = 769
     inherited cxTSOverview: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
-      ExplicitWidth = 765
-      ExplicitHeight = 348
-      inherited splTransaksi: TSplitter
-        Height = 348
-        ExplicitLeft = 17
-        ExplicitHeight = 359
-      end
-      inherited pnlListTransaksi: TPanel
-        Width = 757
-        Height = 348
-        ExplicitWidth = 757
-        ExplicitHeight = 348
-        inherited pnlFilter: TPanel
-          Width = 755
-          ExplicitWidth = 755
-          inherited lblPeriode: TLabel
-            Left = 332
-            ExplicitLeft = 383
-          end
-          inherited lblSD: TLabel
-            Left = 493
-            ExplicitLeft = 538
-          end
-          inherited dtpAwal: TDateTimePicker
-            Left = 385
-            ExplicitLeft = 385
-          end
-          inherited dtpAkhir: TDateTimePicker
-            Left = 534
-            ExplicitLeft = 534
-          end
-          inherited btnRefresh: TcxButton
-            Left = 645
-            ExplicitLeft = 645
-          end
-        end
-        inherited cxGrid: TcxGrid
-          Width = 755
-          Height = 315
-          ExplicitWidth = 755
-          ExplicitHeight = 315
-          inherited cxGridDBTableOverview: TcxGridDBTableView
-            OnCellDblClick = cxGridDBTableOverviewCellDblClick
-            OptionsView.Indicator = True
-          end
-        end
-      end
+      ExplicitWidth = 709
+      ExplicitHeight = 265
     end
     inherited cxTSInputData: TcxTabSheet
       ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 765
-      ExplicitHeight = 348
-      object pnlInput: TPanel
-        Left = 0
-        Top = 0
-        Width = 765
-        Height = 348
-        Align = alClient
+      ExplicitWidth = 709
+      ExplicitHeight = 265
+      object lblNoBukti: TLabel
+        Left = 15
+        Top = 14
+        Width = 39
+        Height = 13
+        Caption = 'No Bukti'
+      end
+      object lblTgl: TLabel
+        Left = 16
+        Top = 39
+        Width = 38
+        Height = 13
+        Caption = 'Tanggal'
+      end
+      object lblCustomer: TLabel
+        Left = 26
+        Top = 64
+        Width = 28
+        Height = 13
+        Caption = 'Santri'
+      end
+      object lblNominal: TLabel
+        Left = 262
+        Top = 14
+        Width = 37
+        Height = 13
+        Caption = 'Nominal'
+      end
+      object lblKeterangan: TLabel
+        Left = 248
+        Top = 39
+        Width = 56
+        Height = 13
+        Caption = 'Keterangan'
+      end
+      object edNoBukti: TcxTextEdit
+        Tag = 1
+        Left = 65
+        Top = 10
         TabOrder = 0
-        object pgcHeader: TPageControl
-          Left = 1
-          Top = 1
-          Width = 763
-          Height = 152
-          ActivePage = tsHeader
-          Align = alTop
-          TabOrder = 0
-          object tsHeader: TTabSheet
-            Caption = 'Penjualan'
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
-            object lblNoBukti: TLabel
-              Left = 23
-              Top = 8
-              Width = 39
-              Height = 13
-              Caption = 'No Bukti'
-            end
-            object lblTglBukti: TLabel
-              Left = 22
-              Top = 32
-              Width = 40
-              Height = 13
-              Caption = 'Tgl Bukti'
-            end
-            object lblSupplier: TLabel
-              Left = 17
-              Top = 56
-              Width = 45
-              Height = 13
-              Caption = 'Salesman'
-            end
-            object lblKeterangan: TLabel
-              Left = 373
-              Top = 57
-              Width = 56
-              Height = 13
-              Caption = 'Keterangan'
-            end
-            object lblPembeli: TLabel
-              Left = 24
-              Top = 81
-              Width = 36
-              Height = 13
-              Caption = 'Pembeli'
-            end
-            object lblJthTempo: TLabel
-              Left = 509
-              Top = 34
-              Width = 50
-              Height = 13
-              Caption = 'Jth Tempo'
-              Visible = False
-            end
-            object lblJenisPembayaran: TLabel
-              Left = 366
-              Top = 7
-              Width = 60
-              Height = 13
-              Caption = 'Pembayaran'
-            end
-            object lblTempo: TLabel
-              Left = 397
-              Top = 34
-              Width = 32
-              Height = 13
-              Caption = 'Tempo'
-            end
-            object lblFee: TLabel
-              Left = 541
-              Top = 7
-              Width = 18
-              Height = 13
-              Caption = 'Fee'
-              Visible = False
-            end
-            object lblDeposit: TLabel
-              Left = 24
-              Top = 105
-              Width = 36
-              Height = 13
-              Caption = 'Deposit'
-            end
-            object edNoBukti: TcxTextEdit
-              Tag = 1
-              Left = 72
-              Top = 3
-              Enabled = False
-              Properties.ReadOnly = True
-              TabOrder = 0
-              Text = 'edNoBukti'
-              Width = 121
-            end
-            object edTglBukti: TcxDateEdit
-              Tag = 1
-              Left = 72
-              Top = 28
-              Enabled = False
-              Properties.OnChange = edTglBuktiPropertiesChange
-              TabOrder = 1
-              Width = 121
-            end
-            object memKeterangan: TcxMemo
-              Left = 435
-              Top = 56
-              Lines.Strings = (
-                'memKeterangan')
-              TabOrder = 10
-              Height = 43
-              Width = 217
-            end
-            object cbbSalesman: TcxExtLookupComboBox
-              Tag = 1
-              Left = 72
-              Top = 53
-              Properties.DropDownAutoSize = True
-              Properties.FocusPopup = True
-              TabOrder = 2
-              Width = 226
-            end
-            object cbbPembeli: TcxExtLookupComboBox
-              Tag = 1
-              Left = 156
-              Top = 77
-              Properties.DropDownAutoSize = True
-              Properties.FocusPopup = True
-              Properties.OnValidate = cbbPembeliPropertiesValidate
-              TabOrder = 4
-              Width = 142
-            end
-            object edJthTempo: TcxDateEdit
-              Left = 565
-              Top = 30
-              TabOrder = 9
-              Visible = False
-              Width = 87
-            end
-            object cbbJenisPembayaran: TcxComboBox
-              Tag = 1
-              Left = 435
-              Top = 3
-              Properties.DropDownListStyle = lsFixedList
-              Properties.Items.Strings = (
-                'CASH'
-                'KREDIT'
-                'DEPOSIT')
-              Properties.OnChange = cbbJenisPembayaranPropertiesChange
-              TabOrder = 6
-              Text = 'DEPOSIT'
-              Width = 64
-            end
-            object edTempo: TcxCalcEdit
-              Tag = 1
-              Left = 435
-              Top = 30
-              EditValue = 0.000000000000000000
-              Properties.Alignment.Horz = taRightJustify
-              Properties.OnChange = edTempoPropertiesChange
-              TabOrder = 8
-              Width = 64
-            end
-            object cbbFee: TcxComboBox
-              Tag = 1
-              Left = 565
-              Top = 3
-              Properties.DropDownListStyle = lsFixedList
-              Properties.Items.Strings = (
-                'ASLI'
-                'IMITASI'
-                'OLI'
-                'BUSI'
-                'BAN')
-              TabOrder = 7
-              Text = 'ASLI'
-              Visible = False
-              Width = 87
-            end
-            object edKodePembeli: TcxTextEdit
-              Left = 72
-              Top = 77
-              Properties.CharCase = ecUpperCase
-              TabOrder = 3
-              Text = 'EDKODEPEMBELI'
-              OnKeyDown = edKodePembeliKeyDown
-              Width = 80
-            end
-            object edDeposit: TcxCurrencyEdit
-              Left = 72
-              Top = 101
-              Enabled = False
-              Properties.Alignment.Horz = taRightJustify
-              Properties.DisplayFormat = ',0.00;(,0.00)'
-              TabOrder = 5
-              Width = 121
-            end
-          end
-        end
-        object pgcDetail: TPageControl
-          Left = 1
-          Top = 153
-          Width = 763
-          Height = 163
-          ActivePage = tsDetailPenerimaan
-          Align = alClient
-          TabOrder = 1
-          object tsDetailPenerimaan: TTabSheet
-            Caption = 'Detail Penerimaan'
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
-            object cxGridDBPenjualan: TcxGrid
-              Left = 0
-              Top = 0
-              Width = 755
-              Height = 135
-              Align = alClient
-              TabOrder = 0
-              object cxGridTablePenjualan: TcxGridTableView
-                PopupMenu = pmHarga
-                Navigator.Buttons.CustomButtons = <>
-                DataController.Summary.DefaultGroupSummaryItems = <>
-                DataController.Summary.FooterSummaryItems = <
-                  item
-                    Format = ',0.00;(,0.00)'
-                    Kind = skSum
-                    Column = cxgrdclmnGridTablePenjualanColumnDiskonRp
-                  end
-                  item
-                    Format = ',0.00;(,0.00)'
-                    Kind = skSum
-                    Column = cxgrdclmnGridTablePenjualanColumnPPNRp
-                  end
-                  item
-                    Format = ',0.00;(,0.00)'
-                    Kind = skSum
-                    Column = cxgrdclmnGridTablePenjualanColumnTotal
-                  end
-                  item
-                    Format = ',0.00;(,0.00)'
-                    Kind = skSum
-                    Column = cxgrdclmnGridTablePenjualanColumnSubTotalRp
-                  end
-                  item
-                    Format = ',0.##;(,0.##)'
-                    Kind = skSum
-                    Column = cxgrdclmnGridTablePenjualanColumnQty
-                  end>
-                DataController.Summary.SummaryGroups = <>
-                OptionsBehavior.FocusCellOnTab = True
-                OptionsBehavior.FocusFirstCellOnNewRecord = True
-                OptionsBehavior.GoToNextCellOnEnter = True
-                OptionsBehavior.IncSearch = True
-                OptionsBehavior.FocusCellOnCycle = True
-                OptionsCustomize.ColumnSorting = False
-                OptionsData.Appending = True
-                OptionsView.Footer = True
-                OptionsView.GroupByBox = False
-                OptionsView.Indicator = True
-                Styles.ContentEven = ClientDataModule.cxstylGridEven
-                Styles.ContentOdd = ClientDataModule.cxstylGridOdd
-                Styles.Footer = ClientDataModule.cxstylGridFooter
-                Styles.Header = ClientDataModule.cxstylGridHeader
-                object cxgrdclmnGridTablePenjualanColumnNama: TcxGridColumn
-                  Caption = 'Nama'
-                  PropertiesClassName = 'TcxExtLookupComboBoxProperties'
-                  Properties.DropDownAutoSize = True
-                  Properties.OnValidate = cxgrdclmnGridTablePenjualanColumnNamaPropertiesValidate
-                  HeaderAlignmentHorz = taCenter
-                  Width = 142
-                end
-                object cxgrdclmnGridTablePenjualanColumnSKU: TcxGridColumn
-                  Caption = 'SKU'
-                  PropertiesClassName = 'TcxExtLookupComboBoxProperties'
-                  Properties.DropDownAutoSize = True
-                  Properties.FocusPopup = True
-                  Properties.ReadOnly = True
-                  HeaderAlignmentHorz = taCenter
-                end
-                object cxgrdclmnGridTablePenjualanColumnSatuan: TcxGridColumn
-                  Caption = 'Satuan'
-                  PropertiesClassName = 'TcxExtLookupComboBoxProperties'
-                  Properties.ReadOnly = True
-                  Properties.OnInitPopup = cxgrdclmnGridTablePenjualanColumnSatuanPropertiesInitPopup
-                  HeaderAlignmentHorz = taCenter
-                  Width = 92
-                end
-                object cxgrdclmnGridTablePenjualanColumnHarga: TcxGridColumn
-                  Caption = 'Harga'
-                  DataBinding.ValueType = 'Float'
-                  PropertiesClassName = 'TcxCurrencyEditProperties'
-                  Properties.Alignment.Horz = taRightJustify
-                  Properties.DisplayFormat = ',0.##;(,0.##)'
-                  Properties.ReadOnly = True
-                  HeaderAlignmentHorz = taCenter
-                end
-                object cxgrdclmnGridTablePenjualanColumnQty: TcxGridColumn
-                  Caption = 'Qty'
-                  DataBinding.ValueType = 'Float'
-                  PropertiesClassName = 'TcxCurrencyEditProperties'
-                  Properties.Alignment.Horz = taRightJustify
-                  Properties.DisplayFormat = ',0.##;(,0.##)'
-                  Properties.OnValidate = cxgrdclmnGridTablePenjualanColumnQtyPropertiesValidate
-                  HeaderAlignmentHorz = taCenter
-                  Width = 60
-                end
-                object cxgrdclmnGridTablePenjualanColumnDiskon: TcxGridColumn
-                  Caption = 'Diskon %'
-                  DataBinding.ValueType = 'Float'
-                  PropertiesClassName = 'TcxCurrencyEditProperties'
-                  Properties.Alignment.Horz = taRightJustify
-                  Properties.DisplayFormat = ',0.##;(,0.##)'
-                  Properties.OnValidate = cxgrdclmnGridTablePenjualanColumnDiskonPropertiesValidate
-                  HeaderAlignmentHorz = taCenter
-                end
-                object cxgrdclmnGridTablePenjualanColumnPPN: TcxGridColumn
-                  Caption = 'PPN %'
-                  DataBinding.ValueType = 'Float'
-                  PropertiesClassName = 'TcxCurrencyEditProperties'
-                  Properties.Alignment.Horz = taRightJustify
-                  Properties.DisplayFormat = ',0.##;(,0.##)'
-                  Properties.OnValidate = cxgrdclmnGridTablePenjualanColumnPPNPropertiesValidate
-                  Visible = False
-                  HeaderAlignmentHorz = taCenter
-                end
-                object cxgrdclmnGridTablePenjualanColumnSubTotalRp: TcxGridColumn
-                  Caption = 'Sub Total (Rp)'
-                  DataBinding.ValueType = 'Float'
-                  PropertiesClassName = 'TcxCurrencyEditProperties'
-                  Properties.Alignment.Horz = taRightJustify
-                  Properties.DisplayFormat = ',0.##;(,0.##)'
-                  Properties.ReadOnly = True
-                  FooterAlignmentHorz = taRightJustify
-                  HeaderAlignmentHorz = taCenter
-                  Options.Editing = False
-                  Width = 150
-                end
-                object cxgrdclmnGridTablePenjualanColumnDiskonRp: TcxGridColumn
-                  Caption = 'Dikon (Rp)'
-                  DataBinding.ValueType = 'Float'
-                  PropertiesClassName = 'TcxCurrencyEditProperties'
-                  Properties.Alignment.Horz = taRightJustify
-                  Properties.DisplayFormat = ',0.##;(,0.##)'
-                  Properties.ReadOnly = True
-                  FooterAlignmentHorz = taRightJustify
-                  HeaderAlignmentHorz = taCenter
-                  Options.Editing = False
-                  Width = 100
-                end
-                object cxgrdclmnGridTablePenjualanColumnPPNRp: TcxGridColumn
-                  Caption = 'PPN (Rp)'
-                  DataBinding.ValueType = 'Float'
-                  PropertiesClassName = 'TcxCurrencyEditProperties'
-                  Properties.Alignment.Horz = taRightJustify
-                  Properties.DisplayFormat = ',0.##;(,0.##)'
-                  Properties.ReadOnly = True
-                  Visible = False
-                  FooterAlignmentHorz = taRightJustify
-                  HeaderAlignmentHorz = taCenter
-                  Options.Editing = False
-                  Width = 100
-                end
-                object cxgrdclmnGridTablePenjualanColumnTotal: TcxGridColumn
-                  Caption = 'Total (Rp)'
-                  DataBinding.ValueType = 'Float'
-                  PropertiesClassName = 'TcxCurrencyEditProperties'
-                  Properties.Alignment.Horz = taRightJustify
-                  Properties.DisplayFormat = ',0.##;(,0.##)'
-                  Properties.ReadOnly = True
-                  FooterAlignmentHorz = taRightJustify
-                  HeaderAlignmentHorz = taCenter
-                  Options.Editing = False
-                  Width = 150
-                end
-                object cxgrdclmnGridTablePenjualanColumnKonversi: TcxGridColumn
-                  Caption = 'Konversi'
-                  Visible = False
-                end
-                object cxgrdclmnGridTablePenjualanColumnJenisHarga: TcxGridColumn
-                  Caption = 'Jenis Harga'
-                  Visible = False
-                end
-              end
-              object cxgrdlvlPenerimaanBarang: TcxGridLevel
-                GridView = cxGridTablePenjualan
-              end
-            end
-          end
-        end
-        object pnlPLU: TPanel
-          Left = 1
-          Top = 316
-          Width = 763
-          Height = 31
-          Align = alBottom
-          TabOrder = 2
-          object lblPLU: TLabel
-            AlignWithMargins = True
-            Left = 4
-            Top = 9
-            Width = 40
-            Height = 18
-            Margins.Top = 8
-            Align = alLeft
-            AutoSize = False
-            Caption = 'PLU'
-          end
-          object edPLUNama: TcxTextEdit
-            AlignWithMargins = True
-            Left = 177
-            Top = 4
-            Align = alLeft
-            Enabled = False
-            TabOrder = 0
-            Text = 'edPLUNama'
-            Width = 368
-          end
-          object edPLU: TcxTextEdit
-            AlignWithMargins = True
-            Left = 50
-            Top = 4
-            Align = alLeft
-            TabOrder = 1
-            Text = 'edPLU'
-            OnKeyDown = edPLUKeyDown
-            Width = 121
-          end
-        end
+        Text = 'edNoBukti'
+        Width = 145
+      end
+      object dtTanggal: TcxDateEdit
+        Tag = 1
+        Left = 65
+        Top = 35
+        TabOrder = 1
+        Width = 145
+      end
+      object edKelas: TcxTextEdit
+        Tag = 99
+        Left = 65
+        Top = 60
+        TabOrder = 2
+        Width = 35
+      end
+      object cbbSantri: TcxExtLookupComboBox
+        Tag = 1
+        Left = 102
+        Top = 60
+        Properties.OnInitPopup = cbbSantriPropertiesInitPopup
+        TabOrder = 3
+        Width = 108
+      end
+      object edNominal: TcxCurrencyEdit
+        Tag = 1
+        Left = 310
+        Top = 10
+        Properties.Alignment.Horz = taRightJustify
+        Properties.DisplayFormat = ',0.00;(,0.00)'
+        TabOrder = 4
+        Width = 149
+      end
+      object memKeterangan: TcxMemo
+        Left = 310
+        Top = 35
+        Lines.Strings = (
+          'memKeterangan')
+        TabOrder = 5
+        Height = 46
+        Width = 149
       end
     end
   end
-  inherited pnlButton: TPanel
-    Top = 376
-    Width = 773
-    ExplicitTop = 376
-    ExplicitWidth = 773
-    inherited btnBaru: TcxButton
-      Left = 661
-      ExplicitLeft = 661
-    end
-    inherited btnHapus: TcxButton
-      Left = 537
-      ExplicitLeft = 537
-    end
-    inherited btnSave: TcxButton
-      Left = 421
-      ExplicitLeft = 421
-    end
-    inherited chkKonsolidasi1: TcxCheckBox
-      Left = 307
-      ExplicitLeft = 307
-      ExplicitWidth = 76
-      ExplicitHeight = 31
-    end
-    object btnInvoice: TcxButton
-      Left = 232
-      Top = 1
-      Width = 75
-      Height = 31
-      Align = alLeft
-      Action = actNextTransaction
-      TabOrder = 6
-    end
-  end
   inherited ActionListForm: TActionList
-    Left = 48
-    Top = 216
     inherited ActionSimpan: TAction
       OnExecute = ActionSimpanExecute
-    end
-    inherited ActionHapus: TAction
-      OnExecute = ActionHapusExecute
     end
     inherited ActionRefresh: TAction
       OnExecute = ActionRefreshExecute
     end
-    inherited actNextTransaction: TAction
-      Caption = 'Invoice'
-      OnExecute = actNextTransactionExecute
-    end
-  end
-  inherited cxGridRepTransaksi: TcxGridViewRepository
-    Left = 16
-    Top = 216
   end
   inherited dsCabang: TDataSource
-    Left = 208
+    Left = 616
     Top = 216
   end
   inherited DSPCabang: TDataSetProvider
-    Left = 80
-    Top = 216
+    Left = 592
+    Top = 120
   end
   inherited cdsCabang: TClientDataSet
-    Left = 112
-    Top = 216
+    Left = 640
+    Top = 128
   end
   inherited dlgSaveExportExcel: TSaveDialog
-    Left = 144
-    Top = 216
+    Left = 528
+    Top = 208
   end
   inherited ilButton: TImageList
-    Left = 176
-    Top = 216
+    Left = 512
+    Top = 120
     Bitmap = {
-      494C010106000800480118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800080118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -602,7 +139,7 @@ inherited frmPenjualan: TfrmPenjualan
       0101000001010000010100000101000001010000010100000101000001010000
       0101000001010000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      009F000000CF0000000F00000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -613,8 +150,8 @@ inherited frmPenjualan: TfrmPenjualan
       3A9A0000399D0000399D0000379D0000379D0000379D0000369D0000359D0000
       359D0000349D0000349D0000349D0000349D0000349D0000349D0000349D0000
       349D0000359A0000265F00000406000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000000000000000000000000000000000000000009F0000
+      00FF000000FF000000CF0000000F000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -625,8 +162,8 @@ inherited frmPenjualan: TfrmPenjualan
       9BFF02019DFF0201A0FF0201A4FF0201A7FF0201AAFF0201ACFF0301AEFF0301
       AFFF0301AFFF0301AEFF0201ABFF0201A9FF0201A5FF0201A2FF02019EFF0201
       9AFF050398FF080C7DFD0000265F000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000000000009F000000FF0000
+      00FF000000FF000000FF000000CF0000000F0000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -637,8 +174,8 @@ inherited frmPenjualan: TfrmPenjualan
       9DFF0000A5FF0000ACFF0000B4FF0000BCFF0000C3FF0000C9FF0000CEFF0303
       D1FF0404D2FF0000CEFF0000C9FF0000C3FF0000BCFF0000B5FF0000ADFF0000
       A5FF00009DFF0703A5FF0000379A000001010000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000009F000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000CF0000000F00000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -649,8 +186,8 @@ inherited frmPenjualan: TfrmPenjualan
       9FFF0000A8FF0000B0FF0000B8FF0000C0FF0000C8FF0000CFFF2E2CDEFFD8D6
       F8FFDFDDF9FF3837DFFF0000D0FF0000C9FF0000C1FF0000B9FF0000B1FF0000
       A8FF0000A0FF0101A5FF0000369D000001010000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000000000000000001F000000EF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000CF0000000F000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -661,8 +198,8 @@ inherited frmPenjualan: TfrmPenjualan
       A1FF0000AAFF0000B2FF0000BBFF0000C4FF0000CCFF2D2BDDFFE3E2F6FFF5F5
       F5FFF5F5F5FFE9E8F7FF3A39DFFF0000CDFF0000C4FF0000BCFF0000B3FF0000
       AAFF0000A2FF0002A4FF0000369D000001010000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000002F000000EF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000CF0000000F0000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -673,9 +210,9 @@ inherited frmPenjualan: TfrmPenjualan
       A2FF0000AAFF0000B3FF0000BCFF0000C5FF2D2BD8FFE0DFF3FFEEEEEEFFEBEB
       EBFFEBEBEBFFEDEDEDFFE6E6F3FF3A39DAFF0000C5FF0000BDFF0000B4FF0000
       ABFF0000A2FF0001A3FF0000369D000001010000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000000000002F000000EF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000CF0000
+      000F000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000130A061DA883
@@ -685,9 +222,9 @@ inherited frmPenjualan: TfrmPenjualan
       A2FF0000AAFF0000B3FF0000BCFF2D2CD0FFDEDDF1FFEAEAEAFFE5E5E5FFE1E1
       E1FFE1E1E1FFE4E4E4FFE9E9E9FFE4E3F1FF3938D3FF0000BDFF0000B4FF0000
       ABFF0000A2FF0001A0FF0000379D000001010000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000000000000000000000000000000000000000002F0000
+      00EF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00CF0000000F0000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000120A061CAB83
@@ -696,10 +233,10 @@ inherited frmPenjualan: TfrmPenjualan
       3EDBBA8248FD452B186500000000000000000000010100004B9B00009BFF0000
       A0FF0000A9FF0000B1FF2C2BC8FFE1E0F3FFECECECFFE2E2E2FFCFCFCFFFD8D8
       D8FFD7D7D7FFCECECEFFE1E1E1FFEBEBEBFFE6E6F3FF3B3ACCFF0000B2FF0000
-      A9FF0000A1FF00019EFF0000399D000001010000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      A9FF0000A1FF00019EFF0000399D000001010000003F0000003F0000003F0000
+      003F0000003F0000003F0000003F0000003F0000003F0000003F0000003F0000
+      006F000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00FF000000CF0000000F00000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000120A061CA883
@@ -708,10 +245,10 @@ inherited frmPenjualan: TfrmPenjualan
       3C5F966339D56641259400000000000000000000010100004F9B00009AFF0000
       9EFF0000A6FF2D2BBFFFE5E5F6FFF2F2F2FFE7E7E7FF9898AEFF5B59B4FFCECE
       CEFFCECECEFF6868B8FF8A8AA7FFE5E5E5FFF1F1F1FFEDECF7FF3B3AC4FF0000
-      A7FF00009FFF00009CFF00003D9D000001010000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      A7FF00009FFF00009CFF00003D9D00000101000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00FF000000FF000000CF0000000F000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000120A061CAB82
@@ -720,10 +257,10 @@ inherited frmPenjualan: TfrmPenjualan
       0F1459381F81764D28B00000000000000000000001010000519B000099FF0000
       9BFF2A29B5FFE4E4F6FFF9F9F9FFEFEFEFFF9F9EB3FF0909B0FF5452CAFFC9C9
       C9FFC8C8C8FF6464CAFF0505B5FF9090ABFFEEEEEEFFF9F9F9FFECECF8FF3534
-      B9FF00009CFF00009AFF00003F9D000001010000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      B9FF00009CFF00009AFF00003F9D00000101000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000CF0000000F0000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000120A061CAB86
@@ -732,10 +269,10 @@ inherited frmPenjualan: TfrmPenjualan
       00003B24125B6842249F0000000000000000000001010000549B000099FF0000
       9AFFA1A1D9FFFAFAFAFFF9F9F9FFA7A6BBFF0F0CB2FF0603C9FF5B58CBFFCECE
       CEFFCECECEFF6F6ECAFF0806C4FF0707ACFF9797B1FFF7F7F7FFFAFAFAFFA8A7
-      DAFF00009AFF000099FF0000419D000001010000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      DAFF00009AFF000099FF0000419D00000101000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000CF0000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       00000000000000000000000000000000000000000000000000000E0704158D60
@@ -744,10 +281,10 @@ inherited frmPenjualan: TfrmPenjualan
       051F29190D40321E104C0000000000000000000001010000569A0504A7FF0500
       B5FF4844AAFFCBCBCCFF9F9EB2FF160DB6FF0B00CCFF0B00CFFF6059CEFFD7D7
       D7FFD7D7D7FF6C66CEFF180CD2FF2619D3FF2B22BFFF908FACFFCACACBFF5958
-      A3FF00009BFF000098FF0000449C000001010000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      A3FF00009BFF000098FF0000449C00000101000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000CF0000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       00000000000000000000000000000000000000000000000000000B0603103B24
@@ -756,10 +293,10 @@ inherited frmPenjualan: TfrmPenjualan
       67DEAA8360E050351F74000000000000000000000101000058981310B3FF150C
       C0FF150CBFFF160FA6FF160EB9FF160CC8FF170DCBFF190CCDFF6962CFFFE1E1
       E1FFE0E0E0FF746ECFFF190CCDFF180DCBFF160CC8FF150DBCFF160EA7FF2820
-      C5FF3F39CBFF3C3CB9FF0000469A000001010000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      C5FF3F39CBFF3C3CB9FF0000469A00000101000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000CF0000000F0000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000190F07288D5B
@@ -768,10 +305,10 @@ inherited frmPenjualan: TfrmPenjualan
       79FFD4AD89FF62462C8A000000000000000000000101000059961A18B7FF231B
       C5FF231BC5FF231BC5FF231BC5FF231BC7FF231CCAFF241BCCFF706BCEFFEAEA
       EAFFEAEAEAFF7A75CEFF241BCCFF241CCAFF231BC7FF231BC5FF231BC5FF231B
-      C5FF231BC5FF4847C6FF00004898000001010000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      C5FF231BC5FF4847C6FF0000489800000101000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00FF000000FF000000CF0000000F000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000170D0724A16E
@@ -780,10 +317,10 @@ inherited frmPenjualan: TfrmPenjualan
       71FFD3A983FF66492F8E00000000000000000000010100005B942421BCFF322A
       CAFF322ACAFF322ACAFF322ACAFF322ACAFF332BCBFF322ACCFF7975CFFFF4F4
       F4FFF4F4F4FF827DCDFF322ACCFF332BCBFF322ACAFF322ACAFF322ACAFF322A
-      CAFF322ACAFF4F4CC9FF00004996000001010000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      CAFF322ACAFF4F4CC9FF00004996000001010000003F0000003F0000003F0000
+      003F0000003F0000003F0000003F0000003F0000003F0000003F0000003F0000
+      006F000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00FF000000CF0000000F00000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       00000000000000000000000000000000000000000000000000001B10082BB58C
@@ -793,9 +330,9 @@ inherited frmPenjualan: TfrmPenjualan
       CFFF413ACFFF413ACFFF413ACFFF413ACFFF413ACFFF413ACFFF817CCFFFF9F9
       F9FFFAFAFAFF8682CCFF413ACFFF413ACFFF413ACFFF413ACFFF413ACFFF413A
       CFFF413ACFFF5753CCFF00004D94000001010000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000000000000000000000000000000000000000002F0000
+      00EF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00CF0000000F0000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       00000000000000000000000000000000000000000000000000000804020CAB86
@@ -805,9 +342,9 @@ inherited frmPenjualan: TfrmPenjualan
       D3FF504AD3FF504AD3FF504AD3FF504AD3FF504AD3FF504AD3FF8783CFFFF9F9
       F9FFF9F9F9FF8985C9FF504AD3FF504AD3FF504AD3FF504AD3FF504AD3FF504A
       D3FF504AD3FF5F5BCFFF00004E93000001010000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000000000002F000000EF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000CF0000
+      000F000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000007B5A
@@ -817,8 +354,8 @@ inherited frmPenjualan: TfrmPenjualan
       D8FF605AD8FF605AD8FF605AD8FF605AD8FF605AD8FF605AD8FF8A87CEFFF8F8
       F8FFF9F9F9FF8B88C7FF605AD8FF605AD8FF605AD8FF605AD8FF605AD8FF605A
       D8FF605AD8FF6763D2FF00005091000001010000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000002F000000EF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000CF0000000F0000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -829,8 +366,8 @@ inherited frmPenjualan: TfrmPenjualan
       DDFF6F6ADDFF6F6ADDFF6F6ADDFF6F6ADDFF6F6ADDFF6F6ADDFF736FCCFFB1B1
       B7FFB5B5B9FF7470C8FF6F6ADDFF6F6ADDFF6F6ADDFF6F6ADDFF6F6ADDFF6F6A
       DDFF6F6ADDFF6F6CD6FF0000528F000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000000000000000001F000000EF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000CF0000000F000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -841,8 +378,8 @@ inherited frmPenjualan: TfrmPenjualan
       E2FF817AE2FF817AE2FF817AE2FF817AE2FF817AE2FF817AE2FF817AE2FF7873
       D3FF7671D1FF817AE2FF817AE2FF817AE2FF817AE2FF817AE2FF817AE2FF817A
       E2FF817AE2FF7D7BDCFF02025C8B000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000009F000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000CF0000000F00000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -853,8 +390,8 @@ inherited frmPenjualan: TfrmPenjualan
       E9FF716FE6FF7170E6FF7170E6FF7170E6FF7170E5FF7170E5FF7170E5FF7170
       E5FF7170E4FF7170E4FF7170E3FF7170E3FF7170E3FF7170E2FF7170E2FF7171
       E1FF7877E5FF9893F2FC0A08414C000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000000000009F000000FF0000
+      00FF000000FF000000FF000000CF0000000F0000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -865,6 +402,8 @@ inherited frmPenjualan: TfrmPenjualan
       7587000074890000748900007489000074890000748900007489000073890000
       718900007189000071890000708900006F8900006F8900006F8900006F890000
       6E8904037087120F464D00000202000000000000000000000000000000000000
+      00000000000000000000000000000000000000000000000000000000009F0000
+      00FF000000FF000000CF0000000F000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -876,9 +415,7 @@ inherited frmPenjualan: TfrmPenjualan
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      009F000000CF0000000F00000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1172,16 +709,16 @@ inherited frmPenjualan: TfrmPenjualan
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000424D3E000000000000003E000000
       2800000060000000300000000100010000000000400200000000000000000000
-      000000000000000000000000FFFFFF00FFFFFFE00007000000000000F0000F80
-      0001000000000000C00003800001000000000000800001000000000000000000
-      800001000000000000000000800001000000000000000000C000030000000000
-      00000000C00003000000000000000000C00003000000000000000000C01F0300
-      0000000000000000C03F83000000000000000000C01F13000000000000000000
+      000000000000000000000000FFFFFF00FFFFFFE00007FFE3FF000000F0000F80
+      0001FFC1FF000000C00003800001FF80FF000000800001000000FF007F000000
+      800001000000FE003F000000800001000000FF001F000000C00003000000FF80
+      0F000000C00003000000FFC007000000C00003000000000003000000C01F0300
+      0000000001000000C03F83000000000000000000C01F13000000000000000000
       C01803000000000000000000C01803000000000000000000C0FC030000000000
-      00000000C0FE03000000000000000000C0FC03000000000000000000C0600300
-      0000000000000000E00003800000000000000000E00003800001000000000000
-      F00023800001000000000000F80073800001000000000000FC01FF8000010000
-      00000000FFFFFFFFFFFF000000000000FFFFFFC00003FFFFFFFFFFFFFE007F80
+      01000000C0FE03000000000003000000C0FC03000000FFC007000000C0600300
+      0000FF800F000000E00003800000FF001F000000E00003800001FE003F000000
+      F00023800001FF007F000000F80073800001FF80FF000000FC01FF800001FFC1
+      FF000000FFFFFFFFFFFFFFE3FF000000FFFFFFC00003FFFFFFFFFFFFFE007F80
       0001FFFFFFFE007FF8001F000000C00003FC003FF0000F000000800003F9FFBF
       E0000700000080000301FF80C0000300000080000301FF80C018030000008000
       0301FF80803C01000000800003000000803C01000000800003000000803C0100
@@ -1192,29 +729,5 @@ inherited frmPenjualan: TfrmPenjualan
       F0000F000001800003F3FF1FF8001F000003C00003F0003FFE007F800007E000
       07F8007FFFFFFFE0000FFFFFFFFFFFFF00000000000000000000000000000000
       000000000000}
-  end
-  object pmHarga: TPopupMenu
-    Left = 376
-    Top = 240
-    object Umum1: TMenuItem
-      Caption = 'Umum'
-      ShortCut = 112
-      OnClick = Umum1Click
-    end
-    object Bengkel1: TMenuItem
-      Caption = 'Bengkel'
-      ShortCut = 113
-      OnClick = Bengkel1Click
-    end
-    object Keliling1: TMenuItem
-      Caption = 'Keliling'
-      ShortCut = 114
-      OnClick = Keliling1Click
-    end
-    object Grosir1: TMenuItem
-      Caption = 'Grosir'
-      ShortCut = 115
-      OnClick = Grosir1Click
-    end
   end
 end

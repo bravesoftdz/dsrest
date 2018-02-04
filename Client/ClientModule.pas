@@ -47,6 +47,7 @@ type
     FServerUserClient: TServerUserClient;
     FServerSettlementARAPClient: TServerSettlementARAPClient;
     FServerAPClient: TServerAPClient;
+    FServerPenarikanDepositClient: TServerPenarikanDepositClient;
     function GetCabang: tcabang;
     function GetServerUOMClient: TServerUOMClient;
     function GetServerSupplierClient: TServerSupplierClient;
@@ -79,6 +80,7 @@ type
     function GetServerUserClient: TServerUserClient;
     function GeTServerSettlementARAPClient: TServerSettlementARAPClient;
     function GetServerAPClient: TServerAPClient;
+    function GetServerPenarikanDepositClient: TServerPenarikanDepositClient;
     { Private declarations }
   public
     constructor Create(AOwner: TComponent); override;
@@ -137,6 +139,8 @@ type
         GeTServerSettlementARAPClient write FServerSettlementARAPClient;
     property ServerAPClient: TServerAPClient read GetServerAPClient write
         FServerAPClient;
+    property ServerPenarikanDepositClient: TServerPenarikanDepositClient read
+        GetServerPenarikanDepositClient write FServerPenarikanDepositClient;
   published
 end;
 
@@ -456,6 +460,16 @@ begin
 
   FServerAPClient:= TServerAPClient.Create(DSRestConnection, FInstanceOwner);
   Result := FServerAPClient;
+end;
+
+function TClientDataModule.GetServerPenarikanDepositClient:
+    TServerPenarikanDepositClient;
+begin
+  if FServerPenarikanDepositClient <> nil then
+    FreeAndNil(FServerPenarikanDepositClient);
+
+  FServerPenarikanDepositClient:= TServerPenarikanDepositClient.Create(DSRestConnection, FInstanceOwner);
+  Result := FServerPenarikanDepositClient;
 end;
 
 end.

@@ -432,9 +432,9 @@ begin
 end;
 
 procedure TfrmPengeluaranKas.InisialisasiCBBSupplier;
-var
+//var
 //  lCDSSalesman: TClientDataSet;
-  sSQL: string;
+//  sSQL: string;
 begin
   cbbCustomer.Properties.LoadFromCDS(CDSSalesman,'ID','Nama',['ID'],Self);
   cbbCustomer.Properties.SetMultiPurposeLookup;

@@ -19,7 +19,7 @@ uses
   cxDropDownEdit, ufrmPengeluaranKas, ufrmJurnal, ufrmLapPenerimaanBarang,
   ufrmKartuAP, ufrmLaporanAP, ufrmKartuAR,ufrmLaporanAR,
   ufrmLaporanReturSupplier, ufrmGenerateJurnal, ufrmBukuBesar,
-  Vcl.AppEvnts;
+  Vcl.AppEvnts, ufrmPenarikanDeposit;
 
 type
   TfrmMain = class(TForm)
@@ -164,6 +164,9 @@ type
     dxbrlrgbtnLapPenjualan: TdxBarLargeButton;
     actLapPenjualan: TAction;
     aplctnvntsApp: TApplicationEvents;
+    dxbrbtnPengambilanDeposit: TdxBarButton;
+    actPengambilanDeposit: TAction;
+    dxbrlrgbtnPenarikanDeposit: TdxBarLargeButton;
     procedure actAlatGantiCabangExecute(Sender: TObject);
     procedure actApplicationExitExecute(Sender: TObject);
     procedure actClosingInventoryExecute(Sender: TObject);
@@ -202,6 +205,7 @@ type
     procedure FormDblClick(Sender: TObject);
     procedure actPengeluaranKasExecute(Sender: TObject);
     procedure actLapReturSupplierExecute(Sender: TObject);
+    procedure actPengambilanDepositExecute(Sender: TObject);
     procedure actSettlementARAPExecute(Sender: TObject);
     procedure aplctnvntsAppException(Sender: TObject; E: Exception);
   private
@@ -363,6 +367,11 @@ end;
 procedure TfrmMain.actPenerimaanKasExecute(Sender: TObject);
 begin
   frmPenerimaanKas := TfrmPenerimaanKas.Create(Self);
+end;
+
+procedure TfrmMain.actPengambilanDepositExecute(Sender: TObject);
+begin
+  frmPenarikanDeposit := TfrmPenarikanDeposit.Create(Self);
 end;
 
 procedure TfrmMain.actPengeluaranKasExecute(Sender: TObject);
