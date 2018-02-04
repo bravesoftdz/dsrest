@@ -14,7 +14,7 @@ uses
   dxStatusBar, uDBUtils, ClientModule, uAppUtils, dxCore, cxDateUtils,
   cxDropDownEdit, cxLookupEdit, cxDBLookupEdit, cxDBExtLookupComboBox,
   cxMaskEdit, cxCalendar, cxTextEdit, cxMemo, cxCurrencyEdit,
-  uPenarikanDeposit, uSupplier;
+  uPenarikanDeposit, uSupplier, uDMReport;
 
 type
   TfrmPenarikanDeposit = class(TfrmDefault)
@@ -29,11 +29,16 @@ type
     edNominal: TcxCurrencyEdit;
     lblKeterangan: TLabel;
     memKeterangan: TcxMemo;
+    procedure actCetakExecute(Sender: TObject);
     procedure ActionBaruExecute(Sender: TObject);
+    procedure ActionHapusExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ActionRefreshExecute(Sender: TObject);
     procedure ActionSimpanExecute(Sender: TObject);
     procedure cbbSantriPropertiesInitPopup(Sender: TObject);
+    procedure cxGridDBTableOverviewCellDblClick(Sender: TcxCustomGridTableView;
+        ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton; AShift:
+        TShiftState; var AHandled: Boolean);
   private
     fcds: TClientDataset;
     FCDSSantri: tclientDataSet;
@@ -41,8 +46,11 @@ type
     function GetCDSSantri: tclientDataSet;
     function GetPenarikanDeposit: TPenarikanDeposit;
     procedure InisialisasiCBBSantri;
+    function IsBisaHapus: Boolean;
     property CDSSantri: tclientDataSet read GetCDSSantri write FCDSSantri;
     { Private declarations }
+  protected
+    procedure CetakSlip; virtual;
   public
     procedure LoadDataTransaksi(AID : String); override;
     property PenarikanDeposit: TPenarikanDeposit read GetPenarikanDeposit write
@@ -55,12 +63,34 @@ var
 
 implementation
 
+uses
+  Data.FireDACJSONReflect;
+
 {$R *.dfm}
+
+procedure TfrmPenarikanDeposit.actCetakExecute(Sender: TObject);
+begin
+  inherited;
+  CetakSlip;
+end;
 
 procedure TfrmPenarikanDeposit.ActionBaruExecute(Sender: TObject);
 begin
   inherited;
   LoadDataTransaksi('');
+end;
+
+procedure TfrmPenarikanDeposit.ActionHapusExecute(Sender: TObject);
+begin
+  inherited;
+  if not IsBisaHapus then
+    Exit;
+
+  if ClientDataModule.ServerPenarikanDepositClient.Delete(PenarikanDeposit) then
+  begin
+    ActionRefreshExecute(Sender);
+    ActionBaruExecute(Sender);
+  end;
 end;
 
 procedure TfrmPenarikanDeposit.FormCreate(Sender: TObject);
@@ -73,13 +103,13 @@ procedure TfrmPenarikanDeposit.ActionRefreshExecute(Sender: TObject);
 begin
   inherited;
   if chkKonsolidasi1.Checked then
-    fcds := TDBUtils.DSToCDS(ClientDataModule.ServerLaporanClient.RetrivePenerimaanKas(dtpAwal.DateTime, dtpAkhir.DateTime, nil), cxGridDBTableOverview)
+    fcds := TDBUtils.DSToCDS(ClientDataModule.ServerLaporanClient.RetrivePenarikanDeposit(dtpAwal.DateTime, dtpAkhir.DateTime, nil), cxGridDBTableOverview)
   else
-    fcds := TDBUtils.DSToCDS(ClientDataModule.ServerLaporanClient.RetrivePenerimaanKas(dtpAwal.DateTime, dtpAkhir.DateTime, ClientDataModule.Cabang), cxGridDBTableOverview);
+    fcds := TDBUtils.DSToCDS(ClientDataModule.ServerLaporanClient.RetrivePenarikanDeposit(dtpAwal.DateTime, dtpAkhir.DateTime, ClientDataModule.Cabang), cxGridDBTableOverview);
 
   cxGridDBTableOverview.ClearRows;
   cxGridDBTableOverview.SetDataset(fcds, True);
-  cxGridDBTableOverview.SetVisibleColumns(['ID', 'CABANGID'], False);
+  cxGridDBTableOverview.SetVisibleColumns(['ID', 'SANTRI'], False);
   cxGridDBTableOverview.ApplyBestFit();
 end;
 
@@ -103,10 +133,10 @@ begin
 
   if ClientDataModule.ServerPenarikanDepositClient.Save(PenarikanDeposit) then
   begin
-//    if TAppUtils.ConfirmBerhasilSimpanCetakReport('Slip Deposit') then
-//    begin
-//      actCetakExecute(Sender);
-//    end;
+    if TAppUtils.ConfirmBerhasilSimpanCetakReport('Slip Deposit') then
+    begin
+      actCetakExecute(Sender);
+    end;
 
     ActionBaruExecute(Sender);
   end;
@@ -121,6 +151,32 @@ begin
     CDSSantri.Filter   := ' kelas = ' + QuotedStr(Trim(edKelas.Text));
     CDSSantri.Filtered := True;
   end;
+end;
+
+procedure TfrmPenarikanDeposit.CetakSlip;
+var
+  lcds: TFDJSONDataSets;
+begin
+  with dmReport do
+  begin
+    AddReportVariable('UserCetak', User);
+
+    if cxPCData.ActivePageIndex = 0 then
+      lcds := ClientDataModule.ServerPenarikanDepositClient.RetrieveCDSlip(dtpAwal.DateTime, dtpAkhir.DateTime, ClientDataModule.Cabang, '%')
+    else
+      lcds := ClientDataModule.ServerPenarikanDepositClient.RetrieveCDSlip(dtpAwal.DateTime, dtpAkhir.DateTime, ClientDataModule.Cabang, PenarikanDeposit.NoBukti);
+
+      ExecuteReport('Reports/Slip_Penarikan_Deposit' ,lcds);
+  end;
+end;
+
+procedure TfrmPenarikanDeposit.cxGridDBTableOverviewCellDblClick(Sender:
+    TcxCustomGridTableView; ACellViewInfo: TcxGridTableDataCellViewInfo;
+    AButton: TMouseButton; AShift: TShiftState; var AHandled: Boolean);
+begin
+  inherited;
+  LoadDataTransaksi(fcds.FieldByName('ID').AsString);
+  cxPCData.ActivePageIndex := 1;
 end;
 
 function TfrmPenarikanDeposit.GetCDSSantri: tclientDataSet;
@@ -148,6 +204,14 @@ procedure TfrmPenarikanDeposit.InisialisasiCBBSantri;
 begin
   cbbSantri.Properties.LoadFromCDS(CDSSantri,'ID','Nama',['ID'],Self);
   cbbSantri.Properties.SetMultiPurposeLookup;
+end;
+
+function TfrmPenarikanDeposit.IsBisaHapus: Boolean;
+begin
+  Result := False;
+
+  if TAppUtils.Confirm('Anda yakin akan menghapus data?') then
+    Result := True;
 end;
 
 procedure TfrmPenarikanDeposit.LoadDataTransaksi(AID : String);

@@ -77,6 +77,8 @@ type
         Integer; ACabang : TCabang): TFDJSONDataSets; overload;
     function LaporanPenjualanByPembeli(ATglAwal , AtglAkhir : TDateTime;
         AIsKonsolidasi : Integer; ACabang : TCabang): TFDJSONDataSets; overload;
+    function RetrivePenarikanDeposit(ATglAwal , ATglAtglAkhir : TDateTime; ACabang
+        : TCabang): TDataset;
     function RetriveSettingApp(ACabang : TCabang): TDataset;
 
   end;
@@ -501,6 +503,8 @@ type
     function BeforeDelete(AOBject : TAppObject): Boolean; override;
   public
     function Retrieve(AID : String): TPenarikanDeposit;
+    function RetrieveCDSlip(ATglAwal , ATglAtglAkhir : TDateTime; ACabang :
+        TCabang; ANoBukti : String): TFDJSONDataSets;
   end;
 
 
@@ -1840,6 +1844,23 @@ begin
 
   TFDJSONDataSetsWriter.ListAdd(Result, TDBUtils.OpenQuery(sSQL));
 
+end;
+
+{ TLaporan }
+
+function TServerLaporan.RetrivePenarikanDeposit(ATglAwal , ATglAtglAkhir :
+    TDateTime; ACabang : TCabang): TDataset;
+var
+  sSQL : String;
+begin
+  sSQL := 'select * from vpenarikandeposit ' +
+          ' where tanggal between ' + TAppUtils.QuotDt(StartOfTheDay(ATglAwal))+
+          ' and ' + TAppUtils.QuotDt(EndOfTheDay(ATglAtglAkhir));
+
+//  if ACabang <> nil then
+//    sSQL := sSQL + ' and a.cabangID = ' + QuotedStr(ACabang.ID);
+
+  Result   := TDBUtils.OpenDataset(sSQL);
 end;
 
 { TLaporan }
@@ -4428,8 +4449,8 @@ begin
       if AP.ID = '' then
       begin
         AP.ID := TDBUtils.GetNextIDGUIDToString;
-        Result := True;
       end;
+      Result := True;
     except
 
     end;
@@ -4477,6 +4498,24 @@ function TServerPenarikanDeposit.Retrieve(AID : String): TPenarikanDeposit;
 begin
   Result := TPenarikanDeposit.Create;
   TDBUtils.LoadFromDB(Result, AID);
+end;
+
+function TServerPenarikanDeposit.RetrieveCDSlip(ATglAwal , ATglAtglAkhir :
+    TDateTime; ACabang : TCabang; ANoBukti : String): TFDJSONDataSets;
+var
+  sSQL: string;
+begin
+  Result := TFDJSONDataSets.Create;
+
+  sSQL := 'select * from vpenarikandepositslip' +
+          ' where tanggal between ' + TAppUtils.QuotDt(StartOfTheDay(ATglAwal)) +
+          ' and ' + TAppUtils.QuotDt(EndOfTheDay(ATglAtglAkhir)) +
+          ' and nobukti like ' + QuotedStr('%' + Trim(ANoBukti) + '%');
+
+//  if ACabang <> nil then
+//    sSQL := sSQL + ' and cabangid = ' + QuotedStr(ACabang.ID);
+
+  TFDJSONDataSetsWriter.ListAdd(Result,TDBUtils.OpenQuery(sSQL))
 end;
 
 

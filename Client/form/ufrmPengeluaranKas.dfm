@@ -2,6 +2,7 @@ inherited frmPengeluaranKas: TfrmPengeluaranKas
   Caption = 'Pengeluaran Kas'
   ClientHeight = 461
   ClientWidth = 788
+  ExplicitTop = -63
   ExplicitWidth = 804
   ExplicitHeight = 500
   PixelsPerInch = 96
@@ -21,8 +22,6 @@ inherited frmPengeluaranKas: TfrmPengeluaranKas
     ClientRectBottom = 404
     ClientRectRight = 784
     inherited cxTSOverview: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
       ExplicitWidth = 780
       ExplicitHeight = 380
       inherited splTransaksi: TSplitter
@@ -38,29 +37,29 @@ inherited frmPengeluaranKas: TfrmPengeluaranKas
           Width = 770
           ExplicitWidth = 770
           inherited lblPeriode: TLabel
-            Left = 347
+            Left = 356
             ExplicitLeft = 347
           end
           inherited lblSD: TLabel
-            Left = 508
+            Left = 517
             ExplicitLeft = 508
           end
           inherited dtpAwal: TDateTimePicker
-            Left = 400
+            Left = 409
             ExplicitLeft = 400
           end
           inherited dtpAkhir: TDateTimePicker
-            Left = 549
+            Left = 558
             ExplicitLeft = 549
           end
           inherited btnRefresh: TcxButton
-            Left = 660
+            Left = 663
             ExplicitLeft = 660
           end
         end
         inherited cxGrid: TcxGrid
           Width = 770
-          Height = 347
+          Height = 348
           ExplicitWidth = 770
           ExplicitHeight = 347
           inherited cxGridDBTableOverview: TcxGridDBTableView
@@ -70,8 +69,6 @@ inherited frmPengeluaranKas: TfrmPengeluaranKas
       end
     end
     inherited cxTSInputData: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
       ExplicitWidth = 780
       ExplicitHeight = 380
       object pnlHeader: TPanel
@@ -392,45 +389,6 @@ inherited frmPengeluaranKas: TfrmPengeluaranKas
             Width = 178
           end
         end
-        object cxGridTableAPNew: TcxGridTableView
-          Navigator.Buttons.CustomButtons = <>
-          DataController.Summary.DefaultGroupSummaryItems = <>
-          DataController.Summary.FooterSummaryItems = <>
-          DataController.Summary.SummaryGroups = <>
-          OptionsBehavior.FocusCellOnTab = True
-          OptionsBehavior.FocusFirstCellOnNewRecord = True
-          OptionsBehavior.GoToNextCellOnEnter = True
-          OptionsData.Appending = True
-          OptionsView.GroupByBox = False
-          Styles.ContentEven = ClientDataModule.cxstylGridEven
-          Styles.ContentOdd = ClientDataModule.cxstylGridOdd
-          Styles.Header = ClientDataModule.cxstylGridHeader
-          object cxGridColAPNewKode: TcxGridColumn
-            Caption = 'Kode'
-            PropertiesClassName = 'TcxExtLookupComboBoxProperties'
-            HeaderAlignmentHorz = taCenter
-            Width = 129
-          end
-          object cxGridColAPNewNama: TcxGridColumn
-            Caption = 'Nama'
-            PropertiesClassName = 'TcxExtLookupComboBoxProperties'
-            HeaderAlignmentHorz = taCenter
-            Width = 138
-          end
-          object cxGridColAPNewKeterangan: TcxGridColumn
-            Caption = 'Keterangan'
-            HeaderAlignmentHorz = taCenter
-            Width = 189
-          end
-          object cxGridColAPNewNominal: TcxGridColumn
-            Caption = 'Nominal'
-            PropertiesClassName = 'TcxCurrencyEditProperties'
-            Properties.Alignment.Horz = taRightJustify
-            Properties.DisplayFormat = ',0.00;(,0.00)'
-            HeaderAlignmentHorz = taCenter
-            Width = 98
-          end
-        end
         object cxgrdlvlAR: TcxGridLevel
           Caption = 'Pembayaran Hutang'
           GridView = cxGridTableAP
@@ -438,10 +396,6 @@ inherited frmPengeluaranKas: TfrmPengeluaranKas
         object cxgrdlvlDP: TcxGridLevel
           Caption = 'Lain-lain'
           GridView = cxGridTableNonAP
-        end
-        object cxgrdlvlAPNew: TcxGridLevel
-          Caption = 'Penarikan Deposit'
-          GridView = cxGridTableAPNew
         end
       end
     end
@@ -462,10 +416,6 @@ inherited frmPengeluaranKas: TfrmPengeluaranKas
     inherited btnSave: TcxButton
       Left = 436
       ExplicitLeft = 436
-    end
-    inherited chkKonsolidasi1: TcxCheckBox
-      ExplicitWidth = 76
-      ExplicitHeight = 31
     end
   end
   inherited ActionListForm: TActionList
@@ -505,7 +455,7 @@ inherited frmPengeluaranKas: TfrmPengeluaranKas
     Left = 648
     Top = 248
     Bitmap = {
-      494C010107000800480118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C0101070008004C0118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

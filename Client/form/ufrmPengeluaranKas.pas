@@ -55,12 +55,6 @@ type
     lblTglJthTempo: TLabel;
     lblJenisTransaksi: TLabel;
     edKelas: TcxTextEdit;
-    cxgrdlvlAPNew: TcxGridLevel;
-    cxGridTableAPNew: TcxGridTableView;
-    cxGridColAPNewKode: TcxGridColumn;
-    cxGridColAPNewNama: TcxGridColumn;
-    cxGridColAPNewKeterangan: TcxGridColumn;
-    cxGridColAPNewNominal: TcxGridColumn;
     procedure actCetakExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ActionBaruExecute(Sender: TObject);
@@ -427,8 +421,8 @@ begin
   TcxExtLookupComboBoxProperties(cxGridColNonAPKode.Properties).LoadFromCDS(FCDSAccountPengeluaranKasLain, 'ID', 'Kode', ['id'], Self);
   TcxExtLookupComboBoxProperties(cxGridColNonAPNama.Properties).LoadFromCDS(FCDSAccountPengeluaranKasLain, 'ID', 'Nama', ['id'], Self);
 
-  TcxExtLookupComboBoxProperties(cxGridColAPNewKode.Properties).LoadFromCDS(FCDSAccountPengeluaranKasLain, 'ID', 'Kode', ['id'], Self);
-  TcxExtLookupComboBoxProperties(cxGridColAPNewNama.Properties).LoadFromCDS(FCDSAccountPengeluaranKasLain, 'ID', 'Nama', ['id'], Self);
+//  TcxExtLookupComboBoxProperties(cxGridColAPNewKode.Properties).LoadFromCDS(FCDSAccountPengeluaranKasLain, 'ID', 'Kode', ['id'], Self);
+//  TcxExtLookupComboBoxProperties(cxGridColAPNewNama.Properties).LoadFromCDS(FCDSAccountPengeluaranKasLain, 'ID', 'Nama', ['id'], Self);
 end;
 
 procedure TfrmPengeluaranKas.InisialisasiCBBSupplier;

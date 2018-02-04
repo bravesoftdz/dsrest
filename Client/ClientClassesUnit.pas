@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 2/4/2018 10:30:10 AM
+// 2/4/2018 1:17:20 PM
 //
 
 unit ClientClassesUnit;
@@ -94,6 +94,8 @@ type
     FLaporanNeracaSaldoCommand_Cache: TDSRestCommand;
     FLaporanPenjualanByPembeliCommand: TDSRestCommand;
     FLaporanPenjualanByPembeliCommand_Cache: TDSRestCommand;
+    FRetrivePenarikanDepositCommand: TDSRestCommand;
+    FRetrivePenarikanDepositCommand_Cache: TDSRestCommand;
     FRetriveSettingAppCommand: TDSRestCommand;
     FRetriveSettingAppCommand_Cache: TDSRestCommand;
   public
@@ -150,6 +152,8 @@ type
     function LaporanNeracaSaldo_Cache(ATglAwal: TDateTime; AtglAkhir: TDateTime; AIsKonsolidasi: Integer; ACabang: TCabang; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
     function LaporanPenjualanByPembeli(ATglAwal: TDateTime; AtglAkhir: TDateTime; AIsKonsolidasi: Integer; ACabang: TCabang; const ARequestFilter: string = ''): TFDJSONDataSets;
     function LaporanPenjualanByPembeli_Cache(ATglAwal: TDateTime; AtglAkhir: TDateTime; AIsKonsolidasi: Integer; ACabang: TCabang; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
+    function RetrivePenarikanDeposit(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string = ''): TDataSet;
+    function RetrivePenarikanDeposit_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function RetriveSettingApp(ACabang: TCabang; const ARequestFilter: string = ''): TDataSet;
     function RetriveSettingApp_Cache(ACabang: TCabang; const ARequestFilter: string = ''): IDSRestCachedDataSet;
   end;
@@ -1216,6 +1220,8 @@ type
   private
     FRetrieveCommand: TDSRestCommand;
     FRetrieveCommand_Cache: TDSRestCommand;
+    FRetrieveCDSlipCommand: TDSRestCommand;
+    FRetrieveCDSlipCommand_Cache: TDSRestCommand;
     FDoJournalCommand: TDSRestCommand;
     FGenerateNoBuktiCommand: TDSRestCommand;
     FRetrieveDataCommand: TDSRestCommand;
@@ -1235,6 +1241,8 @@ type
     destructor Destroy; override;
     function Retrieve(AID: string; const ARequestFilter: string = ''): TPenarikanDeposit;
     function Retrieve_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedTPenarikanDeposit;
+    function RetrieveCDSlip(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; ANoBukti: string; const ARequestFilter: string = ''): TFDJSONDataSets;
+    function RetrieveCDSlip_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
     function DoJournal(ANoBukti: string; AModTransClass: string; AIsHapusJurnal: Integer; const ARequestFilter: string = ''): Boolean;
     function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
     function RetrieveData(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): TDataSet;
@@ -1804,6 +1812,22 @@ const
     (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'AtglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'AIsKonsolidasi'; Direction: 1; DBXType: 6; TypeName: 'Integer'),
+    (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerLaporan_RetrivePenarikanDeposit: array [0..3] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ATglAtglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TServerLaporan_RetrivePenarikanDeposit_Cache: array [0..3] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ATglAtglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
@@ -4498,6 +4522,24 @@ const
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
+  TServerPenarikanDeposit_RetrieveCDSlip: array [0..4] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ATglAtglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
+    (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 37; TypeName: 'TFDJSONDataSets')
+  );
+
+  TServerPenarikanDeposit_RetrieveCDSlip_Cache: array [0..4] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ATglAtglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
+    (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
   TServerPenarikanDeposit_DoJournal: array [0..3] of TDSRestParameterMetaData =
   (
     (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
@@ -6194,6 +6236,65 @@ begin
   Result := TDSRestCachedTFDJSONDataSets.Create(FLaporanPenjualanByPembeliCommand_Cache.Parameters[4].Value.GetString);
 end;
 
+function TServerLaporanClient.RetrivePenarikanDeposit(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string): TDataSet;
+begin
+  if FRetrivePenarikanDepositCommand = nil then
+  begin
+    FRetrivePenarikanDepositCommand := FConnection.CreateCommand;
+    FRetrivePenarikanDepositCommand.RequestType := 'POST';
+    FRetrivePenarikanDepositCommand.Text := 'TServerLaporan."RetrivePenarikanDeposit"';
+    FRetrivePenarikanDepositCommand.Prepare(TServerLaporan_RetrivePenarikanDeposit);
+  end;
+  FRetrivePenarikanDepositCommand.Parameters[0].Value.AsDateTime := ATglAwal;
+  FRetrivePenarikanDepositCommand.Parameters[1].Value.AsDateTime := ATglAtglAkhir;
+  if not Assigned(ACabang) then
+    FRetrivePenarikanDepositCommand.Parameters[2].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FRetrivePenarikanDepositCommand.Parameters[2].ConnectionHandler).GetJSONMarshaler;
+    try
+      FRetrivePenarikanDepositCommand.Parameters[2].Value.SetJSONValue(FMarshal.Marshal(ACabang), True);
+      if FInstanceOwner then
+        ACabang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FRetrivePenarikanDepositCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FRetrivePenarikanDepositCommand.Parameters[3].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FRetrivePenarikanDepositCommand.FreeOnExecute(Result);
+end;
+
+function TServerLaporanClient.RetrivePenarikanDeposit_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FRetrivePenarikanDepositCommand_Cache = nil then
+  begin
+    FRetrivePenarikanDepositCommand_Cache := FConnection.CreateCommand;
+    FRetrivePenarikanDepositCommand_Cache.RequestType := 'POST';
+    FRetrivePenarikanDepositCommand_Cache.Text := 'TServerLaporan."RetrivePenarikanDeposit"';
+    FRetrivePenarikanDepositCommand_Cache.Prepare(TServerLaporan_RetrivePenarikanDeposit_Cache);
+  end;
+  FRetrivePenarikanDepositCommand_Cache.Parameters[0].Value.AsDateTime := ATglAwal;
+  FRetrivePenarikanDepositCommand_Cache.Parameters[1].Value.AsDateTime := ATglAtglAkhir;
+  if not Assigned(ACabang) then
+    FRetrivePenarikanDepositCommand_Cache.Parameters[2].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FRetrivePenarikanDepositCommand_Cache.Parameters[2].ConnectionHandler).GetJSONMarshaler;
+    try
+      FRetrivePenarikanDepositCommand_Cache.Parameters[2].Value.SetJSONValue(FMarshal.Marshal(ACabang), True);
+      if FInstanceOwner then
+        ACabang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FRetrivePenarikanDepositCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FRetrivePenarikanDepositCommand_Cache.Parameters[3].Value.GetString);
+end;
+
 function TServerLaporanClient.RetriveSettingApp(ACabang: TCabang; const ARequestFilter: string): TDataSet;
 begin
   if FRetriveSettingAppCommand = nil then
@@ -6311,6 +6412,8 @@ begin
   FLaporanNeracaSaldoCommand_Cache.DisposeOf;
   FLaporanPenjualanByPembeliCommand.DisposeOf;
   FLaporanPenjualanByPembeliCommand_Cache.DisposeOf;
+  FRetrivePenarikanDepositCommand.DisposeOf;
+  FRetrivePenarikanDepositCommand_Cache.DisposeOf;
   FRetriveSettingAppCommand.DisposeOf;
   FRetriveSettingAppCommand_Cache.DisposeOf;
   inherited;
@@ -16204,6 +16307,76 @@ begin
   Result := TDSRestCachedTPenarikanDeposit.Create(FRetrieveCommand_Cache.Parameters[1].Value.GetString);
 end;
 
+function TServerPenarikanDepositClient.RetrieveCDSlip(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; ANoBukti: string; const ARequestFilter: string): TFDJSONDataSets;
+begin
+  if FRetrieveCDSlipCommand = nil then
+  begin
+    FRetrieveCDSlipCommand := FConnection.CreateCommand;
+    FRetrieveCDSlipCommand.RequestType := 'POST';
+    FRetrieveCDSlipCommand.Text := 'TServerPenarikanDeposit."RetrieveCDSlip"';
+    FRetrieveCDSlipCommand.Prepare(TServerPenarikanDeposit_RetrieveCDSlip);
+  end;
+  FRetrieveCDSlipCommand.Parameters[0].Value.AsDateTime := ATglAwal;
+  FRetrieveCDSlipCommand.Parameters[1].Value.AsDateTime := ATglAtglAkhir;
+  if not Assigned(ACabang) then
+    FRetrieveCDSlipCommand.Parameters[2].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FRetrieveCDSlipCommand.Parameters[2].ConnectionHandler).GetJSONMarshaler;
+    try
+      FRetrieveCDSlipCommand.Parameters[2].Value.SetJSONValue(FMarshal.Marshal(ACabang), True);
+      if FInstanceOwner then
+        ACabang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FRetrieveCDSlipCommand.Parameters[3].Value.SetWideString(ANoBukti);
+  FRetrieveCDSlipCommand.Execute(ARequestFilter);
+  if not FRetrieveCDSlipCommand.Parameters[4].Value.IsNull then
+  begin
+    FUnMarshal := TDSRestCommand(FRetrieveCDSlipCommand.Parameters[4].ConnectionHandler).GetJSONUnMarshaler;
+    try
+      Result := TFDJSONDataSets(FUnMarshal.UnMarshal(FRetrieveCDSlipCommand.Parameters[4].Value.GetJSONValue(True)));
+      if FInstanceOwner then
+        FRetrieveCDSlipCommand.FreeOnExecute(Result);
+    finally
+      FreeAndNil(FUnMarshal)
+    end
+  end
+  else
+    Result := nil;
+end;
+
+function TServerPenarikanDepositClient.RetrieveCDSlip_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; ANoBukti: string; const ARequestFilter: string): IDSRestCachedTFDJSONDataSets;
+begin
+  if FRetrieveCDSlipCommand_Cache = nil then
+  begin
+    FRetrieveCDSlipCommand_Cache := FConnection.CreateCommand;
+    FRetrieveCDSlipCommand_Cache.RequestType := 'POST';
+    FRetrieveCDSlipCommand_Cache.Text := 'TServerPenarikanDeposit."RetrieveCDSlip"';
+    FRetrieveCDSlipCommand_Cache.Prepare(TServerPenarikanDeposit_RetrieveCDSlip_Cache);
+  end;
+  FRetrieveCDSlipCommand_Cache.Parameters[0].Value.AsDateTime := ATglAwal;
+  FRetrieveCDSlipCommand_Cache.Parameters[1].Value.AsDateTime := ATglAtglAkhir;
+  if not Assigned(ACabang) then
+    FRetrieveCDSlipCommand_Cache.Parameters[2].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FRetrieveCDSlipCommand_Cache.Parameters[2].ConnectionHandler).GetJSONMarshaler;
+    try
+      FRetrieveCDSlipCommand_Cache.Parameters[2].Value.SetJSONValue(FMarshal.Marshal(ACabang), True);
+      if FInstanceOwner then
+        ACabang.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FRetrieveCDSlipCommand_Cache.Parameters[3].Value.SetWideString(ANoBukti);
+  FRetrieveCDSlipCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedTFDJSONDataSets.Create(FRetrieveCDSlipCommand_Cache.Parameters[4].Value.GetString);
+end;
+
 function TServerPenarikanDepositClient.DoJournal(ANoBukti: string; AModTransClass: string; AIsHapusJurnal: Integer; const ARequestFilter: string): Boolean;
 begin
   if FDoJournalCommand = nil then
@@ -16496,6 +16669,8 @@ destructor TServerPenarikanDepositClient.Destroy;
 begin
   FRetrieveCommand.DisposeOf;
   FRetrieveCommand_Cache.DisposeOf;
+  FRetrieveCDSlipCommand.DisposeOf;
+  FRetrieveCDSlipCommand_Cache.DisposeOf;
   FDoJournalCommand.DisposeOf;
   FGenerateNoBuktiCommand.DisposeOf;
   FRetrieveDataCommand.DisposeOf;

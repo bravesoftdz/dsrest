@@ -67,74 +67,86 @@ object frmDefault: TfrmDefault
           Left = 1
           Top = 1
           Width = 699
-          Height = 31
+          Height = 30
           Align = alTop
           TabOrder = 0
           object lblPeriode: TLabel
-            Left = 276
-            Top = 1
+            AlignWithMargins = True
+            Left = 285
+            Top = 4
             Width = 50
-            Height = 29
+            Height = 22
             Align = alRight
             AutoSize = False
             Caption = 'Periode'
             ExplicitLeft = 344
+            ExplicitTop = 1
             ExplicitHeight = 30
           end
           object lblSD: TLabel
-            Left = 437
-            Top = 1
+            AlignWithMargins = True
+            Left = 446
+            Top = 4
             Width = 38
-            Height = 29
+            Height = 22
             Align = alRight
             Alignment = taCenter
             AutoSize = False
             Caption = 's.d.'
             ExplicitLeft = 480
+            ExplicitTop = 1
             ExplicitHeight = 30
           end
           object dtpAwal: TDateTimePicker
-            AlignWithMargins = True
-            Left = 329
-            Top = 4
+            Left = 338
+            Top = 1
             Width = 105
-            Height = 23
+            Height = 28
             Align = alRight
             Date = 42812.000949421290000000
             Time = 42812.000949421290000000
             TabOrder = 0
+            ExplicitLeft = 329
+            ExplicitTop = 4
+            ExplicitHeight = 23
           end
           object dtpAkhir: TDateTimePicker
-            AlignWithMargins = True
-            Left = 478
-            Top = 4
+            Left = 487
+            Top = 1
             Width = 105
-            Height = 23
+            Height = 28
             Align = alRight
             Date = 42812.000949421290000000
             Time = 42812.000949421290000000
             TabOrder = 1
+            ExplicitLeft = 478
+            ExplicitTop = 4
+            ExplicitHeight = 23
           end
           object btnRefresh: TcxButton
-            AlignWithMargins = True
-            Left = 589
-            Top = 4
+            Left = 592
+            Top = 1
             Width = 106
-            Height = 23
+            Height = 28
             Align = alRight
             Action = ActionRefresh
             TabOrder = 2
+            ExplicitLeft = 589
+            ExplicitTop = 4
+            ExplicitHeight = 23
           end
         end
         object cxGrid: TcxGrid
           Left = 1
-          Top = 32
+          Top = 31
           Width = 699
-          Height = 232
+          Height = 233
           Align = alClient
           TabOrder = 1
           LockedStateImageOptions.Text = 'Mohon ditunggu...'
           LookAndFeel.NativeStyle = False
+          ExplicitTop = 32
+          ExplicitHeight = 232
           object cxGridDBTableOverview: TcxGridDBTableView
             Navigator.Buttons.CustomButtons = <>
             FindPanel.DisplayMode = fpdmManual
@@ -191,7 +203,6 @@ object frmDefault: TfrmDefault
       Align = alLeft
       Action = actCetak
       TabOrder = 1
-      Visible = False
     end
     object btnHapus: TcxButton
       Left = 481
@@ -231,8 +242,8 @@ object frmDefault: TfrmDefault
   end
   object ActionListForm: TActionList
     Images = ilButton
-    Left = 640
-    Top = 8
+    Left = 632
+    Top = 96
     object ActionBaru: TAction
       Caption = 'Baru [F3]'
       ImageIndex = 0
@@ -272,8 +283,8 @@ object frmDefault: TfrmDefault
     end
   end
   object cxGridRepTransaksi: TcxGridViewRepository
-    Left = 608
-    Top = 8
+    Left = 584
+    Top = 128
     object cxGridDBTableCabang: TcxGridDBTableView
       Tag = 99
       Navigator.Buttons.CustomButtons = <>
@@ -333,7 +344,7 @@ object frmDefault: TfrmDefault
     Left = 216
     Top = 184
     Bitmap = {
-      494C010107000800FC0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800000118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
