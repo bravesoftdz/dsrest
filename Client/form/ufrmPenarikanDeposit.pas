@@ -50,7 +50,7 @@ type
     property CDSSantri: tclientDataSet read GetCDSSantri write FCDSSantri;
     { Private declarations }
   protected
-    procedure CetakSlip; virtual;
+    procedure CetakSlip; override;
   public
     procedure LoadDataTransaksi(AID : String); override;
     property PenarikanDeposit: TPenarikanDeposit read GetPenarikanDeposit write

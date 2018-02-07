@@ -106,9 +106,6 @@ object frmDefault: TfrmDefault
             Date = 42812.000949421290000000
             Time = 42812.000949421290000000
             TabOrder = 0
-            ExplicitLeft = 329
-            ExplicitTop = 4
-            ExplicitHeight = 23
           end
           object dtpAkhir: TDateTimePicker
             Left = 487
@@ -119,9 +116,6 @@ object frmDefault: TfrmDefault
             Date = 42812.000949421290000000
             Time = 42812.000949421290000000
             TabOrder = 1
-            ExplicitLeft = 478
-            ExplicitTop = 4
-            ExplicitHeight = 23
           end
           object btnRefresh: TcxButton
             Left = 592
@@ -131,9 +125,6 @@ object frmDefault: TfrmDefault
             Align = alRight
             Action = ActionRefresh
             TabOrder = 2
-            ExplicitLeft = 589
-            ExplicitTop = 4
-            ExplicitHeight = 23
           end
         end
         object cxGrid: TcxGrid
@@ -145,8 +136,6 @@ object frmDefault: TfrmDefault
           TabOrder = 1
           LockedStateImageOptions.Text = 'Mohon ditunggu...'
           LookAndFeel.NativeStyle = False
-          ExplicitTop = 32
-          ExplicitHeight = 232
           object cxGridDBTableOverview: TcxGridDBTableView
             Navigator.Buttons.CustomButtons = <>
             FindPanel.DisplayMode = fpdmManual
@@ -193,7 +182,7 @@ object frmDefault: TfrmDefault
       Height = 31
       Align = alRight
       Action = ActionBaru
-      TabOrder = 0
+      TabOrder = 2
     end
     object btnCetak: TcxButton
       Left = 1
@@ -202,7 +191,7 @@ object frmDefault: TfrmDefault
       Height = 31
       Align = alLeft
       Action = actCetak
-      TabOrder = 1
+      TabOrder = 3
     end
     object btnHapus: TcxButton
       Left = 481
@@ -211,7 +200,7 @@ object frmDefault: TfrmDefault
       Height = 31
       Align = alRight
       Action = ActionHapus
-      TabOrder = 2
+      TabOrder = 1
     end
     object btnExport: TcxButton
       Left = 113
@@ -220,7 +209,7 @@ object frmDefault: TfrmDefault
       Height = 31
       Align = alLeft
       Action = actExport
-      TabOrder = 3
+      TabOrder = 4
     end
     object btnSave: TcxButton
       Left = 365
@@ -229,7 +218,7 @@ object frmDefault: TfrmDefault
       Height = 31
       Align = alRight
       Action = ActionSimpan
-      TabOrder = 4
+      TabOrder = 0
     end
     object chkKonsolidasi1: TcxCheckBox
       Left = 232
@@ -344,7 +333,7 @@ object frmDefault: TfrmDefault
     Left = 216
     Top = 184
     Bitmap = {
-      494C010107000800000118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800040118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

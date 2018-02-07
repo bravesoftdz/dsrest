@@ -1,97 +1,95 @@
 inherited frmBarang: TfrmBarang
   Caption = 'Barang'
-  ClientHeight = 240
-  ClientWidth = 519
-  ExplicitWidth = 535
-  ExplicitHeight = 279
+  ClientHeight = 319
+  ClientWidth = 701
+  OnShow = FormShow
+  ExplicitWidth = 717
+  ExplicitHeight = 358
   PixelsPerInch = 96
   TextHeight = 13
   inherited cxSBTransaksi: TdxStatusBar
-    Top = 220
-    Width = 519
-    ExplicitTop = 374
-    ExplicitWidth = 919
+    Top = 299
+    Width = 701
+    ExplicitTop = 299
+    ExplicitWidth = 701
   end
   inherited cxPCData: TcxPageControl
-    Width = 519
-    Height = 187
+    Width = 701
+    Height = 266
     Properties.ActivePage = cxTSInputData
-    ExplicitWidth = 919
-    ExplicitHeight = 341
-    ClientRectBottom = 183
-    ClientRectRight = 515
+    ExplicitWidth = 701
+    ExplicitHeight = 266
+    ClientRectBottom = 262
+    ClientRectRight = 697
     inherited cxTSOverview: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
-      ExplicitWidth = 911
-      ExplicitHeight = 313
+      ExplicitWidth = 693
+      ExplicitHeight = 238
       inherited splTransaksi: TSplitter
-        Height = 159
+        Height = 238
         ExplicitLeft = 369
         ExplicitHeight = 324
       end
       inherited pnlListTransaksi: TPanel
-        Width = 503
-        Height = 159
-        ExplicitWidth = 903
-        ExplicitHeight = 313
+        Width = 685
+        Height = 238
+        ExplicitWidth = 685
+        ExplicitHeight = 238
         inherited pnlFilter: TPanel
-          Width = 501
+          Width = 683
           TabOrder = 2
-          ExplicitWidth = 901
+          ExplicitWidth = 683
           inherited lblPeriode: TLabel
-            Left = 78
+            Left = 269
             Visible = False
             ExplicitLeft = 527
           end
           inherited lblSD: TLabel
-            Left = 239
+            Left = 430
             Visible = False
             ExplicitLeft = 682
           end
           inherited dtpAwal: TDateTimePicker
-            Left = 131
+            Left = 322
             Visible = False
-            ExplicitLeft = 531
+            ExplicitLeft = 322
           end
           inherited dtpAkhir: TDateTimePicker
-            Left = 280
+            Left = 471
             Visible = False
-            ExplicitLeft = 680
+            ExplicitLeft = 471
           end
           inherited btnRefresh: TcxButton
-            Left = 391
-            ExplicitLeft = 791
+            Left = 576
+            ExplicitLeft = 576
           end
         end
         inherited cxGrid: TcxGrid
-          Top = 72
-          Width = 501
-          Height = 86
+          Top = 71
+          Width = 683
+          Height = 166
           TabOrder = 3
-          ExplicitTop = 72
-          ExplicitWidth = 901
-          ExplicitHeight = 240
+          ExplicitTop = 71
+          ExplicitWidth = 683
+          ExplicitHeight = 166
         end
         object pnlFilterBarang: TPanel
           Left = 1
-          Top = 32
-          Width = 501
+          Top = 31
+          Width = 683
           Height = 40
           Align = alTop
           TabOrder = 0
           Visible = False
-          ExplicitWidth = 901
         end
         object cxGridDBDaftarBarang: TcxGrid
           Left = 1
-          Top = 72
-          Width = 501
-          Height = 86
+          Top = 71
+          Width = 683
+          Height = 166
           Align = alClient
           TabOrder = 1
-          ExplicitWidth = 901
-          ExplicitHeight = 240
           object cxGridDBTableBarang: TcxGridDBTableView
             Navigator.Buttons.CustomButtons = <>
             OnCellDblClick = cxGridDBTableBarangCellDblClick
@@ -144,30 +142,24 @@ inherited frmBarang: TfrmBarang
     inherited cxTSInputData: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
-      ExplicitWidth = 911
-      ExplicitHeight = 313
+      ExplicitWidth = 693
+      ExplicitHeight = 238
       object cxPCHeader: TcxPageControl
         Left = 0
         Top = 0
-        Width = 511
-        Height = 159
+        Width = 693
+        Height = 238
         Align = alClient
         TabOrder = 0
         Properties.ActivePage = cxTSHeader
         Properties.CustomButtons.Buttons = <>
-        ExplicitWidth = 911
-        ExplicitHeight = 313
-        ClientRectBottom = 155
+        ClientRectBottom = 234
         ClientRectLeft = 4
-        ClientRectRight = 507
+        ClientRectRight = 689
         ClientRectTop = 24
         object cxTSHeader: TcxTabSheet
           Caption = 'Barang'
           ImageIndex = 0
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 903
-          ExplicitHeight = 285
           object lblKode: TLabel
             Left = 47
             Top = 18
@@ -270,19 +262,13 @@ inherited frmBarang: TfrmBarang
           Caption = 'Satuan'
           ImageIndex = 2
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 903
-          ExplicitHeight = 285
           object cxGridDBSatuan: TcxGrid
             Left = 0
             Top = 0
-            Width = 503
-            Height = 131
+            Width = 685
+            Height = 210
             Align = alClient
             TabOrder = 0
-            ExplicitWidth = 903
-            ExplicitHeight = 285
             object cxGridTableSatuan: TcxGridTableView
               Navigator.Buttons.CustomButtons = <>
               DataController.Summary.DefaultGroupSummaryItems = <>
@@ -368,21 +354,21 @@ inherited frmBarang: TfrmBarang
     end
   end
   inherited pnlButton: TPanel
-    Top = 187
-    Width = 519
-    ExplicitTop = 341
-    ExplicitWidth = 919
+    Top = 266
+    Width = 701
+    ExplicitTop = 266
+    ExplicitWidth = 701
     inherited btnBaru: TcxButton
-      Left = 407
-      ExplicitLeft = 807
+      Left = 589
+      ExplicitLeft = 589
     end
     inherited btnHapus: TcxButton
-      Left = 283
-      ExplicitLeft = 683
+      Left = 465
+      ExplicitLeft = 465
     end
     inherited btnSave: TcxButton
-      Left = 167
-      ExplicitLeft = 567
+      Left = 349
+      ExplicitLeft = 349
     end
     inherited chkKonsolidasi1: TcxCheckBox
       ExplicitWidth = 76
@@ -463,7 +449,7 @@ inherited frmBarang: TfrmBarang
     Left = 232
     Top = 200
     Bitmap = {
-      494C010106000800CC0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010106000800D40018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

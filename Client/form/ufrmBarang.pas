@@ -65,6 +65,7 @@ type
         ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton; AShift:
         TShiftState; var AHandled: Boolean);
     procedure edKodeKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure FormShow(Sender: TObject);
   private
     FBarang: TBarang;
     function GetBarang: TBarang;
@@ -97,7 +98,7 @@ begin
   cxPCHeader.ActivePageIndex := 0;
   InisialisaiSupplier;
   InisialisasiUOM;
-  ActionBaruExecute(Sender);
+
 end;
 
 procedure TfrmBarang.ActionBaruExecute(Sender: TObject);
@@ -105,6 +106,8 @@ begin
   inherited;
   edKode.Text := '';
   edNama.Text := '';
+  cbbSatuanStock.ItemIndex := 0;
+  edKode.SetFocus;
 
   FreeAndNil(FBarang);
 
@@ -211,6 +214,12 @@ begin
     end;
   end;
 
+end;
+
+procedure TfrmBarang.FormShow(Sender: TObject);
+begin
+  inherited;
+  ActionBaruExecute(Sender);
 end;
 
 function TfrmBarang.GetBarang: TBarang;
