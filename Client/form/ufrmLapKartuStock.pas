@@ -84,7 +84,7 @@ begin
   FCDSS := ClientDataModule.ServerLaporanClient.LaporanKartok(dtpAwal.Date, dtpAkhir.Date,lBarang, lGudang);
   with dmReport do
   begin
-    AddReportVariable('UserCetak', User);
+    AddReportVariable('UserCetak', UserAplikasi.UserName);
 
     ExecuteReport( 'Reports/Lap_Kartok' ,
       FCDSS

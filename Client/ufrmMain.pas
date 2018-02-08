@@ -19,7 +19,7 @@ uses
   cxDropDownEdit, ufrmPengeluaranKas, ufrmJurnal, ufrmLapPenerimaanBarang,
   ufrmKartuAP, ufrmLaporanAP, ufrmKartuAR,ufrmLaporanAR,
   ufrmLaporanReturSupplier, ufrmGenerateJurnal, ufrmBukuBesar,
-  Vcl.AppEvnts, ufrmPenarikanDeposit;
+  Vcl.AppEvnts, ufrmPenarikanDeposit, ufrmUser, ufrmLogin, uSettingApp;
 
 type
   TfrmMain = class(TForm)
@@ -167,8 +167,10 @@ type
     dxbrbtnPengambilanDeposit: TdxBarButton;
     actPengambilanDeposit: TAction;
     dxbrlrgbtnPenarikanDeposit: TdxBarLargeButton;
+    btnUser: TdxBarLargeButton;
+    actUser: TAction;
+    btnLogin: TdxBarLargeButton;
     procedure actAlatGantiCabangExecute(Sender: TObject);
-    procedure actApplicationExitExecute(Sender: TObject);
     procedure actClosingInventoryExecute(Sender: TObject);
     procedure actCustomerInvoiceExecute(Sender: TObject);
     procedure actDaftarAPExecute(Sender: TObject);
@@ -207,7 +209,11 @@ type
     procedure actLapReturSupplierExecute(Sender: TObject);
     procedure actPengambilanDepositExecute(Sender: TObject);
     procedure actSettlementARAPExecute(Sender: TObject);
+    procedure actUserExecute(Sender: TObject);
     procedure aplctnvntsAppException(Sender: TObject; E: Exception);
+    procedure FormShow(Sender: TObject);
+    procedure dxbrlrgbtnExitClick(Sender: TObject);
+    procedure btnLoginClick(Sender: TObject);
   private
     procedure SimpanAndDisableDataMenu;
     procedure UpdateStatusBar;
@@ -247,11 +253,6 @@ if TAppUtils.Confirm('Untuk Pindah Cabang semua form harus ditutup. Lanjutkan ?'
 
     UpdateStatusBar;
   end;
-end;
-
-procedure TfrmMain.actApplicationExitExecute(Sender: TObject);
-begin
-  Application.Terminate;
 end;
 
 procedure TfrmMain.actClosingInventoryExecute(Sender: TObject);
@@ -442,6 +443,11 @@ begin
   frmTACKirim := TfrmTACKirim.Create(Self);
 end;
 
+procedure TfrmMain.actUserExecute(Sender: TObject);
+begin
+  frmUser := TfrmUser.Create(Self);
+end;
+
 procedure TfrmMain.aplctnvntsAppException(Sender: TObject; E: Exception);
 begin
   TAppUtils.ShowException(E);
@@ -471,6 +477,28 @@ begin
   end;
 end;
 
+procedure TfrmMain.btnLoginClick(Sender: TObject);
+var
+  I: Integer;
+begin
+  for I := ComponentCount - 1 downto 0  do
+  begin
+    if (Components[i] is TForm) then
+      (Components[i] as TForm).Free;
+  end;
+
+  SimpanAndDisableDataMenu;
+
+  frmLogin := TfrmLogin.Create(Self);
+  frmLogin.ShowModal;
+  SimpanAndDisableDataMenu;
+end;
+
+procedure TfrmMain.dxbrlrgbtnExitClick(Sender: TObject);
+begin
+  Application.Terminate;
+end;
+
 procedure TfrmMain.FormCreate(Sender: TObject);
 begin
   //  Caption := Caption + ' Ver : ' + TAppUtils.GetAppVersion;
@@ -486,7 +514,6 @@ begin
         ClientDataModule.DSRestConnection.Host := TAppUtils.BacaRegistry('RestServer');
         ClientDataModule.DSRestConnection.Port := StrToInt(TAppUtils.BacaRegistry('RestPort'));
 
-
         SimpanAndDisableDataMenu;
       except
         frmKoneksi.ShowModal;
@@ -499,8 +526,6 @@ begin
 
       ClientDataModule.SettingApp.Free;
       ClientDataModule.SettingApp := ClientDataModule.ServerSettingAppClient.RetrieveByCabang(ClientDataModule.Cabang.ID);
-
-
     end else begin
       frmPilihCabang := TfrmPilihCabang.Create(Self);
       try
@@ -536,27 +561,59 @@ begin
 //  end;
 end;
 
+procedure TfrmMain.FormShow(Sender: TObject);
+begin
+//  frmLogin := TfrmLogin.Create(Self);
+//  frmLogin.ShowModal;
+end;
+
 procedure TfrmMain.SimpanAndDisableDataMenu;
 var
   I: Integer;
-//  lMenu: TMenu;
-//  sCaption: string;
-//  sNama: string;
+  IsKetemu: Boolean;
+  lFCDs: TClientDataset;
+  lMenu: TMenu;
+  sCaption: string;
+  sNama: string;
 begin
-  for I := 0 to actlstMainMenu.ActionCount - 1 do
-  begin
-//    actlstMainMenu.Actions[I].Enabled := False;
-//    sNama     := actlstMainMenu.Actions[I].Name;
-//    sCaption  := actlstMainMenu.Actions[I].Caption;
-//
-//    lMenu             := TMenu.Create;
-//    lMenu.MenuCaption := sCaption;
-//    lMenu.MenuName    := sNama;
-//
-//    ClientDataModule.ServerMenuClient.Save(lMenu);
+  lFCDs := TDBUtils.DSToCDS(ClientDataModule.DSDataCLient.DS_MenuLookUp(), Self);
+  try
+    for I := 0 to actlstMainMenu.ActionCount - 1 do
+    begin
+      actlstMainMenu.Actions[I].Enabled := False;
+      if uSettingApp.UserApplikasi <> nil then
+        actlstMainMenu.Actions[I].Enabled := uSettingApp.UserApplikasi.UserName = 'admin';
 
+      sNama     := actlstMainMenu.Actions[I].Name;
+      sCaption  := actlstMainMenu.Actions[I].Caption;
 
+      IsKetemu := False;
 
+      if lFCDs <> nil then
+      begin
+        lFCDs.First;
+        while not lFCDs.Eof do
+        begin
+          if lFCDs.FieldByName('menuname').AsString = sNama then
+          begin
+            IsKetemu := True;
+            Break;
+          end;
+          lFCDs.Next;
+        end;
+      end;
+
+      if not IsKetemu then
+      begin
+        lMenu             := TMenu.Create;
+        lMenu.MenuCaption := sCaption;
+        lMenu.MenuName    := sNama;
+
+        ClientDataModule.ServerMenuClient.Save(lMenu);
+      end;
+    end;
+  finally
+    FreeAndNil(lFCDs);
   end;
 end;
 

@@ -136,7 +136,7 @@ begin
 
   with dmReport do
   begin
-    AddReportVariable('UserCetak', User);
+    AddReportVariable('UserCetak', UserAplikasi.UserName);
 
     if cxPCData.ActivePageIndex = 0 then
       lcds := ClientDataModule.ServerPengeluaranKasClient.RetrieveCDSlip(dtpAwal.DateTime, dtpAkhir.DateTime, ClientDataModule.Cabang, '%')

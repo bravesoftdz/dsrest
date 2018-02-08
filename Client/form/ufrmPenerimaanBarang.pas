@@ -301,7 +301,7 @@ begin
 
   with dmReport do
   begin
-    AddReportVariable('UserCetak', User);
+    AddReportVariable('UserCetak', UserAplikasi.UserName);
 
     if cxPCData.ActivePageIndex = 0 then
       lcds := ClientDataModule.ServerPenerimaanBarangClient.RetrieveCDSlip(cxGridDBTableOverview.DS.FieldByName('ID').AsString)

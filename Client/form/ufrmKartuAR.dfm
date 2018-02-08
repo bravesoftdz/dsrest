@@ -1,9 +1,15 @@
 inherited frmKartuAR: TfrmKartuAR
   Caption = 'Kartu AR'
+  ExplicitWidth = 320
+  ExplicitHeight = 240
   PixelsPerInch = 96
   TextHeight = 13
   inherited cxPCData: TcxPageControl
     inherited cxTSOverview: TcxTabSheet
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       inherited pnlListTransaksi: TPanel
         inherited pnlFilter: TPanel
           inherited lblPeriode: TLabel
@@ -11,69 +17,74 @@ inherited frmKartuAR: TfrmKartuAR
             ExplicitTop = 2
           end
           inherited lblGudang: TLabel
-            Left = 221
+            Left = 233
             Width = 10
             Visible = False
             ExplicitLeft = 362
             ExplicitWidth = 10
           end
           inherited lblCabang: TLabel
-            Left = 0
+            Left = 12
             ExplicitLeft = 141
           end
           object lblCustomer: TLabel [4]
             AlignWithMargins = True
-            Left = 253
+            Left = 265
             Top = 4
             Width = 38
-            Height = 23
+            Height = 22
             Align = alRight
             Caption = 'Supplier'
             ExplicitHeight = 13
           end
           object lblNoAR: TLabel [5]
             AlignWithMargins = True
-            Left = 448
+            Left = 460
             Top = 4
             Width = 19
-            Height = 23
+            Height = 22
             Align = alRight
             AutoSize = False
             Caption = 'AR'
             ExplicitLeft = 481
+            ExplicitHeight = 23
           end
           inherited cbbGudang: TcxExtLookupComboBox
-            Left = 237
+            Left = 249
             Visible = False
             ExplicitLeft = 237
             ExplicitWidth = 10
             Width = 10
           end
           inherited cbbCabang: TcxExtLookupComboBox
-            Left = 70
+            Left = 82
             ExplicitLeft = 70
           end
           object cbbCustomer: TcxExtLookupComboBox
             Tag = 1
             AlignWithMargins = True
-            Left = 297
+            Left = 309
             Top = 4
             Align = alRight
             TabOrder = 5
+            ExplicitLeft = 297
+            ExplicitHeight = 21
             Width = 145
           end
           object edNoAR: TcxTextEdit
             AlignWithMargins = True
-            Left = 473
+            Left = 485
             Top = 4
             Align = alRight
             TabOrder = 6
             Text = 'edNoAR'
+            ExplicitLeft = 473
+            ExplicitHeight = 21
             Width = 110
           end
         end
         inherited cxGrid: TcxGrid
-          Height = 336
+          Height = 337
           ExplicitHeight = 336
         end
         object pnlfOOTER: TPanel
@@ -121,6 +132,12 @@ inherited frmKartuAR: TfrmKartuAR
         end
       end
     end
+    inherited cxTSInputData: TcxTabSheet
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
+    end
   end
   inherited ActionListForm: TActionList
     inherited ActionRefresh: TAction
@@ -129,7 +146,7 @@ inherited frmKartuAR: TfrmKartuAR
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010107000800FC0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800000118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

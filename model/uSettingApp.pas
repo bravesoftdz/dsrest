@@ -3,7 +3,7 @@ unit uSettingApp;
 interface
 
 uses
-  uModel, System.SysUtils;
+  uModel, System.SysUtils, uUser;
 
 type
   TSettingApp = class(TAppObject)
@@ -24,6 +24,8 @@ type
         FMaxBelanjaSantri;
   end;
 
+var
+  UserApplikasi : TUser;
 implementation
 
 procedure TSettingApp.SetCabang(const Value: TCabang);

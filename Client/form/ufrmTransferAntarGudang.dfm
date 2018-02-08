@@ -1,16 +1,9 @@
 inherited frmTransferAntarGudang: TfrmTransferAntarGudang
   Caption = 'Transfer Antar Gudang'
-  ExplicitWidth = 733
-  ExplicitHeight = 385
   PixelsPerInch = 96
   TextHeight = 13
   inherited cxPCData: TcxPageControl
-    Properties.ActivePage = cxTSOverview
     inherited cxTSOverview: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 709
-      ExplicitHeight = 265
       inherited pnlListTransaksi: TPanel
         inherited cxGrid: TcxGrid
           inherited cxGridDBTableOverview: TcxGridDBTableView
@@ -192,18 +185,9 @@ inherited frmTransferAntarGudang: TfrmTransferAntarGudang
       end
     end
   end
-  inherited pnlButton: TPanel
-    inherited chkKonsolidasi1: TcxCheckBox
-      ExplicitWidth = 76
-      ExplicitHeight = 31
-    end
-  end
   inherited ActionListForm: TActionList
     inherited ActionSimpan: TAction
       OnExecute = ActionSimpanExecute
-    end
-    inherited actCetak: TAction
-      OnExecute = actCetakExecute
     end
     inherited ActionRefresh: TAction
       OnExecute = ActionRefreshExecute
@@ -211,7 +195,7 @@ inherited frmTransferAntarGudang: TfrmTransferAntarGudang
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010107000800000118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800040118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

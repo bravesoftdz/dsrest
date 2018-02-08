@@ -2,10 +2,16 @@ inherited frmKartuAP: TfrmKartuAP
   Caption = 'Kartu AP'
   ExplicitLeft = -235
   ExplicitTop = -161
+  ExplicitWidth = 320
+  ExplicitHeight = 240
   PixelsPerInch = 96
   TextHeight = 13
   inherited cxPCData: TcxPageControl
     inherited cxTSOverview: TcxTabSheet
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       inherited pnlListTransaksi: TPanel
         inherited pnlFilter: TPanel
           inherited lblPeriode: TLabel
@@ -13,36 +19,37 @@ inherited frmKartuAP: TfrmKartuAP
             ExplicitTop = 2
           end
           inherited lblGudang: TLabel
-            Left = 221
+            Left = 233
             Width = 10
             Visible = False
             ExplicitLeft = 362
             ExplicitWidth = 10
           end
           inherited lblCabang: TLabel
-            Left = 37
+            Left = 49
             ExplicitLeft = 141
           end
           object lblCustomer: TLabel [4]
             AlignWithMargins = True
-            Left = 253
+            Left = 265
             Top = 4
             Width = 38
-            Height = 23
+            Height = 22
             Align = alRight
             Caption = 'Supplier'
             ExplicitHeight = 13
           end
           object lblNoAP: TLabel [5]
             AlignWithMargins = True
-            Left = 448
+            Left = 460
             Top = 4
             Width = 19
-            Height = 23
+            Height = 22
             Align = alRight
             AutoSize = False
             Caption = 'AP'
             ExplicitLeft = 462
+            ExplicitHeight = 23
           end
           inherited dtpAwal: TDateTimePicker
             TabOrder = 3
@@ -54,7 +61,7 @@ inherited frmKartuAP: TfrmKartuAP
             TabOrder = 5
           end
           inherited cbbGudang: TcxExtLookupComboBox
-            Left = 237
+            Left = 249
             TabOrder = 6
             Visible = False
             ExplicitLeft = 237
@@ -63,7 +70,7 @@ inherited frmKartuAP: TfrmKartuAP
             Width = 10
           end
           inherited cbbCabang: TcxExtLookupComboBox
-            Left = 107
+            Left = 119
             TabOrder = 0
             ExplicitLeft = 107
             ExplicitWidth = 108
@@ -73,24 +80,28 @@ inherited frmKartuAP: TfrmKartuAP
           object cbbCustomer: TcxExtLookupComboBox
             Tag = 1
             AlignWithMargins = True
-            Left = 297
+            Left = 309
             Top = 4
             Align = alRight
             TabOrder = 1
+            ExplicitLeft = 297
+            ExplicitHeight = 21
             Width = 145
           end
           object edNoAP: TcxTextEdit
             AlignWithMargins = True
-            Left = 473
+            Left = 485
             Top = 4
             Align = alRight
             TabOrder = 2
             Text = 'edNoAP'
+            ExplicitLeft = 473
+            ExplicitHeight = 21
             Width = 110
           end
         end
         inherited cxGrid: TcxGrid
-          Height = 336
+          Height = 337
           ExplicitHeight = 336
         end
         object pnlfOOTER: TPanel
@@ -138,6 +149,12 @@ inherited frmKartuAP: TfrmKartuAP
         end
       end
     end
+    inherited cxTSInputData: TcxTabSheet
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
+    end
   end
   inherited ActionListForm: TActionList
     inherited ActionRefresh: TAction
@@ -146,7 +163,7 @@ inherited frmKartuAP: TfrmKartuAP
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010107000800040118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800080118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

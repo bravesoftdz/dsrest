@@ -268,7 +268,7 @@ var
 begin
   with dmReport do
   begin
-    AddReportVariable('UserCetak', User);
+    AddReportVariable('UserCetak', UserAplikasi.UserName);
     if cxPCData.ActivePageIndex = 0 then
     begin
       sID := 'XXX';

@@ -10,16 +10,14 @@ type
 
   TUser = class(TAppObject)
   private
-    FPassword: Integer;
-    FRealName: string;
+    FPassword: string;
     FUserMenuItems: TObjectList<TUserMenuItem>;
     FUserName: string;
     function GetUserMenuItems: TObjectList<TUserMenuItem>;
   public
     destructor Destroy; override;
   published
-    property Password: Integer read FPassword write FPassword;
-    property RealName: string read FRealName write FRealName;
+    property Password: string read FPassword write FPassword;
     property UserMenuItems: TObjectList<TUserMenuItem> read GetUserMenuItems write
         FUserMenuItems;
     property UserName: string read FUserName write FUserName;
@@ -38,6 +36,9 @@ type
   private
     FMenu: TMenu;
     FUser: TUser;
+  public
+    function GetHeaderField: string; override;
+    procedure SetHeaderProperty(AHeaderProperty : TAppObject); override;
   published
     property Menu: TMenu read FMenu write FMenu;
     property User: TUser read FUser write FUser;
@@ -57,6 +58,16 @@ begin
     FUserMenuItems := TObjectList<TUserMenuItem>.Create;
 
   Result := FUserMenuItems;
+end;
+
+function TUserMenuItem.GetHeaderField: string;
+begin
+  Result := 'User';
+end;
+
+procedure TUserMenuItem.SetHeaderProperty(AHeaderProperty : TAppObject);
+begin
+  User := TUser(AHeaderProperty);
 end;
 
 end.

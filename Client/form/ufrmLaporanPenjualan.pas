@@ -85,7 +85,7 @@ begin
 
   with dmReport do
   begin
-    AddReportVariable('UserCetak', User);
+    AddReportVariable('UserCetak', UserAplikasi.UserName);
     AddReportVariable('P1', FormatDateTime('dd/MM/yyyy', dtpAwal.DateTime));
     AddReportVariable('P2', FormatDateTime('dd/MM/yyyy', dtpAkhir.DateTime));
     AddReportVariable('ISDETAIL', IntToStr(isdetail));

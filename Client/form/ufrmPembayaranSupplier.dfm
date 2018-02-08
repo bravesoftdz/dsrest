@@ -18,6 +18,26 @@ inherited frmPembayaranSupplier: TfrmPembayaranSupplier
     Height = 13
     Caption = 'Tanggal'
   end
+  inherited cxPCData: TcxPageControl
+    inherited cxTSOverview: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 709
+      ExplicitHeight = 265
+    end
+    inherited cxTSInputData: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 709
+      ExplicitHeight = 265
+    end
+  end
+  inherited pnlButton: TPanel
+    inherited chkKonsolidasi1: TcxCheckBox
+      ExplicitWidth = 76
+      ExplicitHeight = 31
+    end
+  end
   object dtpTglBukti: TDateTimePicker [5]
     Left = 264
     Top = 88
@@ -40,7 +60,7 @@ inherited frmPembayaranSupplier: TfrmPembayaranSupplier
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C0101050008006C0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010105000800700018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

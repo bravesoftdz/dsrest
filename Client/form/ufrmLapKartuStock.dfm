@@ -16,7 +16,7 @@ inherited frmLapKartuStock: TfrmLapKartuStock
       inherited pnlListTransaksi: TPanel
         inherited pnlFilter: TPanel
           inherited lblCabang: TLabel
-            Left = 344
+            Left = 356
             Width = 10
             Visible = False
             ExplicitLeft = 344
@@ -24,10 +24,10 @@ inherited frmLapKartuStock: TfrmLapKartuStock
           end
           object Label1: TLabel [4]
             AlignWithMargins = True
-            Left = 128
+            Left = 140
             Top = 4
             Width = 34
-            Height = 23
+            Height = 22
             Align = alRight
             Caption = 'Barang'
             ExplicitHeight = 13
@@ -36,7 +36,7 @@ inherited frmLapKartuStock: TfrmLapKartuStock
             ExplicitHeight = 23
           end
           inherited cbbCabang: TcxExtLookupComboBox
-            Left = 360
+            Left = 372
             Visible = False
             ExplicitLeft = 360
             ExplicitWidth = 10
@@ -45,7 +45,7 @@ inherited frmLapKartuStock: TfrmLapKartuStock
           end
           object cbbBarang: TcxExtLookupComboBox
             AlignWithMargins = True
-            Left = 168
+            Left = 180
             Top = 4
             Align = alRight
             Properties.DropDownAutoSize = True
@@ -53,12 +53,13 @@ inherited frmLapKartuStock: TfrmLapKartuStock
             Properties.View = cxGridDBTableWarehouse
             Properties.ListFieldItem = cxGridColWHNama
             TabOrder = 5
+            ExplicitLeft = 168
             ExplicitHeight = 21
             Width = 170
           end
         end
         inherited cxGrid: TcxGrid
-          Height = 336
+          Height = 337
           ExplicitLeft = 6
           ExplicitTop = 34
           ExplicitHeight = 336
@@ -122,7 +123,7 @@ inherited frmLapKartuStock: TfrmLapKartuStock
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010107000800F80018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800FC0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

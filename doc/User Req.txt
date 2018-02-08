@@ -1,11 +1,11 @@
 1. 
-2. Deposit tidak perlu memilih Cash/Bank
-3. Input qty bisa disamakan pada saat scan barcode mis : 5*Barcode
-4. Informasi melebihi quota ditambah nominalnya (Pembelhinan melebihi quota sebesar Rp ....)
+2. Deposit tidak perlu memilih Cash/Bank OK
+3. Input qty bisa disamakan pada saat scan barcode mis : 5*Barcode OK
+4. Informasi melebihi quota ditambah nominalnya (Pembelhinan melebihi quota sebesar Rp ....) OK
 
 Master
-1. Caption business partner diubah Input data pembeli/pemasok
-2. Role cukup pembeli dan pemasok
+1. Caption business partner diubah Input data pembeli/pemasok OK
+2. Role cukup pembeli dan pemasok OK
 3. Akun disederhanakan , tampilkan yg diperlukan saja, diberi default
 4. Tombol cetak, ekspor, dan konsolidasi dihilangkan (Untuk semua form yg tidak perlu cetak laporan)
 

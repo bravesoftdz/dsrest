@@ -147,7 +147,7 @@ begin
 
   with dmReport do
   begin
-    AddReportVariable('UserCetak', User);
+    AddReportVariable('UserCetak', UserAplikasi.UserName);
 
     if cxPCData.ActivePageIndex = 0 then
       lcds := ClientDataModule.ServerJurnalClient.RetrieveDataSlip(dtpAwal.DateTime, dtpAkhir.DateTime, ClientDataModule.Cabang.ID, 'XXX')

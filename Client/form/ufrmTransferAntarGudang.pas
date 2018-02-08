@@ -336,7 +336,7 @@ begin
   try
     ClearByTag([0,1]);
     edNoBukti.Text  := 'Otomatis';
-    edPetugas.Text  := User;
+    edPetugas.Text  := UserAplikasi.UserName;
     cxGridTableTAGDetail.ClearRows;
 
     memKeterangan.Clear;

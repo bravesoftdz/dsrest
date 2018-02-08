@@ -22,8 +22,6 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
     ClientRectBottom = 377
     ClientRectRight = 980
     inherited cxTSOverview: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
       ExplicitWidth = 976
       ExplicitHeight = 353
       inherited splTransaksi: TSplitter
@@ -41,30 +39,30 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
           TabOrder = 1
           ExplicitWidth = 966
           inherited lblPeriode: TLabel
-            Left = 543
+            Left = 552
             ExplicitLeft = 592
           end
           inherited lblSD: TLabel
-            Left = 704
+            Left = 713
             ExplicitLeft = 747
           end
           inherited dtpAwal: TDateTimePicker
-            Left = 596
+            Left = 605
             ExplicitLeft = 596
           end
           inherited dtpAkhir: TDateTimePicker
-            Left = 745
+            Left = 754
             ExplicitLeft = 745
           end
           inherited btnRefresh: TcxButton
-            Left = 856
+            Left = 859
             ExplicitLeft = 856
           end
         end
         inherited cxGrid: TcxGrid
-          Top = 36
+          Top = 35
           Width = 966
-          Height = 316
+          Height = 317
           TabOrder = 2
           ExplicitTop = 36
           ExplicitWidth = 966
@@ -75,11 +73,12 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
         end
         object pnlFilterBarang: TPanel
           Left = 1
-          Top = 32
+          Top = 31
           Width = 966
           Height = 4
           Align = alTop
           TabOrder = 0
+          ExplicitTop = 32
         end
       end
     end
@@ -431,10 +430,6 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
       Left = 632
       ExplicitLeft = 632
     end
-    inherited chkKonsolidasi1: TcxCheckBox
-      ExplicitWidth = 76
-      ExplicitHeight = 31
-    end
   end
   inherited ActionListForm: TActionList
     inherited ActionSimpan: TAction
@@ -551,7 +546,7 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010105000800D00018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010105000800D40018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

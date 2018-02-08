@@ -16,7 +16,8 @@ uses
   dxPSPrVwStd, dxPSPrVwAdv, dxPSPrVwRibbon, dxPScxPageControlProducer,
   dxPScxEditorProducers, dxPScxExtEditorProducers, dxPrnDlg, dxPgsDlg, dxPSCore,
   System.ImageList, dxBarExtItems, ufrmPilihGrid, dxBarBuiltInMenu, cxPC,
-  Vcl.ComCtrls, Vcl.StdCtrls, cxGridLevel, Vcl.Menus, cxButtons, cxContainer;
+  Vcl.ComCtrls, Vcl.StdCtrls, cxGridLevel, Vcl.Menus, cxButtons, cxContainer,
+  uUser;
 
 type
   TfrmDefault = class(TForm)
@@ -70,18 +71,21 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     FIsLangsungPrint: Boolean;
+    FUserAplikasi: TUser;
     function GetcxGridDBTableViewExport(AGridName : String): TcxGridDBTableView;
         virtual;
+    function GetUserAplikasi: TUser;
     procedure InisialisasiCDSCabang;
     { Private declarations }
   protected
     FID: string;
     procedure CetakSlip; virtual;
     function PanjangNoBukti: Integer;
-    function User: string;
+//    function User: string;
     property IsLangsungPrint: Boolean read FIsLangsungPrint write FIsLangsungPrint;
   public
     procedure LoadDataTransaksi(AID : String); virtual;
+    property UserAplikasi: TUser read GetUserAplikasi write FUserAplikasi;
     { Public declarations }
   end;
 
@@ -182,6 +186,14 @@ begin
   end;
 end;
 
+function TfrmDefault.GetUserAplikasi: TUser;
+begin
+  if FUserAplikasi = nil then
+    FUserAplikasi := TUser.Create;
+
+  Result := FUserAplikasi;
+end;
+
 procedure TfrmDefault.InisialisasiCDSCabang;
 var
   sSQL: string;
@@ -205,9 +217,9 @@ begin
   Result := 10;
 end;
 
-function TfrmDefault.User: string;
-begin
-  Result := 'AKU';
-end;
+//function TfrmDefault.User: string;
+//begin
+//  Result := 'AKU';
+//end;
 
 end.

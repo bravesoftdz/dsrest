@@ -88,7 +88,7 @@ begin
 
   with dmReport do
   begin
-    AddReportVariable('UserCetak', User);
+    AddReportVariable('UserCetak', UserAplikasi.UserName);
     AddReportVariable('NoBukti', GetNoAR);
 
     ExecuteReport( 'Reports/Lap_KarAR' ,

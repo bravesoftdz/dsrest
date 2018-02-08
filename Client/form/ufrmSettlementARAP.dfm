@@ -22,8 +22,6 @@ inherited frmSettlementARAP: TfrmSettlementARAP
     ClientRectBottom = 316
     ClientRectRight = 786
     inherited cxTSOverview: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
       ExplicitWidth = 782
       ExplicitHeight = 292
       inherited splTransaksi: TSplitter
@@ -39,41 +37,39 @@ inherited frmSettlementARAP: TfrmSettlementARAP
           Width = 772
           ExplicitWidth = 772
           inherited lblPeriode: TLabel
-            AlignWithMargins = True
-            Left = 340
+            Left = 358
             Top = 7
-            Height = 20
+            Height = 19
             Margins.Top = 6
             ExplicitLeft = 349
             ExplicitTop = 7
             ExplicitHeight = 20
           end
           inherited lblSD: TLabel
-            AlignWithMargins = True
-            Left = 507
+            Left = 519
             Top = 7
-            Height = 20
+            Height = 19
             Margins.Top = 6
             ExplicitLeft = 510
             ExplicitTop = 7
             ExplicitHeight = 20
           end
           inherited dtpAwal: TDateTimePicker
-            Left = 396
+            Left = 411
             ExplicitLeft = 396
           end
           inherited dtpAkhir: TDateTimePicker
-            Left = 551
+            Left = 560
             ExplicitLeft = 551
           end
           inherited btnRefresh: TcxButton
-            Left = 662
+            Left = 665
             ExplicitLeft = 662
           end
         end
         inherited cxGrid: TcxGrid
           Width = 772
-          Height = 259
+          Height = 260
           ExplicitWidth = 772
           ExplicitHeight = 259
           inherited cxGridDBTableOverview: TcxGridDBTableView
@@ -317,10 +313,6 @@ inherited frmSettlementARAP: TfrmSettlementARAP
       Left = 438
       ExplicitLeft = 438
     end
-    inherited chkKonsolidasi1: TcxCheckBox
-      ExplicitWidth = 76
-      ExplicitHeight = 31
-    end
   end
   inherited ActionListForm: TActionList
     inherited ActionSimpan: TAction
@@ -354,7 +346,7 @@ inherited frmSettlementARAP: TfrmSettlementARAP
     Left = 608
     Top = 88
     Bitmap = {
-      494C0101070008000C0118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800100118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

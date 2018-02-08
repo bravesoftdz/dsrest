@@ -20,6 +20,8 @@ type
 
   public
     function DS_CabangLookUp: TDataset;
+    function DS_MenuLookUp: TDataset;
+    function DS_UserLookUp: TDataset;
     function DS_GudangLookUp: TDataset;
     function GetNamaku: string;
     function LoadAccountPengeluaranKasLain: TDataset;
@@ -483,6 +485,7 @@ type
 
   TServerUser = class(TServerMaster)
   public
+    function DoLogin(AUserName, APassword : String): TUser;
     function Retrieve(AID : String): TUser;
   end;
 
@@ -3933,6 +3936,22 @@ begin
   Result := TDBUtils.OpenDataset(sSQL);
 end;
 
+function TDSData.DS_MenuLookUp: TDataset;
+var
+  sSQL: string;
+begin
+  sSQL   := 'select * from tmenu';
+  Result := TDBUtils.OpenDataset(sSQL);
+end;
+
+function TDSData.DS_UserLookUp: TDataset;
+var
+  sSQL: string;
+begin
+  sSQL   := 'select id,username from tuser';
+  Result := TDBUtils.OpenDataset(sSQL);
+end;
+
 function TDSData.DS_GudangLookUp: TDataset;
 var
   sSQL: string;
@@ -4426,6 +4445,37 @@ begin
 
   if TDBUtils.ExecuteSQL(sSQL) then
     Result := True;
+end;
+
+function TServerUser.DoLogin(AUserName, APassword : String): TUser;
+var
+  sID : string;
+  sSQL: string;
+begin
+  Result := TUser.Create;
+
+  sSQL   := 'select id from tuser ' +
+            ' where USERNAME = ' + QuotedStr(AUserName) +
+            ' and PASSWORD = ' + QuotedStr(APassword);
+
+  with TDBUtils.OpenDataset(sSQL) do
+  begin
+    try
+      sID := '';
+      while not Eof do
+      begin
+        sID := FieldByName('ID').AsString;
+        Next;
+      end;
+
+      if sID <> '' then
+      begin
+        TDBUtils.LoadFromDB(Result, sID);
+      end;
+    finally
+      Free;
+    end;
+  end;
 end;
 
 function TServerUser.Retrieve(AID : String): TUser;

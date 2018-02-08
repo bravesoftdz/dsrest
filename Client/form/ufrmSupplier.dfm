@@ -15,14 +15,11 @@ inherited frmSupplier: TfrmSupplier
   inherited cxPCData: TcxPageControl
     Width = 771
     Height = 311
-    Properties.ActivePage = cxTSInputData
     ExplicitWidth = 771
     ExplicitHeight = 311
     ClientRectBottom = 307
     ClientRectRight = 767
     inherited cxTSOverview: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
       ExplicitWidth = 763
       ExplicitHeight = 283
       inherited splTransaksi: TSplitter
@@ -40,36 +37,36 @@ inherited frmSupplier: TfrmSupplier
           TabOrder = 1
           ExplicitWidth = 753
           inherited lblPeriode: TLabel
-            Left = 330
+            Left = 339
             Visible = False
             ExplicitLeft = 330
           end
           inherited lblSD: TLabel
-            Left = 491
+            Left = 500
             Visible = False
             ExplicitLeft = 491
           end
           inherited dtpAwal: TDateTimePicker
-            Left = 383
+            Left = 392
             Visible = False
-            ExplicitLeft = 383
+            ExplicitLeft = 392
           end
           inherited dtpAkhir: TDateTimePicker
-            Left = 532
+            Left = 541
             Visible = False
-            ExplicitLeft = 532
+            ExplicitLeft = 541
           end
           inherited btnRefresh: TcxButton
-            Left = 643
-            ExplicitLeft = 643
+            Left = 646
+            ExplicitLeft = 646
           end
         end
         inherited cxGrid: TcxGrid
           Width = 753
-          Height = 250
+          Height = 251
           TabOrder = 0
           ExplicitWidth = 753
-          ExplicitHeight = 250
+          ExplicitHeight = 251
           inherited cxGridDBTableOverview: TcxGridDBTableView
             OnCellDblClick = cxGridDBTableOverviewCellDblClick
           end
@@ -244,10 +241,6 @@ inherited frmSupplier: TfrmSupplier
       Left = 419
       ExplicitLeft = 419
     end
-    inherited chkKonsolidasi1: TcxCheckBox
-      ExplicitWidth = 76
-      ExplicitHeight = 31
-    end
   end
   inherited ActionListForm: TActionList
     inherited ActionSimpan: TAction
@@ -280,7 +273,7 @@ inherited frmSupplier: TfrmSupplier
     Left = 584
     Top = 80
     Bitmap = {
-      494C010105000800800018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010105000800840018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

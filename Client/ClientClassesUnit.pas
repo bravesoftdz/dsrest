@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 2/8/2018 4:00:09 AM
+// 2/8/2018 8:27:13 PM
 //
 
 unit ClientClassesUnit;
@@ -1048,6 +1048,10 @@ type
   private
     FDS_CabangLookUpCommand: TDSRestCommand;
     FDS_CabangLookUpCommand_Cache: TDSRestCommand;
+    FDS_MenuLookUpCommand: TDSRestCommand;
+    FDS_MenuLookUpCommand_Cache: TDSRestCommand;
+    FDS_UserLookUpCommand: TDSRestCommand;
+    FDS_UserLookUpCommand_Cache: TDSRestCommand;
     FDS_GudangLookUpCommand: TDSRestCommand;
     FDS_GudangLookUpCommand_Cache: TDSRestCommand;
     FGetNamakuCommand: TDSRestCommand;
@@ -1069,6 +1073,10 @@ type
     destructor Destroy; override;
     function DS_CabangLookUp(const ARequestFilter: string = ''): TDataSet;
     function DS_CabangLookUp_Cache(const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function DS_MenuLookUp(const ARequestFilter: string = ''): TDataSet;
+    function DS_MenuLookUp_Cache(const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function DS_UserLookUp(const ARequestFilter: string = ''): TDataSet;
+    function DS_UserLookUp_Cache(const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function DS_GudangLookUp(const ARequestFilter: string = ''): TDataSet;
     function DS_GudangLookUp_Cache(const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function GetNamaku(const ARequestFilter: string = ''): string;
@@ -1196,6 +1204,8 @@ type
 
   TServerUserClient = class(TDSAdminRestClient)
   private
+    FDoLoginCommand: TDSRestCommand;
+    FDoLoginCommand_Cache: TDSRestCommand;
     FRetrieveCommand: TDSRestCommand;
     FRetrieveCommand_Cache: TDSRestCommand;
     FDeleteCommand: TDSRestCommand;
@@ -1207,6 +1217,8 @@ type
     constructor Create(ARestConnection: TDSRestConnection); overload;
     constructor Create(ARestConnection: TDSRestConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
+    function DoLogin(AUserName: string; APassword: string; const ARequestFilter: string = ''): TUser;
+    function DoLogin_Cache(AUserName: string; APassword: string; const ARequestFilter: string = ''): IDSRestCachedTUser;
     function Retrieve(AID: string; const ARequestFilter: string = ''): TUser;
     function Retrieve_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedTUser;
     function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
@@ -4107,6 +4119,26 @@ const
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
+  TDSData_DS_MenuLookUp: array [0..0] of TDSRestParameterMetaData =
+  (
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TDSData_DS_MenuLookUp_Cache: array [0..0] of TDSRestParameterMetaData =
+  (
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TDSData_DS_UserLookUp: array [0..0] of TDSRestParameterMetaData =
+  (
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TDSData_DS_UserLookUp_Cache: array [0..0] of TDSRestParameterMetaData =
+  (
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
   TDSData_DS_GudangLookUp: array [0..0] of TDSRestParameterMetaData =
   (
     (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
@@ -4466,6 +4498,20 @@ const
   (
     (Name: 'AOBject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
+  TServerUser_DoLogin: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'AUserName'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'APassword'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 37; TypeName: 'TUser')
+  );
+
+  TServerUser_DoLogin_Cache: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'AUserName'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'APassword'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
   TServerUser_Retrieve: array [0..1] of TDSRestParameterMetaData =
@@ -14746,6 +14792,64 @@ begin
   Result := TDSRestCachedDataSet.Create(FDS_CabangLookUpCommand_Cache.Parameters[0].Value.GetString);
 end;
 
+function TDSDataClient.DS_MenuLookUp(const ARequestFilter: string): TDataSet;
+begin
+  if FDS_MenuLookUpCommand = nil then
+  begin
+    FDS_MenuLookUpCommand := FConnection.CreateCommand;
+    FDS_MenuLookUpCommand.RequestType := 'GET';
+    FDS_MenuLookUpCommand.Text := 'TDSData.DS_MenuLookUp';
+    FDS_MenuLookUpCommand.Prepare(TDSData_DS_MenuLookUp);
+  end;
+  FDS_MenuLookUpCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FDS_MenuLookUpCommand.Parameters[0].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FDS_MenuLookUpCommand.FreeOnExecute(Result);
+end;
+
+function TDSDataClient.DS_MenuLookUp_Cache(const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FDS_MenuLookUpCommand_Cache = nil then
+  begin
+    FDS_MenuLookUpCommand_Cache := FConnection.CreateCommand;
+    FDS_MenuLookUpCommand_Cache.RequestType := 'GET';
+    FDS_MenuLookUpCommand_Cache.Text := 'TDSData.DS_MenuLookUp';
+    FDS_MenuLookUpCommand_Cache.Prepare(TDSData_DS_MenuLookUp_Cache);
+  end;
+  FDS_MenuLookUpCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FDS_MenuLookUpCommand_Cache.Parameters[0].Value.GetString);
+end;
+
+function TDSDataClient.DS_UserLookUp(const ARequestFilter: string): TDataSet;
+begin
+  if FDS_UserLookUpCommand = nil then
+  begin
+    FDS_UserLookUpCommand := FConnection.CreateCommand;
+    FDS_UserLookUpCommand.RequestType := 'GET';
+    FDS_UserLookUpCommand.Text := 'TDSData.DS_UserLookUp';
+    FDS_UserLookUpCommand.Prepare(TDSData_DS_UserLookUp);
+  end;
+  FDS_UserLookUpCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FDS_UserLookUpCommand.Parameters[0].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FDS_UserLookUpCommand.FreeOnExecute(Result);
+end;
+
+function TDSDataClient.DS_UserLookUp_Cache(const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FDS_UserLookUpCommand_Cache = nil then
+  begin
+    FDS_UserLookUpCommand_Cache := FConnection.CreateCommand;
+    FDS_UserLookUpCommand_Cache.RequestType := 'GET';
+    FDS_UserLookUpCommand_Cache.Text := 'TDSData.DS_UserLookUp';
+    FDS_UserLookUpCommand_Cache.Prepare(TDSData_DS_UserLookUp_Cache);
+  end;
+  FDS_UserLookUpCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FDS_UserLookUpCommand_Cache.Parameters[0].Value.GetString);
+end;
+
 function TDSDataClient.DS_GudangLookUp(const ARequestFilter: string): TDataSet;
 begin
   if FDS_GudangLookUpCommand = nil then
@@ -15028,6 +15132,10 @@ destructor TDSDataClient.Destroy;
 begin
   FDS_CabangLookUpCommand.DisposeOf;
   FDS_CabangLookUpCommand_Cache.DisposeOf;
+  FDS_MenuLookUpCommand.DisposeOf;
+  FDS_MenuLookUpCommand_Cache.DisposeOf;
+  FDS_UserLookUpCommand.DisposeOf;
+  FDS_UserLookUpCommand_Cache.DisposeOf;
   FDS_GudangLookUpCommand.DisposeOf;
   FDS_GudangLookUpCommand_Cache.DisposeOf;
   FGetNamakuCommand.DisposeOf;
@@ -16072,6 +16180,48 @@ begin
   inherited;
 end;
 
+function TServerUserClient.DoLogin(AUserName: string; APassword: string; const ARequestFilter: string): TUser;
+begin
+  if FDoLoginCommand = nil then
+  begin
+    FDoLoginCommand := FConnection.CreateCommand;
+    FDoLoginCommand.RequestType := 'GET';
+    FDoLoginCommand.Text := 'TServerUser.DoLogin';
+    FDoLoginCommand.Prepare(TServerUser_DoLogin);
+  end;
+  FDoLoginCommand.Parameters[0].Value.SetWideString(AUserName);
+  FDoLoginCommand.Parameters[1].Value.SetWideString(APassword);
+  FDoLoginCommand.Execute(ARequestFilter);
+  if not FDoLoginCommand.Parameters[2].Value.IsNull then
+  begin
+    FUnMarshal := TDSRestCommand(FDoLoginCommand.Parameters[2].ConnectionHandler).GetJSONUnMarshaler;
+    try
+      Result := TUser(FUnMarshal.UnMarshal(FDoLoginCommand.Parameters[2].Value.GetJSONValue(True)));
+      if FInstanceOwner then
+        FDoLoginCommand.FreeOnExecute(Result);
+    finally
+      FreeAndNil(FUnMarshal)
+    end
+  end
+  else
+    Result := nil;
+end;
+
+function TServerUserClient.DoLogin_Cache(AUserName: string; APassword: string; const ARequestFilter: string): IDSRestCachedTUser;
+begin
+  if FDoLoginCommand_Cache = nil then
+  begin
+    FDoLoginCommand_Cache := FConnection.CreateCommand;
+    FDoLoginCommand_Cache.RequestType := 'GET';
+    FDoLoginCommand_Cache.Text := 'TServerUser.DoLogin';
+    FDoLoginCommand_Cache.Prepare(TServerUser_DoLogin_Cache);
+  end;
+  FDoLoginCommand_Cache.Parameters[0].Value.SetWideString(AUserName);
+  FDoLoginCommand_Cache.Parameters[1].Value.SetWideString(APassword);
+  FDoLoginCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedTUser.Create(FDoLoginCommand_Cache.Parameters[2].Value.GetString);
+end;
+
 function TServerUserClient.Retrieve(AID: string; const ARequestFilter: string): TUser;
 begin
   if FRetrieveCommand = nil then
@@ -16257,6 +16407,8 @@ end;
 
 destructor TServerUserClient.Destroy;
 begin
+  FDoLoginCommand.DisposeOf;
+  FDoLoginCommand_Cache.DisposeOf;
   FRetrieveCommand.DisposeOf;
   FRetrieveCommand_Cache.DisposeOf;
   FDeleteCommand.DisposeOf;

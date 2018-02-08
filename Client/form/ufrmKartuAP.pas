@@ -100,7 +100,7 @@ begin
 
   with dmReport do
   begin
-    AddReportVariable('UserCetak', User);
+    AddReportVariable('UserCetak', UserAplikasi.UserName);
     AddReportVariable('NoBukti', GetNoAP);
 
     ExecuteReport( 'Reports/Lap_KarAP' ,

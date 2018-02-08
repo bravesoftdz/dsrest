@@ -77,7 +77,9 @@ uses
   ufrmBukuBesar in 'form\ufrmBukuBesar.pas' {frmBukuBesar},
   ufrmLaporanPenjualan in 'form\ufrmLaporanPenjualan.pas' {frmLaporanPenjualan},
   uPenarikanDeposit in '..\model\uPenarikanDeposit.pas',
-  ufrmPenarikanDeposit in 'form\ufrmPenarikanDeposit.pas' {frmPenarikanDeposit};
+  ufrmPenarikanDeposit in 'form\ufrmPenarikanDeposit.pas' {frmPenarikanDeposit},
+  ufrmUser in 'form\ufrmUser.pas' {frmUser},
+  ufrmLogin in 'form\ufrmLogin.pas' {frmLogin};
 
 {$R *.res}
 

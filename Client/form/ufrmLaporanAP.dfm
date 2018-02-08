@@ -14,29 +14,29 @@ inherited frmLaporanAP: TfrmLaporanAP
       inherited pnlListTransaksi: TPanel
         inherited pnlFilter: TPanel
           inherited lblPeriode: TLabel
-            Left = 462
+            Left = 474
             ExplicitLeft = 497
           end
           inherited lblSD: TLabel
-            Left = 614
+            Left = 620
             ExplicitLeft = 649
           end
           inherited lblGudang: TLabel
-            Left = 249
+            Left = 261
             Visible = False
             ExplicitLeft = 284
           end
           inherited lblCabang: TLabel
-            Left = 28
+            Left = 40
             ExplicitLeft = 63
           end
           inherited dtpAwal: TDateTimePicker
-            Left = 503
+            Left = 512
             TabOrder = 2
             ExplicitLeft = 538
           end
           inherited dtpAkhir: TDateTimePicker
-            Left = 648
+            Left = 651
             TabOrder = 3
             ExplicitLeft = 683
           end
@@ -44,13 +44,13 @@ inherited frmLaporanAP: TfrmLaporanAP
             TabOrder = 5
           end
           inherited cbbGudang: TcxExtLookupComboBox
-            Left = 311
+            Left = 323
             TabOrder = 1
             Visible = False
             ExplicitLeft = 346
           end
           inherited cbbCabang: TcxExtLookupComboBox
-            Left = 98
+            Left = 110
             TabOrder = 0
             ExplicitLeft = 133
           end
@@ -82,7 +82,7 @@ inherited frmLaporanAP: TfrmLaporanAP
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010107000800EC0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800F00018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

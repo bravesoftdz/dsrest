@@ -1,343 +1,171 @@
-object frmDefault: TfrmDefault
-  Left = 0
-  Top = 0
-  Caption = 'frmDefault'
-  ClientHeight = 346
-  ClientWidth = 717
-  Color = clBtnFace
-  Font.Charset = DEFAULT_CHARSET
-  Font.Color = clWindowText
-  Font.Height = -11
-  Font.Name = 'Tahoma'
-  Font.Style = []
-  FormStyle = fsMDIChild
-  OldCreateOrder = False
-  Visible = True
-  OnClose = FormClose
-  OnCreate = FormCreate
+inherited frmUser: TfrmUser
+  Caption = 'User'
+  ClientHeight = 411
+  ClientWidth = 707
+  ExplicitWidth = 723
+  ExplicitHeight = 450
   PixelsPerInch = 96
   TextHeight = 13
-  object cxSBTransaksi: TdxStatusBar
-    Left = 0
-    Top = 326
-    Width = 717
-    Height = 20
-    Panels = <>
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = []
+  inherited cxSBTransaksi: TdxStatusBar
+    Top = 391
+    Width = 707
+    ExplicitTop = 391
+    ExplicitWidth = 707
   end
-  object cxPCData: TcxPageControl
-    Left = 0
-    Top = 0
-    Width = 717
-    Height = 293
-    Align = alClient
-    TabOrder = 1
-    Properties.ActivePage = cxTSOverview
-    Properties.CustomButtons.Buttons = <>
-    OnChange = cxPCDataChange
-    ClientRectBottom = 289
-    ClientRectLeft = 4
-    ClientRectRight = 713
-    ClientRectTop = 24
-    object cxTSOverview: TcxTabSheet
-      Caption = 'Overview'
-      ImageIndex = 0
-      object splTransaksi: TSplitter
-        Left = 0
-        Top = 0
-        Width = 8
-        Height = 265
-        Hint = 'Geser Kanan Kiri'
-        ExplicitLeft = 177
-        ExplicitTop = -2
-        ExplicitHeight = 248
-      end
-      object pnlListTransaksi: TPanel
-        Left = 8
-        Top = 0
-        Width = 701
-        Height = 265
-        Align = alClient
-        TabOrder = 0
-        object pnlFilter: TPanel
-          Left = 1
-          Top = 1
-          Width = 699
-          Height = 30
-          Align = alTop
-          TabOrder = 0
-          object lblPeriode: TLabel
-            AlignWithMargins = True
-            Left = 285
-            Top = 4
-            Width = 50
-            Height = 22
-            Align = alRight
-            AutoSize = False
-            Caption = 'Periode'
-            ExplicitLeft = 344
-            ExplicitTop = 1
-            ExplicitHeight = 30
-          end
-          object lblSD: TLabel
-            AlignWithMargins = True
-            Left = 446
-            Top = 4
-            Width = 38
-            Height = 22
-            Align = alRight
-            Alignment = taCenter
-            AutoSize = False
-            Caption = 's.d.'
-            ExplicitLeft = 480
-            ExplicitTop = 1
-            ExplicitHeight = 30
-          end
-          object dtpAwal: TDateTimePicker
-            Left = 338
-            Top = 1
-            Width = 105
-            Height = 28
-            Align = alRight
-            Date = 42812.000949421290000000
-            Time = 42812.000949421290000000
-            TabOrder = 0
-          end
-          object dtpAkhir: TDateTimePicker
-            Left = 487
-            Top = 1
-            Width = 105
-            Height = 28
-            Align = alRight
-            Date = 42812.000949421290000000
-            Time = 42812.000949421290000000
-            TabOrder = 1
-          end
-          object btnRefresh: TcxButton
-            Left = 592
-            Top = 1
-            Width = 106
-            Height = 28
-            Align = alRight
-            Action = ActionRefresh
-            TabOrder = 2
-          end
-        end
-        object cxGrid: TcxGrid
-          Left = 1
-          Top = 31
-          Width = 699
-          Height = 233
-          Align = alClient
-          TabOrder = 1
-          LockedStateImageOptions.Text = 'Mohon ditunggu...'
-          LookAndFeel.NativeStyle = False
-          object cxGridDBTableOverview: TcxGridDBTableView
-            Navigator.Buttons.CustomButtons = <>
-            FindPanel.DisplayMode = fpdmManual
-            FindPanel.InfoText = 'ketik teks yang dicari...'
-            DataController.Filter.Options = [fcoCaseInsensitive]
-            DataController.Summary.DefaultGroupSummaryItems = <>
-            DataController.Summary.FooterSummaryItems = <>
-            DataController.Summary.SummaryGroups = <>
-            FilterRow.InfoText = 
-              'Klik untuk memfilter data / Atau gunakan CTRL-F untuk panel filt' +
-              'er'
-            FilterRow.Visible = True
-            FilterRow.ApplyChanges = fracImmediately
-            NewItemRow.InfoText = 'Baris baru'
-            OptionsData.Editing = False
-            OptionsView.NoDataToDisplayInfoText = '<Data kosong>'
-            OptionsView.GroupByBox = False
-            Styles.ContentEven = ClientDataModule.cxstylGridEven
-            Styles.ContentOdd = ClientDataModule.cxstylGridOdd
-            Styles.Header = ClientDataModule.cxstylGridHeader
-          end
-          object cxgrdlvlMaster: TcxGridLevel
-            GridView = cxGridDBTableOverview
-          end
-        end
-      end
-    end
-    object cxTSInputData: TcxTabSheet
-      Caption = 'Input/Update/Delete'
-      ImageIndex = 1
+  inherited cxPCData: TcxPageControl
+    Width = 707
+    Height = 358
+    Properties.ActivePage = cxTSInputData
+    ExplicitWidth = 707
+    ExplicitHeight = 358
+    ClientRectBottom = 354
+    ClientRectRight = 703
+    inherited cxTSOverview: TcxTabSheet
       ExplicitLeft = 0
       ExplicitTop = 0
       ExplicitWidth = 0
       ExplicitHeight = 0
-    end
-  end
-  object pnlButton: TPanel
-    Left = 0
-    Top = 293
-    Width = 717
-    Height = 33
-    Align = alBottom
-    TabOrder = 2
-    object btnBaru: TcxButton
-      Left = 605
-      Top = 1
-      Width = 111
-      Height = 31
-      Align = alRight
-      Action = ActionBaru
-      TabOrder = 2
-    end
-    object btnCetak: TcxButton
-      Left = 1
-      Top = 1
-      Width = 112
-      Height = 31
-      Align = alLeft
-      Action = actCetak
-      TabOrder = 3
-    end
-    object btnHapus: TcxButton
-      Left = 481
-      Top = 1
-      Width = 124
-      Height = 31
-      Align = alRight
-      Action = ActionHapus
-      TabOrder = 1
-    end
-    object btnExport: TcxButton
-      Left = 113
-      Top = 1
-      Width = 119
-      Height = 31
-      Align = alLeft
-      Action = actExport
-      TabOrder = 4
-    end
-    object btnSave: TcxButton
-      Left = 365
-      Top = 1
-      Width = 116
-      Height = 31
-      Align = alRight
-      Action = ActionSimpan
-      TabOrder = 0
-    end
-    object chkKonsolidasi1: TcxCheckBox
-      Left = 232
-      Top = 1
-      Align = alLeft
-      Caption = 'Konsolidasi'
-      TabOrder = 5
-      Visible = False
-    end
-  end
-  object ActionListForm: TActionList
-    Images = ilButton
-    Left = 632
-    Top = 96
-    object ActionBaru: TAction
-      Caption = 'Baru [F3]'
-      ImageIndex = 0
-      ShortCut = 114
-      OnExecute = ActionBaruExecute
-    end
-    object ActionSimpan: TAction
-      Caption = 'Simpan [F5]'
-      ImageIndex = 1
-      ShortCut = 116
-    end
-    object actCetak: TAction
-      Caption = 'Cetak [F1]'
-      ImageIndex = 3
-      ShortCut = 112
-      OnExecute = actCetakExecute
-    end
-    object ActionHapus: TAction
-      Caption = 'Hapus [F4]'
-      ImageIndex = 2
-      ShortCut = 115
-    end
-    object ActionRefresh: TAction
-      Caption = 'Refresh [F12]'
-      ImageIndex = 4
-      ShortCut = 123
-    end
-    object actExport: TAction
-      Caption = 'Export [F2]'
-      ImageIndex = 5
-      ShortCut = 113
-      OnExecute = actExportExecute
-    end
-    object actNextTransaction: TAction
-      Caption = 'actNextTransaction'
-      ImageIndex = 6
-    end
-  end
-  object cxGridRepTransaksi: TcxGridViewRepository
-    Left = 584
-    Top = 128
-    object cxGridDBTableCabang: TcxGridDBTableView
-      Tag = 99
-      Navigator.Buttons.CustomButtons = <>
-      DataController.Summary.DefaultGroupSummaryItems = <>
-      DataController.Summary.FooterSummaryItems = <>
-      DataController.Summary.SummaryGroups = <>
-      object cxGridColCabangKode: TcxGridDBColumn
-        Caption = 'Kode '
-        DataBinding.FieldName = 'Kode'
+      inherited splTransaksi: TSplitter
+        Height = 330
+        ExplicitHeight = 330
       end
-      object cxGridColCabangNama: TcxGridDBColumn
-        Caption = 'Nama '
-        DataBinding.FieldName = 'Nama'
+      inherited pnlListTransaksi: TPanel
+        Width = 691
+        Height = 330
+        ExplicitWidth = 691
+        ExplicitHeight = 330
+        inherited pnlFilter: TPanel
+          Width = 689
+          ExplicitWidth = 689
+          inherited lblPeriode: TLabel
+            Left = 275
+            Visible = False
+            ExplicitLeft = 275
+          end
+          inherited lblSD: TLabel
+            Left = 436
+            Visible = False
+            ExplicitLeft = 436
+          end
+          inherited dtpAwal: TDateTimePicker
+            Left = 328
+            Visible = False
+            ExplicitLeft = 328
+          end
+          inherited dtpAkhir: TDateTimePicker
+            Left = 477
+            Visible = False
+            ExplicitLeft = 477
+          end
+          inherited btnRefresh: TcxButton
+            Left = 582
+            ExplicitLeft = 582
+          end
+        end
+        inherited cxGrid: TcxGrid
+          Width = 689
+          Height = 298
+          ExplicitWidth = 689
+          ExplicitHeight = 298
+          inherited cxGridDBTableOverview: TcxGridDBTableView
+            OnCellDblClick = cxGridDBTableOverviewCellDblClick
+          end
+        end
       end
     end
-    object cxGridDBTableWarehouse: TcxGridDBTableView
-      Tag = 99
-      Navigator.Buttons.CustomButtons = <>
-      DataController.Summary.DefaultGroupSummaryItems = <>
-      DataController.Summary.FooterSummaryItems = <>
-      DataController.Summary.SummaryGroups = <>
-      object cxGridColWHKode: TcxGridDBColumn
-        Caption = 'Kode '
-        DataBinding.FieldName = 'Kode'
-      end
-      object cxGridColWHNama: TcxGridDBColumn
-        Caption = 'Nama '
-        DataBinding.FieldName = 'Nama'
+    inherited cxTSInputData: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 699
+      ExplicitHeight = 330
+      object pnlUser: TPanel
+        Left = 0
+        Top = 0
+        Width = 699
+        Height = 74
+        Align = alTop
+        TabOrder = 0
+        object lblUser: TLabel
+          Left = 40
+          Top = 13
+          Width = 22
+          Height = 13
+          Caption = 'User'
+        end
+        object lblPassword: TLabel
+          Left = 16
+          Top = 38
+          Width = 46
+          Height = 13
+          Caption = 'Password'
+        end
+        object edUser: TcxTextEdit
+          Tag = 1
+          Left = 68
+          Top = 9
+          TabOrder = 0
+          Text = 'edUser'
+          Width = 121
+        end
+        object edPassword: TcxTextEdit
+          Tag = 1
+          Left = 68
+          Top = 34
+          Properties.EchoMode = eemPassword
+          Properties.PasswordChar = '*'
+          TabOrder = 1
+          Text = 'edPassword'
+          Width = 121
+        end
       end
     end
   end
-  object dsCabang: TDataSource
-    DataSet = cdsCabang
-    Left = 344
-    Top = 144
+  inherited pnlButton: TPanel
+    Top = 358
+    Width = 707
+    ExplicitTop = 358
+    ExplicitWidth = 707
+    inherited btnBaru: TcxButton
+      Left = 595
+      ExplicitLeft = 595
+    end
+    inherited btnHapus: TcxButton
+      Left = 471
+      ExplicitLeft = 471
+    end
+    inherited btnSave: TcxButton
+      Left = 355
+      ExplicitLeft = 355
+    end
+    inherited chkKonsolidasi1: TcxCheckBox
+      ExplicitWidth = 121
+      ExplicitHeight = 21
+    end
   end
-  object DSPCabang: TDataSetProvider
-    Left = 464
-    Top = 144
+  inherited ActionListForm: TActionList
+    inherited ActionSimpan: TAction
+      OnExecute = ActionSimpanExecute
+    end
+    inherited ActionHapus: TAction
+      OnExecute = ActionHapusExecute
+    end
+    inherited ActionRefresh: TAction
+      OnExecute = ActionRefreshExecute
+    end
   end
-  object cdsCabang: TClientDataSet
-    Aggregates = <>
-    Params = <>
-    ProviderName = 'DSPCabang'
-    Left = 496
-    Top = 144
+  inherited dsCabang: TDataSource
+    Left = 144
+    Top = 176
   end
-  object dlgSaveExportExcel: TSaveDialog
-    DefaultExt = 'xlsx'
-    Left = 280
-    Top = 120
+  inherited dlgSaveExportExcel: TSaveDialog
+    Left = 104
+    Top = 176
   end
-  object ilButton: TImageList
-    ColorDepth = cd32Bit
-    Height = 24
-    Width = 24
-    Left = 216
-    Top = 184
+  inherited ilButton: TImageList
+    Left = 64
+    Top = 176
     Bitmap = {
-      494C010107000800080118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800100118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
