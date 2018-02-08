@@ -21,10 +21,10 @@ inherited frmUser: TfrmUser
     ClientRectBottom = 354
     ClientRectRight = 703
     inherited cxTSOverview: TcxTabSheet
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 699
+      ExplicitHeight = 330
       inherited splTransaksi: TSplitter
         Height = 330
         ExplicitHeight = 330
@@ -118,6 +118,49 @@ inherited frmUser: TfrmUser
           Width = 121
         end
       end
+      object cxGridMenu: TcxGrid
+        Left = 0
+        Top = 74
+        Width = 699
+        Height = 256
+        Align = alClient
+        TabOrder = 1
+        ExplicitLeft = -3
+        ExplicitTop = 73
+        object cxGridTableMenu: TcxGridTableView
+          Navigator.Buttons.CustomButtons = <>
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.SummaryGroups = <>
+          Styles.ContentEven = ClientDataModule.cxstylGridOdd
+          Styles.Header = ClientDataModule.cxstylGridHeader
+          object cxGridColID: TcxGridColumn
+            Caption = 'ID'
+            Visible = False
+            HeaderAlignmentHorz = taCenter
+          end
+          object cxGridColMenuName: TcxGridColumn
+            Caption = 'Menu'
+            HeaderAlignmentHorz = taCenter
+            Width = 171
+          end
+          object cxGridColMenuCaption: TcxGridColumn
+            Caption = 'Caption'
+            HeaderAlignmentHorz = taCenter
+            Width = 169
+          end
+          object cxGridColStatus: TcxGridColumn
+            Caption = 'Status'
+            PropertiesClassName = 'TcxCheckBoxProperties'
+            Properties.ValueChecked = 1
+            Properties.ValueUnchecked = 0
+            HeaderAlignmentHorz = taCenter
+          end
+        end
+        object cxgrdlvlMenu: TcxGridLevel
+          GridView = cxGridTableMenu
+        end
+      end
     end
   end
   inherited pnlButton: TPanel
@@ -138,8 +181,8 @@ inherited frmUser: TfrmUser
       ExplicitLeft = 355
     end
     inherited chkKonsolidasi1: TcxCheckBox
-      ExplicitWidth = 121
-      ExplicitHeight = 21
+      ExplicitWidth = 76
+      ExplicitHeight = 31
     end
   end
   inherited ActionListForm: TActionList
@@ -157,6 +200,14 @@ inherited frmUser: TfrmUser
     Left = 144
     Top = 176
   end
+  inherited DSPCabang: TDataSetProvider
+    Left = 472
+    Top = 176
+  end
+  inherited cdsCabang: TClientDataSet
+    Left = 520
+    Top = 176
+  end
   inherited dlgSaveExportExcel: TSaveDialog
     Left = 104
     Top = 176
@@ -165,7 +216,7 @@ inherited frmUser: TfrmUser
     Left = 64
     Top = 176
     Bitmap = {
-      494C010107000800100118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800140118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

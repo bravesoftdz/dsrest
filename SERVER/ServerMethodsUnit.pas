@@ -3940,7 +3940,7 @@ function TDSData.DS_MenuLookUp: TDataset;
 var
   sSQL: string;
 begin
-  sSQL   := 'select * from tmenu';
+  sSQL   := 'select * from vmenu ORDER BY menuname';
   Result := TDBUtils.OpenDataset(sSQL);
 end;
 

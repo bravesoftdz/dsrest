@@ -20,6 +20,13 @@ type
     lblPassword: TLabel;
     edUser: TcxTextEdit;
     edPassword: TcxTextEdit;
+    cxgrdlvlMenu: TcxGridLevel;
+    cxGridMenu: TcxGrid;
+    cxGridTableMenu: TcxGridTableView;
+    cxGridColID: TcxGridColumn;
+    cxGridColMenuName: TcxGridColumn;
+    cxGridColMenuCaption: TcxGridColumn;
+    cxGridColStatus: TcxGridColumn;
     procedure ActionBaruExecute(Sender: TObject);
     procedure ActionHapusExecute(Sender: TObject);
     procedure ActionRefreshExecute(Sender: TObject);
@@ -29,8 +36,12 @@ type
         TShiftState; var AHandled: Boolean);
   private
     fcds: TClientDataset;
+    FCDSMenuItem: tclientDataSet;
     FUser: TUser;
     function GetUser: TUser;
+    procedure LoadDaftarMenu;
+    procedure UpdateStatusMenu;
+    procedure UpdateUserMenuItem;
 //    function IsBisaSimpan: Boolean;
     { Private declarations }
   public
@@ -85,6 +96,7 @@ begin
   User.UserName := edUser.Text;
   User.Password := edPassword.Text;
 
+  UpdateUserMenuItem;
   if ClientDataModule.ServerUserClient.Save(User) then
   begin
     TAppUtils.InformationBerhasilSimpan;
@@ -110,6 +122,27 @@ begin
   Result := FUser;
 end;
 
+procedure TfrmUser.LoadDaftarMenu;
+var
+  iBaris: Integer;
+begin
+  FCDSMenuItem := TDBUtils.DSToCDS(ClientDataModule.DSDataCLient.DS_MenuLookUp(),Self);
+
+  FCDSMenuItem.First;
+  cxGridTableMenu.ClearRows;
+  while not FCDSMenuItem.Eof do
+  begin
+    iBaris := cxGridTableMenu.DataController.AppendRecord;
+    cxGridTableMenu.SetValue(iBaris,cxGridColID.Index, FCDSMenuItem.FieldByName('id').AsString);
+    cxGridTableMenu.SetValue(iBaris,cxGridColMenuName.Index, FCDSMenuItem.FieldByName('menuname').AsString);
+    cxGridTableMenu.SetValue(iBaris,cxGridColMenuCaption.Index, FCDSMenuItem.FieldByName('menucaption').AsString);
+    cxGridTableMenu.SetValue(iBaris,cxGridColStatus.Index, FCDSMenuItem.FieldByName('status').AsString);
+
+    FCDSMenuItem.Next;
+  end;
+  cxGridTableMenu.ApplyBestFit();
+end;
+
 //function TfrmUser.IsBisaSimpan: Boolean;
 //begin
 //  Result := False;
@@ -127,6 +160,9 @@ end;
 procedure TfrmUser.LoadDataTransaksi(AID : String);
 begin
   inherited;
+  FreeAndNil(FCDSMenuItem);
+  LoadDaftarMenu;
+
   if AID = '' then
     Exit;
 
@@ -135,6 +171,41 @@ begin
 
   edUser.Text     := User.UserName;
   edPassword.Text := User.Password;
+
+  UpdateStatusMenu;
+
+end;
+
+procedure TfrmUser.UpdateStatusMenu;
+var
+  I: Integer;
+begin
+  for I := 0 to User.UserMenuItems.Count - 1 do
+  begin
+    if cxGridTableMenu.DataController.Values[i,cxGridColID.Index] = User.UserMenuItems[i].Menu.ID then
+    begin
+      cxGridTableMenu.DataController.Values[i,cxGridColStatus.Index] := 1;
+
+    end;
+  end;
+end;
+
+procedure TfrmUser.UpdateUserMenuItem;
+var
+  I: Integer;
+  lUMItem: TUserMenuItem;
+begin
+  User.UserMenuItems.Clear;
+  for I := 0 to cxGridTableMenu.DataController.RecordCount - 1 do
+  begin
+    if cxGridTableMenu.DataController.Values[i,cxGridColStatus.Index] = 1 then
+    begin
+      lUMItem := TUserMenuItem.Create;
+      lUMItem.Menu := TMenu.CreateID(cxGridTableMenu.DataController.Values[i,cxGridColStatus.Index]);
+
+      User.UserMenuItems.Add(lUMItem);
+    end;
+  end;
 end;
 
 end.

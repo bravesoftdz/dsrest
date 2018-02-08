@@ -35,13 +35,13 @@ type
   TUserMenuItem = class(TAppObjectItem)
   private
     FMenu: TMenu;
-    FUser: TUser;
+    FUseraPP: TUser;
   public
     function GetHeaderField: string; override;
     procedure SetHeaderProperty(AHeaderProperty : TAppObject); override;
   published
     property Menu: TMenu read FMenu write FMenu;
-    property User: TUser read FUser write FUser;
+    property UseraPP: TUser read FUseraPP write FUseraPP;
   end;
 
 implementation
@@ -62,12 +62,12 @@ end;
 
 function TUserMenuItem.GetHeaderField: string;
 begin
-  Result := 'User';
+  Result := 'UseraPP';
 end;
 
 procedure TUserMenuItem.SetHeaderProperty(AHeaderProperty : TAppObject);
 begin
-  User := TUser(AHeaderProperty);
+  UseraPP := TUser(AHeaderProperty);
 end;
 
 end.

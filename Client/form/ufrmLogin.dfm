@@ -13,6 +13,7 @@ object frmLogin: TfrmLogin
   Font.Style = []
   OldCreateOrder = False
   Position = poDesktopCenter
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object lblUser: TLabel

@@ -15,6 +15,7 @@ type
     edUser: TcxTextEdit;
     edPassword: TcxTextEdit;
     bLogin: TcxButton;
+    procedure FormCreate(Sender: TObject);
     procedure bLoginClick(Sender: TObject);
   private
     { Private declarations }
@@ -28,6 +29,19 @@ var
 implementation
 
 {$R *.dfm}
+
+procedure TfrmLogin.FormCreate(Sender: TObject);
+begin
+  if TAppUtils.IsDeveloperMode then
+  begin
+    edUser.Text     := 'admin';
+    edPassword.Text := 'admin1';
+  end else begin
+    edUser.Text     := '';
+    edPassword.Text := '';
+
+  end;
+end;
 
 procedure TfrmLogin.bLoginClick(Sender: TObject);
 begin
