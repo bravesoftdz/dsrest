@@ -42,7 +42,7 @@ type
     procedure LoadDaftarMenu;
     procedure UpdateStatusMenu;
     procedure UpdateUserMenuItem;
-//    function IsBisaSimpan: Boolean;
+    function IsBisaSimpan: Boolean;
     { Private declarations }
   public
     procedure LoadDataTransaksi(AID : String); override;
@@ -90,8 +90,8 @@ end;
 procedure TfrmUser.ActionSimpanExecute(Sender: TObject);
 begin
   inherited;
-//  if not IsBisaSimpan then
-//    Exit;
+  if not IsBisaSimpan then
+    Exit;
 
   User.UserName := edUser.Text;
   User.Password := edPassword.Text;
@@ -143,19 +143,19 @@ begin
   cxGridTableMenu.ApplyBestFit();
 end;
 
-//function TfrmUser.IsBisaSimpan: Boolean;
-//begin
-//  Result := False;
-//
-//  if not ValidateEmptyCtrl then
-//    Exit;
-//
+function TfrmUser.IsBisaSimpan : Boolean;
+begin
+  Result := False;
+
+  if not ValidateEmptyCtrl then
+    Exit;
+
 //  if not TAppUtils.Confirm('Anda yakin akan menyimpan data?') then
 //    Exit;
-//
-//  Result := True;
-//
-//end;
+
+  Result := True;
+
+end;
 
 procedure TfrmUser.LoadDataTransaksi(AID : String);
 begin
@@ -201,7 +201,7 @@ begin
     if cxGridTableMenu.DataController.Values[i,cxGridColStatus.Index] = 1 then
     begin
       lUMItem := TUserMenuItem.Create;
-      lUMItem.Menu := TMenu.CreateID(cxGridTableMenu.DataController.Values[i,cxGridColStatus.Index]);
+      lUMItem.Menu := TMenu.CreateID(cxGridTableMenu.DataController.Values[i,cxGridColID.Index]);
 
       User.UserMenuItems.Add(lUMItem);
     end;
