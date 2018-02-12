@@ -68,6 +68,8 @@ begin
     FCDSGudang := TDBUtils.DSToCDS(DS_GudangLookUp(), Self);
     cbbGudang.Properties.LoadFromCDS(FCDSGudang, 'id','nama',['id','cabang'], Self);
     cbbGudang.Properties.SetMultiPurposeLookup();
+
+    cbbGudang.EditValue := FCDSGudang.FieldByName('ID').AsString;
   end;
 end;
 

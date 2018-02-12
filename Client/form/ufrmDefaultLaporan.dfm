@@ -20,8 +20,6 @@ inherited frmDefaultLaporan: TfrmDefaultLaporan
     ClientRectBottom = 436
     ClientRectRight = 1004
     inherited cxTSOverview: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
       ExplicitWidth = 1000
       ExplicitHeight = 412
       inherited splTransaksi: TSplitter
@@ -37,22 +35,16 @@ inherited frmDefaultLaporan: TfrmDefaultLaporan
           Width = 990
           ExplicitWidth = 990
           inherited lblPeriode: TLabel
-            AlignWithMargins = True
-            Left = 589
-            Top = 4
+            Left = 601
             Width = 35
-            Height = 23
             ExplicitLeft = 358
             ExplicitTop = 4
             ExplicitWidth = 35
             ExplicitHeight = 23
           end
           inherited lblSD: TLabel
-            AlignWithMargins = True
-            Left = 741
-            Top = 4
+            Left = 747
             Width = 28
-            Height = 23
             ExplicitLeft = 525
             ExplicitTop = 4
             ExplicitWidth = 28
@@ -60,63 +52,66 @@ inherited frmDefaultLaporan: TfrmDefaultLaporan
           end
           object lblGudang: TLabel [2]
             AlignWithMargins = True
-            Left = 376
+            Left = 388
             Top = 4
             Width = 56
-            Height = 23
+            Height = 22
             Align = alRight
             AutoSize = False
             Caption = 'Gudang'
+            ExplicitLeft = 376
+            ExplicitHeight = 23
           end
           object lblCabang: TLabel [3]
             AlignWithMargins = True
-            Left = 155
+            Left = 167
             Top = 4
             Width = 64
-            Height = 23
+            Height = 22
             Align = alRight
             AutoSize = False
             Caption = 'Cabang'
             ExplicitLeft = 176
+            ExplicitHeight = 23
           end
           inherited dtpAwal: TDateTimePicker
-            Left = 630
+            Left = 639
             ExplicitLeft = 630
           end
           inherited dtpAkhir: TDateTimePicker
-            Left = 775
+            Left = 778
             ExplicitLeft = 775
           end
           inherited btnRefresh: TcxButton
-            AlignWithMargins = False
             Left = 883
-            Top = 1
-            Height = 29
             ExplicitLeft = 883
-            ExplicitTop = 1
             ExplicitHeight = 29
           end
           object cbbGudang: TcxExtLookupComboBox
             AlignWithMargins = True
-            Left = 438
+            Left = 450
             Top = 4
             Align = alRight
             TabOrder = 3
+            ExplicitLeft = 438
+            ExplicitHeight = 21
             Width = 145
           end
           object cbbCabang: TcxExtLookupComboBox
             AlignWithMargins = True
-            Left = 225
+            Left = 237
             Top = 4
             Align = alRight
             Properties.OnValidate = cbbCabangPropertiesValidate
             TabOrder = 4
+            ExplicitLeft = 225
+            ExplicitHeight = 21
             Width = 145
           end
         end
         inherited cxGrid: TcxGrid
           Width = 990
-          Height = 379
+          Height = 380
           ExplicitWidth = 990
           ExplicitHeight = 379
         end
@@ -150,10 +145,6 @@ inherited frmDefaultLaporan: TfrmDefaultLaporan
       Visible = False
       ExplicitLeft = 656
     end
-    inherited chkKonsolidasi1: TcxCheckBox
-      ExplicitWidth = 76
-      ExplicitHeight = 31
-    end
   end
   inherited ActionListForm: TActionList
     Left = 616
@@ -165,7 +156,7 @@ inherited frmDefaultLaporan: TfrmDefaultLaporan
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010107000800E40018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800E80018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

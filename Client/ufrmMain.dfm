@@ -31,7 +31,6 @@ object frmMain: TfrmMain
     TabOrder = 0
     TabStop = False
     object dxrbnAplikasi: TdxRibbonTab
-      Active = True
       Caption = 'Application'
       Groups = <
         item
@@ -87,6 +86,7 @@ object frmMain: TfrmMain
       Index = 3
     end
     object dxrbntbLaporan: TdxRibbonTab
+      Active = True
       Caption = 'Laporan'
       Groups = <
         item
@@ -400,10 +400,6 @@ object frmMain: TfrmMain
         end
         item
           Visible = True
-          ItemName = 'dxbrlrgbtnLapStockSekarang'
-        end
-        item
-          Visible = True
           ItemName = 'dxbrlrgbtn1'
         end
         item
@@ -593,7 +589,7 @@ object frmMain: TfrmMain
     object dxbrLapKasKeluar: TdxBar
       Caption = 'Kas Keluar'
       CaptionButtons = <>
-      DockedLeft = 371
+      DockedLeft = 307
       DockedTop = 0
       FloatLeft = 576
       FloatTop = 247
@@ -617,7 +613,7 @@ object frmMain: TfrmMain
     object dxbrLapKasMasuk: TdxBar
       Caption = 'Kas Masuk'
       CaptionButtons = <>
-      DockedLeft = 494
+      DockedLeft = 430
       DockedTop = 0
       FloatLeft = 1033
       FloatTop = 8
@@ -1154,7 +1150,7 @@ object frmMain: TfrmMain
     Left = 688
     Top = 128
     Bitmap = {
-      494C01011800C003F00120002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C01011800C003F40120002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000080000000E0000000010020000000000000C0
       0100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

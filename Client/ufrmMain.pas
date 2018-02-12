@@ -215,7 +215,6 @@ type
     procedure dxbrlrgbtnExitClick(Sender: TObject);
     procedure btnLoginClick(Sender: TObject);
   private
-    procedure EnableMenu(AUser : TUser);
     procedure SimpanAndDisableDataMenu;
     procedure UpdateStatusBar;
     { Private declarations }
@@ -493,27 +492,6 @@ begin
   frmLogin := TfrmLogin.Create(Self);
   frmLogin.ShowModal;
   SimpanAndDisableDataMenu;
-end;
-
-procedure TfrmMain.EnableMenu(AUser : TUser);
-var
-  I: Integer;
-begin
-  for I := 0 to actlstMainMenu.ActionCount - 1 do
-      actlstMainMenu.Actions[I].Enabled := False;
-
-  if AUser <> nil then
-  begin
-    for I := 0 to actlstMainMenu.ActionCount - 1 do
-      actlstMainMenu.Actions[I].Enabled := AUser.UserName = 'admin';
-
-    if AUser.UserName <> 'admin' then
-    begin
-
-
-    end;
-  end;
-
 end;
 
 
