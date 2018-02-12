@@ -614,10 +614,16 @@ begin
         else begin
           for j := 0 to UserApplikasi.UserMenuItems.Count - 1 do
           begin
-            if actlstMainMenu.Actions[I].Name = UserApplikasi.UserMenuItems[j].Menu.MenuName then
-            begin
-              actlstMainMenu.Actions[I].Enabled := True;
-              Break;
+            lFCDs.Filter    := 'id = ' + QuotedStr(UserApplikasi.UserMenuItems[j].Menu.ID);
+            lFCDs.Filtered  := True;
+            try
+              if actlstMainMenu.Actions[I].Name = lFCDs.FieldByName('menuname').AsString then
+              begin
+                actlstMainMenu.Actions[I].Enabled := True;
+                Break;
+              end;
+            finally
+              lFCDs.Filtered  := False;
             end;
 
           end;

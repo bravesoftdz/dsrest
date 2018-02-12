@@ -179,13 +179,16 @@ end;
 procedure TfrmUser.UpdateStatusMenu;
 var
   I: Integer;
+  j: Integer;
 begin
   for I := 0 to User.UserMenuItems.Count - 1 do
   begin
-    if cxGridTableMenu.DataController.Values[i,cxGridColID.Index] = User.UserMenuItems[i].Menu.ID then
+    for j := 0 to cxGridTableMenu.DataController.RecordCount - 1 do
     begin
-      cxGridTableMenu.DataController.Values[i,cxGridColStatus.Index] := 1;
-
+      if cxGridTableMenu.DataController.Values[j,cxGridColID.Index] = User.UserMenuItems[i].Menu.ID then
+      begin
+        cxGridTableMenu.DataController.Values[j,cxGridColStatus.Index] := 1;
+      end;
     end;
   end;
 end;
