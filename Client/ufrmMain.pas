@@ -19,7 +19,7 @@ uses
   cxDropDownEdit, ufrmPengeluaranKas, ufrmJurnal, ufrmLapPenerimaanBarang,
   ufrmKartuAP, ufrmLaporanAP, ufrmKartuAR,ufrmLaporanAR,
   ufrmLaporanReturSupplier, ufrmGenerateJurnal, ufrmBukuBesar,
-  Vcl.AppEvnts, ufrmPenarikanDeposit, ufrmUser, ufrmLogin, uSettingApp;
+  Vcl.AppEvnts, ufrmPenarikanDeposit, ufrmUser, ufrmLogin, uSettingApp, uUser;
 
 type
   TfrmMain = class(TForm)
@@ -215,6 +215,7 @@ type
     procedure dxbrlrgbtnExitClick(Sender: TObject);
     procedure btnLoginClick(Sender: TObject);
   private
+    procedure EnableMenu(AUser : TUser);
     procedure SimpanAndDisableDataMenu;
     procedure UpdateStatusBar;
     { Private declarations }
@@ -230,8 +231,7 @@ uses
   ufrmSupplier, ufrmKoneksi,uAppUtils, ufrmBarang, ufrmPenerimaanBarang,
   ClientClassesUnit, ClientModule, ufrmPilihCabang, ufrmLapMutasiBarangPerTransaksi,
   ufrmReturSupplier, udbutils, ufrmClosingInventory, ufrmLapStockSekarang,
-  ufrmGudang, ufrmAccount, uReport, ufrmTACTerima, ufrmSettlementARAP,
-  uUser, ufrmLaporanNeracaSaldo;
+  ufrmGudang, ufrmAccount, uReport, ufrmTACTerima, ufrmSettlementARAP, ufrmLaporanNeracaSaldo;
 
 {$R *.dfm}
 
@@ -481,6 +481,7 @@ procedure TfrmMain.btnLoginClick(Sender: TObject);
 var
   I: Integer;
 begin
+  uSettingApp.UserApplikasi := nil;
   for I := ComponentCount - 1 downto 0  do
   begin
     if (Components[i] is TForm) then
@@ -493,6 +494,32 @@ begin
   frmLogin.ShowModal;
   SimpanAndDisableDataMenu;
 end;
+
+procedure TfrmMain.EnableMenu(AUser : TUser);
+var
+  I: Integer;
+begin
+  for I := 0 to actlstMainMenu.ActionCount - 1 do
+      actlstMainMenu.Actions[I].Enabled := False;
+
+  if AUser <> nil then
+  begin
+    for I := 0 to actlstMainMenu.ActionCount - 1 do
+      actlstMainMenu.Actions[I].Enabled := AUser.UserName = 'admin';
+
+    if AUser.UserName <> 'admin' then
+    begin
+
+
+    end;
+  end;
+
+end;
+
+
+
+
+
 
 procedure TfrmMain.dxbrlrgbtnExitClick(Sender: TObject);
 begin
@@ -573,8 +600,7 @@ var
   IsKetemu: Boolean;
   lFCDs: TClientDataset;
   lMenu: TMenu;
-  sCaption: string;
-  sNama: string;
+  j: Integer;
 begin
   lFCDs := TDBUtils.DSToCDS(ClientDataModule.DSDataCLient.DS_MenuLookUp(), Self);
   try
@@ -582,10 +608,21 @@ begin
     begin
       actlstMainMenu.Actions[I].Enabled := False;
       if uSettingApp.UserApplikasi <> nil then
-        actlstMainMenu.Actions[I].Enabled := uSettingApp.UserApplikasi.UserName = 'admin';
+      begin
+        if UserApplikasi.UserName = 'admin' then
+          actlstMainMenu.Actions[I].Enabled := True
+        else begin
+          for j := 0 to UserApplikasi.UserMenuItems.Count - 1 do
+          begin
+            if actlstMainMenu.Actions[I].Name = UserApplikasi.UserMenuItems[j].Menu.MenuName then
+            begin
+              actlstMainMenu.Actions[I].Enabled := True;
+              Break;
+            end;
 
-      sNama     := actlstMainMenu.Actions[I].Name;
-      sCaption  := actlstMainMenu.Actions[I].Caption;
+          end;
+        end;
+      end;
 
       IsKetemu := False;
 
@@ -594,7 +631,7 @@ begin
         lFCDs.First;
         while not lFCDs.Eof do
         begin
-          if lFCDs.FieldByName('menuname').AsString = sNama then
+          if lFCDs.FieldByName('menuname').AsString = actlstMainMenu.Actions[I].Name then
           begin
             IsKetemu := True;
             Break;
@@ -606,8 +643,8 @@ begin
       if not IsKetemu then
       begin
         lMenu             := TMenu.Create;
-        lMenu.MenuCaption := sCaption;
-        lMenu.MenuName    := sNama;
+        lMenu.MenuCaption := actlstMainMenu.Actions[I].Caption;
+        lMenu.MenuName    := actlstMainMenu.Actions[I].Name;
 
         ClientDataModule.ServerMenuClient.Save(lMenu);
       end;

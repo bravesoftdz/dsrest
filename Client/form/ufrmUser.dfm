@@ -125,8 +125,6 @@ inherited frmUser: TfrmUser
         Height = 256
         Align = alClient
         TabOrder = 1
-        ExplicitLeft = -3
-        ExplicitTop = 73
         object cxGridTableMenu: TcxGridTableView
           Navigator.Buttons.CustomButtons = <>
           DataController.Summary.DefaultGroupSummaryItems = <>
@@ -216,7 +214,7 @@ inherited frmUser: TfrmUser
     Left = 64
     Top = 176
     Bitmap = {
-      494C010107000800140118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800180118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
