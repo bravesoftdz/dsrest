@@ -17,6 +17,7 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
   inherited cxPCData: TcxPageControl
     Width = 984
     Height = 381
+    Properties.ActivePage = cxTSInputData
     ExplicitWidth = 984
     ExplicitHeight = 381
     ClientRectBottom = 377
@@ -48,15 +49,15 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
           end
           inherited dtpAwal: TDateTimePicker
             Left = 605
-            ExplicitLeft = 596
+            ExplicitLeft = 605
           end
           inherited dtpAkhir: TDateTimePicker
             Left = 754
-            ExplicitLeft = 745
+            ExplicitLeft = 754
           end
           inherited btnRefresh: TcxButton
             Left = 859
-            ExplicitLeft = 856
+            ExplicitLeft = 859
           end
         end
         inherited cxGrid: TcxGrid
@@ -64,9 +65,9 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
           Width = 966
           Height = 317
           TabOrder = 2
-          ExplicitTop = 36
+          ExplicitTop = 35
           ExplicitWidth = 966
-          ExplicitHeight = 316
+          ExplicitHeight = 317
           inherited cxGridDBTableOverview: TcxGridDBTableView
             OnCellDblClick = cxGridDBTableOverviewCellDblClick
           end
@@ -78,7 +79,6 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
           Height = 4
           Align = alTop
           TabOrder = 0
-          ExplicitTop = 32
         end
       end
     end
@@ -104,10 +104,6 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
           TabOrder = 0
           object tsHeader: TTabSheet
             Caption = 'Header Penerimaan'
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
             object lblNoBukti: TLabel
               Left = 17
               Top = 8
@@ -242,10 +238,6 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
           TabOrder = 1
           object tsDetailPenerimaan: TTabSheet
             Caption = 'Detail Penerimaan'
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
             object cxGridDBPenerimaanBarang: TcxGrid
               Left = 0
               Top = 0
@@ -278,6 +270,7 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
                     Column = cxGridTablePenerimaanBarangColumnSubTotalRp
                   end>
                 DataController.Summary.SummaryGroups = <>
+                DataController.OnAfterInsert = cxGridTablePenerimaanBarangDataControllerAfterInsert
                 OptionsBehavior.FocusFirstCellOnNewRecord = True
                 OptionsBehavior.GoToNextCellOnEnter = True
                 OptionsBehavior.FocusCellOnCycle = True
@@ -546,7 +539,7 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010105000800D40018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010105000800D80018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

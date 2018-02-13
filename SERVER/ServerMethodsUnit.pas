@@ -831,8 +831,6 @@ var
 begin
   Result := False;
 
-
-
   lPBLama := Retrieve(AOBject.ID);
   try
     if lPBLama.IsJurnalized = 1 then
