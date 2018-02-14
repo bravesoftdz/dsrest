@@ -7,7 +7,7 @@ uses
   System.SysUtils, uSupplier, uPenerimaanKas;
 
 type
-  TPengeluaranKasAPNew = class;
+  TPengeluaranKasARNew = class;
   TPengeluaranKasAP = class;
   TPengeluaranKasNonAP = class;
 
@@ -22,13 +22,13 @@ type
     FNominal: Double;
     FPenerima: TSupplier;
     FPengeluaranKasAPs: TobjectList<TPengeluaranKasAP>;
-    FPengeluaranKasAPNews: TobjectList<TPengeluaranKasAPNew>;
+    FPengeluaranKasAPNews: TobjectList<TPengeluaranKasARNew>;
     FPengeluaranKasNonAPs: TobjectList<TPengeluaranKasNonAP>;
     FPetugas: string;
     FRekBank: TRekBank;
     FTglBukti: TDatetime;
     function GetPengeluaranKasAPs: TobjectList<TPengeluaranKasAP>;
-    function GetPengeluaranKasAPNews: TobjectList<TPengeluaranKasAPNew>;
+    function GetPengeluaranKasAPNews: TobjectList<TPengeluaranKasARNew>;
     function GetPengeluaranKasNonAPs: TobjectList<TPengeluaranKasNonAP>;
     procedure SetCabang(const Value: TCabang);
   published
@@ -42,7 +42,7 @@ type
     property Penerima: TSupplier read FPenerima write FPenerima;
     property PengeluaranKasAPs: TobjectList<TPengeluaranKasAP> read
         GetPengeluaranKasAPs write FPengeluaranKasAPs;
-    property PengeluaranKasAPNews: TobjectList<TPengeluaranKasAPNew> read
+    property PengeluaranKasAPNews: TobjectList<TPengeluaranKasARNew> read
         GetPengeluaranKasAPNews write FPengeluaranKasAPNews;
     property PengeluaranKasNonAPs: TobjectList<TPengeluaranKasNonAP> read
         GetPengeluaranKasNonAPs write FPengeluaranKasNonAPs;
@@ -85,7 +85,7 @@ type
         FPengeluaranKas;
   end;
 
-  TPengeluaranKasAPNew = class(TAppObjectItem)
+  TPengeluaranKasARNew = class(TAppObjectItem)
   private
     FAccount: TAccount;
     FAP: TAP;
@@ -115,10 +115,10 @@ begin
 end;
 
 function TPengeluaranKas.GetPengeluaranKasAPNews:
-    TobjectList<TPengeluaranKasAPNew>;
+    TobjectList<TPengeluaranKasARNew>;
 begin
   if FPengeluaranKasAPNews = nil then
-    FPengeluaranKasAPNews := TObjectList<TPengeluaranKasAPNew>.Create();
+    FPengeluaranKasAPNews := TObjectList<TPengeluaranKasARNew>.Create();
 
   Result := FPengeluaranKasAPNews;
 end;
@@ -162,12 +162,12 @@ begin
   Self.PengeluaranKas := TPengeluaranKas(AHeaderProperty);
 end;
 
-function TPengeluaranKasAPNew.GetHeaderField: string;
+function TPengeluaranKasARNew.GetHeaderField: string;
 begin
   Result := 'PengeluaranKas';
 end;
 
-procedure TPengeluaranKasAPNew.SetHeaderProperty(AHeaderProperty : TAppObject);
+procedure TPengeluaranKasARNew.SetHeaderProperty(AHeaderProperty : TAppObject);
 begin
   Self.PengeluaranKas := TPengeluaranKas(AHeaderProperty);
 end;
