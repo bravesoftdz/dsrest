@@ -396,6 +396,12 @@ begin
     Penjualan.PenjualanItems.Add(lPenjualanItem);
   end;
 
+  if Penjualan.PenjualanItems.Count <= 0 then
+  begin
+    TAppUtils.Error('Barang Belum Diinput');
+    Exit;
+  end;
+
   IsBerhasilSimpan := False;
   if cbbJenisPembayaran.Text = 'CASH' then
   begin
@@ -761,6 +767,12 @@ var
   j: Integer;
 begin
   Result := False;
+
+  if cxGridTablePenjualan.DataController.RecordCount <= 0 then
+  begin
+    TAppUtils.Warning('Barang Belum Diinput');
+    Exit;
+  end;
 
   for I := 0 to cxGridTablePenjualan.DataController.RecordCount - 1 do
   begin

@@ -47,22 +47,22 @@ inherited frmPenjualan: TfrmPenjualan
           end
           inherited dtpAwal: TDateTimePicker
             Left = 394
-            ExplicitLeft = 385
+            ExplicitLeft = 394
           end
           inherited dtpAkhir: TDateTimePicker
             Left = 543
-            ExplicitLeft = 534
+            ExplicitLeft = 543
           end
           inherited btnRefresh: TcxButton
             Left = 648
-            ExplicitLeft = 645
+            ExplicitLeft = 648
           end
         end
         inherited cxGrid: TcxGrid
           Width = 755
           Height = 316
           ExplicitWidth = 755
-          ExplicitHeight = 315
+          ExplicitHeight = 316
           inherited cxGridDBTableOverview: TcxGridDBTableView
             OnCellDblClick = cxGridDBTableOverviewCellDblClick
             OptionsView.Indicator = True
@@ -92,10 +92,6 @@ inherited frmPenjualan: TfrmPenjualan
           TabOrder = 0
           object tsHeader: TTabSheet
             Caption = 'Penjualan'
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
             object lblNoBukti: TLabel
               Left = 23
               Top = 8
@@ -292,10 +288,6 @@ inherited frmPenjualan: TfrmPenjualan
           TabOrder = 1
           object tsDetailPenerimaan: TTabSheet
             Caption = 'Detail Penerimaan'
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
             object cxGridDBPenjualan: TcxGrid
               Left = 0
               Top = 0
@@ -588,7 +580,7 @@ inherited frmPenjualan: TfrmPenjualan
     Left = 176
     Top = 216
     Bitmap = {
-      494C0101060008004C0118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010106000800500118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
