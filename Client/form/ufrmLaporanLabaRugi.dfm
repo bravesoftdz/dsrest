@@ -1,150 +1,26 @@
-inherited frmKartuAP: TfrmKartuAP
-  Caption = 'Kartu AP'
+inherited frmLaporanLabaRugi: TfrmLaporanLabaRugi
+  Caption = 'Laporan Laba Rugi'
+  ExplicitLeft = -235
   PixelsPerInch = 96
   TextHeight = 13
   inherited cxPCData: TcxPageControl
     inherited cxTSOverview: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
       inherited pnlListTransaksi: TPanel
         inherited pnlFilter: TPanel
-          inherited lblPeriode: TLabel
-            ExplicitLeft = 606
-            ExplicitTop = 2
-          end
           inherited lblGudang: TLabel
-            Left = 243
-            Width = 10
             Visible = False
-            ExplicitLeft = 362
-            ExplicitWidth = 10
           end
           inherited lblCabang: TLabel
-            Left = 59
-            ExplicitLeft = 141
-          end
-          object lblCustomer: TLabel [4]
-            AlignWithMargins = True
-            Left = 275
-            Top = 4
-            Width = 28
-            Height = 22
-            Align = alRight
-            Caption = 'Santri'
-            ExplicitLeft = 277
-            ExplicitHeight = 13
-          end
-          object lblNoAP: TLabel [5]
-            AlignWithMargins = True
-            Left = 460
-            Top = 4
-            Width = 19
-            Height = 22
-            Align = alRight
-            AutoSize = False
-            Caption = 'AP'
-            ExplicitLeft = 462
-            ExplicitHeight = 23
-          end
-          inherited dtpAwal: TDateTimePicker
-            TabOrder = 3
-          end
-          inherited dtpAkhir: TDateTimePicker
-            TabOrder = 4
-          end
-          inherited btnRefresh: TcxButton
-            TabOrder = 5
+            Visible = False
           end
           inherited cbbGudang: TcxExtLookupComboBox
-            Left = 259
-            TabOrder = 6
             Visible = False
-            ExplicitLeft = 249
-            ExplicitWidth = 10
-            ExplicitHeight = 22
-            Width = 10
           end
           inherited cbbCabang: TcxExtLookupComboBox
-            Left = 129
-            TabOrder = 0
-            ExplicitLeft = 119
-            ExplicitWidth = 108
-            ExplicitHeight = 22
-            Width = 108
-          end
-          object cbbCustomer: TcxExtLookupComboBox
-            Tag = 1
-            AlignWithMargins = True
-            Left = 309
-            Top = 4
-            Align = alRight
-            TabOrder = 1
-            Width = 145
-          end
-          object edNoAP: TcxTextEdit
-            AlignWithMargins = True
-            Left = 485
-            Top = 4
-            Align = alRight
-            TabOrder = 2
-            Text = 'edNoAP'
-            Width = 110
-          end
-        end
-        inherited cxGrid: TcxGrid
-          Height = 337
-          ExplicitHeight = 337
-        end
-        object pnlfOOTER: TPanel
-          Left = 1
-          Top = 368
-          Width = 990
-          Height = 43
-          Align = alBottom
-          TabOrder = 2
-          object lblTotal: TLabel
-            AlignWithMargins = True
-            Left = 652
-            Top = 4
-            Width = 83
-            Height = 35
-            Align = alRight
-            Caption = 'Total  '
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -29
-            Font.Name = 'Tahoma'
-            Font.Style = []
-            ParentFont = False
-            ExplicitLeft = 725
-          end
-          object edtOTAL: TcxCurrencyEdit
-            AlignWithMargins = True
-            Left = 741
-            Top = 4
-            Align = alRight
-            EditValue = 90.000000000000000000
-            ParentFont = False
-            Properties.Alignment.Horz = taRightJustify
-            Properties.DisplayFormat = ',#.##;(,#.##)'
-            Properties.ReadOnly = True
-            Style.Font.Charset = DEFAULT_CHARSET
-            Style.Font.Color = clWindowText
-            Style.Font.Height = -27
-            Style.Font.Name = 'Tahoma'
-            Style.Font.Style = []
-            Style.IsFontAssigned = True
-            TabOrder = 0
-            Width = 245
+            Visible = False
           end
         end
       end
-    end
-  end
-  inherited pnlButton: TPanel
-    inherited chkKonsolidasi1: TcxCheckBox
-      ExplicitWidth = 76
-      ExplicitHeight = 31
     end
   end
   inherited ActionListForm: TActionList
@@ -154,7 +30,7 @@ inherited frmKartuAP: TfrmKartuAP
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C0101070008000C0118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800F80018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

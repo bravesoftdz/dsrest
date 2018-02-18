@@ -409,6 +409,10 @@ object frmMain: TfrmMain
         item
           Visible = True
           ItemName = 'dxbrlrgbtnLapPenjualan'
+        end
+        item
+          Visible = True
+          ItemName = 'dxbrlrgbtnLapLabaRugi'
         end>
       OneOnRow = False
       Row = 0
@@ -589,7 +593,7 @@ object frmMain: TfrmMain
     object dxbrLapKasKeluar: TdxBar
       Caption = 'Kas Keluar'
       CaptionButtons = <>
-      DockedLeft = 307
+      DockedLeft = 349
       DockedTop = 0
       FloatLeft = 576
       FloatTop = 247
@@ -613,7 +617,7 @@ object frmMain: TfrmMain
     object dxbrLapKasMasuk: TdxBar
       Caption = 'Kas Masuk'
       CaptionButtons = <>
-      DockedLeft = 430
+      DockedLeft = 472
       DockedTop = 0
       FloatLeft = 1033
       FloatTop = 8
@@ -903,6 +907,11 @@ object frmMain: TfrmMain
       LargeImageIndex = 23
       OnClick = btnLoginClick
     end
+    object dxbrlrgbtnLapLabaRugi: TdxBarLargeButton
+      Action = actLapLabaRugi
+      Category = 0
+      LargeImageIndex = 10
+    end
     object dxbrlrgbtnExit: TdxBarLargeButton
       Caption = 'Exit'
       Category = 1
@@ -1142,6 +1151,11 @@ object frmMain: TfrmMain
       Caption = 'User'
       OnExecute = actUserExecute
     end
+    object actLapLabaRugi: TAction
+      Category = 'Laporan'
+      Caption = 'Laba Rugi'
+      OnExecute = actLapLabaRugiExecute
+    end
   end
   object ImgListMainLarge: TImageList
     ColorDepth = cd32Bit
@@ -1150,7 +1164,7 @@ object frmMain: TfrmMain
     Left = 688
     Top = 128
     Bitmap = {
-      494C01011800C003F40120002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C01011800C003000220002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000080000000E0000000010020000000000000C0
       0100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

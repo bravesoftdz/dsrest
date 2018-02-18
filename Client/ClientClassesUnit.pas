@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 2/8/2018 8:27:13 PM
+// 2/18/2018 7:19:30 AM
 //
 
 unit ClientClassesUnit;
@@ -92,6 +92,10 @@ type
     FLaporanKarARCommand_Cache: TDSRestCommand;
     FLaporanNeracaSaldoCommand: TDSRestCommand;
     FLaporanNeracaSaldoCommand_Cache: TDSRestCommand;
+    FLaporanLabaRugiCommand: TDSRestCommand;
+    FLaporanLabaRugiCommand_Cache: TDSRestCommand;
+    FLaporanLabaRugiDSCommand: TDSRestCommand;
+    FLaporanLabaRugiDSCommand_Cache: TDSRestCommand;
     FLaporanPenjualanByPembeliCommand: TDSRestCommand;
     FLaporanPenjualanByPembeliCommand_Cache: TDSRestCommand;
     FRetrivePenarikanDepositCommand: TDSRestCommand;
@@ -150,6 +154,10 @@ type
     function LaporanKarAR_Cache(ATglAwal: TDateTime; ATglAkhir: TDateTime; ACustomer: TSupplier; ACabang: TCabang; ANoAR: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
     function LaporanNeracaSaldo(ATglAwal: TDateTime; AtglAkhir: TDateTime; AIsKonsolidasi: Integer; ACabang: TCabang; const ARequestFilter: string = ''): TFDJSONDataSets;
     function LaporanNeracaSaldo_Cache(ATglAwal: TDateTime; AtglAkhir: TDateTime; AIsKonsolidasi: Integer; ACabang: TCabang; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
+    function LaporanLabaRugi(ATglAwal: TDateTime; AtglAkhir: TDateTime; const ARequestFilter: string = ''): TFDJSONDataSets;
+    function LaporanLabaRugi_Cache(ATglAwal: TDateTime; AtglAkhir: TDateTime; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
+    function LaporanLabaRugiDS(ATglAwal: TDateTime; AtglAkhir: TDateTime; const ARequestFilter: string = ''): TDataSet;
+    function LaporanLabaRugiDS_Cache(ATglAwal: TDateTime; AtglAkhir: TDateTime; const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function LaporanPenjualanByPembeli(ATglAwal: TDateTime; AtglAkhir: TDateTime; AIsKonsolidasi: Integer; ACabang: TCabang; const ARequestFilter: string = ''): TFDJSONDataSets;
     function LaporanPenjualanByPembeli_Cache(ATglAwal: TDateTime; AtglAkhir: TDateTime; AIsKonsolidasi: Integer; ACabang: TCabang; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
     function RetrivePenarikanDeposit(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; const ARequestFilter: string = ''): TDataSet;
@@ -1807,6 +1815,34 @@ const
     (Name: 'AtglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: 'AIsKonsolidasi'; Direction: 1; DBXType: 6; TypeName: 'Integer'),
     (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerLaporan_LaporanLabaRugi: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'AtglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: ''; Direction: 4; DBXType: 37; TypeName: 'TFDJSONDataSets')
+  );
+
+  TServerLaporan_LaporanLabaRugi_Cache: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'AtglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerLaporan_LaporanLabaRugiDS: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'AtglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TServerLaporan_LaporanLabaRugiDS_Cache: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATglAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'AtglAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
@@ -6212,6 +6248,81 @@ begin
   Result := TDSRestCachedTFDJSONDataSets.Create(FLaporanNeracaSaldoCommand_Cache.Parameters[4].Value.GetString);
 end;
 
+function TServerLaporanClient.LaporanLabaRugi(ATglAwal: TDateTime; AtglAkhir: TDateTime; const ARequestFilter: string): TFDJSONDataSets;
+begin
+  if FLaporanLabaRugiCommand = nil then
+  begin
+    FLaporanLabaRugiCommand := FConnection.CreateCommand;
+    FLaporanLabaRugiCommand.RequestType := 'GET';
+    FLaporanLabaRugiCommand.Text := 'TServerLaporan.LaporanLabaRugi';
+    FLaporanLabaRugiCommand.Prepare(TServerLaporan_LaporanLabaRugi);
+  end;
+  FLaporanLabaRugiCommand.Parameters[0].Value.AsDateTime := ATglAwal;
+  FLaporanLabaRugiCommand.Parameters[1].Value.AsDateTime := AtglAkhir;
+  FLaporanLabaRugiCommand.Execute(ARequestFilter);
+  if not FLaporanLabaRugiCommand.Parameters[2].Value.IsNull then
+  begin
+    FUnMarshal := TDSRestCommand(FLaporanLabaRugiCommand.Parameters[2].ConnectionHandler).GetJSONUnMarshaler;
+    try
+      Result := TFDJSONDataSets(FUnMarshal.UnMarshal(FLaporanLabaRugiCommand.Parameters[2].Value.GetJSONValue(True)));
+      if FInstanceOwner then
+        FLaporanLabaRugiCommand.FreeOnExecute(Result);
+    finally
+      FreeAndNil(FUnMarshal)
+    end
+  end
+  else
+    Result := nil;
+end;
+
+function TServerLaporanClient.LaporanLabaRugi_Cache(ATglAwal: TDateTime; AtglAkhir: TDateTime; const ARequestFilter: string): IDSRestCachedTFDJSONDataSets;
+begin
+  if FLaporanLabaRugiCommand_Cache = nil then
+  begin
+    FLaporanLabaRugiCommand_Cache := FConnection.CreateCommand;
+    FLaporanLabaRugiCommand_Cache.RequestType := 'GET';
+    FLaporanLabaRugiCommand_Cache.Text := 'TServerLaporan.LaporanLabaRugi';
+    FLaporanLabaRugiCommand_Cache.Prepare(TServerLaporan_LaporanLabaRugi_Cache);
+  end;
+  FLaporanLabaRugiCommand_Cache.Parameters[0].Value.AsDateTime := ATglAwal;
+  FLaporanLabaRugiCommand_Cache.Parameters[1].Value.AsDateTime := AtglAkhir;
+  FLaporanLabaRugiCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedTFDJSONDataSets.Create(FLaporanLabaRugiCommand_Cache.Parameters[2].Value.GetString);
+end;
+
+function TServerLaporanClient.LaporanLabaRugiDS(ATglAwal: TDateTime; AtglAkhir: TDateTime; const ARequestFilter: string): TDataSet;
+begin
+  if FLaporanLabaRugiDSCommand = nil then
+  begin
+    FLaporanLabaRugiDSCommand := FConnection.CreateCommand;
+    FLaporanLabaRugiDSCommand.RequestType := 'GET';
+    FLaporanLabaRugiDSCommand.Text := 'TServerLaporan.LaporanLabaRugiDS';
+    FLaporanLabaRugiDSCommand.Prepare(TServerLaporan_LaporanLabaRugiDS);
+  end;
+  FLaporanLabaRugiDSCommand.Parameters[0].Value.AsDateTime := ATglAwal;
+  FLaporanLabaRugiDSCommand.Parameters[1].Value.AsDateTime := AtglAkhir;
+  FLaporanLabaRugiDSCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FLaporanLabaRugiDSCommand.Parameters[2].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FLaporanLabaRugiDSCommand.FreeOnExecute(Result);
+end;
+
+function TServerLaporanClient.LaporanLabaRugiDS_Cache(ATglAwal: TDateTime; AtglAkhir: TDateTime; const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FLaporanLabaRugiDSCommand_Cache = nil then
+  begin
+    FLaporanLabaRugiDSCommand_Cache := FConnection.CreateCommand;
+    FLaporanLabaRugiDSCommand_Cache.RequestType := 'GET';
+    FLaporanLabaRugiDSCommand_Cache.Text := 'TServerLaporan.LaporanLabaRugiDS';
+    FLaporanLabaRugiDSCommand_Cache.Prepare(TServerLaporan_LaporanLabaRugiDS_Cache);
+  end;
+  FLaporanLabaRugiDSCommand_Cache.Parameters[0].Value.AsDateTime := ATglAwal;
+  FLaporanLabaRugiDSCommand_Cache.Parameters[1].Value.AsDateTime := AtglAkhir;
+  FLaporanLabaRugiDSCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FLaporanLabaRugiDSCommand_Cache.Parameters[2].Value.GetString);
+end;
+
 function TServerLaporanClient.LaporanPenjualanByPembeli(ATglAwal: TDateTime; AtglAkhir: TDateTime; AIsKonsolidasi: Integer; ACabang: TCabang; const ARequestFilter: string): TFDJSONDataSets;
 begin
   if FLaporanPenjualanByPembeliCommand = nil then
@@ -6456,6 +6567,10 @@ begin
   FLaporanKarARCommand_Cache.DisposeOf;
   FLaporanNeracaSaldoCommand.DisposeOf;
   FLaporanNeracaSaldoCommand_Cache.DisposeOf;
+  FLaporanLabaRugiCommand.DisposeOf;
+  FLaporanLabaRugiCommand_Cache.DisposeOf;
+  FLaporanLabaRugiDSCommand.DisposeOf;
+  FLaporanLabaRugiDSCommand_Cache.DisposeOf;
   FLaporanPenjualanByPembeliCommand.DisposeOf;
   FLaporanPenjualanByPembeliCommand_Cache.DisposeOf;
   FRetrivePenarikanDepositCommand.DisposeOf;

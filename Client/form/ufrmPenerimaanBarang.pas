@@ -102,6 +102,8 @@ type
     procedure cxGridDBTableOverviewCellDblClick(Sender: TcxCustomGridTableView;
         ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton; AShift:
         TShiftState; var AHandled: Boolean);
+    procedure cxGridTablePenerimaanBarangDataControllerAfterInsert(
+      ADataController: TcxCustomDataController);
   private
     FPenerimaanBarang: TPenerimaanBarang;
     function GetPenerimaanBarang: TPenerimaanBarang;
@@ -184,7 +186,7 @@ begin
     end;
   end;
 
-
+  cbbGudang.ItemIndex := 0;
 end;
 
 procedure TfrmPenerimaanBarang.ActionHapusExecute(Sender: TObject);
@@ -432,6 +434,13 @@ begin
   cxGridTablePenerimaanBarang.DataController.Values[cxGridTablePenerimaanBarang.DataController.FocusedRecordIndex, cxGridTablePenerimaanBarangColumnNama.Index] := sID;
 end;
 
+procedure TfrmPenerimaanBarang.cxGridTablePenerimaanBarangDataControllerAfterInsert(
+  ADataController: TcxCustomDataController);
+begin
+  inherited;
+  ADataController.Values[ADataController.FocusedRecordIndex, cxGridTablePenerimaanBarangColumnSatuan.Index] := cxGridDBTableUOM.GetString(0,cxgrdbclmnGridDBTableUOMColumnID.Index);
+end;
+
 procedure TfrmPenerimaanBarang.FormShow(Sender: TObject);
 begin
   inherited;
@@ -514,7 +523,7 @@ procedure TfrmPenerimaanBarang.InisialisasiSupplier;
 var
   sSQL: string;
 begin
-  sSQL := 'select * from tsupplier';
+  sSQL := 'select * from tsupplier where issupplier = 1';
   cxGridDBTableSupplier.SetDataset(sSQL);
 end;
 

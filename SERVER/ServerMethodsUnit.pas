@@ -77,6 +77,10 @@ type
         ACabang : TCabang; ANoAR : String): TFDJSONDataSets;
     function LaporanNeracaSaldo(ATglAwal , AtglAkhir : TDateTime; AIsKonsolidasi :
         Integer; ACabang : TCabang): TFDJSONDataSets; overload;
+    function LaporanLabaRugi(ATglAwal , AtglAkhir : TDateTime): TFDJSONDataSets;
+        overload;
+    function LaporanLabaRugiDS(ATglAwal , AtglAkhir : TDateTime): TDataset;
+        overload;
     function LaporanPenjualanByPembeli(ATglAwal , AtglAkhir : TDateTime;
         AIsKonsolidasi : Integer; ACabang : TCabang): TFDJSONDataSets; overload;
     function RetrivePenarikanDeposit(ATglAwal , ATglAtglAkhir : TDateTime; ACabang
@@ -831,8 +835,6 @@ var
 begin
   Result := False;
 
-
-
   lPBLama := Retrieve(AOBject.ID);
   try
     if lPBLama.IsJurnalized = 1 then
@@ -964,6 +966,12 @@ begin
   Result := False;
 
   lPB       := TPenerimaanBarang(AOBject);
+  if lPB.JenisPembayaran = 'CASH' then
+  begin
+    Result := True;
+    Exit;
+  end;
+
   lServerAP := TServerAP.Create;
   try
     lAP := lServerAP.RetrieveTransaksi(lPB.ClassName, AOBject.ID);
@@ -1815,6 +1823,45 @@ end;
 
 { TLaporan }
 
+function TServerLaporan.LaporanLabaRugi(ATglAwal , AtglAkhir : TDateTime):
+    TFDJSONDataSets;
+var
+  sSQL : String;
+begin
+  Result := TFDJSONDataSets.Create;
+
+  sSQL := 'select a.*' +
+          ' from vcabang a ' +
+          ' where 1 = 1';
+
+  TFDJSONDataSetsWriter.ListAdd(Result, TDBUtils.OpenQuery(sSQL));
+
+  sSQL := 'select a.*' +
+          ' from VLABARUGI a ' +
+          ' where a.tglbukti between ' + TAppUtils.QuotDt(ATglAwal) + ' and ' + TAppUtils.QuotDt(AtglAkhir) +
+          ' order by a.urutan, a.tglbukti';
+
+
+  TFDJSONDataSetsWriter.ListAdd(Result, TDBUtils.OpenQuery(sSQL));
+end;
+
+{ TLaporan }
+
+function TServerLaporan.LaporanLabaRugiDS(ATglAwal , AtglAkhir : TDateTime):
+    TDataset;
+var
+  sSQL : String;
+begin
+  sSQL := 'select a.*' +
+          ' from VLABARUGI a ' +
+          ' where a.tglbukti between ' + TAppUtils.QuotDt(ATglAwal) + ' and ' + TAppUtils.QuotDt(AtglAkhir) +
+          ' order by a.urutan, a.tglbukti';
+
+  Result := TDBUtils.OpenDataset(sSQL);
+end;
+
+{ TLaporan }
+
 function TServerLaporan.LaporanPenjualanByPembeli(ATglAwal , AtglAkhir :
     TDateTime; AIsKonsolidasi : Integer; ACabang : TCabang): TFDJSONDataSets;
 var
@@ -1992,11 +2039,25 @@ end;
 function TServerReturSupplier.SimpanAR(AOBject: TAppObject): Boolean;
 var
   lAR: TAR;
+  lPB: TPenerimaanBarang;
   lRS: TReturSupplier;
 begin
   Result := False;
 
   lRS       := TReturSupplier(AOBject);
+  with TServerPenerimaanBarang.Create do
+  begin
+    try
+      lPB := Retrieve(lRS.PenerimaanBarang.ID);
+      if lPB.JenisPembayaran = 'CASH' then
+      begin
+        Result := True;
+        Exit;
+      end;
+    finally
+      Free;
+    end;
+  end;
 
   lAR := ServerAR.RetrieveTransaksi(lRS.ClassName, AOBject.ID);
   lAR.Cabang := TCabang.CreateID(lRS.Cabang.ID);
@@ -2525,18 +2586,18 @@ begin
     if ServerAp.SaveNoCommit(lAP) then
       Result := True;
   end else begin
-    lAR                   := ServerAR.RetrieveTransaksi(lPJ.ClassName, AOBject.ID);
-    lAR.Cabang            := TCabang.CreateID(lPJ.Cabang.ID);
-    lAR.Customer          := TSupplier.CreateID(lPJ.Pembeli.ID);
-    lAR.IDTransaksi       := lPJ.ID;
-    lAR.NoBukti           := lPJ.NoBukti;
-    lAR.Nominal           := lPJ.Total;
-    lAR.Transaksi         := lPJ.ClassName;
-    lAR.JatuhTempo        := lPJ.JatuhTempo;
-    lAR.NoBuktiTransaksi  := lPJ.NoBukti;
-    lAR.TglBukti          := lPJ.TglBukti;
-
-    if ServerAR.SaveNoCommit(lAR) then
+//    lAR                   := ServerAR.RetrieveTransaksi(lPJ.ClassName, AOBject.ID);
+//    lAR.Cabang            := TCabang.CreateID(lPJ.Cabang.ID);
+//    lAR.Customer          := TSupplier.CreateID(lPJ.Pembeli.ID);
+//    lAR.IDTransaksi       := lPJ.ID;
+//    lAR.NoBukti           := lPJ.NoBukti;
+//    lAR.Nominal           := lPJ.Total;
+//    lAR.Transaksi         := lPJ.ClassName;
+//    lAR.JatuhTempo        := lPJ.JatuhTempo;
+//    lAR.NoBuktiTransaksi  := lPJ.NoBukti;
+//    lAR.TglBukti          := lPJ.TglBukti;
+//
+//    if ServerAR.SaveNoCommit(lAR) then
       Result := True;
   end;
 
@@ -2549,7 +2610,8 @@ var
   lPenerimaanKas: TPenerimaanKas;
   lPenerimaanKasAR: TPenerimaanKasAR;
 begin
-  Result := False;
+  Result := True;
+  Exit;
 
   lPenerimaanKas := TPenerimaanKas.Create();
   try

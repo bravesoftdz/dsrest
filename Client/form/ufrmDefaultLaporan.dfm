@@ -76,16 +76,15 @@ inherited frmDefaultLaporan: TfrmDefaultLaporan
           end
           inherited dtpAwal: TDateTimePicker
             Left = 639
-            ExplicitLeft = 630
+            ExplicitLeft = 639
           end
           inherited dtpAkhir: TDateTimePicker
             Left = 778
-            ExplicitLeft = 775
+            ExplicitLeft = 778
           end
           inherited btnRefresh: TcxButton
             Left = 883
             ExplicitLeft = 883
-            ExplicitHeight = 29
           end
           object cbbGudang: TcxExtLookupComboBox
             AlignWithMargins = True
@@ -93,8 +92,6 @@ inherited frmDefaultLaporan: TfrmDefaultLaporan
             Top = 4
             Align = alRight
             TabOrder = 3
-            ExplicitLeft = 438
-            ExplicitHeight = 21
             Width = 145
           end
           object cbbCabang: TcxExtLookupComboBox
@@ -104,8 +101,6 @@ inherited frmDefaultLaporan: TfrmDefaultLaporan
             Align = alRight
             Properties.OnValidate = cbbCabangPropertiesValidate
             TabOrder = 4
-            ExplicitLeft = 225
-            ExplicitHeight = 21
             Width = 145
           end
         end
@@ -113,7 +108,7 @@ inherited frmDefaultLaporan: TfrmDefaultLaporan
           Width = 990
           Height = 380
           ExplicitWidth = 990
-          ExplicitHeight = 379
+          ExplicitHeight = 380
         end
       end
     end
@@ -156,7 +151,7 @@ inherited frmDefaultLaporan: TfrmDefaultLaporan
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010107000800E80018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800EC0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

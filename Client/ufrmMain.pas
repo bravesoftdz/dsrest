@@ -19,7 +19,8 @@ uses
   cxDropDownEdit, ufrmPengeluaranKas, ufrmJurnal, ufrmLapPenerimaanBarang,
   ufrmKartuAP, ufrmLaporanAP, ufrmKartuAR,ufrmLaporanAR,
   ufrmLaporanReturSupplier, ufrmGenerateJurnal, ufrmBukuBesar,
-  Vcl.AppEvnts, ufrmPenarikanDeposit, ufrmUser, ufrmLogin, uSettingApp, uUser;
+  Vcl.AppEvnts, ufrmPenarikanDeposit, ufrmUser, ufrmLogin, uSettingApp,
+  uUser, ufrmLaporanLabaRugi;
 
 type
   TfrmMain = class(TForm)
@@ -170,6 +171,8 @@ type
     btnUser: TdxBarLargeButton;
     actUser: TAction;
     btnLogin: TdxBarLargeButton;
+    dxbrlrgbtnLapLabaRugi: TdxBarLargeButton;
+    actLapLabaRugi: TAction;
     procedure actAlatGantiCabangExecute(Sender: TObject);
     procedure actClosingInventoryExecute(Sender: TObject);
     procedure actCustomerInvoiceExecute(Sender: TObject);
@@ -181,6 +184,7 @@ type
     procedure actKartuARExecute(Sender: TObject);
     procedure actLapBukuBesarExecute(Sender: TObject);
     procedure actLapKartokExecute(Sender: TObject);
+    procedure actLapLabaRugiExecute(Sender: TObject);
     procedure actMasSupplierExecute(Sender: TObject);
     procedure actMasterBarangExecute(Sender: TObject);
     procedure actPenerimaanBarangExecute(Sender: TObject);
@@ -302,6 +306,11 @@ end;
 procedure TfrmMain.actLapKartokExecute(Sender: TObject);
 begin
   frmLapKartuStock := TfrmLapKartuStock.Create(Self);
+end;
+
+procedure TfrmMain.actLapLabaRugiExecute(Sender: TObject);
+begin
+  frmLaporanLabaRugi := TfrmLaporanLabaRugi.Create(Self);
 end;
 
 procedure TfrmMain.actLapMutasiBarangExecute(Sender: TObject);

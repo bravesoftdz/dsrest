@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<TfrxReport Version="5.3.16" DotMatrixReport="True" IniFile="\Software\Fast Reports" PreviewOptions.Buttons="4095" PreviewOptions.Modal="False" PreviewOptions.Zoom="1" PrintOptions.Printer="Default" PrintOptions.PrintOnSheet="0" ReportOptions.CreateDate="42851.6618599421" ReportOptions.Description.Text="" ReportOptions.LastChange="43149.3300560532" ScriptLanguage="PascalScript" ScriptText.Text="VAR&#13;&#10;  dTotal : Double;&#13;&#10;  Nomor : Integer;                                      &#13;&#10;procedure GroupHeader1OnAfterPrint(Sender: TfrxComponent);&#13;&#10;begin&#13;&#10;  dTotal := 0;&#13;&#10;  Nomor := 0;                            &#13;&#10;&#13;&#10;end;&#13;&#10;&#13;&#10;procedure MasterData1OnBeforePrint(Sender: TfrxComponent);&#13;&#10;begin&#13;&#10;  //dTotal := dTotal + &#60;IBQ2.&#34;MASUK&#34;&#62; - &#60;IBQ2.&#34;KELUAR&#34;&#62;;                                                        &#13;&#10;end;&#13;&#10;&#13;&#10;procedure GroupFooter2OnBeforePrint(Sender: TfrxComponent);&#13;&#10;begin&#13;&#10;  Nomor := Nomor + 1;                          &#13;&#10;end;&#13;&#10;&#13;&#10;procedure Page1OnBeforePrint(Sender: TfrxComponent);&#13;&#10;begin&#13;&#10;  //Page1.visible := &#60;isdetail&#62; = 1;  &#13;&#10;  //Page2.visible := &#60;isdetail&#62; = 1;                                   &#13;&#10;end;&#13;&#10;&#13;&#10;begin&#13;&#10;&#13;&#10;end.">
+  <Datasets>
+    <item DataSet="IBQ1" DataSetName="IBQ1"/>
+    <item DataSet="IBQ2" DataSetName="IBQ2"/>
+  </Datasets>
+  <TfrxDataPage Name="Data" Height="1000" Left="0" Top="0" Width="1000"/>
+  <TfrxDMPPage Name="Page1" PaperWidth="253.999835958439" PaperHeight="179.916550470561" PaperSize="256" LeftMargin="2.53999835958439" RightMargin="2.53999835958439" TopMargin="4.49791376176403" BottomMargin="4.49791376176403" ColumnWidth="0" ColumnPositions.Text="" HGuides.Text="" VGuides.Text="" OnBeforePrint="Page1OnBeforePrint" FontStyle="0">
+    <TfrxMasterData Name="MasterData1" FillType="ftBrush" FillGap.Top="0" FillGap.Left="0" FillGap.Bottom="0" FillGap.Right="0" Height="17" Left="0" Top="221" Width="940.8" OnBeforePrint="MasterData1OnBeforePrint" ColumnWidth="0" ColumnGap="0" DataSet="IBQ2" DataSetName="IBQ2" RowCount="0">
+      <TfrxDMPMemoView Name="IBQ2nobukti" Left="0" Top="0" Width="163.2" Height="17" DataField="nobukti" DataSet="IBQ2" DataSetName="IBQ2" TruncOutboundText="False" Text="[IBQ2.&#34;nobukti&#34;]"/>
+      <TfrxDMPMemoView Name="IBQ2tglbukti" Left="220.8" Top="0" Width="144" Height="17" DataField="tglbukti" DataSet="IBQ2" DataSetName="IBQ2" TruncOutboundText="False" Text="[IBQ2.&#34;tglbukti&#34;]"/>
+      <TfrxDMPMemoView Name="IBQ2TRANSAKSI" Left="374.4" Top="0" Width="182.4" Height="17" DataField="TRANSAKSI" DataSet="IBQ2" DataSetName="IBQ2" TruncOutboundText="False" Text="[IBQ2.&#34;TRANSAKSI&#34;]"/>
+      <TfrxDMPMemoView Name="IBQ2MASUK" Left="700.8" Top="0" Width="115.2" Height="17" DataField="MASUK" DataSet="IBQ2" DataSetName="IBQ2" DisplayFormat.FormatStr="%2.0n" DisplayFormat.Kind="fkNumeric" HAlign="haRight" TruncOutboundText="False" Text="[IBQ2.&#34;MASUK&#34;]"/>
+      <TfrxDMPMemoView Name="IBQ2KELUAR" Left="825.6" Top="0" Width="115.2" Height="17" DataField="KELUAR" DataSet="IBQ2" DataSetName="IBQ2" DisplayFormat.FormatStr="%2.0n" DisplayFormat.Kind="fkNumeric" HAlign="haRight" TruncOutboundText="False" Text="[IBQ2.&#34;KELUAR&#34;]"/>
+    </TfrxMasterData>
+    <TfrxPageFooter Name="PageFooter1" FillType="ftBrush" FillGap.Top="0" FillGap.Left="0" FillGap.Bottom="0" FillGap.Right="0" Height="51" Left="0" Top="357" Width="940.8">
+      <TfrxDMPMemoView Name="DMPMemo26" Left="0" Top="17" Width="940.8" Height="17" TruncOutboundText="False" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo27" Left="0" Top="34" Width="940.8" Height="17" TruncOutboundText="False" Text=""/>
+    </TfrxPageFooter>
+    <TfrxReportTitle Name="ReportTitle1" FillType="ftBrush" FillGap.Top="0" FillGap.Left="0" FillGap.Bottom="0" FillGap.Right="0" Height="170" Left="0" Top="17" Width="940.8">
+      <TfrxDMPMemoView Name="IBQ1cabang" Left="0" Top="0" Width="960" Height="17" DataSet="IBQ1" DataSetName="IBQ1" HAlign="haCenter" TruncOutboundText="False" Text="[IBQ1.&#34;cabang&#34;]"/>
+      <TfrxDMPMemoView Name="IBQ1CABANGALAMAT" Left="0" Top="17" Width="960" Height="17" DataSet="IBQ1" DataSetName="IBQ1" HAlign="haCenter" TruncOutboundText="False" Text="[IBQ1.&#34;CABANGALAMAT&#34;]"/>
+      <TfrxDMPMemoView Name="IBQ1CABANGFAX" Left="0" Top="34" Width="960" Height="17" DataSet="IBQ1" DataSetName="IBQ1" HAlign="haCenter" TruncOutboundText="False" Text="TELP : [IBQ1.&#34;cabangTELP&#34;] FAX : [IBQ1.&#34;CABANGFAX&#34;]"/>
+      <TfrxDMPMemoView Name="DMPMemo36" Left="0" Top="119" Width="960" Height="17" TruncOutboundText="False" Text="----------------------------------------------------------------------------------------------------------------------------------------"/>
+      <TfrxDMPMemoView Name="DMPMemo13" Left="0" Top="85" Width="960" Height="17" DataSet="IBQ1" DataSetName="IBQ1" HAlign="haCenter" TruncOutboundText="False" Text="LAPORAN LABA RUGI"/>
+      <TfrxDMPMemoView Name="IBQ1tglbukti" Left="0" Top="102" Width="960" Height="17" DataSet="IBQ1" DataSetName="IBQ1" HAlign="haCenter" TruncOutboundText="False" Text="Periode : [P1] s.d. [P2]">
+        <Formats>
+          <item/>
+          <item/>
+        </Formats>
+      </TfrxDMPMemoView>
+      <TfrxDMPMemoView Name="DMPMemo1" Left="0" Top="136" Width="163.2" Height="17" HAlign="haCenter" TruncOutboundText="False" Text="NO BUKTI"/>
+      <TfrxDMPMemoView Name="DMPMemo2" Left="220.8" Top="136" Width="144" Height="17" HAlign="haCenter" TruncOutboundText="False" Text="TANGGAL"/>
+      <TfrxDMPMemoView Name="DMPMemo3" Left="374.4" Top="136" Width="182.4" Height="17" HAlign="haCenter" TruncOutboundText="False" Text="TRANSAKSI"/>
+      <TfrxDMPMemoView Name="DMPMemo4" Left="700.8" Top="136" Width="115.2" Height="17" HAlign="haCenter" TruncOutboundText="False" Text="MASUK"/>
+      <TfrxDMPMemoView Name="DMPMemo5" Left="825.6" Top="136" Width="115.2" Height="17" HAlign="haCenter" TruncOutboundText="False" Text="KELUAR"/>
+      <TfrxDMPMemoView Name="DMPMemo6" Left="0" Top="153" Width="960" Height="17" TruncOutboundText="False" Text="----------------------------------------------------------------------------------------------------------------------------------------"/>
+    </TfrxReportTitle>
+    <TfrxReportSummary Name="ReportSummary1" FillType="ftBrush" FillGap.Top="0" FillGap.Left="0" FillGap.Bottom="0" FillGap.Right="0" Height="68" Left="0" Top="272" Width="940.8">
+      <TfrxDMPMemoView Name="DMPMemo7" Left="0" Top="0" Width="960" Height="17" TruncOutboundText="False" Text="----------------------------------------------------------------------------------------------------------------------------------------"/>
+      <TfrxDMPMemoView Name="DMPMemo8" Left="0" Top="17" Width="691.2" Height="17" DataSet="IBQ2" DataSetName="IBQ2" HAlign="haRight" TruncOutboundText="False" Text="TOTAL   "/>
+      <TfrxDMPMemoView Name="DMPMemo9" Left="700.8" Top="17" Width="115.2" Height="17" DataSet="IBQ2" DataSetName="IBQ2" DisplayFormat.FormatStr="%2.0n" DisplayFormat.Kind="fkNumeric" HAlign="haRight" TruncOutboundText="False" Text="[SUM(&#60;IBQ2.&#34;MASUK&#34;&#62;,MasterData1,3)]"/>
+      <TfrxDMPMemoView Name="DMPMemo10" Left="825.6" Top="17" Width="115.2" Height="17" DataSet="IBQ2" DataSetName="IBQ2" DisplayFormat.FormatStr="%2.0n" DisplayFormat.Kind="fkNumeric" HAlign="haRight" TruncOutboundText="False" Text="[SUM(&#60;IBQ2.&#34;KELUAR&#34;&#62;,MasterData1,3)]"/>
+      <TfrxDMPMemoView Name="DMPMemo11" Left="0" Top="34" Width="691.2" Height="17" DataSet="IBQ2" DataSetName="IBQ2" HAlign="haRight" TruncOutboundText="False" Text="LABA / RUGI   "/>
+      <TfrxDMPMemoView Name="DMPMemo12" Left="700.8" Top="34" Width="115.2" Height="17" DataSet="IBQ2" DataSetName="IBQ2" DisplayFormat.FormatStr="%2.0n" DisplayFormat.Kind="fkNumeric" HAlign="haRight" TruncOutboundText="False" Text="[SUM(&#60;IBQ2.&#34;MASUK&#34;&#62;-&#60;IBQ2.&#34;KELUAR&#34;&#62;,MasterData1)]"/>
+    </TfrxReportSummary>
+  </TfrxDMPPage>
+</TfrxReport>

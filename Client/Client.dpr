@@ -79,7 +79,8 @@ uses
   uPenarikanDeposit in '..\model\uPenarikanDeposit.pas',
   ufrmPenarikanDeposit in 'form\ufrmPenarikanDeposit.pas' {frmPenarikanDeposit},
   ufrmUser in 'form\ufrmUser.pas' {frmUser},
-  ufrmLogin in 'form\ufrmLogin.pas' {frmLogin};
+  ufrmLogin in 'form\ufrmLogin.pas' {frmLogin},
+  ufrmLaporanLabaRugi in 'form\ufrmLaporanLabaRugi.pas' {frmLaporanLabaRugi};
 
 {$R *.res}
 
