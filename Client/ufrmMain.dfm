@@ -40,6 +40,7 @@ object frmMain: TfrmMain
       Index = 0
     end
     object dxrbnTabMaster: TdxRibbonTab
+      Active = True
       Caption = 'Master'
       Groups = <
         item
@@ -86,7 +87,6 @@ object frmMain: TfrmMain
       Index = 3
     end
     object dxrbntbLaporan: TdxRibbonTab
-      Active = True
       Caption = 'Laporan'
       Groups = <
         item
@@ -141,6 +141,7 @@ object frmMain: TfrmMain
     Height = 122
     TabOrder = 6
     Visible = False
+    OnDblClick = pnlGajiDblClick
     object lblTahun: TLabel
       Left = 24
       Top = 17
@@ -350,7 +351,7 @@ object frmMain: TfrmMain
           Visible = True
           ItemName = 'dxbrlrgbtnAssetCat'
         end>
-      OneOnRow = True
+      OneOnRow = False
       Row = 0
       UseOwnFont = True
       Visible = True
@@ -502,7 +503,7 @@ object frmMain: TfrmMain
           Visible = True
           ItemName = 'dxbrlrgbtnPenarikanDeposit'
         end>
-      OneOnRow = False
+      OneOnRow = True
       Row = 0
       UseOwnFont = False
       Visible = True
@@ -1164,7 +1165,7 @@ object frmMain: TfrmMain
     Left = 688
     Top = 128
     Bitmap = {
-      494C01011800C003000220002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C01011800C003040220002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000080000000E0000000010020000000000000C0
       0100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

@@ -160,6 +160,8 @@ inherited frmBarang: TfrmBarang
         object cxTSHeader: TcxTabSheet
           Caption = 'Barang'
           ImageIndex = 0
+          ExplicitLeft = 5
+          ExplicitTop = 25
           object lblKode: TLabel
             Left = 47
             Top = 18
@@ -182,7 +184,7 @@ inherited frmBarang: TfrmBarang
             Caption = 'Kelompok Barang'
           end
           object lblPPN: TLabel
-            Left = 292
+            Left = 381
             Top = 67
             Width = 19
             Height = 13
@@ -190,14 +192,14 @@ inherited frmBarang: TfrmBarang
             Visible = False
           end
           object lblSatuanStock: TLabel
-            Left = 248
+            Left = 337
             Top = 19
             Width = 63
             Height = 13
             Caption = 'Satuan Stock'
           end
           object lblHarga: TLabel
-            Left = 282
+            Left = 371
             Top = 43
             Width = 29
             Height = 13
@@ -215,47 +217,54 @@ inherited frmBarang: TfrmBarang
             Top = 39
             TabOrder = 1
             Text = 'edNama'
-            Width = 145
+            Width = 200
           end
           object cbbGroup: TcxExtLookupComboBox
             Left = 90
             Top = 63
             Properties.DropDownAutoSize = True
             Properties.FocusPopup = True
-            Properties.View = cxGridDBTableGroupBarang
-            Properties.KeyFieldNames = 'ID'
             Properties.ListFieldItem = cxgrdbclmnGridDBTableGroupBarangColumnNama
             TabOrder = 2
-            Width = 145
+            Width = 121
           end
           object cbbPPN: TcxComboBox
-            Left = 320
+            Left = 409
             Top = 63
             Properties.DropDownListStyle = lsFixedList
             Properties.Items.Strings = (
               'PPN'
               'NON PPN')
-            TabOrder = 5
+            TabOrder = 6
             Text = 'NON PPN'
             Visible = False
             Width = 121
           end
           object cbbSatuanStock: TcxExtLookupComboBox
-            Left = 320
+            Left = 409
             Top = 15
             Properties.View = cxGridDBTableUOM
             Properties.KeyFieldNames = 'ID'
             Properties.ListFieldItem = cxgrdbclmnGridDBTableUOMColumnUOM
-            TabOrder = 3
+            TabOrder = 4
             Width = 121
           end
           object edHarga: TcxCurrencyEdit
-            Left = 320
+            Left = 409
             Top = 39
             Properties.Alignment.Horz = taRightJustify
             Properties.DisplayFormat = ',0.00;(,0.00)'
-            TabOrder = 4
+            TabOrder = 5
             Width = 121
+          end
+          object bAddGroup: TcxButton
+            Left = 217
+            Top = 61
+            Width = 73
+            Height = 25
+            Caption = 'Tambah Baru'
+            TabOrder = 3
+            OnClick = bAddGroupClick
           end
         end
         object cxTSSatuan: TcxTabSheet
@@ -449,7 +458,7 @@ inherited frmBarang: TfrmBarang
     Left = 232
     Top = 200
     Bitmap = {
-      494C010106000800D40018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010106000800D80018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

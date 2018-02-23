@@ -56,6 +56,7 @@ type
     cxGridTableSatuanColumnBarcode: TcxGridColumn;
     lblHarga: TLabel;
     edHarga: TcxCurrencyEdit;
+    bAddGroup: TcxButton;
     procedure FormCreate(Sender: TObject);
     procedure ActionBaruExecute(Sender: TObject);
     procedure ActionHapusExecute(Sender: TObject);
@@ -66,14 +67,16 @@ type
         TShiftState; var AHandled: Boolean);
     procedure edKodeKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormShow(Sender: TObject);
+    procedure bAddGroupClick(Sender: TObject);
   private
     FBarang: TBarang;
+    FCDSGB: TClientDataset;
     function GetBarang: TBarang;
     function IsBisaSimpan: Boolean;
     function IsDetailSatuanValid: Boolean;
     { Private declarations }
   protected
-    procedure InisialisaiSupplier;
+    procedure InisialisaiGroupBarang;
     procedure InisialisasiUOM;
     procedure LoadDaftarBarang;
     property Barang: TBarang read GetBarang write FBarang;
@@ -96,7 +99,7 @@ procedure TfrmBarang.FormCreate(Sender: TObject);
 begin
   inherited;
   cxPCHeader.ActivePageIndex := 0;
-  InisialisaiSupplier;
+  InisialisaiGroupBarang;
   InisialisasiUOM;
 
 end;
@@ -189,6 +192,43 @@ begin
   end;
 end;
 
+procedure TfrmBarang.bAddGroupClick(Sender: TObject);
+var
+  lGB: TGroupBarang;
+  sGroup: string;
+  sKode: string;
+begin
+  inherited;
+  sKode  := InputBox('Kode','Kode','');
+  sGroup := InputBox('Nama','Nama','');
+
+  with TServerGroupBarangClient.Create(ClientDataModule.DSRestConnection, False) do
+  begin
+    try
+      lGB := TGroupBarang.Create;
+      lGB.Kode := sKode;
+      lGB.Nama := sGroup;
+
+      if trim(lGB.Kode) = '' then
+        Exit;
+
+      if (lGB.Nama) = '' then
+        Exit;
+
+      if Save(lGB) then
+      begin
+        InisialisaiGroupBarang;
+        FCDSGB.Filter       := 'kode = ' + QuotedStr(lGB.Kode);
+        FCDSGB.Filtered     := True;
+        cbbGroup.EditValue  := FCDSGB.FieldByName('id').AsString;
+      end;
+    finally
+      FCDSGB.Filtered := False;
+    end;
+  end;
+
+end;
+
 procedure TfrmBarang.cxGridDBTableBarangCellDblClick(Sender:
     TcxCustomGridTableView; ACellViewInfo: TcxGridTableDataCellViewInfo;
     AButton: TMouseButton; AShift: TShiftState; var AHandled: Boolean);
@@ -208,7 +248,9 @@ begin
   begin
     lBarang := ClientDataModule.ServerBarangClient.RetrieveKode(edKode.Text);
     try
-      LoadDataBarang(lBarang.ID);
+      if lBarang <> nil then
+        if lBarang.ID <> '' then
+          LoadDataBarang(lBarang.ID);
     finally
       lBarang.Free;
     end;
@@ -230,16 +272,15 @@ begin
   Result := FBarang;
 end;
 
-procedure TfrmBarang.InisialisaiSupplier;
+procedure TfrmBarang.InisialisaiGroupBarang;
 var
-  lCDS: TClientDataSet;
   sSQL: string;
 begin
   sSQL := 'select * from ' + TGroupBarang.ClassName;
+  FCDSGB := TDBUtils.OpenDataset(sSQL);
 
-  lCDS := TDBUtils.OpenDataset(sSQL);
-  cxGridDBTableGroupBarang.SetDataset(lCDS);
-
+  cbbGroup.Properties.LoadFromCDS(FCDSGB,'ID','Nama',['ID'],Self);
+  cbbGroup.Properties.SetMultiPurposeLookup;
 end;
 
 procedure TfrmBarang.InisialisasiUOM;

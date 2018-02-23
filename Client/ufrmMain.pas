@@ -218,6 +218,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure dxbrlrgbtnExitClick(Sender: TObject);
     procedure btnLoginClick(Sender: TObject);
+    procedure pnlGajiDblClick(Sender: TObject);
   private
     procedure SimpanAndDisableDataMenu;
     procedure UpdateStatusBar;
@@ -579,6 +580,11 @@ procedure TfrmMain.FormShow(Sender: TObject);
 begin
 //  frmLogin := TfrmLogin.Create(Self);
 //  frmLogin.ShowModal;
+end;
+
+procedure TfrmMain.pnlGajiDblClick(Sender: TObject);
+begin
+ // pnlGaji.Enabled := not pnlGaji.Enabled;
 end;
 
 procedure TfrmMain.SimpanAndDisableDataMenu;
