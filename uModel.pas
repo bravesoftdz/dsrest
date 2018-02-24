@@ -85,6 +85,7 @@ type
   {$TYPEINFO OFF}
   private
     FBarangSatuanItems: TObjectList<TBarangSatuanItem>;
+    FDiskonMember: Double;
     FGroupBarang: TGroupBarang;
     FNama: string;
     FPPN: string;
@@ -97,6 +98,7 @@ type
     function KonversiPC(AUOM : TUOM): Double;
     property BarangSatuanItems: TObjectList<TBarangSatuanItem> read
         GetBarangSatuanItems write FBarangSatuanItems;
+    property DiskonMember: Double read FDiskonMember write FDiskonMember;
     property GroupBarang: TGroupBarang read FGroupBarang write FGroupBarang;
     property Nama: string read FNama write FNama;
     property PPN: string read FPPN write FPPN;

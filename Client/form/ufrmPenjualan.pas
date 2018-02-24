@@ -172,6 +172,8 @@ begin
   inherited;
   edKodePembeli.Text := FCDSPembeli.FieldByName('kode').AsString;
   edKodePembeli.SetFocus;
+
+
 end;
 
 procedure TfrmPenjualan.cxgrdclmnGridTablePenjualanColumnDiskonPropertiesValidate(
@@ -477,6 +479,9 @@ end;
 
 procedure TfrmPenjualan.edKodePembeliKeyDown(Sender: TObject; var Key: Word;
     Shift: TShiftState);
+var
+  i: Integer;
+  iKey: word;
 //var
 //  lPembeli: TSupplier;
 begin
@@ -485,7 +490,21 @@ begin
   begin
     LoadDataPembeli(edKodePembeli.Text);
     edPLU.SetFocus;
+
+    if edKodePembeli.Text <> 'POS' then
+    begin
+      for i := 0 to cxGridTablePenjualan.DataController.RecordCount - 1 do
+      begin
+        edPLU.Text := '0*' + cxGridTablePenjualan.GetDisplayText(i, cxgrdclmnGridTablePenjualanColumnSKU.Index);
+
+
+        iKey := 13;
+        edPLUKeyDown(nil,iKey,[ssShift]);
+      end;
+    end;
   end;
+
+
 
 end;
 
@@ -522,6 +541,10 @@ begin
       cxGridTablePenjualan.SetValue(iBaris, cxgrdclmnGridTablePenjualanColumnSatuan.Index,fCDSSKU.FieldByName('uom').AsString);
 
       cxGridTablePenjualan.SetValue(iBaris, cxgrdclmnGridTablePenjualanColumnHarga.Index,fCDSSKU.FieldByName(getDefaultHarga).AsString);
+
+      if cbbPembeli.Text <> 'POS' then
+        cxGridTablePenjualan.SetValue(iBaris, cxgrdclmnGridTablePenjualanColumnDiskon.Index,fCDSSKU.FieldByName('diskonmember').AsFloat);
+
       cxGridTablePenjualan.SetValue(iBaris, cxgrdclmnGridTablePenjualanColumnJenisHarga.Index,getDefaultHarga);
       cxGridTablePenjualan.SetValue(iBaris, cxgrdclmnGridTablePenjualanColumnKonversi.Index,fCDSSKU.FieldByName('konversi').AsFloat);
 
@@ -696,7 +719,7 @@ begin
   sSQL := 'select b.nama, b.sku, c.uom as satuan, a.hargajual as Umum,' +
           ' a.hargajualbengkel as bengkel,' +
           ' a.hargajualkeliling as keliling, a.hargajualgrosir as grosir, ' +
-          ' a.konversi, a.id, a.barang, a.uom, a.barcode' +
+          ' a.konversi, a.id, a.barang, a.uom, a.barcode, B.DISKONMEMBER' +
           ' from tbarangsatuanitem a' +
           ' inner join tbarang b on a.barang = b.id ' +
           ' inner join tuom c on a.uom = c.id ' +
@@ -872,7 +895,21 @@ begin
       edTglBukti.Date:= Penjualan.TglBukti;
 
       if Penjualan.Pembeli.ID <> '' then
+      begin
         cbbPembeli.EditValue := Penjualan.Pembeli.ID;
+        while not FCDSPembeli.Eof do
+        begin
+          if FCDSPembeli.FieldByName('ID').AsString = Penjualan.Pembeli.ID then
+          begin
+            edKodePembeli.Text   := FCDSPembeli.FieldByName('NAMA').AsString;
+            Break;
+          end;
+
+          FCDSPembeli.Next;
+        end;
+
+
+      end;
 
       if Penjualan.Salesman.ID <> '' then
         cbbSalesman.EditValue := Penjualan.Salesman.ID;

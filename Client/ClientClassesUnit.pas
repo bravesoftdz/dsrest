@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 2/18/2018 7:19:30 AM
+// 2/24/2018 6:50:59 AM
 //
 
 unit ClientClassesUnit;
@@ -1056,6 +1056,8 @@ type
   private
     FDS_CabangLookUpCommand: TDSRestCommand;
     FDS_CabangLookUpCommand_Cache: TDSRestCommand;
+    FDS_BarangLookUpCommand: TDSRestCommand;
+    FDS_BarangLookUpCommand_Cache: TDSRestCommand;
     FDS_MenuLookUpCommand: TDSRestCommand;
     FDS_MenuLookUpCommand_Cache: TDSRestCommand;
     FDS_UserLookUpCommand: TDSRestCommand;
@@ -1081,6 +1083,8 @@ type
     destructor Destroy; override;
     function DS_CabangLookUp(const ARequestFilter: string = ''): TDataSet;
     function DS_CabangLookUp_Cache(const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function DS_BarangLookUp(const ARequestFilter: string = ''): TDataSet;
+    function DS_BarangLookUp_Cache(const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function DS_MenuLookUp(const ARequestFilter: string = ''): TDataSet;
     function DS_MenuLookUp_Cache(const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function DS_UserLookUp(const ARequestFilter: string = ''): TDataSet;
@@ -4151,6 +4155,16 @@ const
   );
 
   TDSData_DS_CabangLookUp_Cache: array [0..0] of TDSRestParameterMetaData =
+  (
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TDSData_DS_BarangLookUp: array [0..0] of TDSRestParameterMetaData =
+  (
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TDSData_DS_BarangLookUp_Cache: array [0..0] of TDSRestParameterMetaData =
   (
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
@@ -14907,6 +14921,35 @@ begin
   Result := TDSRestCachedDataSet.Create(FDS_CabangLookUpCommand_Cache.Parameters[0].Value.GetString);
 end;
 
+function TDSDataClient.DS_BarangLookUp(const ARequestFilter: string): TDataSet;
+begin
+  if FDS_BarangLookUpCommand = nil then
+  begin
+    FDS_BarangLookUpCommand := FConnection.CreateCommand;
+    FDS_BarangLookUpCommand.RequestType := 'GET';
+    FDS_BarangLookUpCommand.Text := 'TDSData.DS_BarangLookUp';
+    FDS_BarangLookUpCommand.Prepare(TDSData_DS_BarangLookUp);
+  end;
+  FDS_BarangLookUpCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FDS_BarangLookUpCommand.Parameters[0].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FDS_BarangLookUpCommand.FreeOnExecute(Result);
+end;
+
+function TDSDataClient.DS_BarangLookUp_Cache(const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FDS_BarangLookUpCommand_Cache = nil then
+  begin
+    FDS_BarangLookUpCommand_Cache := FConnection.CreateCommand;
+    FDS_BarangLookUpCommand_Cache.RequestType := 'GET';
+    FDS_BarangLookUpCommand_Cache.Text := 'TDSData.DS_BarangLookUp';
+    FDS_BarangLookUpCommand_Cache.Prepare(TDSData_DS_BarangLookUp_Cache);
+  end;
+  FDS_BarangLookUpCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FDS_BarangLookUpCommand_Cache.Parameters[0].Value.GetString);
+end;
+
 function TDSDataClient.DS_MenuLookUp(const ARequestFilter: string): TDataSet;
 begin
   if FDS_MenuLookUpCommand = nil then
@@ -15247,6 +15290,8 @@ destructor TDSDataClient.Destroy;
 begin
   FDS_CabangLookUpCommand.DisposeOf;
   FDS_CabangLookUpCommand_Cache.DisposeOf;
+  FDS_BarangLookUpCommand.DisposeOf;
+  FDS_BarangLookUpCommand_Cache.DisposeOf;
   FDS_MenuLookUpCommand.DisposeOf;
   FDS_MenuLookUpCommand_Cache.DisposeOf;
   FDS_UserLookUpCommand.DisposeOf;

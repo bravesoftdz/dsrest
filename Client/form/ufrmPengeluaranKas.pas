@@ -491,7 +491,7 @@ begin
   begin
     cxGridTableAP.DataController.AppendRecord;
     cxGridTableAP.SetObjectData(PengeluaranKas.PengeluaranKasAPs[i], i);
-    cxGridTableAP.SetValue(i, cxGridColNominal.Index, FCDSAP.FieldByName('nominal').AsFloat + PengeluaranKas.PengeluaranKasAPs[i].Nominal);
+    cxGridTableAP.SetValue(i, cxGridColNominal.Index, FCDSAP.FieldByName('SISA').AsFloat + PengeluaranKas.PengeluaranKasAPs[i].Nominal);
   end;
 
   cxGridTableNonAP.ClearRows;

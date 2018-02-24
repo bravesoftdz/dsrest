@@ -38,7 +38,7 @@ inherited frmBarang: TfrmBarang
         ExplicitHeight = 238
         inherited pnlFilter: TPanel
           Width = 683
-          TabOrder = 2
+          TabOrder = 1
           ExplicitWidth = 683
           inherited lblPeriode: TLabel
             Left = 269
@@ -69,10 +69,13 @@ inherited frmBarang: TfrmBarang
           Top = 71
           Width = 683
           Height = 166
-          TabOrder = 3
+          TabOrder = 2
           ExplicitTop = 71
           ExplicitWidth = 683
           ExplicitHeight = 166
+          inherited cxGridDBTableOverview: TcxGridDBTableView
+            OnCellDblClick = cxGridDBTableOverviewCellDblClick
+          end
         end
         object pnlFilterBarang: TPanel
           Left = 1
@@ -82,60 +85,6 @@ inherited frmBarang: TfrmBarang
           Align = alTop
           TabOrder = 0
           Visible = False
-        end
-        object cxGridDBDaftarBarang: TcxGrid
-          Left = 1
-          Top = 71
-          Width = 683
-          Height = 166
-          Align = alClient
-          TabOrder = 1
-          object cxGridDBTableBarang: TcxGridDBTableView
-            Navigator.Buttons.CustomButtons = <>
-            OnCellDblClick = cxGridDBTableBarangCellDblClick
-            DataController.Summary.DefaultGroupSummaryItems = <>
-            DataController.Summary.FooterSummaryItems = <>
-            DataController.Summary.SummaryGroups = <>
-            FilterRow.Visible = True
-            OptionsData.CancelOnExit = False
-            OptionsData.Deleting = False
-            OptionsData.DeletingConfirmation = False
-            OptionsData.Editing = False
-            OptionsData.Inserting = False
-            Styles.ContentEven = ClientDataModule.cxstylGridEven
-            Styles.ContentOdd = ClientDataModule.cxstylGridOdd
-            Styles.Header = ClientDataModule.cxstylGridHeader
-            object cxgrdbclmnGridDBTableBarangColumnKode: TcxGridDBColumn
-              Caption = 'SKU '
-              DataBinding.FieldName = 'SKU'
-              HeaderAlignmentHorz = taCenter
-              Width = 88
-            end
-            object cxgrdbclmnGridDBTableBarangColumnNama: TcxGridDBColumn
-              Caption = 'Nama '
-              DataBinding.FieldName = 'Nama'
-              HeaderAlignmentHorz = taCenter
-              Width = 121
-            end
-            object cxgrdbclmnGridDBTableBarangColumnGroup: TcxGridDBColumn
-              Caption = 'Group Barang'
-              DataBinding.FieldName = 'GroupBarang'
-              PropertiesClassName = 'TcxExtLookupComboBoxProperties'
-              Properties.View = cxGridDBTableGroupBarang
-              Properties.KeyFieldNames = 'ID'
-              Properties.ListFieldItem = cxgrdbclmnGridDBTableGroupBarangColumnNama
-              HeaderAlignmentHorz = taCenter
-              Width = 84
-            end
-            object cxgrdbclmnGridDBTableBarangColumnPPN: TcxGridDBColumn
-              Caption = 'PPN '
-              DataBinding.FieldName = 'PPN'
-              HeaderAlignmentHorz = taCenter
-            end
-          end
-          object cxgrdlvlDaftarBarang: TcxGridLevel
-            GridView = cxGridDBTableBarang
-          end
         end
       end
     end
@@ -160,8 +109,6 @@ inherited frmBarang: TfrmBarang
         object cxTSHeader: TcxTabSheet
           Caption = 'Barang'
           ImageIndex = 0
-          ExplicitLeft = 5
-          ExplicitTop = 25
           object lblKode: TLabel
             Left = 47
             Top = 18
@@ -205,6 +152,13 @@ inherited frmBarang: TfrmBarang
             Height = 13
             Caption = 'Harga'
           end
+          object lblDiskonMember: TLabel
+            Left = 14
+            Top = 92
+            Width = 72
+            Height = 13
+            Caption = 'Diskon Member'
+          end
           object edKode: TcxTextEdit
             Left = 90
             Top = 15
@@ -235,7 +189,7 @@ inherited frmBarang: TfrmBarang
             Properties.Items.Strings = (
               'PPN'
               'NON PPN')
-            TabOrder = 6
+            TabOrder = 7
             Text = 'NON PPN'
             Visible = False
             Width = 121
@@ -246,7 +200,7 @@ inherited frmBarang: TfrmBarang
             Properties.View = cxGridDBTableUOM
             Properties.KeyFieldNames = 'ID'
             Properties.ListFieldItem = cxgrdbclmnGridDBTableUOMColumnUOM
-            TabOrder = 4
+            TabOrder = 5
             Width = 121
           end
           object edHarga: TcxCurrencyEdit
@@ -254,7 +208,7 @@ inherited frmBarang: TfrmBarang
             Top = 39
             Properties.Alignment.Horz = taRightJustify
             Properties.DisplayFormat = ',0.00;(,0.00)'
-            TabOrder = 5
+            TabOrder = 6
             Width = 121
           end
           object bAddGroup: TcxButton
@@ -265,6 +219,13 @@ inherited frmBarang: TfrmBarang
             Caption = 'Tambah Baru'
             TabOrder = 3
             OnClick = bAddGroupClick
+          end
+          object edDiskonMember: TcxCurrencyEdit
+            Left = 90
+            Top = 88
+            Properties.DisplayFormat = ',0.00;(,0.00)'
+            TabOrder = 4
+            Width = 121
           end
         end
         object cxTSSatuan: TcxTabSheet
@@ -458,7 +419,7 @@ inherited frmBarang: TfrmBarang
     Left = 232
     Top = 200
     Bitmap = {
-      494C010106000800D80018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010106000800DC0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

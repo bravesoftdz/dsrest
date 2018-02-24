@@ -20,6 +20,7 @@ type
 
   public
     function DS_CabangLookUp: TDataset;
+    function DS_BarangLookUp: TDataset;
     function DS_MenuLookUp: TDataset;
     function DS_UserLookUp: TDataset;
     function DS_GudangLookUp: TDataset;
@@ -2563,7 +2564,7 @@ end;
 function TServerPenjualan.SimpanARAP(AOBject: TAppObject): Boolean;
 var
   lAP: TAP;
-  lAR: TAR;
+//  lAR: TAR;
   lPJ: TPenjualan;
 begin
   Result := False;
@@ -3995,6 +3996,14 @@ var
   sSQL: string;
 begin
   sSQL   := 'select * from vcabang';
+  Result := TDBUtils.OpenDataset(sSQL);
+end;
+
+function TDSData.DS_BarangLookUp: TDataset;
+var
+  sSQL: string;
+begin
+  sSQL   := 'select * from vbarang order by sku';
   Result := TDBUtils.OpenDataset(sSQL);
 end;
 

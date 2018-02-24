@@ -211,7 +211,8 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
               Top = 27
               Properties.DropDownListStyle = lsFixedList
               Properties.Items.Strings = (
-                'CASH')
+                'CASH'
+                'CREDIT')
               Properties.OnChange = cbbJenisPembayaranPropertiesChange
               TabOrder = 4
               Text = 'CASH'
@@ -544,7 +545,7 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010105000800DC0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010105000800E00018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

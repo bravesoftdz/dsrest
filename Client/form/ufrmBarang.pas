@@ -22,15 +22,8 @@ type
     cxgrdbclmnGridDBTableGroupBarangColumnKode: TcxGridDBColumn;
     cxgrdbclmnGridDBTableGroupBarangColumnID: TcxGridDBColumn;
     pnlFilterBarang: TPanel;
-    cxGridDBDaftarBarang: TcxGrid;
-    cxGridDBTableBarang: TcxGridDBTableView;
-    cxgrdlvlDaftarBarang: TcxGridLevel;
-    cxgrdbclmnGridDBTableBarangColumnKode: TcxGridDBColumn;
-    cxgrdbclmnGridDBTableBarangColumnNama: TcxGridDBColumn;
-    cxgrdbclmnGridDBTableBarangColumnGroup: TcxGridDBColumn;
     cxGridDBTableUOM: TcxGridDBTableView;
     cxgrdbclmnGridDBTableUOMColumnUOM: TcxGridDBColumn;
-    cxgrdbclmnGridDBTableBarangColumnPPN: TcxGridDBColumn;
     cxPCHeader: TcxPageControl;
     cxTSHeader: TcxTabSheet;
     lblKode: TLabel;
@@ -57,19 +50,22 @@ type
     lblHarga: TLabel;
     edHarga: TcxCurrencyEdit;
     bAddGroup: TcxButton;
+    lblDiskonMember: TLabel;
+    edDiskonMember: TcxCurrencyEdit;
     procedure FormCreate(Sender: TObject);
     procedure ActionBaruExecute(Sender: TObject);
     procedure ActionHapusExecute(Sender: TObject);
     procedure ActionRefreshExecute(Sender: TObject);
     procedure ActionSimpanExecute(Sender: TObject);
-    procedure cxGridDBTableBarangCellDblClick(Sender: TcxCustomGridTableView;
-        ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton; AShift:
-        TShiftState; var AHandled: Boolean);
     procedure edKodeKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormShow(Sender: TObject);
     procedure bAddGroupClick(Sender: TObject);
+    procedure cxGridDBTableOverviewCellDblClick(Sender: TcxCustomGridTableView;
+        ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton; AShift:
+        TShiftState; var AHandled: Boolean);
   private
     FBarang: TBarang;
+    fcds: tclientDataSet;
     FCDSGB: TClientDataset;
     function GetBarang: TBarang;
     function IsBisaSimpan: Boolean;
@@ -162,7 +158,7 @@ begin
       Barang.SatuanStock    := TUOM.CreateID(cbbSatuanStock.EditValue);
 
       Barang.PPN            := cbbPPN.Text;
-
+      Barang.DiskonMember   := edDiskonMember.Value;
 
       Barang.BarangSatuanItems.Clear;
       lBarangSatuanItem                   := TBarangSatuanItem.Create;
@@ -229,12 +225,15 @@ begin
 
 end;
 
-procedure TfrmBarang.cxGridDBTableBarangCellDblClick(Sender:
+procedure TfrmBarang.cxGridDBTableOverviewCellDblClick(Sender:
     TcxCustomGridTableView; ACellViewInfo: TcxGridTableDataCellViewInfo;
     AButton: TMouseButton; AShift: TShiftState; var AHandled: Boolean);
 begin
   inherited;
-  LoadDataBarang(cxGridDBTableBarang.DataController.DataSource.DataSet.FieldByName('ID').AsString);
+  if fcds = nil then
+    Exit;
+
+  LoadDataBarang(fcds.FieldByName('ID').AsString);
   cxPCData.ActivePageIndex := 1;
 end;
 
@@ -363,11 +362,14 @@ begin
 end;
 
 procedure TfrmBarang.LoadDaftarBarang;
-var
-  sSQL: string;
 begin
-  sSQL := 'select * from ' + TBarang.ClassName;
-  cxGridDBTableBarang.SetDataset(sSQL);
+  FreeAndNil(fcds);
+  fcds := TDBUtils.DSToCDS(ClientDataModule.DSDataCLient.DS_BarangLookUp, cxGridDBTableOverview);
+
+  cxGridDBTableOverview.ClearRows;
+  cxGridDBTableOverview.SetDataset(fcds, True);
+  cxGridDBTableOverview.SetVisibleColumns(['ID'], False);
+  cxGridDBTableOverview.ApplyBestFit();
 end;
 
 procedure TfrmBarang.LoadDataBarang(AID : String);
@@ -391,6 +393,7 @@ begin
     cbbGroup.EditValue       := Barang.GroupBarang.ID;
     cbbSatuanStock.EditValue := Barang.SatuanStock.ID;
     cbbPPN.ItemIndex         := cbbPPN.Properties.Items.IndexOf(Barang.PPN);
+    edDiskonMember.Value     := Barang.DiskonMember;
 
 //    cxGridTableSatuan.DataController.RecordCount := Barang.BarangSatuanItems.Count;
 //    for i := 0 to Barang.BarangSatuanItems.Count - 1 do
