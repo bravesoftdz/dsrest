@@ -104,6 +104,10 @@ type
         TShiftState; var AHandled: Boolean);
     procedure cxGridTablePenerimaanBarangDataControllerAfterInsert(
       ADataController: TcxCustomDataController);
+    procedure cxGridTablePenerimaanBarangColumnSKUPropertiesInitPopup(
+      Sender: TObject);
+    procedure cxGridTablePenerimaanBarangColumnNamaPropertiesInitPopup(
+      Sender: TObject);
   private
     FPenerimaanBarang: TPenerimaanBarang;
     function GetPenerimaanBarang: TPenerimaanBarang;
@@ -357,6 +361,22 @@ begin
   HitungNilaiNilaiPerBaris(dNilai, cxGridTablePenerimaanBarangColumnHarga.Index);
 end;
 
+procedure TfrmPenerimaanBarang.cxGridTablePenerimaanBarangColumnNamaPropertiesInitPopup(
+  Sender: TObject);
+begin
+  inherited;
+  with cxGridDBTableSKU.DataController.Filter do
+  begin
+    BeginUpdate;
+    try
+      Root.Clear;
+      DataController.Filter.Active := False;
+    finally
+      EndUpdate;
+    end;
+  end;
+end;
+
 procedure TfrmPenerimaanBarang.cxGridTablePenerimaanBarangColumnNamaPropertiesValidate(
   Sender: TObject; var DisplayValue: Variant; var ErrorText: TCaption;
   var Error: Boolean);
@@ -366,6 +386,7 @@ begin
   inherited;
   sID := cxGridDBTableSKU.DataController.DataSource.DataSet.FieldByName('ID').AsString;
   cxGridTablePenerimaanBarang.DataController.Values[cxGridTablePenerimaanBarang.DataController.FocusedRecordIndex, cxGridTablePenerimaanBarangColumnSKU.Index] := sID;
+  cxGridTablePenerimaanBarang.DataController.Values[cxGridTablePenerimaanBarang.DataController.FocusedRecordIndex, cxGridTablePenerimaanBarangColumnHarga.Index] := ClientDataModule.ServerBarangClient.GetHargaBeliTerakhir(sID);
 end;
 
 procedure TfrmPenerimaanBarang.cxGridTablePenerimaanBarangColumnPPNPropertiesValidate(
@@ -423,6 +444,22 @@ begin
   end;
 end;
 
+procedure TfrmPenerimaanBarang.cxGridTablePenerimaanBarangColumnSKUPropertiesInitPopup(
+  Sender: TObject);
+begin
+  inherited;
+  with cxGridDBTableSKU.DataController.Filter do
+  begin
+    BeginUpdate;
+    try
+      Root.Clear;
+      DataController.Filter.Active := False;
+    finally
+      EndUpdate;
+    end;
+  end;
+end;
+
 procedure TfrmPenerimaanBarang.cxGridTablePenerimaanBarangColumnSKUPropertiesValidate(
   Sender: TObject; var DisplayValue: Variant; var ErrorText: TCaption;
   var Error: Boolean);
@@ -432,6 +469,7 @@ begin
   inherited;
   sID := cxGridDBTableSKU.DataController.DataSource.DataSet.FieldByName('ID').AsString;
   cxGridTablePenerimaanBarang.DataController.Values[cxGridTablePenerimaanBarang.DataController.FocusedRecordIndex, cxGridTablePenerimaanBarangColumnNama.Index] := sID;
+  cxGridTablePenerimaanBarang.DataController.Values[cxGridTablePenerimaanBarang.DataController.FocusedRecordIndex, cxGridTablePenerimaanBarangColumnHarga.Index] := ClientDataModule.ServerBarangClient.GetHargaBeliTerakhir(sID);
 end;
 
 procedure TfrmPenerimaanBarang.cxGridTablePenerimaanBarangDataControllerAfterInsert(

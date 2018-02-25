@@ -290,6 +290,7 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
                   Properties.View = cxGridDBTableSKU
                   Properties.KeyFieldNames = 'ID'
                   Properties.ListFieldItem = cxgrdbclmnGridDBTableSKUColumnSKU
+                  Properties.OnInitPopup = cxGridTablePenerimaanBarangColumnSKUPropertiesInitPopup
                   Properties.OnValidate = cxGridTablePenerimaanBarangColumnSKUPropertiesValidate
                   HeaderAlignmentHorz = taCenter
                 end
@@ -300,6 +301,7 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
                   Properties.View = cxGridDBTableSKU
                   Properties.KeyFieldNames = 'ID'
                   Properties.ListFieldItem = cxgrdbclmnGridDBTableSKUColumnNama
+                  Properties.OnInitPopup = cxGridTablePenerimaanBarangColumnNamaPropertiesInitPopup
                   Properties.OnValidate = cxGridTablePenerimaanBarangColumnNamaPropertiesValidate
                   HeaderAlignmentHorz = taCenter
                   Width = 142
@@ -545,7 +547,7 @@ inherited frmPenerimaanBarang: TfrmPenerimaanBarang
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010105000800E00018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010105000800E40018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

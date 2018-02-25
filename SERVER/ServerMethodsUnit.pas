@@ -156,6 +156,7 @@ type
   TServerBarang = class(TServerMaster)
   protected
   public
+    function GetHargaBeliTerakhir(ABarangID : String): Double;
     function Retrieve(AID : String): TBarang;
     function RetrieveKode(AKode : String): TBarang;
   end;
@@ -766,6 +767,35 @@ begin
   if AfterSave(AOBject) then
   begin
     Result := True;
+  end;
+
+end;
+
+function TServerBarang.GetHargaBeliTerakhir(ABarangID : String): Double;
+var
+  sSQL: string;
+begin
+  Result := 0;
+
+  if ABarangID = '' then
+    Exit;
+
+  sSQL := 'select top 1 b.hargabeli from tpenerimaanbarang a ' +
+          ' INNER JOIN tpenerimaanbarangitem b on a.id = b.penerimaanbarang ' +
+          ' WHERE b.barang = ' + QuotedStr(ABarangID) +
+          ' ORDER BY a.tglbukti DESC ';
+
+  with TDBUtils.OpenQuery(sSQL) do
+  begin
+    try
+      while not Eof do
+      begin
+        Result := FieldByName('hargabeli').AsFloat;
+        Next;
+      end;
+    finally
+      Free;
+    end;
   end;
 
 end;

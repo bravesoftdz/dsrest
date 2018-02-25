@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 2/24/2018 6:50:59 AM
+// 2/26/2018 5:55:34 AM
 //
 
 unit ClientClassesUnit;
@@ -168,6 +168,7 @@ type
 
   TServerBarangClient = class(TDSAdminRestClient)
   private
+    FGetHargaBeliTerakhirCommand: TDSRestCommand;
     FRetrieveCommand: TDSRestCommand;
     FRetrieveCommand_Cache: TDSRestCommand;
     FRetrieveKodeCommand: TDSRestCommand;
@@ -181,6 +182,7 @@ type
     constructor Create(ARestConnection: TDSRestConnection); overload;
     constructor Create(ARestConnection: TDSRestConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
+    function GetHargaBeliTerakhir(ABarangID: string; const ARequestFilter: string = ''): Double;
     function Retrieve(AID: string; const ARequestFilter: string = ''): TBarang;
     function Retrieve_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedTBarang;
     function RetrieveKode(AKode: string; const ARequestFilter: string = ''): TBarang;
@@ -1894,6 +1896,12 @@ const
   (
     (Name: 'ACabang'; Direction: 1; DBXType: 37; TypeName: 'TCabang'),
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerBarang_GetHargaBeliTerakhir: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'ABarangID'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 7; TypeName: 'Double')
   );
 
   TServerBarang_Retrieve: array [0..1] of TDSRestParameterMetaData =
@@ -6594,6 +6602,20 @@ begin
   inherited;
 end;
 
+function TServerBarangClient.GetHargaBeliTerakhir(ABarangID: string; const ARequestFilter: string): Double;
+begin
+  if FGetHargaBeliTerakhirCommand = nil then
+  begin
+    FGetHargaBeliTerakhirCommand := FConnection.CreateCommand;
+    FGetHargaBeliTerakhirCommand.RequestType := 'GET';
+    FGetHargaBeliTerakhirCommand.Text := 'TServerBarang.GetHargaBeliTerakhir';
+    FGetHargaBeliTerakhirCommand.Prepare(TServerBarang_GetHargaBeliTerakhir);
+  end;
+  FGetHargaBeliTerakhirCommand.Parameters[0].Value.SetWideString(ABarangID);
+  FGetHargaBeliTerakhirCommand.Execute(ARequestFilter);
+  Result := FGetHargaBeliTerakhirCommand.Parameters[1].Value.GetDouble;
+end;
+
 function TServerBarangClient.Retrieve(AID: string; const ARequestFilter: string): TBarang;
 begin
   if FRetrieveCommand = nil then
@@ -6819,6 +6841,7 @@ end;
 
 destructor TServerBarangClient.Destroy;
 begin
+  FGetHargaBeliTerakhirCommand.DisposeOf;
   FRetrieveCommand.DisposeOf;
   FRetrieveCommand_Cache.DisposeOf;
   FRetrieveKodeCommand.DisposeOf;
