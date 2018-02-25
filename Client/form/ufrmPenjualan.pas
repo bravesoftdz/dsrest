@@ -376,7 +376,7 @@ begin
   Penjualan.Pembeli        := TSupplier.CreateID(cbbPembeli.EditValue);
   Penjualan.Gudang         := TGudang.CreateID(ClientDataModule.SettingApp.GudangPenjualan.ID);
 
-  Penjualan.Kasir          := 'AKU';
+  Penjualan.Kasir          := UserAplikasi.UserName;
   Penjualan.Keterangan     := memKeterangan.Text;
   Penjualan.Fee            := cbbFee.Properties.Items[cbbFee.ItemIndex];
   Penjualan.TermOfPayment  := Floor(edTempo.Value);

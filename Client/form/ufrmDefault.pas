@@ -17,7 +17,7 @@ uses
   dxPScxEditorProducers, dxPScxExtEditorProducers, dxPrnDlg, dxPgsDlg, dxPSCore,
   System.ImageList, dxBarExtItems, ufrmPilihGrid, dxBarBuiltInMenu, cxPC,
   Vcl.ComCtrls, Vcl.StdCtrls, cxGridLevel, Vcl.Menus, cxButtons, cxContainer,
-  uUser;
+  uUser, uSettingApp;
 
 type
   TfrmDefault = class(TForm)
@@ -71,7 +71,6 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     FIsLangsungPrint: Boolean;
-    FUserAplikasi: TUser;
     function GetcxGridDBTableViewExport(AGridName : String): TcxGridDBTableView;
         virtual;
     function GetUserAplikasi: TUser;
@@ -85,7 +84,7 @@ type
     property IsLangsungPrint: Boolean read FIsLangsungPrint write FIsLangsungPrint;
   public
     procedure LoadDataTransaksi(AID : String); virtual;
-    property UserAplikasi: TUser read GetUserAplikasi write FUserAplikasi;
+    property UserAplikasi: TUser read GetUserAplikasi;
     { Public declarations }
   end;
 
@@ -188,10 +187,7 @@ end;
 
 function TfrmDefault.GetUserAplikasi: TUser;
 begin
-  if FUserAplikasi = nil then
-    FUserAplikasi := TUser.Create;
-
-  Result := FUserAplikasi;
+  Result := uSettingApp.UserApplikasi;
 end;
 
 procedure TfrmDefault.InisialisasiCDSCabang;
