@@ -1,0 +1,38 @@
+Release baru
+1. Penambahan diskon member di master barang
+
+/*tambah diskon member*/
+alter table tbarang add diskonmember double precision;
+
+/*create view v_barang*/
+IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dbo].[vbarang]'))
+DROP VIEW [dbo].[vbarang]
+GO
+
+CREATE VIEW [dbo].[vbarang] AS 
+select a.sku, a.nama , b.nama as groupbarang, c.hargajual,d.uom, a.diskonmember, a.id 
+from tbarang a
+LEFT JOIN tgroupbarang b on a.groupbarang = b.id
+left join tbarangsatuanitem c on a.id =c.barang
+left join tuom d on c.uom = d.id
+GO
+
+2. Laporan pembelian belum muncul sku dan nama barang
+/* lap pembelian belum muncul nama barang*/
+IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dbo].[vlaporanpenerimaanbarang]'))
+DROP VIEW [dbo].[vlaporanpenerimaanbarang]
+GO
+
+CREATE VIEW [dbo].[vlaporanpenerimaanbarang] AS 
+select a.cabang, a.gudang, f.nama as namagudang, a.nobukti, a.tglbukti , d.sku, d.nama, e.uom, b.qty, b.diskon, b.ppn,b.urutan, b.hargabeli AS HARGA_BELI,
+(
+b.qty * (100 - b.diskon)/100 * b.hargabeli * (b.ppn+100)/100
+) as total
+from tpenerimaanbarang a
+INNER JOIN tpenerimaanbarangitem b on a.id = b.penerimaanbarang
+INNER JOIN tsupplier c on a.supplier = c.id
+INNER JOIN tbarang d on b.barang = d.id
+INNER JOIN tuom e on b.uom = e.id
+INNER JOIN tgudang f on a.gudang = f.id
+GO
+
