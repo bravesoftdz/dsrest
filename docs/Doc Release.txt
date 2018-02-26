@@ -38,3 +38,4 @@ GO
 
 3. Bug fixing setting aplikasi tidak berganti ketika dilakukan setting ulang
 4. Bug fixing : diskon member ketika member diganti tidak berubah
+5. 
