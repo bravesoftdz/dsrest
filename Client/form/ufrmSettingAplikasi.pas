@@ -26,9 +26,9 @@ type
     edMaxBelanjaHari: TcxCurrencyEdit;
     procedure ActionBaruExecute(Sender: TObject);
     procedure ActionRefreshExecute(Sender: TObject);
+    procedure ActionSimpanExecute(Sender: TObject);
     procedure cxPCDataChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure btnSaveClick(Sender: TObject);
     procedure cxGridDBTableOverviewCellDblClick(Sender: TcxCustomGridTableView;
         ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton; AShift:
         TShiftState; var AHandled: Boolean);
@@ -82,6 +82,31 @@ begin
   cxGridDBTableOverview.ApplyBestFit();
 end;
 
+procedure TfrmSettingAplikasi.ActionSimpanExecute(Sender: TObject);
+begin
+  inherited;
+  if not ValidateEmptyCtrl([1]) then
+    Exit;
+
+  SettingApp.Cabang          := TCabang.CreateID(cbbCabang.EditValue);
+  SettingApp.GudangPenjualan := TGudang.CreateID(cbbGudangPenjualan.EditValue);
+  SettingApp.GudangTransit   := TGudang.CreateID(cbbGudangTransit.EditValue);
+  SettingApp.MaxBelanjaSantri:= edMaxBelanjaHari.Value;
+
+  try
+    if ClientDataModule.ServerSettingAppClient.Save(SettingApp) then
+    begin
+      TAppUtils.InformationBerhasilSimpan;
+
+      ClientDataModule.SettingApp.Free;
+      ClientDataModule.SettingApp := ClientDataModule.ServerSettingAppClient.RetrieveByCabang(ClientDataModule.Cabang.ID);
+    end;
+  except
+    raise
+  end;
+
+end;
+
 procedure TfrmSettingAplikasi.btnHapusClick(Sender: TObject);
 begin
   inherited;
@@ -97,28 +122,6 @@ begin
   except
     raise
   end;
-end;
-
-procedure TfrmSettingAplikasi.btnSaveClick(Sender: TObject);
-begin
-  inherited;
-  if not ValidateEmptyCtrl([1]) then
-    Exit;
-
-  SettingApp.Cabang          := TCabang.CreateID(cbbCabang.EditValue);
-  SettingApp.GudangPenjualan := TGudang.CreateID(cbbGudangPenjualan.EditValue);
-  SettingApp.GudangTransit   := TGudang.CreateID(cbbGudangTransit.EditValue);
-  SettingApp.MaxBelanjaSantri:= edMaxBelanjaHari.Value;
-
-  try
-    if ClientDataModule.ServerSettingAppClient.Save(SettingApp) then
-    begin
-      TAppUtils.InformationBerhasilSimpan;
-    end;
-  except
-    raise
-  end;
-
 end;
 
 procedure TfrmSettingAplikasi.cxGridDBTableOverviewCellDblClick(Sender:

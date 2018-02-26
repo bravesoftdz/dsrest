@@ -80,7 +80,8 @@ uses
   ufrmPenarikanDeposit in 'form\ufrmPenarikanDeposit.pas' {frmPenarikanDeposit},
   ufrmUser in 'form\ufrmUser.pas' {frmUser},
   ufrmLogin in 'form\ufrmLogin.pas' {frmLogin},
-  ufrmLaporanLabaRugi in 'form\ufrmLaporanLabaRugi.pas' {frmLaporanLabaRugi};
+  ufrmLaporanLabaRugi in 'form\ufrmLaporanLabaRugi.pas' {frmLaporanLabaRugi},
+  uSetoranModal in '..\model\uSetoranModal.pas';
 
 {$R *.res}
 

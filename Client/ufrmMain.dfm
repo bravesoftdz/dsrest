@@ -16,7 +16,6 @@ object frmMain: TfrmMain
   WindowState = wsMaximized
   OnCreate = FormCreate
   OnDblClick = FormDblClick
-  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object dxrbnMain: TdxRibbon
@@ -31,6 +30,7 @@ object frmMain: TfrmMain
     TabOrder = 0
     TabStop = False
     object dxrbnAplikasi: TdxRibbonTab
+      Active = True
       Caption = 'Application'
       Groups = <
         item
@@ -40,7 +40,6 @@ object frmMain: TfrmMain
       Index = 0
     end
     object dxrbnTabMaster: TdxRibbonTab
-      Active = True
       Caption = 'Master'
       Groups = <
         item
@@ -1165,7 +1164,7 @@ object frmMain: TfrmMain
     Left = 688
     Top = 128
     Bitmap = {
-      494C01011800C003080220002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C01011800C003100220002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000080000000E0000000010020000000000000C0
       0100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

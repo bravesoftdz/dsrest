@@ -491,16 +491,13 @@ begin
     LoadDataPembeli(edKodePembeli.Text);
     edPLU.SetFocus;
 
-    if edKodePembeli.Text <> 'POS' then
+    for i := 0 to cxGridTablePenjualan.DataController.RecordCount - 1 do
     begin
-      for i := 0 to cxGridTablePenjualan.DataController.RecordCount - 1 do
-      begin
-        edPLU.Text := '0*' + cxGridTablePenjualan.GetDisplayText(i, cxgrdclmnGridTablePenjualanColumnSKU.Index);
+      edPLU.Text := '0*' + cxGridTablePenjualan.GetDisplayText(i, cxgrdclmnGridTablePenjualanColumnSKU.Index);
 
 
-        iKey := 13;
-        edPLUKeyDown(nil,iKey,[ssShift]);
-      end;
+      iKey := 13;
+      edPLUKeyDown(nil,iKey,[ssShift]);
     end;
   end;
 
@@ -542,8 +539,11 @@ begin
 
       cxGridTablePenjualan.SetValue(iBaris, cxgrdclmnGridTablePenjualanColumnHarga.Index,fCDSSKU.FieldByName(getDefaultHarga).AsString);
 
-      if cbbPembeli.Text <> 'POS' then
+      if (cbbPembeli.Text = 'POS') OR (cbbPembeli.Text = '') then
+        cxGridTablePenjualan.SetValue(iBaris, cxgrdclmnGridTablePenjualanColumnDiskon.Index,0)
+      else
         cxGridTablePenjualan.SetValue(iBaris, cxgrdclmnGridTablePenjualanColumnDiskon.Index,fCDSSKU.FieldByName('diskonmember').AsFloat);
+
 
       cxGridTablePenjualan.SetValue(iBaris, cxgrdclmnGridTablePenjualanColumnJenisHarga.Index,getDefaultHarga);
       cxGridTablePenjualan.SetValue(iBaris, cxgrdclmnGridTablePenjualanColumnKonversi.Index,fCDSSKU.FieldByName('konversi').AsFloat);

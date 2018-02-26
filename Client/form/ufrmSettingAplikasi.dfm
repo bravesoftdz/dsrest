@@ -98,22 +98,22 @@ inherited frmSettingAplikasi: TfrmSettingAplikasi
     inherited btnHapus: TcxButton
       OnClick = btnHapusClick
     end
-    inherited btnSave: TcxButton
-      OnClick = btnSaveClick
-    end
     inherited chkKonsolidasi1: TcxCheckBox
       ExplicitWidth = 76
       ExplicitHeight = 31
     end
   end
   inherited ActionListForm: TActionList
+    inherited ActionSimpan: TAction
+      OnExecute = ActionSimpanExecute
+    end
     inherited ActionRefresh: TAction
       OnExecute = ActionRefreshExecute
     end
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010107000800E40018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800E80018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

@@ -215,7 +215,6 @@ type
     procedure actSettlementARAPExecute(Sender: TObject);
     procedure actUserExecute(Sender: TObject);
     procedure aplctnvntsAppException(Sender: TObject; E: Exception);
-    procedure FormShow(Sender: TObject);
     procedure dxbrlrgbtnExitClick(Sender: TObject);
     procedure btnLoginClick(Sender: TObject);
     procedure pnlGajiDblClick(Sender: TObject);
@@ -574,12 +573,6 @@ begin
 //  finally
 //    lTSReport.Free;
 //  end;
-end;
-
-procedure TfrmMain.FormShow(Sender: TObject);
-begin
-//  frmLogin := TfrmLogin.Create(Self);
-//  frmLogin.ShowModal;
 end;
 
 procedure TfrmMain.pnlGajiDblClick(Sender: TObject);

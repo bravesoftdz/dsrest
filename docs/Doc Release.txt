@@ -36,3 +36,5 @@ INNER JOIN tuom e on b.uom = e.id
 INNER JOIN tgudang f on a.gudang = f.id
 GO
 
+3. Bug fixing setting aplikasi tidak berganti ketika dilakukan setting ulang
+4. Bug fixing : diskon member ketika member diganti tidak berubah
