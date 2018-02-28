@@ -38,4 +38,23 @@ GO
 
 3. Bug fixing setting aplikasi tidak berganti ketika dilakukan setting ulang
 4. Bug fixing : diskon member ketika member diganti tidak berubah
-5. 
+
+/* 2/28/2018 */
+1. Overview kalau sebelumnya ada data kemudian diganti filter dan tdk menemukan data , data yg tampil di grid masih tetap spt semula
+
+
+CREATE TABLE [dbo].[TSetoranModal] (
+[ID] uniqueidentifier NOT NULL ,
+[NoBukti] varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+[Tanggal] datetime2(7) NULL ,
+[Nominal] float(53) NULL ,
+[Keterangan] varchar(120) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+[DateCreate] datetime2(7) NULL ,
+[DateModify] datetime2(7) NULL ,
+[UserCreate] varchar(60) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+[UserModify] varchar(60) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+CONSTRAINT [PK__TSetoran__3214EC2722401542] PRIMARY KEY ([ID]),
+CONSTRAINT [unique_setoranmodal_unique] UNIQUE ([NoBukti] ASC)
+)
+ON [PRIMARY]
+GO
