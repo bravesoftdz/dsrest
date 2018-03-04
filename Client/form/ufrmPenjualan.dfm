@@ -16,12 +16,13 @@ inherited frmPenjualan: TfrmPenjualan
   inherited cxPCData: TcxPageControl
     Width = 773
     Height = 376
-    Properties.ActivePage = cxTSInputData
     ExplicitWidth = 773
     ExplicitHeight = 376
     ClientRectBottom = 372
     ClientRectRight = 769
     inherited cxTSOverview: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
       ExplicitWidth = 765
       ExplicitHeight = 348
       inherited splTransaksi: TSplitter
@@ -528,6 +529,8 @@ inherited frmPenjualan: TfrmPenjualan
     inherited chkKonsolidasi1: TcxCheckBox
       Left = 307
       ExplicitLeft = 307
+      ExplicitWidth = 76
+      ExplicitHeight = 31
     end
     object btnInvoice: TcxButton
       Left = 232
@@ -580,7 +583,7 @@ inherited frmPenjualan: TfrmPenjualan
     Left = 176
     Top = 216
     Bitmap = {
-      494C010106000800540118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010106000800600118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
