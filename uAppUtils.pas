@@ -1496,6 +1496,8 @@ procedure TcxGridDBTableViewHelper.SetDataset(ADataset : TDataset;
 var
   I: Integer;
 begin
+  Self.DataController.RecordCount := 0;
+
   if ADataset = nil then
     Exit;
 

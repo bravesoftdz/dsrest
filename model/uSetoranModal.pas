@@ -6,7 +6,7 @@ uses
   uAccount, uModel, uSupplier, uAR;
 
 type
-  TSetoranModal = class(TAppObject)
+  TSetoranModal = class(TAppObjectWithDate)
   private
     FKeterangan: string;
     FNoBukti: string;

@@ -6,6 +6,7 @@ uses
   DB, Classes, SysUtils,Generics.Collections;
 
 type
+//  TBarangSatuanItem = class;
   TBarangSatuanItem = class;
 //  TPenerimaanBarang = class;
 //  TReturSupplier = class;
@@ -261,6 +262,19 @@ type
     property QtyOut: Double read FQtyOut write FQtyOut;
     property TglBukti: TDatetime read FTglBukti write FTglBukti;
     property UOM: TUOM read FUOM write SetUOM;
+  end;
+
+  TAppObjectWithDate = class(TAppObject)
+  private
+    FDateCreate: TDateTime;
+    FDateModify: TDateTime;
+    FUserCreate: string;
+    FUserModify: string;
+  published
+    property DateCreate: TDateTime read FDateCreate write FDateCreate;
+    property DateModify: TDateTime read FDateModify write FDateModify;
+    property UserCreate: string read FUserCreate write FUserCreate;
+    property UserModify: string read FUserModify write FUserModify;
   end;
 
 //type
