@@ -20,7 +20,7 @@ uses
   ufrmKartuAP, ufrmLaporanAP, ufrmKartuAR,ufrmLaporanAR,
   ufrmLaporanReturSupplier, ufrmGenerateJurnal, ufrmBukuBesar,
   Vcl.AppEvnts, ufrmPenarikanDeposit, ufrmUser, ufrmLogin, uSettingApp,
-  uUser, ufrmLaporanLabaRugi;
+  uUser, ufrmLaporanLabaRugi, ufrmSetoranKas;
 
 type
   TfrmMain = class(TForm)
@@ -173,6 +173,8 @@ type
     btnLogin: TdxBarLargeButton;
     dxbrlrgbtnLapLabaRugi: TdxBarLargeButton;
     actLapLabaRugi: TAction;
+    dxbrlrgbtnSetoranModal: TdxBarLargeButton;
+    actSetoranKas: TAction;
     procedure actAlatGantiCabangExecute(Sender: TObject);
     procedure actClosingInventoryExecute(Sender: TObject);
     procedure actCustomerInvoiceExecute(Sender: TObject);
@@ -212,6 +214,7 @@ type
     procedure actPengeluaranKasExecute(Sender: TObject);
     procedure actLapReturSupplierExecute(Sender: TObject);
     procedure actPengambilanDepositExecute(Sender: TObject);
+    procedure actSetoranKasExecute(Sender: TObject);
     procedure actSettlementARAPExecute(Sender: TObject);
     procedure actUserExecute(Sender: TObject);
     procedure aplctnvntsAppException(Sender: TObject; E: Exception);
@@ -401,6 +404,11 @@ end;
 procedure TfrmMain.actReturSupplierExecute(Sender: TObject);
 begin
   frmReturSupplier := TfrmReturSupplier.Create(Self);
+end;
+
+procedure TfrmMain.actSetoranKasExecute(Sender: TObject);
+begin
+  frmSetoranKas := TfrmSetoranKas.Create(Self);
 end;
 
 procedure TfrmMain.actSettingAplikasiExecute(Sender: TObject);

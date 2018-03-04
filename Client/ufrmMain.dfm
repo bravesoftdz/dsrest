@@ -30,7 +30,6 @@ object frmMain: TfrmMain
     TabOrder = 0
     TabStop = False
     object dxrbnAplikasi: TdxRibbonTab
-      Active = True
       Caption = 'Application'
       Groups = <
         item
@@ -69,6 +68,7 @@ object frmMain: TfrmMain
       Index = 2
     end
     object dxrbntbAkuntansi: TdxRibbonTab
+      Active = True
       Caption = 'Keuangan'
       Groups = <
         item
@@ -350,7 +350,7 @@ object frmMain: TfrmMain
           Visible = True
           ItemName = 'dxbrlrgbtnAssetCat'
         end>
-      OneOnRow = False
+      OneOnRow = True
       Row = 0
       UseOwnFont = True
       Visible = True
@@ -496,13 +496,17 @@ object frmMain: TfrmMain
         end
         item
           Visible = True
+          ItemName = 'dxbrlrgbtnSetoranModal'
+        end
+        item
+          Visible = True
           ItemName = 'dxbrlrgbtnPengeluaranKas'
         end
         item
           Visible = True
           ItemName = 'dxbrlrgbtnPenarikanDeposit'
         end>
-      OneOnRow = True
+      OneOnRow = False
       Row = 0
       UseOwnFont = False
       Visible = True
@@ -511,7 +515,7 @@ object frmMain: TfrmMain
     object dxbrmngrAMSBarFA: TdxBar
       Caption = 'FA'
       CaptionButtons = <>
-      DockedLeft = 388
+      DockedLeft = 0
       DockedTop = 0
       FloatLeft = 900
       FloatTop = 8
@@ -912,6 +916,11 @@ object frmMain: TfrmMain
       Category = 0
       LargeImageIndex = 10
     end
+    object dxbrlrgbtnSetoranModal: TdxBarLargeButton
+      Action = actSetoranKas
+      Category = 0
+      LargeImageIndex = 15
+    end
     object dxbrlrgbtnExit: TdxBarLargeButton
       Caption = 'Exit'
       Category = 1
@@ -1039,7 +1048,7 @@ object frmMain: TfrmMain
     end
     object actPenerimaanKas: TAction
       Category = 'Keuangan'
-      Caption = 'Penerimaan Kas / Deposit'
+      Caption = 'Deposit'
       OnExecute = actPenerimaanKasExecute
     end
     object actMasterAccount: TAction
@@ -1156,6 +1165,11 @@ object frmMain: TfrmMain
       Caption = 'Laba Rugi'
       OnExecute = actLapLabaRugiExecute
     end
+    object actSetoranKas: TAction
+      Category = 'Keuangan'
+      Caption = 'Setoran Kas'
+      OnExecute = actSetoranKasExecute
+    end
   end
   object ImgListMainLarge: TImageList
     ColorDepth = cd32Bit
@@ -1164,7 +1178,7 @@ object frmMain: TfrmMain
     Left = 688
     Top = 128
     Bitmap = {
-      494C01011800C003100220002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C01011800C003140220002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000080000000E0000000010020000000000000C0
       0100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
