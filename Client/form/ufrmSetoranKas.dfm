@@ -1,10 +1,32 @@
 inherited frmSetoranKas: TfrmSetoranKas
   Caption = 'Setoran Kas'
+  ExplicitWidth = 733
+  ExplicitHeight = 385
   PixelsPerInch = 96
   TextHeight = 13
+  inherited cxPCData: TcxPageControl
+    inherited cxTSOverview: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 709
+      ExplicitHeight = 265
+    end
+    inherited cxTSInputData: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 709
+      ExplicitHeight = 265
+    end
+  end
+  inherited pnlButton: TPanel
+    inherited chkKonsolidasi1: TcxCheckBox
+      ExplicitWidth = 76
+      ExplicitHeight = 31
+    end
+  end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010107000800140118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800180118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

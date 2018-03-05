@@ -21,6 +21,7 @@ type
   public
     function DS_CabangLookUp: TDataset;
     function DS_BarangLookUp: TDataset;
+    function DS_BarangLookUp1: TDataset;
     function DS_MenuLookUp: TDataset;
     function DS_UserLookUp: TDataset;
     function DS_GudangLookUp: TDataset;
@@ -86,6 +87,8 @@ type
         AIsKonsolidasi : Integer; ACabang : TCabang): TFDJSONDataSets; overload;
     function RetrivePenarikanDeposit(ATglAwal , ATglAtglAkhir : TDateTime; ACabang
         : TCabang): TDataset;
+    function RetriveSetoranModal(ATglAwal , ATglAtglAkhir : TDateTime; ACabang :
+        TCabang): TDataset;
     function RetriveSettingApp(ACabang : TCabang): TDataset;
 
   end;
@@ -1940,6 +1943,23 @@ begin
 
 //  if ACabang <> nil then
 //    sSQL := sSQL + ' and a.cabangID = ' + QuotedStr(ACabang.ID);
+
+  Result   := TDBUtils.OpenDataset(sSQL);
+end;
+
+{ TLaporan }
+
+function TServerLaporan.RetriveSetoranModal(ATglAwal , ATglAtglAkhir :
+    TDateTime; ACabang : TCabang): TDataset;
+var
+  sSQL : String;
+begin
+  sSQL := 'select * from vsetoranmodal a' +
+          ' where a.tanggal between ' + TAppUtils.QuotDt(StartOfTheDay(ATglAwal))+
+          ' and ' + TAppUtils.QuotDt(EndOfTheDay(ATglAtglAkhir));
+
+//  if ACabang <> nil then
+//    sSQL := sSQL + ' and a.cabangid = ' + QuotedStr(ACabang.ID);
 
   Result   := TDBUtils.OpenDataset(sSQL);
 end;
@@ -4030,6 +4050,14 @@ begin
 end;
 
 function TDSData.DS_BarangLookUp: TDataset;
+var
+  sSQL: string;
+begin
+  sSQL   := 'select * from vbarang order by sku';
+  Result := TDBUtils.OpenDataset(sSQL);
+end;
+
+function TDSData.DS_BarangLookUp1: TDataset;
 var
   sSQL: string;
 begin
