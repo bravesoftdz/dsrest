@@ -1,10 +1,12 @@
 inherited frmSetoranKas: TfrmSetoranKas
   Caption = 'Setoran Kas'
+  OnShow = FormShow
   ExplicitWidth = 733
   ExplicitHeight = 385
   PixelsPerInch = 96
   TextHeight = 13
   inherited cxPCData: TcxPageControl
+    Properties.ActivePage = cxTSInputData
     inherited cxTSOverview: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
@@ -16,6 +18,65 @@ inherited frmSetoranKas: TfrmSetoranKas
       ExplicitTop = 24
       ExplicitWidth = 709
       ExplicitHeight = 265
+      object lblNoBukti: TLabel
+        Left = 24
+        Top = 17
+        Width = 39
+        Height = 13
+        Caption = 'No Bukti'
+      end
+      object lblTanggal: TLabel
+        Left = 22
+        Top = 42
+        Width = 38
+        Height = 13
+        Caption = 'Tanggal'
+      end
+      object lblNominal: TLabel
+        Left = 23
+        Top = 67
+        Width = 37
+        Height = 13
+        Caption = 'Nominal'
+      end
+      object lblTKeterangan: TLabel
+        Left = 4
+        Top = 90
+        Width = 56
+        Height = 13
+        Caption = 'Keterangan'
+      end
+      object edNoBukti: TcxTextEdit
+        Tag = 1
+        Left = 70
+        Top = 13
+        TabOrder = 0
+        Text = 'edNoBukti'
+        Width = 121
+      end
+      object dtTanggal: TcxDateEdit
+        Tag = 1
+        Left = 70
+        Top = 38
+        TabOrder = 1
+        Width = 121
+      end
+      object edNominal: TcxCurrencyEdit
+        Tag = 1
+        Left = 70
+        Top = 63
+        Properties.Alignment.Horz = taRightJustify
+        Properties.DisplayFormat = ',0.00;(,0.00)'
+        TabOrder = 2
+        Width = 121
+      end
+      object memKeteranagan: TcxMemo
+        Left = 70
+        Top = 88
+        TabOrder = 3
+        Height = 43
+        Width = 185
+      end
     end
   end
   inherited pnlButton: TPanel
@@ -24,9 +85,27 @@ inherited frmSetoranKas: TfrmSetoranKas
       ExplicitHeight = 31
     end
   end
+  inherited ActionListForm: TActionList
+    inherited ActionSimpan: TAction
+      OnExecute = ActionSimpanExecute
+    end
+    inherited ActionRefresh: TAction
+      OnExecute = ActionRefreshExecute
+    end
+  end
+  inherited dsCabang: TDataSource
+    Left = 624
+    Top = 192
+  end
+  inherited dlgSaveExportExcel: TSaveDialog
+    Left = 632
+    Top = 56
+  end
   inherited ilButton: TImageList
+    Left = 632
+    Top = 24
     Bitmap = {
-      494C010107000800180118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C0101070008001C0118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

@@ -519,6 +519,9 @@ type
         TCabang; ANoBukti : String): TFDJSONDataSets;
   end;
 
+  TServerSetoranModal = class(TServerTransaction)
+  end;
+
 
 
 
