@@ -30,6 +30,7 @@ object frmMain: TfrmMain
     TabOrder = 0
     TabStop = False
     object dxrbnAplikasi: TdxRibbonTab
+      Active = True
       Caption = 'Application'
       Groups = <
         item
@@ -68,7 +69,6 @@ object frmMain: TfrmMain
       Index = 2
     end
     object dxrbntbAkuntansi: TdxRibbonTab
-      Active = True
       Caption = 'Keuangan'
       Groups = <
         item
@@ -1178,7 +1178,7 @@ object frmMain: TfrmMain
     Left = 688
     Top = 128
     Bitmap = {
-      494C01011800C003140220002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C01011800C003180220002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000080000000E0000000010020000000000000C0
       0100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
