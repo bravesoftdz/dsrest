@@ -503,6 +503,11 @@ type
     function Retrieve(AID : String): TMenu;
   end;
 
+  TServerSetoranModal = class(TServerTransaction)
+  public
+//    function Retrieve(AID : String): TMenu;
+  end;
+
   TServerPenarikanDeposit = class(TServerTransaction)
   private
     FServerAP: TServerAP;
@@ -519,9 +524,7 @@ type
         TCabang; ANoBukti : String): TFDJSONDataSets;
   end;
 
-  TServerSetoranModal = class(TServerTransaction)
-  end;
-
+  
 
 
 

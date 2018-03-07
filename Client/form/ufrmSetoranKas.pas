@@ -72,7 +72,12 @@ begin
   SetoranKas.Nominal    := edNominal.Value;
   SetoranKas.Tanggal    := dtTanggal.Date;
 
-//  if ClientDataModule.servercru
+  if ClientDataModule.ServerSetoranModalClient.Save(SetoranKas) then
+  begin
+    ClearByTag([0,1]);
+    edNoBukti.SetFocus;
+    TAppUtils.InformationBerhasilSimpan;
+  end;
 
 
 

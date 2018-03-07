@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 3/6/2018 5:34:48 AM
+// 3/8/2018 5:46:15 AM
 //
 
 unit ClientClassesUnit;
@@ -1277,6 +1277,40 @@ type
     function Retrieve_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedTPenarikanDeposit;
     function RetrieveCDSlip(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; ANoBukti: string; const ARequestFilter: string = ''): TFDJSONDataSets;
     function RetrieveCDSlip_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
+    function DoJournal(ANoBukti: string; AModTransClass: string; AIsHapusJurnal: Integer; const ARequestFilter: string = ''): Boolean;
+    function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
+    function RetrieveData(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): TDataSet;
+    function RetrieveData_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function RetrieveDataSiapJurnal(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string = ''): TDataSet;
+    function RetrieveDataSiapJurnal_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): TFDJSONDataSets;
+    function RetrieveDataSlip_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
+    function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
+    function DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
+    function RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string = ''): TDataSet;
+    function RetrieveCDS_Cache(AAppObject: TAppObject; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function Save(AOBject: TAppObject; const ARequestFilter: string = ''): Boolean;
+  end;
+
+  TServerSetoranModalClient = class(TDSAdminRestClient)
+  private
+    FDoJournalCommand: TDSRestCommand;
+    FGenerateNoBuktiCommand: TDSRestCommand;
+    FRetrieveDataCommand: TDSRestCommand;
+    FRetrieveDataCommand_Cache: TDSRestCommand;
+    FRetrieveDataSiapJurnalCommand: TDSRestCommand;
+    FRetrieveDataSiapJurnalCommand_Cache: TDSRestCommand;
+    FRetrieveDataSlipCommand: TDSRestCommand;
+    FRetrieveDataSlipCommand_Cache: TDSRestCommand;
+    FDeleteCommand: TDSRestCommand;
+    FDeleteNoCommitCommand: TDSRestCommand;
+    FRetrieveCDSCommand: TDSRestCommand;
+    FRetrieveCDSCommand_Cache: TDSRestCommand;
+    FSaveCommand: TDSRestCommand;
+  public
+    constructor Create(ARestConnection: TDSRestConnection); overload;
+    constructor Create(ARestConnection: TDSRestConnection; AInstanceOwner: Boolean); overload;
+    destructor Destroy; override;
     function DoJournal(ANoBukti: string; AModTransClass: string; AIsHapusJurnal: Integer; const ARequestFilter: string = ''): Boolean;
     function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
     function RetrieveData(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): TDataSet;
@@ -4766,6 +4800,99 @@ const
   );
 
   TServerPenarikanDeposit_Save: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AOBject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
+  TServerSetoranModal_DoJournal: array [0..3] of TDSRestParameterMetaData =
+  (
+    (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'AModTransClass'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'AIsHapusJurnal'; Direction: 1; DBXType: 6; TypeName: 'Integer'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
+  TServerSetoranModal_GenerateNoBukti: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATglBukti'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APrefix'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'string')
+  );
+
+  TServerSetoranModal_RetrieveData: array [0..3] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'AIDCabang'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TServerSetoranModal_RetrieveData_Cache: array [0..3] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'AIDCabang'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerSetoranModal_RetrieveDataSiapJurnal: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TServerSetoranModal_RetrieveDataSiapJurnal_Cache: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerSetoranModal_RetrieveDataSlip: array [0..4] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'AIDCabang'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'AID'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 37; TypeName: 'TFDJSONDataSets')
+  );
+
+  TServerSetoranModal_RetrieveDataSlip_Cache: array [0..4] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'AIDCabang'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'AID'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerSetoranModal_Delete: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
+  TServerSetoranModal_DeleteNoCommit: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
+  TServerSetoranModal_RetrieveCDS: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TServerSetoranModal_RetrieveCDS_Cache: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerSetoranModal_Save: array [0..1] of TDSRestParameterMetaData =
   (
     (Name: 'AOBject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
@@ -17132,6 +17259,312 @@ begin
   FRetrieveCommand_Cache.DisposeOf;
   FRetrieveCDSlipCommand.DisposeOf;
   FRetrieveCDSlipCommand_Cache.DisposeOf;
+  FDoJournalCommand.DisposeOf;
+  FGenerateNoBuktiCommand.DisposeOf;
+  FRetrieveDataCommand.DisposeOf;
+  FRetrieveDataCommand_Cache.DisposeOf;
+  FRetrieveDataSiapJurnalCommand.DisposeOf;
+  FRetrieveDataSiapJurnalCommand_Cache.DisposeOf;
+  FRetrieveDataSlipCommand.DisposeOf;
+  FRetrieveDataSlipCommand_Cache.DisposeOf;
+  FDeleteCommand.DisposeOf;
+  FDeleteNoCommitCommand.DisposeOf;
+  FRetrieveCDSCommand.DisposeOf;
+  FRetrieveCDSCommand_Cache.DisposeOf;
+  FSaveCommand.DisposeOf;
+  inherited;
+end;
+
+function TServerSetoranModalClient.DoJournal(ANoBukti: string; AModTransClass: string; AIsHapusJurnal: Integer; const ARequestFilter: string): Boolean;
+begin
+  if FDoJournalCommand = nil then
+  begin
+    FDoJournalCommand := FConnection.CreateCommand;
+    FDoJournalCommand.RequestType := 'GET';
+    FDoJournalCommand.Text := 'TServerSetoranModal.DoJournal';
+    FDoJournalCommand.Prepare(TServerSetoranModal_DoJournal);
+  end;
+  FDoJournalCommand.Parameters[0].Value.SetWideString(ANoBukti);
+  FDoJournalCommand.Parameters[1].Value.SetWideString(AModTransClass);
+  FDoJournalCommand.Parameters[2].Value.SetInt32(AIsHapusJurnal);
+  FDoJournalCommand.Execute(ARequestFilter);
+  Result := FDoJournalCommand.Parameters[3].Value.GetBoolean;
+end;
+
+function TServerSetoranModalClient.GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string): string;
+begin
+  if FGenerateNoBuktiCommand = nil then
+  begin
+    FGenerateNoBuktiCommand := FConnection.CreateCommand;
+    FGenerateNoBuktiCommand.RequestType := 'GET';
+    FGenerateNoBuktiCommand.Text := 'TServerSetoranModal.GenerateNoBukti';
+    FGenerateNoBuktiCommand.Prepare(TServerSetoranModal_GenerateNoBukti);
+  end;
+  FGenerateNoBuktiCommand.Parameters[0].Value.AsDateTime := ATglBukti;
+  FGenerateNoBuktiCommand.Parameters[1].Value.SetWideString(APrefix);
+  FGenerateNoBuktiCommand.Execute(ARequestFilter);
+  Result := FGenerateNoBuktiCommand.Parameters[2].Value.GetWideString;
+end;
+
+function TServerSetoranModalClient.RetrieveData(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string): TDataSet;
+begin
+  if FRetrieveDataCommand = nil then
+  begin
+    FRetrieveDataCommand := FConnection.CreateCommand;
+    FRetrieveDataCommand.RequestType := 'GET';
+    FRetrieveDataCommand.Text := 'TServerSetoranModal.RetrieveData';
+    FRetrieveDataCommand.Prepare(TServerSetoranModal_RetrieveData);
+  end;
+  FRetrieveDataCommand.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataCommand.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataCommand.Parameters[2].Value.SetWideString(AIDCabang);
+  FRetrieveDataCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FRetrieveDataCommand.Parameters[3].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FRetrieveDataCommand.FreeOnExecute(Result);
+end;
+
+function TServerSetoranModalClient.RetrieveData_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FRetrieveDataCommand_Cache = nil then
+  begin
+    FRetrieveDataCommand_Cache := FConnection.CreateCommand;
+    FRetrieveDataCommand_Cache.RequestType := 'GET';
+    FRetrieveDataCommand_Cache.Text := 'TServerSetoranModal.RetrieveData';
+    FRetrieveDataCommand_Cache.Prepare(TServerSetoranModal_RetrieveData_Cache);
+  end;
+  FRetrieveDataCommand_Cache.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataCommand_Cache.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataCommand_Cache.Parameters[2].Value.SetWideString(AIDCabang);
+  FRetrieveDataCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FRetrieveDataCommand_Cache.Parameters[3].Value.GetString);
+end;
+
+function TServerSetoranModalClient.RetrieveDataSiapJurnal(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string): TDataSet;
+begin
+  if FRetrieveDataSiapJurnalCommand = nil then
+  begin
+    FRetrieveDataSiapJurnalCommand := FConnection.CreateCommand;
+    FRetrieveDataSiapJurnalCommand.RequestType := 'GET';
+    FRetrieveDataSiapJurnalCommand.Text := 'TServerSetoranModal.RetrieveDataSiapJurnal';
+    FRetrieveDataSiapJurnalCommand.Prepare(TServerSetoranModal_RetrieveDataSiapJurnal);
+  end;
+  FRetrieveDataSiapJurnalCommand.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataSiapJurnalCommand.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataSiapJurnalCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FRetrieveDataSiapJurnalCommand.Parameters[2].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FRetrieveDataSiapJurnalCommand.FreeOnExecute(Result);
+end;
+
+function TServerSetoranModalClient.RetrieveDataSiapJurnal_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FRetrieveDataSiapJurnalCommand_Cache = nil then
+  begin
+    FRetrieveDataSiapJurnalCommand_Cache := FConnection.CreateCommand;
+    FRetrieveDataSiapJurnalCommand_Cache.RequestType := 'GET';
+    FRetrieveDataSiapJurnalCommand_Cache.Text := 'TServerSetoranModal.RetrieveDataSiapJurnal';
+    FRetrieveDataSiapJurnalCommand_Cache.Prepare(TServerSetoranModal_RetrieveDataSiapJurnal_Cache);
+  end;
+  FRetrieveDataSiapJurnalCommand_Cache.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataSiapJurnalCommand_Cache.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataSiapJurnalCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FRetrieveDataSiapJurnalCommand_Cache.Parameters[2].Value.GetString);
+end;
+
+function TServerSetoranModalClient.RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string): TFDJSONDataSets;
+begin
+  if FRetrieveDataSlipCommand = nil then
+  begin
+    FRetrieveDataSlipCommand := FConnection.CreateCommand;
+    FRetrieveDataSlipCommand.RequestType := 'GET';
+    FRetrieveDataSlipCommand.Text := 'TServerSetoranModal.RetrieveDataSlip';
+    FRetrieveDataSlipCommand.Prepare(TServerSetoranModal_RetrieveDataSlip);
+  end;
+  FRetrieveDataSlipCommand.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataSlipCommand.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataSlipCommand.Parameters[2].Value.SetWideString(AIDCabang);
+  FRetrieveDataSlipCommand.Parameters[3].Value.SetWideString(AID);
+  FRetrieveDataSlipCommand.Execute(ARequestFilter);
+  if not FRetrieveDataSlipCommand.Parameters[4].Value.IsNull then
+  begin
+    FUnMarshal := TDSRestCommand(FRetrieveDataSlipCommand.Parameters[4].ConnectionHandler).GetJSONUnMarshaler;
+    try
+      Result := TFDJSONDataSets(FUnMarshal.UnMarshal(FRetrieveDataSlipCommand.Parameters[4].Value.GetJSONValue(True)));
+      if FInstanceOwner then
+        FRetrieveDataSlipCommand.FreeOnExecute(Result);
+    finally
+      FreeAndNil(FUnMarshal)
+    end
+  end
+  else
+    Result := nil;
+end;
+
+function TServerSetoranModalClient.RetrieveDataSlip_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string): IDSRestCachedTFDJSONDataSets;
+begin
+  if FRetrieveDataSlipCommand_Cache = nil then
+  begin
+    FRetrieveDataSlipCommand_Cache := FConnection.CreateCommand;
+    FRetrieveDataSlipCommand_Cache.RequestType := 'GET';
+    FRetrieveDataSlipCommand_Cache.Text := 'TServerSetoranModal.RetrieveDataSlip';
+    FRetrieveDataSlipCommand_Cache.Prepare(TServerSetoranModal_RetrieveDataSlip_Cache);
+  end;
+  FRetrieveDataSlipCommand_Cache.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataSlipCommand_Cache.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataSlipCommand_Cache.Parameters[2].Value.SetWideString(AIDCabang);
+  FRetrieveDataSlipCommand_Cache.Parameters[3].Value.SetWideString(AID);
+  FRetrieveDataSlipCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedTFDJSONDataSets.Create(FRetrieveDataSlipCommand_Cache.Parameters[4].Value.GetString);
+end;
+
+function TServerSetoranModalClient.Delete(AAppObject: TAppObject; const ARequestFilter: string): Boolean;
+begin
+  if FDeleteCommand = nil then
+  begin
+    FDeleteCommand := FConnection.CreateCommand;
+    FDeleteCommand.RequestType := 'POST';
+    FDeleteCommand.Text := 'TServerSetoranModal."Delete"';
+    FDeleteCommand.Prepare(TServerSetoranModal_Delete);
+  end;
+  if not Assigned(AAppObject) then
+    FDeleteCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FDeleteCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FDeleteCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FDeleteCommand.Execute(ARequestFilter);
+  Result := FDeleteCommand.Parameters[1].Value.GetBoolean;
+end;
+
+function TServerSetoranModalClient.DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string): Boolean;
+begin
+  if FDeleteNoCommitCommand = nil then
+  begin
+    FDeleteNoCommitCommand := FConnection.CreateCommand;
+    FDeleteNoCommitCommand.RequestType := 'POST';
+    FDeleteNoCommitCommand.Text := 'TServerSetoranModal."DeleteNoCommit"';
+    FDeleteNoCommitCommand.Prepare(TServerSetoranModal_DeleteNoCommit);
+  end;
+  if not Assigned(AAppObject) then
+    FDeleteNoCommitCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FDeleteNoCommitCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FDeleteNoCommitCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FDeleteNoCommitCommand.Execute(ARequestFilter);
+  Result := FDeleteNoCommitCommand.Parameters[1].Value.GetBoolean;
+end;
+
+function TServerSetoranModalClient.RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string): TDataSet;
+begin
+  if FRetrieveCDSCommand = nil then
+  begin
+    FRetrieveCDSCommand := FConnection.CreateCommand;
+    FRetrieveCDSCommand.RequestType := 'POST';
+    FRetrieveCDSCommand.Text := 'TServerSetoranModal."RetrieveCDS"';
+    FRetrieveCDSCommand.Prepare(TServerSetoranModal_RetrieveCDS);
+  end;
+  if not Assigned(AAppObject) then
+    FRetrieveCDSCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FRetrieveCDSCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FRetrieveCDSCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FRetrieveCDSCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FRetrieveCDSCommand.Parameters[1].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FRetrieveCDSCommand.FreeOnExecute(Result);
+end;
+
+function TServerSetoranModalClient.RetrieveCDS_Cache(AAppObject: TAppObject; const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FRetrieveCDSCommand_Cache = nil then
+  begin
+    FRetrieveCDSCommand_Cache := FConnection.CreateCommand;
+    FRetrieveCDSCommand_Cache.RequestType := 'POST';
+    FRetrieveCDSCommand_Cache.Text := 'TServerSetoranModal."RetrieveCDS"';
+    FRetrieveCDSCommand_Cache.Prepare(TServerSetoranModal_RetrieveCDS_Cache);
+  end;
+  if not Assigned(AAppObject) then
+    FRetrieveCDSCommand_Cache.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FRetrieveCDSCommand_Cache.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FRetrieveCDSCommand_Cache.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FRetrieveCDSCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FRetrieveCDSCommand_Cache.Parameters[1].Value.GetString);
+end;
+
+function TServerSetoranModalClient.Save(AOBject: TAppObject; const ARequestFilter: string): Boolean;
+begin
+  if FSaveCommand = nil then
+  begin
+    FSaveCommand := FConnection.CreateCommand;
+    FSaveCommand.RequestType := 'POST';
+    FSaveCommand.Text := 'TServerSetoranModal."Save"';
+    FSaveCommand.Prepare(TServerSetoranModal_Save);
+  end;
+  if not Assigned(AOBject) then
+    FSaveCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FSaveCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FSaveCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AOBject), True);
+      if FInstanceOwner then
+        AOBject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FSaveCommand.Execute(ARequestFilter);
+  Result := FSaveCommand.Parameters[1].Value.GetBoolean;
+end;
+
+constructor TServerSetoranModalClient.Create(ARestConnection: TDSRestConnection);
+begin
+  inherited Create(ARestConnection);
+end;
+
+constructor TServerSetoranModalClient.Create(ARestConnection: TDSRestConnection; AInstanceOwner: Boolean);
+begin
+  inherited Create(ARestConnection, AInstanceOwner);
+end;
+
+destructor TServerSetoranModalClient.Destroy;
+begin
   FDoJournalCommand.DisposeOf;
   FGenerateNoBuktiCommand.DisposeOf;
   FRetrieveDataCommand.DisposeOf;

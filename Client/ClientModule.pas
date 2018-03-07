@@ -35,6 +35,7 @@ type
     FServerRekBankClient: TServerRekBankClient;
     FServerPenerimaanKasClient: TServerPenerimaanKasClient;
     FDSDataCLient: TDSDataClient;
+    FServerSetoranModalClient: TServerSetoranModalClient;
     FServerPengeluaranKasClient: TServerPengeluaranKasClient;
     FServerSettingAppClient: TServerSettingAppClient;
     FServerTAGRequestClient: TServerTAGRequestClient;
@@ -66,6 +67,7 @@ type
     function GetServerRekBankClient: TServerRekBankClient;
     function GetServerPenerimaanKasClient: TServerPenerimaanKasClient;
     function GetDSDataCLient: TDSDataClient;
+    function GetServerSetoranModalClient: TServerSetoranModalClient;
     function GetServerPengeluaranKasClient: TServerPengeluaranKasClient;
     function GetServerSettingAppClient: TServerSettingAppClient;
     function GetServerTAGRequestClient: TServerTAGRequestClient;
@@ -112,6 +114,8 @@ type
     property ServerPenerimaanKasClient: TServerPenerimaanKasClient read
         GetServerPenerimaanKasClient write FServerPenerimaanKasClient;
     property DSDataCLient: TDSDataClient read GetDSDataCLient write FDSDataCLient;
+    property ServerSetoranModalClient: TServerSetoranModalClient read
+        GetServerSetoranModalClient write FServerSetoranModalClient;
     property ServerPengeluaranKasClient: TServerPengeluaranKasClient read
         GetServerPengeluaranKasClient write FServerPengeluaranKasClient;
     property ServerSettingAppClient: TServerSettingAppClient read
@@ -348,6 +352,16 @@ begin
 
   FDSDataCLient:= TDSDataClient.Create(DSRestConnection, FInstanceOwner);
   Result := FDSDataCLient;
+end;
+
+function TClientDataModule.GetServerSetoranModalClient:
+    TServerSetoranModalClient;
+begin
+  if FServerSetoranModalClient <> nil then
+    FreeAndNil(FServerSetoranModalClient);
+
+  FServerSetoranModalClient:= TServerSetoranModalClient.Create(DSRestConnection, FInstanceOwner);
+  Result := FServerSetoranModalClient;
 end;
 
 function TClientDataModule.GetServerPengeluaranKasClient:
