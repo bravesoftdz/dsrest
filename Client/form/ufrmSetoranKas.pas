@@ -27,6 +27,9 @@ type
     memKeteranagan: TcxMemo;
     procedure ActionRefreshExecute(Sender: TObject);
     procedure ActionSimpanExecute(Sender: TObject);
+    procedure cxGridDBTableOverviewCellDblClick(Sender: TcxCustomGridTableView;
+        ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton; AShift:
+        TShiftState; var AHandled: Boolean);
     procedure FormShow(Sender: TObject);
   private
     fcds: TClientDataset;
@@ -35,6 +38,7 @@ type
     property SetoranKas: TSetoranModal read GetSetoranKas write FSetoranKas;
     { Private declarations }
   public
+    procedure LoadDataTransaksi(AID : String); virtual;
     { Public declarations }
   end;
 
@@ -63,8 +67,12 @@ end;
 procedure TfrmSetoranKas.ActionSimpanExecute(Sender: TObject);
 begin
   inherited;
+  if SetoranKas.ObjectState = 1 then
+    edNoBukti.Text := ClientDataModule.ServerSetoranModalClient.GenerateNoBukti(dtTanggal.Date, 'SM');
+
   if not ValidateEmptyCtrl([1]) then
     Exit;
+
 
   SetoranKas.NoBukti    := edNoBukti.Text;
   SetoranKas.Keterangan := memKeteranagan.Lines.Text;
@@ -74,13 +82,22 @@ begin
 
   if ClientDataModule.ServerSetoranModalClient.Save(SetoranKas) then
   begin
-    ClearByTag([0,1]);
-    edNoBukti.SetFocus;
+    LoadDataTransaksi('');
+    dtTanggal.SetFocus;
     TAppUtils.InformationBerhasilSimpan;
   end;
 
 
 
+end;
+
+procedure TfrmSetoranKas.cxGridDBTableOverviewCellDblClick(Sender:
+    TcxCustomGridTableView; ACellViewInfo: TcxGridTableDataCellViewInfo;
+    AButton: TMouseButton; AShift: TShiftState; var AHandled: Boolean);
+begin
+  inherited;
+  LoadDataTransaksi(cxGridDBTableOverview.DS.FieldByName('ID').AsString);
+  cxPCData.ActivePageIndex := 1;
 end;
 
 procedure TfrmSetoranKas.FormShow(Sender: TObject);
@@ -95,6 +112,31 @@ begin
     FSetoranKas := TSetoranModal.Create;
 
   Result := FSetoranKas;
+end;
+
+procedure TfrmSetoranKas.LoadDataTransaksi(AID : String);
+begin
+  inherited;
+  ClearByTag([0,1]);
+  FreeAndNil(FSetoranKas);
+
+  if AID = '' then
+    Exit;
+
+  FSetoranKas := ClientDataModule.ServerSetoranModalClient.Retrieve(aID);
+  if FSetoranKas = nil then
+    Exit;
+
+  if FSetoranKas.ID = '' then
+    Exit;
+
+  edNoBukti.Text            := SetoranKas.NoBukti;
+  edNominal.Value           := SetoranKas.Nominal;
+  dtTanggal.Date            := SetoranKas.Tanggal;
+  memKeteranagan.Lines.Text := SetoranKas.Keterangan;
+
+
+
 end;
 
 end.

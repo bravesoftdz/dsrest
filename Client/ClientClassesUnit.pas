@@ -1,13 +1,13 @@
 //
 // Created by the DataSnap proxy generator.
-// 3/8/2018 5:46:15 AM
+// 3/8/2018 12:32:12 PM
 //
 
 unit ClientClassesUnit;
 
 interface
 
-uses System.JSON, Datasnap.DSProxyRest, Datasnap.DSClientRest, Data.DBXCommon, Data.DBXClient, Data.DBXDataSnap, Data.DBXJSON, Datasnap.DSProxy, System.Classes, System.SysUtils, Data.DB, Data.SqlExpr, Data.DBXDBReaders, Data.DBXCDSReaders, uModel, Data.FireDACJSONReflect, uSupplier, uCustomerInvoice, uPenerimaanBarang, uReturSupplier, uPenjualan, uAR, uAccount, uRekBank, uPenerimaanKas, uPengeluaranKas, uSettingApp, uTransferAntarGudang, uTAGRequests, uTransferAntarCabang, uJurnal, uSettlementARAP, uUser, uPenarikanDeposit, Data.DBXJSONReflect;
+uses System.JSON, Datasnap.DSProxyRest, Datasnap.DSClientRest, Data.DBXCommon, Data.DBXClient, Data.DBXDataSnap, Data.DBXJSON, Datasnap.DSProxy, System.Classes, System.SysUtils, Data.DB, Data.SqlExpr, Data.DBXDBReaders, Data.DBXCDSReaders, uModel, Data.FireDACJSONReflect, uSupplier, uCustomerInvoice, uPenerimaanBarang, uReturSupplier, uPenjualan, uAR, uAccount, uRekBank, uPenerimaanKas, uPengeluaranKas, uSettingApp, uTransferAntarGudang, uTAGRequests, uTransferAntarCabang, uJurnal, uSettlementARAP, uUser, uPenarikanDeposit, uSetoranModal, Data.DBXJSONReflect;
 
 type
 
@@ -24,6 +24,7 @@ type
   IDSRestCachedTPenjualan = interface;
   IDSRestCachedTTransferAntarCabangKirim = interface;
   IDSRestCachedTTransferAntarCabangTerima = interface;
+  IDSRestCachedTSetoranModal = interface;
   IDSRestCachedTReturSupplier = interface;
   IDSRestCachedTPenerimaanKas = interface;
   IDSRestCachedTCustomerInvoice = interface;
@@ -1294,6 +1295,8 @@ type
 
   TServerSetoranModalClient = class(TDSAdminRestClient)
   private
+    FRetrieveCommand: TDSRestCommand;
+    FRetrieveCommand_Cache: TDSRestCommand;
     FDoJournalCommand: TDSRestCommand;
     FGenerateNoBuktiCommand: TDSRestCommand;
     FRetrieveDataCommand: TDSRestCommand;
@@ -1311,6 +1314,8 @@ type
     constructor Create(ARestConnection: TDSRestConnection); overload;
     constructor Create(ARestConnection: TDSRestConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
+    function Retrieve(AID: string; const ARequestFilter: string = ''): TSetoranModal;
+    function Retrieve_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedTSetoranModal;
     function DoJournal(ANoBukti: string; AModTransClass: string; AIsHapusJurnal: Integer; const ARequestFilter: string = ''): Boolean;
     function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
     function RetrieveData(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): TDataSet;
@@ -1390,6 +1395,11 @@ type
   end;
 
   TDSRestCachedTTransferAntarCabangTerima = class(TDSRestCachedObject<TTransferAntarCabangTerima>, IDSRestCachedTTransferAntarCabangTerima, IDSRestCachedCommand)
+  end;
+  IDSRestCachedTSetoranModal = interface(IDSRestCachedObject<TSetoranModal>)
+  end;
+
+  TDSRestCachedTSetoranModal = class(TDSRestCachedObject<TSetoranModal>, IDSRestCachedTSetoranModal, IDSRestCachedCommand)
   end;
   IDSRestCachedTReturSupplier = interface(IDSRestCachedObject<TReturSupplier>)
   end;
@@ -4803,6 +4813,18 @@ const
   (
     (Name: 'AOBject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
+  TServerSetoranModal_Retrieve: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AID'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 37; TypeName: 'TSetoranModal')
+  );
+
+  TServerSetoranModal_Retrieve_Cache: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AID'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
   TServerSetoranModal_DoJournal: array [0..3] of TDSRestParameterMetaData =
@@ -17275,6 +17297,46 @@ begin
   inherited;
 end;
 
+function TServerSetoranModalClient.Retrieve(AID: string; const ARequestFilter: string): TSetoranModal;
+begin
+  if FRetrieveCommand = nil then
+  begin
+    FRetrieveCommand := FConnection.CreateCommand;
+    FRetrieveCommand.RequestType := 'GET';
+    FRetrieveCommand.Text := 'TServerSetoranModal.Retrieve';
+    FRetrieveCommand.Prepare(TServerSetoranModal_Retrieve);
+  end;
+  FRetrieveCommand.Parameters[0].Value.SetWideString(AID);
+  FRetrieveCommand.Execute(ARequestFilter);
+  if not FRetrieveCommand.Parameters[1].Value.IsNull then
+  begin
+    FUnMarshal := TDSRestCommand(FRetrieveCommand.Parameters[1].ConnectionHandler).GetJSONUnMarshaler;
+    try
+      Result := TSetoranModal(FUnMarshal.UnMarshal(FRetrieveCommand.Parameters[1].Value.GetJSONValue(True)));
+      if FInstanceOwner then
+        FRetrieveCommand.FreeOnExecute(Result);
+    finally
+      FreeAndNil(FUnMarshal)
+    end
+  end
+  else
+    Result := nil;
+end;
+
+function TServerSetoranModalClient.Retrieve_Cache(AID: string; const ARequestFilter: string): IDSRestCachedTSetoranModal;
+begin
+  if FRetrieveCommand_Cache = nil then
+  begin
+    FRetrieveCommand_Cache := FConnection.CreateCommand;
+    FRetrieveCommand_Cache.RequestType := 'GET';
+    FRetrieveCommand_Cache.Text := 'TServerSetoranModal.Retrieve';
+    FRetrieveCommand_Cache.Prepare(TServerSetoranModal_Retrieve_Cache);
+  end;
+  FRetrieveCommand_Cache.Parameters[0].Value.SetWideString(AID);
+  FRetrieveCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedTSetoranModal.Create(FRetrieveCommand_Cache.Parameters[1].Value.GetString);
+end;
+
 function TServerSetoranModalClient.DoJournal(ANoBukti: string; AModTransClass: string; AIsHapusJurnal: Integer; const ARequestFilter: string): Boolean;
 begin
   if FDoJournalCommand = nil then
@@ -17565,6 +17627,8 @@ end;
 
 destructor TServerSetoranModalClient.Destroy;
 begin
+  FRetrieveCommand.DisposeOf;
+  FRetrieveCommand_Cache.DisposeOf;
   FDoJournalCommand.DisposeOf;
   FGenerateNoBuktiCommand.DisposeOf;
   FRetrieveDataCommand.DisposeOf;

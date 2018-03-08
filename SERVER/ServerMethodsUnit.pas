@@ -8,7 +8,8 @@ uses
   uCustomerInvoice, uAR, uPenerimaanKas, uAccount, uRekBank,
   uTransferAntarGudang, uSettingApp, uTAGRequests, uTransferAntarCabang,
   uPengeluaranKas, FireDAC.Comp.Client, uSettingAppServer, uJurnal, uSupplier,
-  uPenerimaanBarang,uReturSupplier, uSettlementARAP, uUser, uPenarikanDeposit;
+  uPenerimaanBarang,uReturSupplier, uSettlementARAP, uUser, uPenarikanDeposit,
+  uSetoranModal;
 
 type
   {$METHODINFO ON}
@@ -505,6 +506,7 @@ type
 
   TServerSetoranModal = class(TServerTransaction)
   public
+    function Retrieve(AID : String): TSetoranModal;
 //    function Retrieve(AID : String): TMenu;
   end;
 
@@ -4701,6 +4703,12 @@ begin
 //    sSQL := sSQL + ' and cabangid = ' + QuotedStr(ACabang.ID);
 
   TFDJSONDataSetsWriter.ListAdd(Result,TDBUtils.OpenQuery(sSQL))
+end;
+
+function TServerSetoranModal.Retrieve(AID : String): TSetoranModal;
+begin
+  Result := TSetoranModal.Create;
+  TDBUtils.LoadFromDB(Result, AID);
 end;
 
 

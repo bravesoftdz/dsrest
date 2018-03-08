@@ -37,7 +37,8 @@ uses
   ufrmSettingAppServer in 'ufrmSettingAppServer.pas' {frmSettingAppServer},
   uSettlementARAP in '..\model\uSettlementARAP.pas',
   uUser in '..\model\uUser.pas',
-  uPenarikanDeposit in '..\model\uPenarikanDeposit.pas';
+  uPenarikanDeposit in '..\model\uPenarikanDeposit.pas',
+  uSetoranModal in '..\model\uSetoranModal.pas';
 
 {$R *.res}
 
