@@ -20,7 +20,7 @@ uses
   ufrmKartuAP, ufrmLaporanAP, ufrmKartuAR,ufrmLaporanAR,
   ufrmLaporanReturSupplier, ufrmGenerateJurnal, ufrmBukuBesar,
   Vcl.AppEvnts, ufrmPenarikanDeposit, ufrmUser, ufrmLogin, uSettingApp,
-  uUser, ufrmLaporanLabaRugi, ufrmSetoranKas;
+  uUser, ufrmLaporanLabaRugi, ufrmSetoranKas, ufrmCetakBarcode;
 
 type
   TfrmMain = class(TForm)
@@ -48,7 +48,7 @@ type
     actlstMainMenu: TActionList;
     actMasSupplier: TAction;
     ImgListMainLarge: TImageList;
-    actMasAssetCategory: TAction;
+    actCetakBarcode: TAction;
     dxrbnTabMaster: TdxRibbonTab;
     dxrbnMain: TdxRibbon;
     dxbrApplication: TdxBar;
@@ -176,6 +176,7 @@ type
     dxbrlrgbtnSetoranModal: TdxBarLargeButton;
     actSetoranKas: TAction;
     procedure actAlatGantiCabangExecute(Sender: TObject);
+    procedure actCetakBarcodeExecute(Sender: TObject);
     procedure actClosingInventoryExecute(Sender: TObject);
     procedure actCustomerInvoiceExecute(Sender: TObject);
     procedure actDaftarAPExecute(Sender: TObject);
@@ -259,6 +260,11 @@ if TAppUtils.Confirm('Untuk Pindah Cabang semua form harus ditutup. Lanjutkan ?'
 
     UpdateStatusBar;
   end;
+end;
+
+procedure TfrmMain.actCetakBarcodeExecute(Sender: TObject);
+begin
+  frmCetakBarcode := TfrmCetakBarcode.Create(Self);
 end;
 
 procedure TfrmMain.actClosingInventoryExecute(Sender: TObject);
