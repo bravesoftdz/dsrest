@@ -35,6 +35,7 @@ object frmLogin: TfrmLogin
     Top = 32
     TabOrder = 0
     Text = 'edUser'
+    OnKeyDown = edUserKeyDown
     Width = 121
   end
   object edPassword: TcxTextEdit
@@ -43,6 +44,7 @@ object frmLogin: TfrmLogin
     Properties.EchoMode = eemPassword
     TabOrder = 1
     Text = 'edPassword'
+    OnKeyDown = edPasswordKeyDown
     Width = 121
   end
   object bLogin: TcxButton

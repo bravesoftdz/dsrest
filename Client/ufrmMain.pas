@@ -175,6 +175,8 @@ type
     actLapLabaRugi: TAction;
     dxbrlrgbtnSetoranModal: TdxBarLargeButton;
     actSetoranKas: TAction;
+    actLogin: TAction;
+    tmrLogin: TTimer;
     procedure actAlatGantiCabangExecute(Sender: TObject);
     procedure actCetakBarcodeExecute(Sender: TObject);
     procedure actClosingInventoryExecute(Sender: TObject);
@@ -214,6 +216,7 @@ type
     procedure FormDblClick(Sender: TObject);
     procedure actPengeluaranKasExecute(Sender: TObject);
     procedure actLapReturSupplierExecute(Sender: TObject);
+    procedure actLoginExecute(Sender: TObject);
     procedure actPengambilanDepositExecute(Sender: TObject);
     procedure actSetoranKasExecute(Sender: TObject);
     procedure actSettlementARAPExecute(Sender: TObject);
@@ -222,6 +225,9 @@ type
     procedure dxbrlrgbtnExitClick(Sender: TObject);
     procedure btnLoginClick(Sender: TObject);
     procedure pnlGajiDblClick(Sender: TObject);
+    procedure tmrLoginTimer(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+//    procedure FormShow(Sender: TObject);
   private
     procedure SimpanAndDisableDataMenu;
     procedure UpdateStatusBar;
@@ -350,6 +356,24 @@ end;
 procedure TfrmMain.actLapStockSekarangExecute(Sender: TObject);
 begin
   frmLapStockSekarang := TfrmLapStockSekarang.Create(Self);
+end;
+
+procedure TfrmMain.actLoginExecute(Sender: TObject);
+var
+  I: Integer;
+begin
+  uSettingApp.UserApplikasi := nil;
+  for I := ComponentCount - 1 downto 0  do
+  begin
+    if (Components[i] is TForm) then
+      (Components[i] as TForm).Free;
+  end;
+
+  SimpanAndDisableDataMenu;
+
+  frmLogin := TfrmLogin.Create(Self);
+  frmLogin.ShowModal;
+  SimpanAndDisableDataMenu;
 end;
 
 procedure TfrmMain.actMasSupplierExecute(Sender: TObject);
@@ -503,18 +527,7 @@ procedure TfrmMain.btnLoginClick(Sender: TObject);
 var
   I: Integer;
 begin
-  uSettingApp.UserApplikasi := nil;
-  for I := ComponentCount - 1 downto 0  do
-  begin
-    if (Components[i] is TForm) then
-      (Components[i] as TForm).Free;
-  end;
-
-  SimpanAndDisableDataMenu;
-
-  frmLogin := TfrmLogin.Create(Self);
-  frmLogin.ShowModal;
-  SimpanAndDisableDataMenu;
+  
 end;
 
 
@@ -554,6 +567,7 @@ begin
 
       ClientDataModule.SettingApp.Free;
       ClientDataModule.SettingApp := ClientDataModule.ServerSettingAppClient.RetrieveByCabang(ClientDataModule.Cabang.ID);
+
     end else begin
       frmPilihCabang := TfrmPilihCabang.Create(Self);
       try
@@ -589,7 +603,13 @@ begin
 //  end;
 end;
 
-procedure TfrmMain.pnlGajiDblClick(Sender: TObject);
+
+procedure TfrmMain.FormShow(Sender: TObject);
+begin
+  tmrLogin.Enabled := True;
+end;
+
+procedure tfrmMain.pnlGajiDblClick(Sender: TObject);
 begin
  // pnlGaji.Enabled := not pnlGaji.Enabled;
 end;
@@ -606,7 +626,9 @@ begin
   try
     for I := 0 to actlstMainMenu.ActionCount - 1 do
     begin
-      actlstMainMenu.Actions[I].Enabled := False;
+      if actlstMainMenu.Actions[I].Tag = 0 then
+        actlstMainMenu.Actions[I].Enabled := False;
+
       if uSettingApp.UserApplikasi <> nil then
       begin
         if UserApplikasi.UserName = 'admin' then
@@ -658,6 +680,12 @@ begin
   finally
     FreeAndNil(lFCDs);
   end;
+end;
+
+procedure TfrmMain.tmrLoginTimer(Sender: TObject);
+begin
+  tmrLogin.Enabled := False;
+  actLoginExecute(nil);
 end;
 
 procedure TfrmMain.UpdateStatusBar;

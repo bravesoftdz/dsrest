@@ -16,6 +16,7 @@ object frmMain: TfrmMain
   WindowState = wsMaximized
   OnCreate = FormCreate
   OnDblClick = FormDblClick
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object dxrbnMain: TdxRibbon
@@ -30,6 +31,7 @@ object frmMain: TfrmMain
     TabOrder = 0
     TabStop = False
     object dxrbnAplikasi: TdxRibbonTab
+      Active = True
       Caption = 'Application'
       Groups = <
         item
@@ -39,7 +41,6 @@ object frmMain: TfrmMain
       Index = 0
     end
     object dxrbnTabMaster: TdxRibbonTab
-      Active = True
       Caption = 'Master'
       Groups = <
         item
@@ -303,10 +304,6 @@ object frmMain: TfrmMain
         end
         item
           Visible = True
-          ItemName = 'dxbrlrgbtnSetting'
-        end
-        item
-          Visible = True
           ItemName = 'btnLogin'
         end>
       OneOnRow = True
@@ -515,7 +512,7 @@ object frmMain: TfrmMain
     object dxbrmngrAMSBarFA: TdxBar
       Caption = 'FA'
       CaptionButtons = <>
-      DockedLeft = 383
+      DockedLeft = 0
       DockedTop = 0
       FloatLeft = 900
       FloatTop = 8
@@ -904,12 +901,10 @@ object frmMain: TfrmMain
       LargeImageIndex = 22
     end
     object btnLogin: TdxBarLargeButton
-      Caption = 'Login/Out'
+      Tag = 999
+      Action = actLogin
       Category = 0
-      Hint = 'Login/Out'
-      Visible = ivAlways
       LargeImageIndex = 23
-      OnClick = btnLoginClick
     end
     object dxbrlrgbtnLapLabaRugi: TdxBarLargeButton
       Action = actLapLabaRugi
@@ -1171,6 +1166,12 @@ object frmMain: TfrmMain
       Caption = 'Setoran Kas'
       OnExecute = actSetoranKasExecute
     end
+    object actLogin: TAction
+      Tag = 1
+      Category = 'Application'
+      Caption = 'Login/Out'
+      OnExecute = actLoginExecute
+    end
   end
   object ImgListMainLarge: TImageList
     ColorDepth = cd32Bit
@@ -1179,7 +1180,7 @@ object frmMain: TfrmMain
     Left = 688
     Top = 128
     Bitmap = {
-      494C01011900C003240220002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C01011900C003280220002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000080000000E0000000010020000000000000C0
       0100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000040B0E131238
@@ -4899,5 +4900,11 @@ object frmMain: TfrmMain
     OnException = aplctnvntsAppException
     Left = 288
     Top = 152
+  end
+  object tmrLogin: TTimer
+    Enabled = False
+    OnTimer = tmrLoginTimer
+    Left = 472
+    Top = 208
   end
 end

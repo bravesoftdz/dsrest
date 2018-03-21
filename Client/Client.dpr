@@ -94,4 +94,6 @@ begin
   Application.CreateForm(TfrmMain, frmMain);
   Application.CreateForm(TDMReport, DMReport);
   Application.Run;
+
+
 end.
