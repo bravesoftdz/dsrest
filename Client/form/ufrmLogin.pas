@@ -17,6 +17,8 @@ type
     bLogin: TcxButton;
     procedure FormCreate(Sender: TObject);
     procedure bLoginClick(Sender: TObject);
+    procedure edPasswordKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure edUserKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
     { Private declarations }
   public
@@ -54,6 +56,20 @@ begin
   end else begin
     TAppUtils.Warning('User / Password Salah');
   end;
+end;
+
+procedure TfrmLogin.edPasswordKeyDown(Sender: TObject; var Key: Word; Shift:
+    TShiftState);
+begin
+  if Key = VK_RETURN then
+    bLogin.SetFocus;
+end;
+
+procedure TfrmLogin.edUserKeyDown(Sender: TObject; var Key: Word; Shift:
+    TShiftState);
+begin
+  if Key = VK_RETURN then
+    edPassword.SetFocus;
 end;
 
 end.

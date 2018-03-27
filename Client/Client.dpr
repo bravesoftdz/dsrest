@@ -82,7 +82,8 @@ uses
   ufrmLogin in 'form\ufrmLogin.pas' {frmLogin},
   ufrmLaporanLabaRugi in 'form\ufrmLaporanLabaRugi.pas' {frmLaporanLabaRugi},
   uSetoranModal in '..\model\uSetoranModal.pas',
-  ufrmSetoranKas in 'form\ufrmSetoranKas.pas' {frmSetoranKas};
+  ufrmSetoranKas in 'form\ufrmSetoranKas.pas' {frmSetoranKas},
+  ufrmCetakBarcode in 'form\ufrmCetakBarcode.pas' {frmCetakBarcode};
 
 {$R *.res}
 
@@ -93,4 +94,6 @@ begin
   Application.CreateForm(TfrmMain, frmMain);
   Application.CreateForm(TDMReport, DMReport);
   Application.Run;
+
+
 end.
