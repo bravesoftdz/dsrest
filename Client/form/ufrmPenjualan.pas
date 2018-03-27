@@ -464,7 +464,10 @@ begin
 //
 //      )
 //    else
-      ExecuteReport('Reports/Slip_Penjualan_POS' ,lcds, True);
+//      if ParamCount > 1 then
+//        ExecuteReport('Reports/Slip_Penjualan_POS' ,lcds, ParamStr(1)='1')
+//      else
+      ExecuteReport('Reports/Slip_Penjualan_POS' ,lcds, False);
   end;
 end;
 

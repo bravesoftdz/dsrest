@@ -30,7 +30,6 @@ object frmMain: TfrmMain
     TabOrder = 0
     TabStop = False
     object dxrbnAplikasi: TdxRibbonTab
-      Active = True
       Caption = 'Application'
       Groups = <
         item
@@ -52,6 +51,7 @@ object frmMain: TfrmMain
       Index = 1
     end
     object dxrbntbPenerimaanBarangTransaksi: TdxRibbonTab
+      Active = True
       Caption = 'Inventory'
       Groups = <
         item
@@ -350,7 +350,7 @@ object frmMain: TfrmMain
           Visible = True
           ItemName = 'dxbrlrgbtnAssetCat'
         end>
-      OneOnRow = True
+      OneOnRow = False
       Row = 0
       UseOwnFont = True
       Visible = True
@@ -506,7 +506,7 @@ object frmMain: TfrmMain
           Visible = True
           ItemName = 'dxbrlrgbtnPenarikanDeposit'
         end>
-      OneOnRow = False
+      OneOnRow = True
       Row = 0
       UseOwnFont = False
       Visible = True
@@ -1034,6 +1034,7 @@ object frmMain: TfrmMain
     object actPenjualanSales: TAction
       Category = 'Penjualan'
       Caption = 'Penjualan Santri'
+      Visible = False
       OnExecute = actPenjualanSalesExecute
     end
     object actPenjualanPOS: TAction
@@ -1168,6 +1169,7 @@ object frmMain: TfrmMain
     object actSetoranKas: TAction
       Category = 'Keuangan'
       Caption = 'Setoran Kas'
+      Visible = False
       OnExecute = actSetoranKasExecute
     end
   end
@@ -1178,7 +1180,7 @@ object frmMain: TfrmMain
     Left = 688
     Top = 128
     Bitmap = {
-      494C01011800C003180220002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C01011800C0031C0220002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000080000000E0000000010020000000000000C0
       0100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
