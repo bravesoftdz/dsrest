@@ -38,7 +38,8 @@ uses
   uSettlementARAP in '..\model\uSettlementARAP.pas',
   uUser in '..\model\uUser.pas',
   uPenarikanDeposit in '..\model\uPenarikanDeposit.pas',
-  uSetoranModal in '..\model\uSetoranModal.pas';
+  uSetoranModal in '..\model\uSetoranModal.pas',
+  uCetakBarcode in '..\model\uCetakBarcode.pas';
 
 {$R *.res}
 

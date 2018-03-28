@@ -1,13 +1,13 @@
 //
 // Created by the DataSnap proxy generator.
-// 3/10/2018 11:51:54 AM
+// 3/28/2018 6:34:10 PM
 //
 
 unit ClientClassesUnit;
 
 interface
 
-uses System.JSON, Datasnap.DSProxyRest, Datasnap.DSClientRest, Data.DBXCommon, Data.DBXClient, Data.DBXDataSnap, Data.DBXJSON, Datasnap.DSProxy, System.Classes, System.SysUtils, Data.DB, Data.SqlExpr, Data.DBXDBReaders, Data.DBXCDSReaders, uModel, Data.FireDACJSONReflect, uSupplier, uCustomerInvoice, uPenerimaanBarang, uReturSupplier, uPenjualan, uAR, uAccount, uRekBank, uPenerimaanKas, uPengeluaranKas, uSettingApp, uTransferAntarGudang, uTAGRequests, uTransferAntarCabang, uJurnal, uSettlementARAP, uUser, uPenarikanDeposit, uSetoranModal, Data.DBXJSONReflect;
+uses System.JSON, Datasnap.DSProxyRest, Datasnap.DSClientRest, Data.DBXCommon, Data.DBXClient, Data.DBXDataSnap, Data.DBXJSON, Datasnap.DSProxy, System.Classes, System.SysUtils, Data.DB, Data.SqlExpr, Data.DBXDBReaders, Data.DBXCDSReaders, uModel, Data.FireDACJSONReflect, uSupplier, uCustomerInvoice, uPenerimaanBarang, uReturSupplier, uPenjualan, uAR, uAccount, uRekBank, uPenerimaanKas, uPengeluaranKas, uSettingApp, uTransferAntarGudang, uTAGRequests, uTransferAntarCabang, uJurnal, uSettlementARAP, uUser, uPenarikanDeposit, uSetoranModal, uCetakBarcode, Data.DBXJSONReflect;
 
 type
 
@@ -28,6 +28,7 @@ type
   IDSRestCachedTReturSupplier = interface;
   IDSRestCachedTPenerimaanKas = interface;
   IDSRestCachedTCustomerInvoice = interface;
+  IDSRestCachedTCetakBarcode = interface;
   IDSRestCachedTCabang = interface;
   IDSRestCachedTAR = interface;
   IDSRestCachedTJurnal = interface;
@@ -1065,8 +1066,6 @@ type
     FDS_CabangLookUpCommand_Cache: TDSRestCommand;
     FDS_BarangLookUpCommand: TDSRestCommand;
     FDS_BarangLookUpCommand_Cache: TDSRestCommand;
-    FDS_BarangLookUp1Command: TDSRestCommand;
-    FDS_BarangLookUp1Command_Cache: TDSRestCommand;
     FDS_MenuLookUpCommand: TDSRestCommand;
     FDS_MenuLookUpCommand_Cache: TDSRestCommand;
     FDS_UserLookUpCommand: TDSRestCommand;
@@ -1094,8 +1093,6 @@ type
     function DS_CabangLookUp_Cache(const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function DS_BarangLookUp(const ARequestFilter: string = ''): TDataSet;
     function DS_BarangLookUp_Cache(const ARequestFilter: string = ''): IDSRestCachedDataSet;
-    function DS_BarangLookUp1(const ARequestFilter: string = ''): TDataSet;
-    function DS_BarangLookUp1_Cache(const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function DS_MenuLookUp(const ARequestFilter: string = ''): TDataSet;
     function DS_MenuLookUp_Cache(const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function DS_UserLookUp(const ARequestFilter: string = ''): TDataSet;
@@ -1331,6 +1328,48 @@ type
     function Save(AOBject: TAppObject; const ARequestFilter: string = ''): Boolean;
   end;
 
+  TServerCetakBarcodeClient = class(TDSAdminRestClient)
+  private
+    FRetrieveCommand: TDSRestCommand;
+    FRetrieveCommand_Cache: TDSRestCommand;
+    FRetrieveCDSlipCommand: TDSRestCommand;
+    FRetrieveCDSlipCommand_Cache: TDSRestCommand;
+    FDoJournalCommand: TDSRestCommand;
+    FGenerateNoBuktiCommand: TDSRestCommand;
+    FRetrieveDataCommand: TDSRestCommand;
+    FRetrieveDataCommand_Cache: TDSRestCommand;
+    FRetrieveDataSiapJurnalCommand: TDSRestCommand;
+    FRetrieveDataSiapJurnalCommand_Cache: TDSRestCommand;
+    FRetrieveDataSlipCommand: TDSRestCommand;
+    FRetrieveDataSlipCommand_Cache: TDSRestCommand;
+    FDeleteCommand: TDSRestCommand;
+    FDeleteNoCommitCommand: TDSRestCommand;
+    FRetrieveCDSCommand: TDSRestCommand;
+    FRetrieveCDSCommand_Cache: TDSRestCommand;
+    FSaveCommand: TDSRestCommand;
+  public
+    constructor Create(ARestConnection: TDSRestConnection); overload;
+    constructor Create(ARestConnection: TDSRestConnection; AInstanceOwner: Boolean); overload;
+    destructor Destroy; override;
+    function Retrieve(AID: string; const ARequestFilter: string = ''): TCetakBarcode;
+    function Retrieve_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedTCetakBarcode;
+    function RetrieveCDSlip(AID: string; const ARequestFilter: string = ''): TDataSet;
+    function RetrieveCDSlip_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function DoJournal(ANoBukti: string; AModTransClass: string; AIsHapusJurnal: Integer; const ARequestFilter: string = ''): Boolean;
+    function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
+    function RetrieveData(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): TDataSet;
+    function RetrieveData_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function RetrieveDataSiapJurnal(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string = ''): TDataSet;
+    function RetrieveDataSiapJurnal_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): TFDJSONDataSets;
+    function RetrieveDataSlip_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
+    function Delete(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
+    function DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string = ''): Boolean;
+    function RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string = ''): TDataSet;
+    function RetrieveCDS_Cache(AAppObject: TAppObject; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function Save(AOBject: TAppObject; const ARequestFilter: string = ''): Boolean;
+  end;
+
   IDSRestCachedTMenu = interface(IDSRestCachedObject<TMenu>)
   end;
 
@@ -1415,6 +1454,11 @@ type
   end;
 
   TDSRestCachedTCustomerInvoice = class(TDSRestCachedObject<TCustomerInvoice>, IDSRestCachedTCustomerInvoice, IDSRestCachedCommand)
+  end;
+  IDSRestCachedTCetakBarcode = interface(IDSRestCachedObject<TCetakBarcode>)
+  end;
+
+  TDSRestCachedTCetakBarcode = class(TDSRestCachedObject<TCetakBarcode>, IDSRestCachedTCetakBarcode, IDSRestCachedCommand)
   end;
   IDSRestCachedTCabang = interface(IDSRestCachedObject<TCabang>)
   end;
@@ -4245,16 +4289,6 @@ const
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
-  TDSData_DS_BarangLookUp1: array [0..0] of TDSRestParameterMetaData =
-  (
-    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
-  );
-
-  TDSData_DS_BarangLookUp1_Cache: array [0..0] of TDSRestParameterMetaData =
-  (
-    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
-  );
-
   TDSData_DS_MenuLookUp: array [0..0] of TDSRestParameterMetaData =
   (
     (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
@@ -4915,6 +4949,123 @@ const
   );
 
   TServerSetoranModal_Save: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AOBject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
+  TServerCetakBarcode_Retrieve: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AID'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 37; TypeName: 'TCetakBarcode')
+  );
+
+  TServerCetakBarcode_Retrieve_Cache: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AID'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerCetakBarcode_RetrieveCDSlip: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AID'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TServerCetakBarcode_RetrieveCDSlip_Cache: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AID'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerCetakBarcode_DoJournal: array [0..3] of TDSRestParameterMetaData =
+  (
+    (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'AModTransClass'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'AIsHapusJurnal'; Direction: 1; DBXType: 6; TypeName: 'Integer'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
+  TServerCetakBarcode_GenerateNoBukti: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'ATglBukti'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APrefix'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'string')
+  );
+
+  TServerCetakBarcode_RetrieveData: array [0..3] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'AIDCabang'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TServerCetakBarcode_RetrieveData_Cache: array [0..3] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'AIDCabang'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerCetakBarcode_RetrieveDataSiapJurnal: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TServerCetakBarcode_RetrieveDataSiapJurnal_Cache: array [0..2] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerCetakBarcode_RetrieveDataSlip: array [0..4] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'AIDCabang'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'AID'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 37; TypeName: 'TFDJSONDataSets')
+  );
+
+  TServerCetakBarcode_RetrieveDataSlip_Cache: array [0..4] of TDSRestParameterMetaData =
+  (
+    (Name: 'aPeriodeAwal'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'APeriodeAkhir'; Direction: 1; DBXType: 11; TypeName: 'TDateTime'),
+    (Name: 'AIDCabang'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: 'AID'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerCetakBarcode_Delete: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
+  TServerCetakBarcode_DeleteNoCommit: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
+  );
+
+  TServerCetakBarcode_RetrieveCDS: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TServerCetakBarcode_RetrieveCDS_Cache: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'AAppObject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerCetakBarcode_Save: array [0..1] of TDSRestParameterMetaData =
   (
     (Name: 'AOBject'; Direction: 1; DBXType: 37; TypeName: 'TAppObject'),
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
@@ -15217,35 +15368,6 @@ begin
   Result := TDSRestCachedDataSet.Create(FDS_BarangLookUpCommand_Cache.Parameters[0].Value.GetString);
 end;
 
-function TDSDataClient.DS_BarangLookUp1(const ARequestFilter: string): TDataSet;
-begin
-  if FDS_BarangLookUp1Command = nil then
-  begin
-    FDS_BarangLookUp1Command := FConnection.CreateCommand;
-    FDS_BarangLookUp1Command.RequestType := 'GET';
-    FDS_BarangLookUp1Command.Text := 'TDSData.DS_BarangLookUp1';
-    FDS_BarangLookUp1Command.Prepare(TDSData_DS_BarangLookUp1);
-  end;
-  FDS_BarangLookUp1Command.Execute(ARequestFilter);
-  Result := TCustomSQLDataSet.Create(nil, FDS_BarangLookUp1Command.Parameters[0].Value.GetDBXReader(False), True);
-  Result.Open;
-  if FInstanceOwner then
-    FDS_BarangLookUp1Command.FreeOnExecute(Result);
-end;
-
-function TDSDataClient.DS_BarangLookUp1_Cache(const ARequestFilter: string): IDSRestCachedDataSet;
-begin
-  if FDS_BarangLookUp1Command_Cache = nil then
-  begin
-    FDS_BarangLookUp1Command_Cache := FConnection.CreateCommand;
-    FDS_BarangLookUp1Command_Cache.RequestType := 'GET';
-    FDS_BarangLookUp1Command_Cache.Text := 'TDSData.DS_BarangLookUp1';
-    FDS_BarangLookUp1Command_Cache.Prepare(TDSData_DS_BarangLookUp1_Cache);
-  end;
-  FDS_BarangLookUp1Command_Cache.ExecuteCache(ARequestFilter);
-  Result := TDSRestCachedDataSet.Create(FDS_BarangLookUp1Command_Cache.Parameters[0].Value.GetString);
-end;
-
 function TDSDataClient.DS_MenuLookUp(const ARequestFilter: string): TDataSet;
 begin
   if FDS_MenuLookUpCommand = nil then
@@ -15588,8 +15710,6 @@ begin
   FDS_CabangLookUpCommand_Cache.DisposeOf;
   FDS_BarangLookUpCommand.DisposeOf;
   FDS_BarangLookUpCommand_Cache.DisposeOf;
-  FDS_BarangLookUp1Command.DisposeOf;
-  FDS_BarangLookUp1Command_Cache.DisposeOf;
   FDS_MenuLookUpCommand.DisposeOf;
   FDS_MenuLookUpCommand_Cache.DisposeOf;
   FDS_UserLookUpCommand.DisposeOf;
@@ -17629,6 +17749,387 @@ destructor TServerSetoranModalClient.Destroy;
 begin
   FRetrieveCommand.DisposeOf;
   FRetrieveCommand_Cache.DisposeOf;
+  FDoJournalCommand.DisposeOf;
+  FGenerateNoBuktiCommand.DisposeOf;
+  FRetrieveDataCommand.DisposeOf;
+  FRetrieveDataCommand_Cache.DisposeOf;
+  FRetrieveDataSiapJurnalCommand.DisposeOf;
+  FRetrieveDataSiapJurnalCommand_Cache.DisposeOf;
+  FRetrieveDataSlipCommand.DisposeOf;
+  FRetrieveDataSlipCommand_Cache.DisposeOf;
+  FDeleteCommand.DisposeOf;
+  FDeleteNoCommitCommand.DisposeOf;
+  FRetrieveCDSCommand.DisposeOf;
+  FRetrieveCDSCommand_Cache.DisposeOf;
+  FSaveCommand.DisposeOf;
+  inherited;
+end;
+
+function TServerCetakBarcodeClient.Retrieve(AID: string; const ARequestFilter: string): TCetakBarcode;
+begin
+  if FRetrieveCommand = nil then
+  begin
+    FRetrieveCommand := FConnection.CreateCommand;
+    FRetrieveCommand.RequestType := 'GET';
+    FRetrieveCommand.Text := 'TServerCetakBarcode.Retrieve';
+    FRetrieveCommand.Prepare(TServerCetakBarcode_Retrieve);
+  end;
+  FRetrieveCommand.Parameters[0].Value.SetWideString(AID);
+  FRetrieveCommand.Execute(ARequestFilter);
+  if not FRetrieveCommand.Parameters[1].Value.IsNull then
+  begin
+    FUnMarshal := TDSRestCommand(FRetrieveCommand.Parameters[1].ConnectionHandler).GetJSONUnMarshaler;
+    try
+      Result := TCetakBarcode(FUnMarshal.UnMarshal(FRetrieveCommand.Parameters[1].Value.GetJSONValue(True)));
+      if FInstanceOwner then
+        FRetrieveCommand.FreeOnExecute(Result);
+    finally
+      FreeAndNil(FUnMarshal)
+    end
+  end
+  else
+    Result := nil;
+end;
+
+function TServerCetakBarcodeClient.Retrieve_Cache(AID: string; const ARequestFilter: string): IDSRestCachedTCetakBarcode;
+begin
+  if FRetrieveCommand_Cache = nil then
+  begin
+    FRetrieveCommand_Cache := FConnection.CreateCommand;
+    FRetrieveCommand_Cache.RequestType := 'GET';
+    FRetrieveCommand_Cache.Text := 'TServerCetakBarcode.Retrieve';
+    FRetrieveCommand_Cache.Prepare(TServerCetakBarcode_Retrieve_Cache);
+  end;
+  FRetrieveCommand_Cache.Parameters[0].Value.SetWideString(AID);
+  FRetrieveCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedTCetakBarcode.Create(FRetrieveCommand_Cache.Parameters[1].Value.GetString);
+end;
+
+function TServerCetakBarcodeClient.RetrieveCDSlip(AID: string; const ARequestFilter: string): TDataSet;
+begin
+  if FRetrieveCDSlipCommand = nil then
+  begin
+    FRetrieveCDSlipCommand := FConnection.CreateCommand;
+    FRetrieveCDSlipCommand.RequestType := 'GET';
+    FRetrieveCDSlipCommand.Text := 'TServerCetakBarcode.RetrieveCDSlip';
+    FRetrieveCDSlipCommand.Prepare(TServerCetakBarcode_RetrieveCDSlip);
+  end;
+  FRetrieveCDSlipCommand.Parameters[0].Value.SetWideString(AID);
+  FRetrieveCDSlipCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FRetrieveCDSlipCommand.Parameters[1].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FRetrieveCDSlipCommand.FreeOnExecute(Result);
+end;
+
+function TServerCetakBarcodeClient.RetrieveCDSlip_Cache(AID: string; const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FRetrieveCDSlipCommand_Cache = nil then
+  begin
+    FRetrieveCDSlipCommand_Cache := FConnection.CreateCommand;
+    FRetrieveCDSlipCommand_Cache.RequestType := 'GET';
+    FRetrieveCDSlipCommand_Cache.Text := 'TServerCetakBarcode.RetrieveCDSlip';
+    FRetrieveCDSlipCommand_Cache.Prepare(TServerCetakBarcode_RetrieveCDSlip_Cache);
+  end;
+  FRetrieveCDSlipCommand_Cache.Parameters[0].Value.SetWideString(AID);
+  FRetrieveCDSlipCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FRetrieveCDSlipCommand_Cache.Parameters[1].Value.GetString);
+end;
+
+function TServerCetakBarcodeClient.DoJournal(ANoBukti: string; AModTransClass: string; AIsHapusJurnal: Integer; const ARequestFilter: string): Boolean;
+begin
+  if FDoJournalCommand = nil then
+  begin
+    FDoJournalCommand := FConnection.CreateCommand;
+    FDoJournalCommand.RequestType := 'GET';
+    FDoJournalCommand.Text := 'TServerCetakBarcode.DoJournal';
+    FDoJournalCommand.Prepare(TServerCetakBarcode_DoJournal);
+  end;
+  FDoJournalCommand.Parameters[0].Value.SetWideString(ANoBukti);
+  FDoJournalCommand.Parameters[1].Value.SetWideString(AModTransClass);
+  FDoJournalCommand.Parameters[2].Value.SetInt32(AIsHapusJurnal);
+  FDoJournalCommand.Execute(ARequestFilter);
+  Result := FDoJournalCommand.Parameters[3].Value.GetBoolean;
+end;
+
+function TServerCetakBarcodeClient.GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string): string;
+begin
+  if FGenerateNoBuktiCommand = nil then
+  begin
+    FGenerateNoBuktiCommand := FConnection.CreateCommand;
+    FGenerateNoBuktiCommand.RequestType := 'GET';
+    FGenerateNoBuktiCommand.Text := 'TServerCetakBarcode.GenerateNoBukti';
+    FGenerateNoBuktiCommand.Prepare(TServerCetakBarcode_GenerateNoBukti);
+  end;
+  FGenerateNoBuktiCommand.Parameters[0].Value.AsDateTime := ATglBukti;
+  FGenerateNoBuktiCommand.Parameters[1].Value.SetWideString(APrefix);
+  FGenerateNoBuktiCommand.Execute(ARequestFilter);
+  Result := FGenerateNoBuktiCommand.Parameters[2].Value.GetWideString;
+end;
+
+function TServerCetakBarcodeClient.RetrieveData(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string): TDataSet;
+begin
+  if FRetrieveDataCommand = nil then
+  begin
+    FRetrieveDataCommand := FConnection.CreateCommand;
+    FRetrieveDataCommand.RequestType := 'GET';
+    FRetrieveDataCommand.Text := 'TServerCetakBarcode.RetrieveData';
+    FRetrieveDataCommand.Prepare(TServerCetakBarcode_RetrieveData);
+  end;
+  FRetrieveDataCommand.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataCommand.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataCommand.Parameters[2].Value.SetWideString(AIDCabang);
+  FRetrieveDataCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FRetrieveDataCommand.Parameters[3].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FRetrieveDataCommand.FreeOnExecute(Result);
+end;
+
+function TServerCetakBarcodeClient.RetrieveData_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FRetrieveDataCommand_Cache = nil then
+  begin
+    FRetrieveDataCommand_Cache := FConnection.CreateCommand;
+    FRetrieveDataCommand_Cache.RequestType := 'GET';
+    FRetrieveDataCommand_Cache.Text := 'TServerCetakBarcode.RetrieveData';
+    FRetrieveDataCommand_Cache.Prepare(TServerCetakBarcode_RetrieveData_Cache);
+  end;
+  FRetrieveDataCommand_Cache.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataCommand_Cache.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataCommand_Cache.Parameters[2].Value.SetWideString(AIDCabang);
+  FRetrieveDataCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FRetrieveDataCommand_Cache.Parameters[3].Value.GetString);
+end;
+
+function TServerCetakBarcodeClient.RetrieveDataSiapJurnal(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string): TDataSet;
+begin
+  if FRetrieveDataSiapJurnalCommand = nil then
+  begin
+    FRetrieveDataSiapJurnalCommand := FConnection.CreateCommand;
+    FRetrieveDataSiapJurnalCommand.RequestType := 'GET';
+    FRetrieveDataSiapJurnalCommand.Text := 'TServerCetakBarcode.RetrieveDataSiapJurnal';
+    FRetrieveDataSiapJurnalCommand.Prepare(TServerCetakBarcode_RetrieveDataSiapJurnal);
+  end;
+  FRetrieveDataSiapJurnalCommand.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataSiapJurnalCommand.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataSiapJurnalCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FRetrieveDataSiapJurnalCommand.Parameters[2].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FRetrieveDataSiapJurnalCommand.FreeOnExecute(Result);
+end;
+
+function TServerCetakBarcodeClient.RetrieveDataSiapJurnal_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FRetrieveDataSiapJurnalCommand_Cache = nil then
+  begin
+    FRetrieveDataSiapJurnalCommand_Cache := FConnection.CreateCommand;
+    FRetrieveDataSiapJurnalCommand_Cache.RequestType := 'GET';
+    FRetrieveDataSiapJurnalCommand_Cache.Text := 'TServerCetakBarcode.RetrieveDataSiapJurnal';
+    FRetrieveDataSiapJurnalCommand_Cache.Prepare(TServerCetakBarcode_RetrieveDataSiapJurnal_Cache);
+  end;
+  FRetrieveDataSiapJurnalCommand_Cache.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataSiapJurnalCommand_Cache.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataSiapJurnalCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FRetrieveDataSiapJurnalCommand_Cache.Parameters[2].Value.GetString);
+end;
+
+function TServerCetakBarcodeClient.RetrieveDataSlip(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string): TFDJSONDataSets;
+begin
+  if FRetrieveDataSlipCommand = nil then
+  begin
+    FRetrieveDataSlipCommand := FConnection.CreateCommand;
+    FRetrieveDataSlipCommand.RequestType := 'GET';
+    FRetrieveDataSlipCommand.Text := 'TServerCetakBarcode.RetrieveDataSlip';
+    FRetrieveDataSlipCommand.Prepare(TServerCetakBarcode_RetrieveDataSlip);
+  end;
+  FRetrieveDataSlipCommand.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataSlipCommand.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataSlipCommand.Parameters[2].Value.SetWideString(AIDCabang);
+  FRetrieveDataSlipCommand.Parameters[3].Value.SetWideString(AID);
+  FRetrieveDataSlipCommand.Execute(ARequestFilter);
+  if not FRetrieveDataSlipCommand.Parameters[4].Value.IsNull then
+  begin
+    FUnMarshal := TDSRestCommand(FRetrieveDataSlipCommand.Parameters[4].ConnectionHandler).GetJSONUnMarshaler;
+    try
+      Result := TFDJSONDataSets(FUnMarshal.UnMarshal(FRetrieveDataSlipCommand.Parameters[4].Value.GetJSONValue(True)));
+      if FInstanceOwner then
+        FRetrieveDataSlipCommand.FreeOnExecute(Result);
+    finally
+      FreeAndNil(FUnMarshal)
+    end
+  end
+  else
+    Result := nil;
+end;
+
+function TServerCetakBarcodeClient.RetrieveDataSlip_Cache(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; AID: string; const ARequestFilter: string): IDSRestCachedTFDJSONDataSets;
+begin
+  if FRetrieveDataSlipCommand_Cache = nil then
+  begin
+    FRetrieveDataSlipCommand_Cache := FConnection.CreateCommand;
+    FRetrieveDataSlipCommand_Cache.RequestType := 'GET';
+    FRetrieveDataSlipCommand_Cache.Text := 'TServerCetakBarcode.RetrieveDataSlip';
+    FRetrieveDataSlipCommand_Cache.Prepare(TServerCetakBarcode_RetrieveDataSlip_Cache);
+  end;
+  FRetrieveDataSlipCommand_Cache.Parameters[0].Value.AsDateTime := aPeriodeAwal;
+  FRetrieveDataSlipCommand_Cache.Parameters[1].Value.AsDateTime := APeriodeAkhir;
+  FRetrieveDataSlipCommand_Cache.Parameters[2].Value.SetWideString(AIDCabang);
+  FRetrieveDataSlipCommand_Cache.Parameters[3].Value.SetWideString(AID);
+  FRetrieveDataSlipCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedTFDJSONDataSets.Create(FRetrieveDataSlipCommand_Cache.Parameters[4].Value.GetString);
+end;
+
+function TServerCetakBarcodeClient.Delete(AAppObject: TAppObject; const ARequestFilter: string): Boolean;
+begin
+  if FDeleteCommand = nil then
+  begin
+    FDeleteCommand := FConnection.CreateCommand;
+    FDeleteCommand.RequestType := 'POST';
+    FDeleteCommand.Text := 'TServerCetakBarcode."Delete"';
+    FDeleteCommand.Prepare(TServerCetakBarcode_Delete);
+  end;
+  if not Assigned(AAppObject) then
+    FDeleteCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FDeleteCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FDeleteCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FDeleteCommand.Execute(ARequestFilter);
+  Result := FDeleteCommand.Parameters[1].Value.GetBoolean;
+end;
+
+function TServerCetakBarcodeClient.DeleteNoCommit(AAppObject: TAppObject; const ARequestFilter: string): Boolean;
+begin
+  if FDeleteNoCommitCommand = nil then
+  begin
+    FDeleteNoCommitCommand := FConnection.CreateCommand;
+    FDeleteNoCommitCommand.RequestType := 'POST';
+    FDeleteNoCommitCommand.Text := 'TServerCetakBarcode."DeleteNoCommit"';
+    FDeleteNoCommitCommand.Prepare(TServerCetakBarcode_DeleteNoCommit);
+  end;
+  if not Assigned(AAppObject) then
+    FDeleteNoCommitCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FDeleteNoCommitCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FDeleteNoCommitCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FDeleteNoCommitCommand.Execute(ARequestFilter);
+  Result := FDeleteNoCommitCommand.Parameters[1].Value.GetBoolean;
+end;
+
+function TServerCetakBarcodeClient.RetrieveCDS(AAppObject: TAppObject; const ARequestFilter: string): TDataSet;
+begin
+  if FRetrieveCDSCommand = nil then
+  begin
+    FRetrieveCDSCommand := FConnection.CreateCommand;
+    FRetrieveCDSCommand.RequestType := 'POST';
+    FRetrieveCDSCommand.Text := 'TServerCetakBarcode."RetrieveCDS"';
+    FRetrieveCDSCommand.Prepare(TServerCetakBarcode_RetrieveCDS);
+  end;
+  if not Assigned(AAppObject) then
+    FRetrieveCDSCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FRetrieveCDSCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FRetrieveCDSCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FRetrieveCDSCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FRetrieveCDSCommand.Parameters[1].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FRetrieveCDSCommand.FreeOnExecute(Result);
+end;
+
+function TServerCetakBarcodeClient.RetrieveCDS_Cache(AAppObject: TAppObject; const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FRetrieveCDSCommand_Cache = nil then
+  begin
+    FRetrieveCDSCommand_Cache := FConnection.CreateCommand;
+    FRetrieveCDSCommand_Cache.RequestType := 'POST';
+    FRetrieveCDSCommand_Cache.Text := 'TServerCetakBarcode."RetrieveCDS"';
+    FRetrieveCDSCommand_Cache.Prepare(TServerCetakBarcode_RetrieveCDS_Cache);
+  end;
+  if not Assigned(AAppObject) then
+    FRetrieveCDSCommand_Cache.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FRetrieveCDSCommand_Cache.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FRetrieveCDSCommand_Cache.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AAppObject), True);
+      if FInstanceOwner then
+        AAppObject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FRetrieveCDSCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FRetrieveCDSCommand_Cache.Parameters[1].Value.GetString);
+end;
+
+function TServerCetakBarcodeClient.Save(AOBject: TAppObject; const ARequestFilter: string): Boolean;
+begin
+  if FSaveCommand = nil then
+  begin
+    FSaveCommand := FConnection.CreateCommand;
+    FSaveCommand.RequestType := 'POST';
+    FSaveCommand.Text := 'TServerCetakBarcode."Save"';
+    FSaveCommand.Prepare(TServerCetakBarcode_Save);
+  end;
+  if not Assigned(AOBject) then
+    FSaveCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FSaveCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FSaveCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AOBject), True);
+      if FInstanceOwner then
+        AOBject.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FSaveCommand.Execute(ARequestFilter);
+  Result := FSaveCommand.Parameters[1].Value.GetBoolean;
+end;
+
+constructor TServerCetakBarcodeClient.Create(ARestConnection: TDSRestConnection);
+begin
+  inherited Create(ARestConnection);
+end;
+
+constructor TServerCetakBarcodeClient.Create(ARestConnection: TDSRestConnection; AInstanceOwner: Boolean);
+begin
+  inherited Create(ARestConnection, AInstanceOwner);
+end;
+
+destructor TServerCetakBarcodeClient.Destroy;
+begin
+  FRetrieveCommand.DisposeOf;
+  FRetrieveCommand_Cache.DisposeOf;
+  FRetrieveCDSlipCommand.DisposeOf;
+  FRetrieveCDSlipCommand_Cache.DisposeOf;
   FDoJournalCommand.DisposeOf;
   FGenerateNoBuktiCommand.DisposeOf;
   FRetrieveDataCommand.DisposeOf;

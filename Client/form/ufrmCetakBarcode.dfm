@@ -2,8 +2,8 @@ object frmCetakBarcode: TfrmCetakBarcode
   Left = 0
   Top = 0
   Caption = 'Cetak Barcode'
-  ClientHeight = 365
-  ClientWidth = 796
+  ClientHeight = 129
+  ClientWidth = 397
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -24,53 +24,71 @@ object frmCetakBarcode: TfrmCetakBarcode
     Height = 13
     Caption = 'Barang'
   end
-  object lblHarga: TLabel
-    Left = 411
-    Top = 41
-    Width = 29
-    Height = 13
-    Caption = 'Harga'
-  end
   object lblSatuanStock: TLabel
-    Left = 377
-    Top = 17
-    Width = 63
+    Left = 236
+    Top = 18
+    Width = 34
     Height = 13
-    Caption = 'Satuan Stock'
+    Caption = 'Satuan'
   end
   object lblGroup: TLabel
-    Left = 44
-    Top = 64
-    Width = 82
+    Left = 24
+    Top = 68
+    Width = 52
     Height = 13
-    Caption = 'Kelompok Barang'
+    Caption = 'Jenis Label'
   end
-  object cbbBaranf: TcxExtLookupComboBox
-    Left = 80
-    Top = 13
+  object lblJumlahLabel: TLabel
+    Left = 24
+    Top = 93
+    Width = 61
+    Height = 13
+    Caption = 'Jumlah Label'
+  end
+  object cbbBarang: TcxExtLookupComboBox
+    Left = 104
+    Top = 14
+    Properties.OnChange = cbbBarangPropertiesChange
     TabOrder = 0
-    Width = 273
-  end
-  object edHarga: TcxCurrencyEdit
-    Left = 449
-    Top = 37
-    Properties.Alignment.Horz = taRightJustify
-    Properties.DisplayFormat = ',0.00;(,0.00)'
-    TabOrder = 1
     Width = 121
   end
   object cbbSatuanStock: TcxExtLookupComboBox
-    Left = 449
-    Top = 13
-    TabOrder = 2
-    Width = 121
+    Left = 276
+    Top = 14
+    TabOrder = 1
+    Width = 101
   end
-  object cbbGroup: TcxExtLookupComboBox
-    Left = 130
-    Top = 61
-    Properties.DropDownAutoSize = True
-    Properties.FocusPopup = True
+  object cbbBarangNama: TcxExtLookupComboBox
+    Left = 104
+    Top = 39
+    TabOrder = 2
+    Width = 273
+  end
+  object cxSpinQty: TcxSpinEdit
+    Left = 104
+    Top = 89
     TabOrder = 3
     Width = 121
+  end
+  object cbbJenisLabel: TcxComboBox
+    Left = 104
+    Top = 64
+    Properties.DropDownListStyle = lsFixedList
+    Properties.Items.Strings = (
+      'Standar'
+      'Besar'
+      'Kecil')
+    TabOrder = 4
+    Text = 'Standar'
+    Width = 273
+  end
+  object bCetak: TcxButton
+    Left = 236
+    Top = 87
+    Width = 75
+    Height = 25
+    Caption = 'Cetak'
+    TabOrder = 5
+    OnClick = bCetakClick
   end
 end

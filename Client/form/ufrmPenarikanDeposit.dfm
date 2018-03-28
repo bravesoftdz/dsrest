@@ -1,15 +1,16 @@
 inherited frmPenarikanDeposit: TfrmPenarikanDeposit
   Caption = 'Penarikan Deposit'
-  ExplicitWidth = 320
-  ExplicitHeight = 240
+  ExplicitWidth = 733
+  ExplicitHeight = 385
   PixelsPerInch = 96
   TextHeight = 13
   inherited cxPCData: TcxPageControl
+    Properties.ActivePage = cxTSInputData
     inherited cxTSOverview: TcxTabSheet
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 709
+      ExplicitHeight = 265
       inherited pnlListTransaksi: TPanel
         inherited cxGrid: TcxGrid
           inherited cxGridDBTableOverview: TcxGridDBTableView
@@ -19,6 +20,10 @@ inherited frmPenarikanDeposit: TfrmPenarikanDeposit
       end
     end
     inherited cxTSInputData: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 709
+      ExplicitHeight = 265
       object lblNoBukti: TLabel
         Left = 15
         Top = 14
@@ -106,8 +111,8 @@ inherited frmPenarikanDeposit: TfrmPenarikanDeposit
   end
   inherited pnlButton: TPanel
     inherited chkKonsolidasi1: TcxCheckBox
-      ExplicitWidth = 121
-      ExplicitHeight = 21
+      ExplicitWidth = 76
+      ExplicitHeight = 31
     end
   end
   inherited ActionListForm: TActionList
@@ -141,7 +146,7 @@ inherited frmPenarikanDeposit: TfrmPenarikanDeposit
     Left = 512
     Top = 120
     Bitmap = {
-      494C010107000800100118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800140118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

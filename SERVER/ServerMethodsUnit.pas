@@ -9,7 +9,7 @@ uses
   uTransferAntarGudang, uSettingApp, uTAGRequests, uTransferAntarCabang,
   uPengeluaranKas, FireDAC.Comp.Client, uSettingAppServer, uJurnal, uSupplier,
   uPenerimaanBarang,uReturSupplier, uSettlementARAP, uUser, uPenarikanDeposit,
-  uSetoranModal;
+  uSetoranModal,  uCetakBarcode;
 
 type
   {$METHODINFO ON}
@@ -22,7 +22,6 @@ type
   public
     function DS_CabangLookUp: TDataset;
     function DS_BarangLookUp: TDataset;
-    function DS_BarangLookUp1: TDataset;
     function DS_MenuLookUp: TDataset;
     function DS_UserLookUp: TDataset;
     function DS_GudangLookUp: TDataset;
@@ -524,6 +523,12 @@ type
     function Retrieve(AID : String): TPenarikanDeposit;
     function RetrieveCDSlip(ATglAwal , ATglAtglAkhir : TDateTime; ACabang :
         TCabang; ANoBukti : String): TFDJSONDataSets;
+  end;
+
+  TServerCetakBarcode = class(TServerTransaction)
+  public
+    function Retrieve(AID : String): TCetakBarcode;
+    function RetrieveCDSlip(AID : String): TDataset;
   end;
 
   
@@ -4065,14 +4070,6 @@ begin
   Result := TDBUtils.OpenDataset(sSQL);
 end;
 
-function TDSData.DS_BarangLookUp1: TDataset;
-var
-  sSQL: string;
-begin
-  sSQL   := 'select * from vbarang order by sku';
-  Result := TDBUtils.OpenDataset(sSQL);
-end;
-
 function TDSData.DS_MenuLookUp: TDataset;
 var
   sSQL: string;
@@ -4709,6 +4706,22 @@ function TServerSetoranModal.Retrieve(AID : String): TSetoranModal;
 begin
   Result := TSetoranModal.Create;
   TDBUtils.LoadFromDB(Result, AID);
+end;
+
+function TServerCetakBarcode.Retrieve(AID : String): TCetakBarcode;
+begin
+  Result := TCetakBarcode.Create;
+  TDBUtils.LoadFromDB(Result, AID);
+end;
+
+function TServerCetakBarcode.RetrieveCDSlip(AID : String): TDataset;
+var
+  sSQL: string;
+begin
+  sSQL   := 'select * from TAR a ' +
+            ' where a.id = ' + QuotedStr(AID);
+
+  Result := TDBUtils.OpenDataset(sSQL);
 end;
 
 

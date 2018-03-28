@@ -49,6 +49,7 @@ type
     FServerSettlementARAPClient: TServerSettlementARAPClient;
     FServerAPClient: TServerAPClient;
     FServerPenarikanDepositClient: TServerPenarikanDepositClient;
+    FServerCetakBarcodeClient: TServerCetakBarcodeClient;
     function GetCabang: tcabang;
     function GetServerUOMClient: TServerUOMClient;
     function GetServerSupplierClient: TServerSupplierClient;
@@ -83,6 +84,7 @@ type
     function GeTServerSettlementARAPClient: TServerSettlementARAPClient;
     function GetServerAPClient: TServerAPClient;
     function GetServerPenarikanDepositClient: TServerPenarikanDepositClient;
+    function GetServerCetakBarcodeClient: TServerCetakBarcodeClient;
     { Private declarations }
   public
     constructor Create(AOwner: TComponent); override;
@@ -145,6 +147,8 @@ type
         FServerAPClient;
     property ServerPenarikanDepositClient: TServerPenarikanDepositClient read
         GetServerPenarikanDepositClient write FServerPenarikanDepositClient;
+    property ServerCetakBarcodeClient: TServerCetakBarcodeClient read
+        GetServerCetakBarcodeClient write FServerCetakBarcodeClient;
   published
 end;
 
@@ -484,6 +488,15 @@ begin
 
   FServerPenarikanDepositClient:= TServerPenarikanDepositClient.Create(DSRestConnection, FInstanceOwner);
   Result := FServerPenarikanDepositClient;
+end;
+
+function TClientDataModule.GetServerCetakBarcodeClient:
+    TServerCetakBarcodeClient;
+begin
+  if FServerCetakBarcodeClient = nil then
+    FServerCetakBarcodeClient := TServerCetakBarcodeClient.Create;
+
+  Result := FServerCetakBarcodeClient;
 end;
 
 end.

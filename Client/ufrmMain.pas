@@ -223,7 +223,6 @@ type
     procedure actUserExecute(Sender: TObject);
     procedure aplctnvntsAppException(Sender: TObject; E: Exception);
     procedure dxbrlrgbtnExitClick(Sender: TObject);
-    procedure btnLoginClick(Sender: TObject);
     procedure pnlGajiDblClick(Sender: TObject);
     procedure tmrLoginTimer(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -522,18 +521,6 @@ begin
     lTSReport.Free;
   end;
 end;
-
-procedure TfrmMain.btnLoginClick(Sender: TObject);
-var
-  I: Integer;
-begin
-  
-end;
-
-
-
-
-
 
 procedure TfrmMain.dxbrlrgbtnExitClick(Sender: TObject);
 begin

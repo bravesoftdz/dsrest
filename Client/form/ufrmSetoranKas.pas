@@ -38,7 +38,7 @@ type
     property SetoranKas: TSetoranModal read GetSetoranKas write FSetoranKas;
     { Private declarations }
   public
-    procedure LoadDataTransaksi(AID : String); virtual;
+    procedure LoadDataTransaksi(AID : String); override;
     { Public declarations }
   end;
 

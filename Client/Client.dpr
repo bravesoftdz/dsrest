@@ -83,7 +83,8 @@ uses
   ufrmLaporanLabaRugi in 'form\ufrmLaporanLabaRugi.pas' {frmLaporanLabaRugi},
   uSetoranModal in '..\model\uSetoranModal.pas',
   ufrmSetoranKas in 'form\ufrmSetoranKas.pas' {frmSetoranKas},
-  ufrmCetakBarcode in 'form\ufrmCetakBarcode.pas' {frmCetakBarcode};
+  ufrmCetakBarcode in 'form\ufrmCetakBarcode.pas' {frmCetakBarcode},
+  uCetakBarcode in '..\model\uCetakBarcode.pas';
 
 {$R *.res}
 
