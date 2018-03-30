@@ -49,15 +49,15 @@ inherited frmReturSupplier: TfrmReturSupplier
           end
           inherited dtpAwal: TDateTimePicker
             Left = 605
-            ExplicitLeft = 596
+            ExplicitLeft = 605
           end
           inherited dtpAkhir: TDateTimePicker
             Left = 754
-            ExplicitLeft = 745
+            ExplicitLeft = 754
           end
           inherited btnRefresh: TcxButton
             Left = 859
-            ExplicitLeft = 856
+            ExplicitLeft = 859
           end
         end
         inherited cxGrid: TcxGrid
@@ -65,9 +65,9 @@ inherited frmReturSupplier: TfrmReturSupplier
           Width = 966
           Height = 317
           TabOrder = 2
-          ExplicitTop = 36
+          ExplicitTop = 35
           ExplicitWidth = 966
-          ExplicitHeight = 316
+          ExplicitHeight = 317
           inherited cxGridDBTableOverview: TcxGridDBTableView
             OnCellDblClick = cxGridDBTableOverviewCellDblClick
           end
@@ -79,7 +79,6 @@ inherited frmReturSupplier: TfrmReturSupplier
           Height = 4
           Align = alTop
           TabOrder = 0
-          ExplicitTop = 32
         end
       end
     end
@@ -486,7 +485,7 @@ inherited frmReturSupplier: TfrmReturSupplier
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010105000800AC0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010105000800B00018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

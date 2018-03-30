@@ -11,7 +11,6 @@ type
   private
     FBarang: TBarang;
     FCetakBarcode: TCetakBarcode;
-    FJenisLabel: string;
     FQty: Integer;
   public
     function GetHeaderField: string; override;
@@ -19,13 +18,13 @@ type
   published
     property Barang: TBarang read FBarang write FBarang;
     property CetakBarcode: TCetakBarcode read FCetakBarcode write FCetakBarcode;
-    property JenisLabel: string read FJenisLabel write FJenisLabel;
     property Qty: Integer read FQty write FQty;
   end;
 
   TCetakBarcode = class(TAppObjectWithDate)
   private
     FCetakBarcodeItems: TObjectList<TCetakBarcodeItem>;
+    FJenisLabel: string;
     FNoBukti: string;
     FTanggal: TDateTime;
     function GetCetakBarcodeItems: TObjectList<TCetakBarcodeItem>;
@@ -33,6 +32,7 @@ type
   published
     property CetakBarcodeItems: TObjectList<TCetakBarcodeItem> read
         GetCetakBarcodeItems write FCetakBarcodeItems;
+    property JenisLabel: string read FJenisLabel write FJenisLabel;
     property NoBukti: string read FNoBukti write FNoBukti;
     property Tanggal: TDateTime read FTanggal write FTanggal;
   end;
@@ -42,6 +42,9 @@ implementation
 
 function TCetakBarcode.GetCetakBarcodeItems: TObjectList<TCetakBarcodeItem>;
 begin
+  if FCetakBarcodeItems = nil then
+    FCetakBarcodeItems := TObjectList<TCetakBarcodeItem>.Create();
+
   Result := FCetakBarcodeItems;
 end;
 

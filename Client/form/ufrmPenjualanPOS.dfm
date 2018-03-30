@@ -21,24 +21,24 @@ inherited frmPenjualanPOS: TfrmPenjualanPOS
           Width = 778
           ExplicitWidth = 778
           inherited lblPeriode: TLabel
-            Left = 355
+            Left = 364
             ExplicitLeft = 355
           end
           inherited lblSD: TLabel
-            Left = 516
+            Left = 525
             ExplicitLeft = 516
           end
           inherited dtpAwal: TDateTimePicker
-            Left = 408
-            ExplicitLeft = 408
+            Left = 417
+            ExplicitLeft = 417
           end
           inherited dtpAkhir: TDateTimePicker
-            Left = 557
-            ExplicitLeft = 557
+            Left = 566
+            ExplicitLeft = 566
           end
           inherited btnRefresh: TcxButton
-            Left = 668
-            ExplicitLeft = 668
+            Left = 671
+            ExplicitLeft = 671
           end
         end
         inherited cxGrid: TcxGrid
@@ -124,7 +124,7 @@ inherited frmPenjualanPOS: TfrmPenjualanPOS
   end
   inherited ilButton: TImageList
     Bitmap = {
-      494C010106000800C80018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010106000800CC0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

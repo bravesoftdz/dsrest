@@ -528,7 +528,8 @@ type
   TServerCetakBarcode = class(TServerTransaction)
   public
     function Retrieve(AID : String): TCetakBarcode;
-    function RetrieveCDSlip(AID : String): TDataset;
+    function RetrieveCDSlip(AID : String): TFDJSONDataSets;
+    function RetrieveNoBukti(ANoBukti : String): TCetakBarcode;
   end;
 
   
@@ -4714,14 +4715,43 @@ begin
   TDBUtils.LoadFromDB(Result, AID);
 end;
 
-function TServerCetakBarcode.RetrieveCDSlip(AID : String): TDataset;
+function TServerCetakBarcode.RetrieveCDSlip(AID : String): TFDJSONDataSets;
 var
   sSQL: string;
 begin
-  sSQL   := 'select * from TAR a ' +
-            ' where a.id = ' + QuotedStr(AID);
+  Result := TFDJSONDataSets.Create;
 
-  Result := TDBUtils.OpenDataset(sSQL);
+  sSQL   := ' select * from vcetakbarcode_slip ' +
+            ' where 1 = 1 ';
+
+  if AID <> '' then
+    sSQL := sSQL + ' and id = ' + QuotedStr(AID)
+  else
+    sSQL := sSQL + ' and id = newid()';
+
+
+  TFDJSONDataSetsWriter.ListAdd(Result, TDBUtils.OpenQuery(sSQL));
+end;
+
+function TServerCetakBarcode.RetrieveNoBukti(ANoBukti : String): TCetakBarcode;
+var
+  sID: string;
+  sSQL: string;
+begin
+  sSQL := 'select * from ' + GetTableName
+          + ' where nobukti = ' + QuotedStr(ANoBukti);
+
+  with TDBUtils.OpenDataset(sSQL) do
+  begin
+    try
+      sID := FieldByName('ID').AsString;
+      Result := Retrieve(sID);
+    finally
+      Free;
+    end;
+  end;
+
+
 end;
 
 

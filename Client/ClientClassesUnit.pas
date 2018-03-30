@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 3/28/2018 6:34:10 PM
+// 3/30/2018 11:21:13 PM
 //
 
 unit ClientClassesUnit;
@@ -1334,6 +1334,8 @@ type
     FRetrieveCommand_Cache: TDSRestCommand;
     FRetrieveCDSlipCommand: TDSRestCommand;
     FRetrieveCDSlipCommand_Cache: TDSRestCommand;
+    FRetrieveNoBuktiCommand: TDSRestCommand;
+    FRetrieveNoBuktiCommand_Cache: TDSRestCommand;
     FDoJournalCommand: TDSRestCommand;
     FGenerateNoBuktiCommand: TDSRestCommand;
     FRetrieveDataCommand: TDSRestCommand;
@@ -1353,8 +1355,10 @@ type
     destructor Destroy; override;
     function Retrieve(AID: string; const ARequestFilter: string = ''): TCetakBarcode;
     function Retrieve_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedTCetakBarcode;
-    function RetrieveCDSlip(AID: string; const ARequestFilter: string = ''): TDataSet;
-    function RetrieveCDSlip_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function RetrieveCDSlip(AID: string; const ARequestFilter: string = ''): TFDJSONDataSets;
+    function RetrieveCDSlip_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
+    function RetrieveNoBukti(ANoBukti: string; const ARequestFilter: string = ''): TCetakBarcode;
+    function RetrieveNoBukti_Cache(ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedTCetakBarcode;
     function DoJournal(ANoBukti: string; AModTransClass: string; AIsHapusJurnal: Integer; const ARequestFilter: string = ''): Boolean;
     function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
     function RetrieveData(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): TDataSet;
@@ -4969,12 +4973,24 @@ const
   TServerCetakBarcode_RetrieveCDSlip: array [0..1] of TDSRestParameterMetaData =
   (
     (Name: 'AID'; Direction: 1; DBXType: 26; TypeName: 'string'),
-    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+    (Name: ''; Direction: 4; DBXType: 37; TypeName: 'TFDJSONDataSets')
   );
 
   TServerCetakBarcode_RetrieveCDSlip_Cache: array [0..1] of TDSRestParameterMetaData =
   (
     (Name: 'AID'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerCetakBarcode_RetrieveNoBukti: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 37; TypeName: 'TCetakBarcode')
+  );
+
+  TServerCetakBarcode_RetrieveNoBukti_Cache: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
@@ -17805,7 +17821,7 @@ begin
   Result := TDSRestCachedTCetakBarcode.Create(FRetrieveCommand_Cache.Parameters[1].Value.GetString);
 end;
 
-function TServerCetakBarcodeClient.RetrieveCDSlip(AID: string; const ARequestFilter: string): TDataSet;
+function TServerCetakBarcodeClient.RetrieveCDSlip(AID: string; const ARequestFilter: string): TFDJSONDataSets;
 begin
   if FRetrieveCDSlipCommand = nil then
   begin
@@ -17816,13 +17832,22 @@ begin
   end;
   FRetrieveCDSlipCommand.Parameters[0].Value.SetWideString(AID);
   FRetrieveCDSlipCommand.Execute(ARequestFilter);
-  Result := TCustomSQLDataSet.Create(nil, FRetrieveCDSlipCommand.Parameters[1].Value.GetDBXReader(False), True);
-  Result.Open;
-  if FInstanceOwner then
-    FRetrieveCDSlipCommand.FreeOnExecute(Result);
+  if not FRetrieveCDSlipCommand.Parameters[1].Value.IsNull then
+  begin
+    FUnMarshal := TDSRestCommand(FRetrieveCDSlipCommand.Parameters[1].ConnectionHandler).GetJSONUnMarshaler;
+    try
+      Result := TFDJSONDataSets(FUnMarshal.UnMarshal(FRetrieveCDSlipCommand.Parameters[1].Value.GetJSONValue(True)));
+      if FInstanceOwner then
+        FRetrieveCDSlipCommand.FreeOnExecute(Result);
+    finally
+      FreeAndNil(FUnMarshal)
+    end
+  end
+  else
+    Result := nil;
 end;
 
-function TServerCetakBarcodeClient.RetrieveCDSlip_Cache(AID: string; const ARequestFilter: string): IDSRestCachedDataSet;
+function TServerCetakBarcodeClient.RetrieveCDSlip_Cache(AID: string; const ARequestFilter: string): IDSRestCachedTFDJSONDataSets;
 begin
   if FRetrieveCDSlipCommand_Cache = nil then
   begin
@@ -17833,7 +17858,47 @@ begin
   end;
   FRetrieveCDSlipCommand_Cache.Parameters[0].Value.SetWideString(AID);
   FRetrieveCDSlipCommand_Cache.ExecuteCache(ARequestFilter);
-  Result := TDSRestCachedDataSet.Create(FRetrieveCDSlipCommand_Cache.Parameters[1].Value.GetString);
+  Result := TDSRestCachedTFDJSONDataSets.Create(FRetrieveCDSlipCommand_Cache.Parameters[1].Value.GetString);
+end;
+
+function TServerCetakBarcodeClient.RetrieveNoBukti(ANoBukti: string; const ARequestFilter: string): TCetakBarcode;
+begin
+  if FRetrieveNoBuktiCommand = nil then
+  begin
+    FRetrieveNoBuktiCommand := FConnection.CreateCommand;
+    FRetrieveNoBuktiCommand.RequestType := 'GET';
+    FRetrieveNoBuktiCommand.Text := 'TServerCetakBarcode.RetrieveNoBukti';
+    FRetrieveNoBuktiCommand.Prepare(TServerCetakBarcode_RetrieveNoBukti);
+  end;
+  FRetrieveNoBuktiCommand.Parameters[0].Value.SetWideString(ANoBukti);
+  FRetrieveNoBuktiCommand.Execute(ARequestFilter);
+  if not FRetrieveNoBuktiCommand.Parameters[1].Value.IsNull then
+  begin
+    FUnMarshal := TDSRestCommand(FRetrieveNoBuktiCommand.Parameters[1].ConnectionHandler).GetJSONUnMarshaler;
+    try
+      Result := TCetakBarcode(FUnMarshal.UnMarshal(FRetrieveNoBuktiCommand.Parameters[1].Value.GetJSONValue(True)));
+      if FInstanceOwner then
+        FRetrieveNoBuktiCommand.FreeOnExecute(Result);
+    finally
+      FreeAndNil(FUnMarshal)
+    end
+  end
+  else
+    Result := nil;
+end;
+
+function TServerCetakBarcodeClient.RetrieveNoBukti_Cache(ANoBukti: string; const ARequestFilter: string): IDSRestCachedTCetakBarcode;
+begin
+  if FRetrieveNoBuktiCommand_Cache = nil then
+  begin
+    FRetrieveNoBuktiCommand_Cache := FConnection.CreateCommand;
+    FRetrieveNoBuktiCommand_Cache.RequestType := 'GET';
+    FRetrieveNoBuktiCommand_Cache.Text := 'TServerCetakBarcode.RetrieveNoBukti';
+    FRetrieveNoBuktiCommand_Cache.Prepare(TServerCetakBarcode_RetrieveNoBukti_Cache);
+  end;
+  FRetrieveNoBuktiCommand_Cache.Parameters[0].Value.SetWideString(ANoBukti);
+  FRetrieveNoBuktiCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedTCetakBarcode.Create(FRetrieveNoBuktiCommand_Cache.Parameters[1].Value.GetString);
 end;
 
 function TServerCetakBarcodeClient.DoJournal(ANoBukti: string; AModTransClass: string; AIsHapusJurnal: Integer; const ARequestFilter: string): Boolean;
@@ -18130,6 +18195,8 @@ begin
   FRetrieveCommand_Cache.DisposeOf;
   FRetrieveCDSlipCommand.DisposeOf;
   FRetrieveCDSlipCommand_Cache.DisposeOf;
+  FRetrieveNoBuktiCommand.DisposeOf;
+  FRetrieveNoBuktiCommand_Cache.DisposeOf;
   FDoJournalCommand.DisposeOf;
   FGenerateNoBuktiCommand.DisposeOf;
   FRetrieveDataCommand.DisposeOf;
