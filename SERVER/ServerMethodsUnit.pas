@@ -2675,8 +2675,8 @@ var
   lPenerimaanKas: TPenerimaanKas;
   lPenerimaanKasAR: TPenerimaanKasAR;
 begin
-  Result := True;
-  Exit;
+//  Result := True;
+//  Exit;
 
   lPenerimaanKas := TPenerimaanKas.Create();
   try

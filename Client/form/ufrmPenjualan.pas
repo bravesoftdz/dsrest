@@ -384,16 +384,16 @@ begin
   Penjualan.PenjualanItems.Clear;
   for I := 0 to cxGridTablePenjualan.DataController.RecordCount - 1 do
   begin
-    lPenjualanItem           := TPenjualanItem.Create;
-    lPenjualanItem.Barang    := TBarang.CreateID(cxGridTablePenjualan.GetString(i, cxgrdclmnGridTablePenjualanColumnSKU.Index));
-    lPenjualanItem.Diskon    := cxGridTablePenjualan.GetDouble(i, cxgrdclmnGridTablePenjualanColumnDiskon.Index);
-    lPenjualanItem.Harga     := cxGridTablePenjualan.GetDouble(i, cxgrdclmnGridTablePenjualanColumnHarga.Index);
-    lPenjualanItem.PPN       := cxGridTablePenjualan.GetDouble(i, cxgrdclmnGridTablePenjualanColumnPPN.Index);
-    lPenjualanItem.Qty       := cxGridTablePenjualan.GetDouble(i, cxgrdclmnGridTablePenjualanColumnQty.Index);
-    lPenjualanItem.UOM       := TUOM.CreateID(cxGridTablePenjualan.GetString(i, cxgrdclmnGridTablePenjualanColumnSatuan.Index));
-    lPenjualanItem.Konversi  := cxGridTablePenjualan.GetDouble(i, cxgrdclmnGridTablePenjualanColumnKonversi.Index);
-    lPenjualanItem.JenisHarga:= cxGridTablePenjualan.GetString(i, cxgrdclmnGridTablePenjualanColumnJenisHarga.Index);
-    lPenjualanItem.Penjualan := Penjualan;
+    lPenjualanItem            := TPenjualanItem.Create;
+    lPenjualanItem.Barang     := TBarang.CreateID(cxGridTablePenjualan.GetString(i, cxgrdclmnGridTablePenjualanColumnSKU.Index));
+    lPenjualanItem.Diskon     := cxGridTablePenjualan.GetDouble(i, cxgrdclmnGridTablePenjualanColumnDiskon.Index);
+    lPenjualanItem.Harga      := cxGridTablePenjualan.GetDouble(i, cxgrdclmnGridTablePenjualanColumnHarga.Index);
+    lPenjualanItem.PPN        := cxGridTablePenjualan.GetDouble(i, cxgrdclmnGridTablePenjualanColumnPPN.Index);
+    lPenjualanItem.Qty        := cxGridTablePenjualan.GetDouble(i, cxgrdclmnGridTablePenjualanColumnQty.Index);
+    lPenjualanItem.UOM        := TUOM.CreateID(cxGridTablePenjualan.GetString(i, cxgrdclmnGridTablePenjualanColumnSatuan.Index));
+    lPenjualanItem.Konversi   := cxGridTablePenjualan.GetDouble(i, cxgrdclmnGridTablePenjualanColumnKonversi.Index);
+    lPenjualanItem.JenisHarga := cxGridTablePenjualan.GetString(i, cxgrdclmnGridTablePenjualanColumnJenisHarga.Index);
+    lPenjualanItem.Penjualan  := Penjualan;
 
     Penjualan.PenjualanItems.Add(lPenjualanItem);
   end;

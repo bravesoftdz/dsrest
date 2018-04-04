@@ -1,0 +1,16 @@
+/*5 April 2018*/
+CREATE VIEW [dbo].[vcetakbarcode_slip] AS 
+SELECT
+A.NOBUKTI,
+A.TANGGAL,
+A.ID,
+A.JENISLABEL,
+C.sku,
+C.nama,
+d.hargajual
+
+FROM TCetakBarcode A
+INNER JOIN TCetakBarcodeItem B ON A.ID = B.CETAKBARCODE
+INNER JOIN tbarang C ON B.BARANG = C.id
+INNER JOIN tbarangsatuanitem d on d.barang = c.id
+GO
