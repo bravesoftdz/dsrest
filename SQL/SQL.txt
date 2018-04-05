@@ -14,3 +14,15 @@ INNER JOIN TCetakBarcodeItem B ON A.ID = B.CETAKBARCODE
 INNER JOIN tbarang C ON B.BARANG = C.id
 INNER JOIN tbarangsatuanitem d on d.barang = c.id
 GO
+
+alter table tsettingapp
+add KasPOS uniqueidentifier;
+
+create view vbank AS
+SELECT
+a.alamat,
+a.bank,
+a.namapemegang,
+a.norek,
+a.id
+from trekbank a;

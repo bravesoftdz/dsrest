@@ -3,11 +3,12 @@ unit uSettingApp;
 interface
 
 uses
-  uModel, System.SysUtils, uUser;
+  uModel, System.SysUtils, uUser, uAccount, uRekBank;
 
 type
   TSettingApp = class(TAppObject)
   private
+    FKasPOS: TRekBank;
     FCabang: TCabang;
     FGudangPenjualan: tgudang;
     FGudangTransit: tgudang;
@@ -16,6 +17,7 @@ type
     procedure SetGudangPenjualan(const Value: tgudang);
     procedure SetGudangTransit(const Value: tgudang);
   published
+    property KasPOS: TRekBank read FKasPOS write FKasPOS;
     property Cabang: TCabang read FCabang write SetCabang;
     property GudangPenjualan: tgudang read FGudangPenjualan write
         SetGudangPenjualan;

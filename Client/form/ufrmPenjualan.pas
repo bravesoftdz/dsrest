@@ -16,7 +16,7 @@ uses
   cxMemo, cxMaskEdit, cxCalendar, cxTextEdit, Vcl.StdCtrls, ClientModule,
   uPenjualan, uDBUtils, uAppUtils, Vcl.Menus, cxCalc, dxBarBuiltInMenu, cxPC,
   cxButtons, uReport, uInterface,uDMReport,Data.FireDACJSONReflect,
-  uReturSupplier, uSupplier, ufrmPembayaranPOS, System.StrUtils;
+  uReturSupplier, uSupplier, ufrmPembayaranPOS, System.StrUtils, uRekBank;
 
 type
   TfrmPenjualan = class(TfrmDefault)
@@ -410,7 +410,7 @@ begin
     lDibayar         := TfrmPembayaranPOS.Bayar(Penjualan.Total);
     if lDibayar <> 0 then
     begin
-      IsBerhasilSimpan := ClientModule.ClientDataModule.ServerPenjualanClient.SaveToDBDibayar(Penjualan,lDibayar);
+      IsBerhasilSimpan := ClientModule.ClientDataModule.ServerPenjualanClient.SaveToDBDibayar(Penjualan,lDibayar, TRekBank.CreateID(ClientDataModule.SettingApp.KasPOS.ID));
     end;
   end else if cbbJenisPembayaran.Text = 'DEPOSIT' then
   begin

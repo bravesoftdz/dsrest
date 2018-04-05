@@ -22,6 +22,7 @@ type
   public
     function DS_CabangLookUp: TDataset;
     function DS_BarangLookUp: TDataset;
+    function DS_Bank: TDataset;
     function DS_MenuLookUp: TDataset;
     function DS_UserLookUp: TDataset;
     function DS_GudangLookUp: TDataset;
@@ -267,7 +268,8 @@ type
     function GetServerPenerimaanKas: TServerPenerimaanKas;
     function HapusARAP(AOBject: TAppObject): Boolean;
     function SimpanARAP(AOBject: TAppObject): Boolean;
-    function SimpanBayar(APenjualan : TPenjualan; ADibayar : Double): Boolean;
+    function SimpanBayar(APenjualan : TPenjualan; ADibayar : Double; ARekBank :
+        TRekBank): Boolean;
     property ServerAR: TServerAR read GetServerAR write FServerAR;
     property ServerAp: TServerAP read GetServerAp write FServerAp;
     property ServerPenerimaanKas: TServerPenerimaanKas read GetServerPenerimaanKas
@@ -292,7 +294,8 @@ type
     function RetrieveNoBukti(ANoBukti : String): TPenjualan;
     function RetrieveCDSlip(ATglAwal , ATglAtglAkhir : TDateTime; ACabang :
         TCabang; ANoBukti : String): TFDJSONDataSets;
-    function SaveToDBDibayar(APenjualan : TPenjualan; ADibayar : Double): Boolean;
+    function SaveToDBDibayar(APenjualan : TPenjualan; ADibayar : Double; ARekBank :
+        TRekBank): Boolean;
 
   end;
 
@@ -2603,7 +2606,7 @@ begin
 end;
 
 function TServerPenjualan.SaveToDBDibayar(APenjualan : TPenjualan; ADibayar :
-    Double): Boolean;
+    Double; ARekBank : TRekBank): Boolean;
 begin
   Result := False;
 
@@ -2611,7 +2614,7 @@ begin
   try
     if SaveNoCommit(APenjualan) then
     begin
-      if SimpanBayar(APenjualan,ADibayar) then
+      if SimpanBayar(APenjualan,ADibayar, ARekBank) then
       begin
         ADConnection.Commit;
         Result := True;
@@ -2669,7 +2672,7 @@ begin
 end;
 
 function TServerPenjualan.SimpanBayar(APenjualan : TPenjualan; ADibayar :
-    Double): Boolean;
+    Double; ARekBank : TRekBank): Boolean;
 var
   lAR: TAR;
   lPenerimaanKas: TPenerimaanKas;
@@ -2688,7 +2691,7 @@ begin
     lPenerimaanKas.Pembeli        := TSupplier.CreateID(APenjualan.Pembeli.ID);
     lPenerimaanKas.Petugas        := APenjualan.Kasir;
 
-    lPenerimaanKas.RekBank        := TRekBank.CreateID(SettingAppServer.RekBankCash.ID);
+    lPenerimaanKas.RekBank        := TRekBank.CreateID(ARekBank.ID);
     lPenerimaanKas.TglBukti       := APenjualan.TglBukti;
 
     lPenerimaanKasAR              := TPenerimaanKasAR.Create();
@@ -4068,6 +4071,14 @@ var
   sSQL: string;
 begin
   sSQL   := 'select * from vbarang order by sku';
+  Result := TDBUtils.OpenDataset(sSQL);
+end;
+
+function TDSData.DS_Bank: TDataset;
+var
+  sSQL: string;
+begin
+  sSQL   := 'select * from vbank';
   Result := TDBUtils.OpenDataset(sSQL);
 end;
 

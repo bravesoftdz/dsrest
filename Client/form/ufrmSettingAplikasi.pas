@@ -12,7 +12,7 @@ uses
   cxGrid, System.Actions, Vcl.ActnList, cxCheckBox, cxGridLevel, cxClasses,
   cxGridCustomView, Vcl.StdCtrls, cxButtons, Vcl.ComCtrls, Vcl.ExtCtrls, cxPC,
   dxStatusBar, cxTextEdit, cxMaskEdit, cxDropDownEdit, cxLookupEdit,
-  cxDBLookupEdit, cxDBExtLookupComboBox, uSettingApp, cxCurrencyEdit;
+  cxDBLookupEdit, cxDBExtLookupComboBox, uSettingApp, cxCurrencyEdit, uRekBank;
 
 type
   TfrmSettingAplikasi = class(TfrmDefault)
@@ -24,6 +24,8 @@ type
     cbbGudangTransit: TcxExtLookupComboBox;
     lblMaxBelanja: TLabel;
     edMaxBelanjaHari: TcxCurrencyEdit;
+    lblAkunKasPOS: TLabel;
+    cbbKasPOS: TcxExtLookupComboBox;
     procedure ActionBaruExecute(Sender: TObject);
     procedure ActionRefreshExecute(Sender: TObject);
     procedure ActionSimpanExecute(Sender: TObject);
@@ -34,10 +36,12 @@ type
         TShiftState; var AHandled: Boolean);
     procedure btnHapusClick(Sender: TObject);
   private
+    FCDSBank: tclientDataSet;
     FSettingApp: TSettingApp;
     function GetSettingApp: TSettingApp;
     procedure InisialisasiCBBGudang;
     procedure InisialisasiCBBCabang;
+    procedure InisialisasiRekBang;
     property SettingApp: TSettingApp read GetSettingApp write FSettingApp;
     { Private declarations }
   public
@@ -92,6 +96,7 @@ begin
   SettingApp.GudangPenjualan := TGudang.CreateID(cbbGudangPenjualan.EditValue);
   SettingApp.GudangTransit   := TGudang.CreateID(cbbGudangTransit.EditValue);
   SettingApp.MaxBelanjaSantri:= edMaxBelanjaHari.Value;
+  SettingApp.KasPOS          := TRekBank.CreateID(cbbKasPOS.EditValue);
 
   try
     if ClientDataModule.ServerSettingAppClient.Save(SettingApp) then
@@ -144,6 +149,7 @@ begin
   inherited;
   InisialisasiCBBGudang;
   InisialisasiCBBCabang;
+  InisialisasiRekBang();
 end;
 
 function TfrmSettingAplikasi.GetSettingApp: TSettingApp;
@@ -183,6 +189,14 @@ begin
   cbbCabang.Properties.SetMultiPurposeLookup;
 end;
 
+procedure TfrmSettingAplikasi.InisialisasiRekBang;
+begin
+  FCDSBank := TDBUtils.DSToCDS(ClientDataModule.DSDataCLient.DS_Bank(), Self);
+  ShowMessage(FCDSBank.FieldByName('bank').AsString);
+  cbbKasPOS.Properties.LoadFromCDS(FCDSBank,'ID','Bank',['ID'],Self);
+  cbbKasPOS.Properties.SetMultiPurposeLookup;
+end;
+
 procedure TfrmSettingAplikasi.LoadData(AID : String);
 begin
   ClearByTag([0,1]);
@@ -202,6 +216,7 @@ begin
   cbbGudangPenjualan.EditValue := FSettingApp.GudangPenjualan.ID;
   cbbGudangTransit.EditValue   := FSettingApp.GudangTransit.ID;
   edMaxBelanjaHari.Value       := FSettingApp.MaxBelanjaSantri;
+  cbbKasPOS.EditValue          := FSettingApp.KasPOS.ID;
 
 
 end;

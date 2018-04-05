@@ -60,11 +60,18 @@ inherited frmSettingAplikasi: TfrmSettingAplikasi
         Caption = 'Gudang Transit'
       end
       object lblMaxBelanja: TLabel
-        Left = 16
+        Left = 11
         Top = 92
-        Width = 87
+        Width = 92
         Height = 13
-        Caption = 'Max Belanja / Hari'
+        Caption = 'Max Belanja Harian'
+      end
+      object lblAkunKasPOS: TLabel
+        Left = 61
+        Top = 117
+        Width = 42
+        Height = 13
+        Caption = 'KAS POS'
       end
       object cbbGudangPenjualan: TcxExtLookupComboBox
         Left = 109
@@ -92,6 +99,12 @@ inherited frmSettingAplikasi: TfrmSettingAplikasi
         TabOrder = 3
         Width = 145
       end
+      object cbbKasPOS: TcxExtLookupComboBox
+        Left = 109
+        Top = 113
+        TabOrder = 4
+        Width = 145
+      end
     end
   end
   inherited pnlButton: TPanel
@@ -111,9 +124,19 @@ inherited frmSettingAplikasi: TfrmSettingAplikasi
       OnExecute = ActionRefreshExecute
     end
   end
+  inherited dsCabang: TDataSource
+    Left = 536
+    Top = 56
+  end
+  inherited dlgSaveExportExcel: TSaveDialog
+    Left = 472
+    Top = 56
+  end
   inherited ilButton: TImageList
+    Left = 424
+    Top = 56
     Bitmap = {
-      494C010107000800E80018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800EC0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
