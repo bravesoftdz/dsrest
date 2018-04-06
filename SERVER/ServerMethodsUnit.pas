@@ -2344,7 +2344,9 @@ var
 begin
   Result      := TGudang.Create;
 
-  sSQL := 'select id from TGudang where kode = ' + QuotedStr(AKode);
+  sSQL := 'select id from TGudang ' +
+          ' where kode = ' + QuotedStr(AKode);
+
   with TDBUtils.OpenDataset(sSQL) do
   begin
     try
