@@ -16,7 +16,7 @@ uses
   cxMemo, cxMaskEdit, cxCalendar, cxTextEdit, Vcl.StdCtrls, ClientModule,
   uPenjualan, uDBUtils, uAppUtils, Vcl.Menus, cxCalc, dxBarBuiltInMenu, cxPC,
   cxButtons, uReport, uInterface,uDMReport,Data.FireDACJSONReflect,
-  uReturSupplier, uSupplier, ufrmPembayaranPOS, System.StrUtils;
+  uReturSupplier, uSupplier, ufrmPembayaranPOS, System.StrUtils, uRekBank;
 
 type
   TfrmPenjualan = class(TfrmDefault)
@@ -384,16 +384,16 @@ begin
   Penjualan.PenjualanItems.Clear;
   for I := 0 to cxGridTablePenjualan.DataController.RecordCount - 1 do
   begin
-    lPenjualanItem           := TPenjualanItem.Create;
-    lPenjualanItem.Barang    := TBarang.CreateID(cxGridTablePenjualan.GetString(i, cxgrdclmnGridTablePenjualanColumnSKU.Index));
-    lPenjualanItem.Diskon    := cxGridTablePenjualan.GetDouble(i, cxgrdclmnGridTablePenjualanColumnDiskon.Index);
-    lPenjualanItem.Harga     := cxGridTablePenjualan.GetDouble(i, cxgrdclmnGridTablePenjualanColumnHarga.Index);
-    lPenjualanItem.PPN       := cxGridTablePenjualan.GetDouble(i, cxgrdclmnGridTablePenjualanColumnPPN.Index);
-    lPenjualanItem.Qty       := cxGridTablePenjualan.GetDouble(i, cxgrdclmnGridTablePenjualanColumnQty.Index);
-    lPenjualanItem.UOM       := TUOM.CreateID(cxGridTablePenjualan.GetString(i, cxgrdclmnGridTablePenjualanColumnSatuan.Index));
-    lPenjualanItem.Konversi  := cxGridTablePenjualan.GetDouble(i, cxgrdclmnGridTablePenjualanColumnKonversi.Index);
-    lPenjualanItem.JenisHarga:= cxGridTablePenjualan.GetString(i, cxgrdclmnGridTablePenjualanColumnJenisHarga.Index);
-    lPenjualanItem.Penjualan := Penjualan;
+    lPenjualanItem            := TPenjualanItem.Create;
+    lPenjualanItem.Barang     := TBarang.CreateID(cxGridTablePenjualan.GetString(i, cxgrdclmnGridTablePenjualanColumnSKU.Index));
+    lPenjualanItem.Diskon     := cxGridTablePenjualan.GetDouble(i, cxgrdclmnGridTablePenjualanColumnDiskon.Index);
+    lPenjualanItem.Harga      := cxGridTablePenjualan.GetDouble(i, cxgrdclmnGridTablePenjualanColumnHarga.Index);
+    lPenjualanItem.PPN        := cxGridTablePenjualan.GetDouble(i, cxgrdclmnGridTablePenjualanColumnPPN.Index);
+    lPenjualanItem.Qty        := cxGridTablePenjualan.GetDouble(i, cxgrdclmnGridTablePenjualanColumnQty.Index);
+    lPenjualanItem.UOM        := TUOM.CreateID(cxGridTablePenjualan.GetString(i, cxgrdclmnGridTablePenjualanColumnSatuan.Index));
+    lPenjualanItem.Konversi   := cxGridTablePenjualan.GetDouble(i, cxgrdclmnGridTablePenjualanColumnKonversi.Index);
+    lPenjualanItem.JenisHarga := cxGridTablePenjualan.GetString(i, cxgrdclmnGridTablePenjualanColumnJenisHarga.Index);
+    lPenjualanItem.Penjualan  := Penjualan;
 
     Penjualan.PenjualanItems.Add(lPenjualanItem);
   end;
@@ -410,7 +410,7 @@ begin
     lDibayar         := TfrmPembayaranPOS.Bayar(Penjualan.Total);
     if lDibayar <> 0 then
     begin
-      IsBerhasilSimpan := ClientModule.ClientDataModule.ServerPenjualanClient.SaveToDBDibayar(Penjualan,lDibayar);
+      IsBerhasilSimpan := ClientModule.ClientDataModule.ServerPenjualanClient.SaveToDBDibayar(Penjualan,lDibayar, TRekBank.CreateID(ClientDataModule.SettingApp.KasPOS.ID));
     end;
   end else if cbbJenisPembayaran.Text = 'DEPOSIT' then
   begin

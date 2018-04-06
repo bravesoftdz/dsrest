@@ -103,9 +103,12 @@ end;
 procedure TfrmBarang.ActionBaruExecute(Sender: TObject);
 begin
   inherited;
-  edKode.Text := '';
-  edNama.Text := '';
-  cbbSatuanStock.ItemIndex := 0;
+  edKode.Text               := '';
+  edNama.Text               := '';
+  cbbSatuanStock.ItemIndex  := 0;
+  edDiskonMember.Value      := 0;
+  edHarga.Value             := 0;
+
   edKode.SetFocus;
 
   FreeAndNil(FBarang);
@@ -180,9 +183,9 @@ begin
       begin
         ActionBaruExecute(Sender);
         ActionRefreshExecute(Sender);
+        FreeAndNil(FBarang);
       end;
     finally
-      FreeAndNil(FBarang);
       Free;
     end;
   end;

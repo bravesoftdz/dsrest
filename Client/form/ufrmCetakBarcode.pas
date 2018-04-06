@@ -8,7 +8,8 @@ uses
   cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit, cxTextEdit,
   cxMaskEdit, cxDropDownEdit, cxLookupEdit, cxDBLookupEdit,
   cxDBExtLookupComboBox, cxCurrencyEdit,uAppUtils, ClientModule,
-  Datasnap.DBClient,uDBUtils, cxSpinEdit, Vcl.Menus, cxButtons, uCetakBarcode, uModel;
+  Datasnap.DBClient,uDBUtils, cxSpinEdit, Vcl.Menus, cxButtons,
+  uCetakBarcode, uModel, uDMReport, Data.FireDACJSONReflect;
 
 type
   TfrmCetakBarcode = class(TForm)
@@ -26,6 +27,8 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure cbbBarangPropertiesChange(Sender: TObject);
     procedure bCetakClick(Sender: TObject);
+    procedure cbbBarangPropertiesValidate(Sender: TObject;
+      var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
   private
     FCDSBarang: tclientDataSet;
     FCDSUOM: tclientDataSet;
@@ -38,6 +41,8 @@ type
     property CDSUOM: tclientDataSet read GetCDSUOM write FCDSUOM;
     property CetakBarcode: TCetakBarcode read GetCetakBarcode write FCetakBarcode;
     { Private declarations }
+  protected
+    procedure CetakSlip; virtual;
   public
     { Public declarations }
   end;
@@ -57,27 +62,60 @@ end;
 procedure TfrmCetakBarcode.bCetakClick(Sender: TObject);
 var
   lCBItem: TCetakBarcodeItem;
+  I: Integer;
+  sNoBukti: string;
 begin
-  CetakBarcode.NoBukti := ClientDataModule.ServerCetakBarcodeClient.GenerateNoBukti(Now,'CB');
-  CetakBarcode.Tanggal := Now;
+  sNoBukti                := ClientDataModule.ServerCetakBarcodeClient.GenerateNoBukti(Now,'CB');
+  CetakBarcode.NoBukti    := sNoBukti;
+  CetakBarcode.Tanggal    := Now;
+  CetakBarcode.JenisLabel := cbbJenisLabel.Text;
 
   CetakBarcode.CetakBarcodeItems.Clear;
-  lCBItem             := TCetakBarcodeItem.Create;
-  lCBItem.Barang      := TBarang.CreateID(cbbBarang.EditValue);
-  lCBItem.Qty         := cxSpinQty.Value;
-  lCBItem.JenisLabel  := cbbJenisLabel.Text;
-
-  CetakBarcode.CetakBarcodeItems.Add(lCBItem);
+  for I := 0 to cxSpinQty.Value do
+  begin
+    lCBItem             := TCetakBarcodeItem.Create;
+    lCBItem.Barang      := TBarang.CreateID(cbbBarang.EditValue);
+    lCBItem.Qty         := 1;
+    CetakBarcode.CetakBarcodeItems.Add(lCBItem);
+  end;
 
   if ClientDataModule.ServerCetakBarcodeClient.Save(CetakBarcode) then
   begin
-
+    CetakBarcode := ClientDataModule.ServerCetakBarcodeClient.RetrieveNoBukti(sNoBukti);
+    CetakSlip;
   end;
 end;
 
 procedure TfrmCetakBarcode.cbbBarangPropertiesChange(Sender: TObject);
 begin
   cbbBarangNama.EditValue := cbbBarang.EditValue;
+end;
+
+procedure TfrmCetakBarcode.cbbBarangPropertiesValidate(Sender: TObject;
+  var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
+begin
+  cbbBarangNama.EditValue := cbbBarang.EditValue;
+end;
+
+procedure TfrmCetakBarcode.CetakSlip;
+var
+  lcds: TFDJSONDataSets;
+//  lcds: TClientDataSet;
+begin
+  inherited;
+
+  with dmReport do
+  begin
+    AddReportVariable('UserCetak', 'System');
+
+    lcds := ClientDataModule.ServerCetakBarcodeClient.RetrieveCDSlip(CetakBarcode.ID);
+
+
+    ExecuteReport( 'Reports/Slip_CetakBarcode_Standar' ,
+      lcds
+
+    );
+  end;
 end;
 
 procedure TfrmCetakBarcode.FormClose(Sender: TObject; var Action: TCloseAction);

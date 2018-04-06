@@ -1,13 +1,13 @@
 //
 // Created by the DataSnap proxy generator.
-// 3/28/2018 6:34:10 PM
+// 4/6/2018 6:05:44 AM
 //
 
 unit ClientClassesUnit;
 
 interface
 
-uses System.JSON, Datasnap.DSProxyRest, Datasnap.DSClientRest, Data.DBXCommon, Data.DBXClient, Data.DBXDataSnap, Data.DBXJSON, Datasnap.DSProxy, System.Classes, System.SysUtils, Data.DB, Data.SqlExpr, Data.DBXDBReaders, Data.DBXCDSReaders, uModel, Data.FireDACJSONReflect, uSupplier, uCustomerInvoice, uPenerimaanBarang, uReturSupplier, uPenjualan, uAR, uAccount, uRekBank, uPenerimaanKas, uPengeluaranKas, uSettingApp, uTransferAntarGudang, uTAGRequests, uTransferAntarCabang, uJurnal, uSettlementARAP, uUser, uPenarikanDeposit, uSetoranModal, uCetakBarcode, Data.DBXJSONReflect;
+uses System.JSON, Datasnap.DSProxyRest, Datasnap.DSClientRest, Data.DBXCommon, Data.DBXClient, Data.DBXDataSnap, Data.DBXJSON, Datasnap.DSProxy, System.Classes, System.SysUtils, Data.DB, Data.SqlExpr, Data.DBXDBReaders, Data.DBXCDSReaders, uModel, Data.FireDACJSONReflect, uSupplier, uCustomerInvoice, uPenerimaanBarang, uReturSupplier, uPenjualan, uRekBank, uAR, uAccount, uPenerimaanKas, uPengeluaranKas, uSettingApp, uTransferAntarGudang, uTAGRequests, uTransferAntarCabang, uJurnal, uSettlementARAP, uUser, uPenarikanDeposit, uSetoranModal, uCetakBarcode, Data.DBXJSONReflect;
 
 type
 
@@ -588,7 +588,7 @@ type
     function RetrieveNoBukti_Cache(ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedTPenjualan;
     function RetrieveCDSlip(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; ANoBukti: string; const ARequestFilter: string = ''): TFDJSONDataSets;
     function RetrieveCDSlip_Cache(ATglAwal: TDateTime; ATglAtglAkhir: TDateTime; ACabang: TCabang; ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
-    function SaveToDBDibayar(APenjualan: TPenjualan; ADibayar: Double; const ARequestFilter: string = ''): Boolean;
+    function SaveToDBDibayar(APenjualan: TPenjualan; ADibayar: Double; ARekBank: TRekBank; const ARequestFilter: string = ''): Boolean;
     function DoJournal(ANoBukti: string; AModTransClass: string; AIsHapusJurnal: Integer; const ARequestFilter: string = ''): Boolean;
     function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
     function RetrieveData(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): TDataSet;
@@ -1066,6 +1066,8 @@ type
     FDS_CabangLookUpCommand_Cache: TDSRestCommand;
     FDS_BarangLookUpCommand: TDSRestCommand;
     FDS_BarangLookUpCommand_Cache: TDSRestCommand;
+    FDS_BankCommand: TDSRestCommand;
+    FDS_BankCommand_Cache: TDSRestCommand;
     FDS_MenuLookUpCommand: TDSRestCommand;
     FDS_MenuLookUpCommand_Cache: TDSRestCommand;
     FDS_UserLookUpCommand: TDSRestCommand;
@@ -1093,6 +1095,8 @@ type
     function DS_CabangLookUp_Cache(const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function DS_BarangLookUp(const ARequestFilter: string = ''): TDataSet;
     function DS_BarangLookUp_Cache(const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function DS_Bank(const ARequestFilter: string = ''): TDataSet;
+    function DS_Bank_Cache(const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function DS_MenuLookUp(const ARequestFilter: string = ''): TDataSet;
     function DS_MenuLookUp_Cache(const ARequestFilter: string = ''): IDSRestCachedDataSet;
     function DS_UserLookUp(const ARequestFilter: string = ''): TDataSet;
@@ -1334,6 +1338,8 @@ type
     FRetrieveCommand_Cache: TDSRestCommand;
     FRetrieveCDSlipCommand: TDSRestCommand;
     FRetrieveCDSlipCommand_Cache: TDSRestCommand;
+    FRetrieveNoBuktiCommand: TDSRestCommand;
+    FRetrieveNoBuktiCommand_Cache: TDSRestCommand;
     FDoJournalCommand: TDSRestCommand;
     FGenerateNoBuktiCommand: TDSRestCommand;
     FRetrieveDataCommand: TDSRestCommand;
@@ -1353,8 +1359,10 @@ type
     destructor Destroy; override;
     function Retrieve(AID: string; const ARequestFilter: string = ''): TCetakBarcode;
     function Retrieve_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedTCetakBarcode;
-    function RetrieveCDSlip(AID: string; const ARequestFilter: string = ''): TDataSet;
-    function RetrieveCDSlip_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function RetrieveCDSlip(AID: string; const ARequestFilter: string = ''): TFDJSONDataSets;
+    function RetrieveCDSlip_Cache(AID: string; const ARequestFilter: string = ''): IDSRestCachedTFDJSONDataSets;
+    function RetrieveNoBukti(ANoBukti: string; const ARequestFilter: string = ''): TCetakBarcode;
+    function RetrieveNoBukti_Cache(ANoBukti: string; const ARequestFilter: string = ''): IDSRestCachedTCetakBarcode;
     function DoJournal(ANoBukti: string; AModTransClass: string; AIsHapusJurnal: Integer; const ARequestFilter: string = ''): Boolean;
     function GenerateNoBukti(ATglBukti: TDateTime; APrefix: string; const ARequestFilter: string = ''): string;
     function RetrieveData(aPeriodeAwal: TDateTime; APeriodeAkhir: TDateTime; AIDCabang: string; const ARequestFilter: string = ''): TDataSet;
@@ -2921,10 +2929,11 @@ const
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
-  TServerPenjualan_SaveToDBDibayar: array [0..2] of TDSRestParameterMetaData =
+  TServerPenjualan_SaveToDBDibayar: array [0..3] of TDSRestParameterMetaData =
   (
     (Name: 'APenjualan'; Direction: 1; DBXType: 37; TypeName: 'TPenjualan'),
     (Name: 'ADibayar'; Direction: 1; DBXType: 7; TypeName: 'Double'),
+    (Name: 'ARekBank'; Direction: 1; DBXType: 37; TypeName: 'TRekBank'),
     (Name: ''; Direction: 4; DBXType: 4; TypeName: 'Boolean')
   );
 
@@ -4289,6 +4298,16 @@ const
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
+  TDSData_DS_Bank: array [0..0] of TDSRestParameterMetaData =
+  (
+    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+  );
+
+  TDSData_DS_Bank_Cache: array [0..0] of TDSRestParameterMetaData =
+  (
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
   TDSData_DS_MenuLookUp: array [0..0] of TDSRestParameterMetaData =
   (
     (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
@@ -4969,12 +4988,24 @@ const
   TServerCetakBarcode_RetrieveCDSlip: array [0..1] of TDSRestParameterMetaData =
   (
     (Name: 'AID'; Direction: 1; DBXType: 26; TypeName: 'string'),
-    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+    (Name: ''; Direction: 4; DBXType: 37; TypeName: 'TFDJSONDataSets')
   );
 
   TServerCetakBarcode_RetrieveCDSlip_Cache: array [0..1] of TDSRestParameterMetaData =
   (
     (Name: 'AID'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
+  );
+
+  TServerCetakBarcode_RetrieveNoBukti: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
+    (Name: ''; Direction: 4; DBXType: 37; TypeName: 'TCetakBarcode')
+  );
+
+  TServerCetakBarcode_RetrieveNoBukti_Cache: array [0..1] of TDSRestParameterMetaData =
+  (
+    (Name: 'ANoBukti'; Direction: 1; DBXType: 26; TypeName: 'string'),
     (Name: ''; Direction: 4; DBXType: 26; TypeName: 'String')
   );
 
@@ -10603,7 +10634,7 @@ begin
   Result := TDSRestCachedTFDJSONDataSets.Create(FRetrieveCDSlipCommand_Cache.Parameters[4].Value.GetString);
 end;
 
-function TServerPenjualanClient.SaveToDBDibayar(APenjualan: TPenjualan; ADibayar: Double; const ARequestFilter: string): Boolean;
+function TServerPenjualanClient.SaveToDBDibayar(APenjualan: TPenjualan; ADibayar: Double; ARekBank: TRekBank; const ARequestFilter: string): Boolean;
 begin
   if FSaveToDBDibayarCommand = nil then
   begin
@@ -10626,8 +10657,21 @@ begin
     end
     end;
   FSaveToDBDibayarCommand.Parameters[1].Value.SetDouble(ADibayar);
+  if not Assigned(ARekBank) then
+    FSaveToDBDibayarCommand.Parameters[2].Value.SetNull
+  else
+  begin
+    FMarshal := TDSRestCommand(FSaveToDBDibayarCommand.Parameters[2].ConnectionHandler).GetJSONMarshaler;
+    try
+      FSaveToDBDibayarCommand.Parameters[2].Value.SetJSONValue(FMarshal.Marshal(ARekBank), True);
+      if FInstanceOwner then
+        ARekBank.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
   FSaveToDBDibayarCommand.Execute(ARequestFilter);
-  Result := FSaveToDBDibayarCommand.Parameters[2].Value.GetBoolean;
+  Result := FSaveToDBDibayarCommand.Parameters[3].Value.GetBoolean;
 end;
 
 function TServerPenjualanClient.DoJournal(ANoBukti: string; AModTransClass: string; AIsHapusJurnal: Integer; const ARequestFilter: string): Boolean;
@@ -15368,6 +15412,35 @@ begin
   Result := TDSRestCachedDataSet.Create(FDS_BarangLookUpCommand_Cache.Parameters[0].Value.GetString);
 end;
 
+function TDSDataClient.DS_Bank(const ARequestFilter: string): TDataSet;
+begin
+  if FDS_BankCommand = nil then
+  begin
+    FDS_BankCommand := FConnection.CreateCommand;
+    FDS_BankCommand.RequestType := 'GET';
+    FDS_BankCommand.Text := 'TDSData.DS_Bank';
+    FDS_BankCommand.Prepare(TDSData_DS_Bank);
+  end;
+  FDS_BankCommand.Execute(ARequestFilter);
+  Result := TCustomSQLDataSet.Create(nil, FDS_BankCommand.Parameters[0].Value.GetDBXReader(False), True);
+  Result.Open;
+  if FInstanceOwner then
+    FDS_BankCommand.FreeOnExecute(Result);
+end;
+
+function TDSDataClient.DS_Bank_Cache(const ARequestFilter: string): IDSRestCachedDataSet;
+begin
+  if FDS_BankCommand_Cache = nil then
+  begin
+    FDS_BankCommand_Cache := FConnection.CreateCommand;
+    FDS_BankCommand_Cache.RequestType := 'GET';
+    FDS_BankCommand_Cache.Text := 'TDSData.DS_Bank';
+    FDS_BankCommand_Cache.Prepare(TDSData_DS_Bank_Cache);
+  end;
+  FDS_BankCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedDataSet.Create(FDS_BankCommand_Cache.Parameters[0].Value.GetString);
+end;
+
 function TDSDataClient.DS_MenuLookUp(const ARequestFilter: string): TDataSet;
 begin
   if FDS_MenuLookUpCommand = nil then
@@ -15710,6 +15783,8 @@ begin
   FDS_CabangLookUpCommand_Cache.DisposeOf;
   FDS_BarangLookUpCommand.DisposeOf;
   FDS_BarangLookUpCommand_Cache.DisposeOf;
+  FDS_BankCommand.DisposeOf;
+  FDS_BankCommand_Cache.DisposeOf;
   FDS_MenuLookUpCommand.DisposeOf;
   FDS_MenuLookUpCommand_Cache.DisposeOf;
   FDS_UserLookUpCommand.DisposeOf;
@@ -17805,7 +17880,7 @@ begin
   Result := TDSRestCachedTCetakBarcode.Create(FRetrieveCommand_Cache.Parameters[1].Value.GetString);
 end;
 
-function TServerCetakBarcodeClient.RetrieveCDSlip(AID: string; const ARequestFilter: string): TDataSet;
+function TServerCetakBarcodeClient.RetrieveCDSlip(AID: string; const ARequestFilter: string): TFDJSONDataSets;
 begin
   if FRetrieveCDSlipCommand = nil then
   begin
@@ -17816,13 +17891,22 @@ begin
   end;
   FRetrieveCDSlipCommand.Parameters[0].Value.SetWideString(AID);
   FRetrieveCDSlipCommand.Execute(ARequestFilter);
-  Result := TCustomSQLDataSet.Create(nil, FRetrieveCDSlipCommand.Parameters[1].Value.GetDBXReader(False), True);
-  Result.Open;
-  if FInstanceOwner then
-    FRetrieveCDSlipCommand.FreeOnExecute(Result);
+  if not FRetrieveCDSlipCommand.Parameters[1].Value.IsNull then
+  begin
+    FUnMarshal := TDSRestCommand(FRetrieveCDSlipCommand.Parameters[1].ConnectionHandler).GetJSONUnMarshaler;
+    try
+      Result := TFDJSONDataSets(FUnMarshal.UnMarshal(FRetrieveCDSlipCommand.Parameters[1].Value.GetJSONValue(True)));
+      if FInstanceOwner then
+        FRetrieveCDSlipCommand.FreeOnExecute(Result);
+    finally
+      FreeAndNil(FUnMarshal)
+    end
+  end
+  else
+    Result := nil;
 end;
 
-function TServerCetakBarcodeClient.RetrieveCDSlip_Cache(AID: string; const ARequestFilter: string): IDSRestCachedDataSet;
+function TServerCetakBarcodeClient.RetrieveCDSlip_Cache(AID: string; const ARequestFilter: string): IDSRestCachedTFDJSONDataSets;
 begin
   if FRetrieveCDSlipCommand_Cache = nil then
   begin
@@ -17833,7 +17917,47 @@ begin
   end;
   FRetrieveCDSlipCommand_Cache.Parameters[0].Value.SetWideString(AID);
   FRetrieveCDSlipCommand_Cache.ExecuteCache(ARequestFilter);
-  Result := TDSRestCachedDataSet.Create(FRetrieveCDSlipCommand_Cache.Parameters[1].Value.GetString);
+  Result := TDSRestCachedTFDJSONDataSets.Create(FRetrieveCDSlipCommand_Cache.Parameters[1].Value.GetString);
+end;
+
+function TServerCetakBarcodeClient.RetrieveNoBukti(ANoBukti: string; const ARequestFilter: string): TCetakBarcode;
+begin
+  if FRetrieveNoBuktiCommand = nil then
+  begin
+    FRetrieveNoBuktiCommand := FConnection.CreateCommand;
+    FRetrieveNoBuktiCommand.RequestType := 'GET';
+    FRetrieveNoBuktiCommand.Text := 'TServerCetakBarcode.RetrieveNoBukti';
+    FRetrieveNoBuktiCommand.Prepare(TServerCetakBarcode_RetrieveNoBukti);
+  end;
+  FRetrieveNoBuktiCommand.Parameters[0].Value.SetWideString(ANoBukti);
+  FRetrieveNoBuktiCommand.Execute(ARequestFilter);
+  if not FRetrieveNoBuktiCommand.Parameters[1].Value.IsNull then
+  begin
+    FUnMarshal := TDSRestCommand(FRetrieveNoBuktiCommand.Parameters[1].ConnectionHandler).GetJSONUnMarshaler;
+    try
+      Result := TCetakBarcode(FUnMarshal.UnMarshal(FRetrieveNoBuktiCommand.Parameters[1].Value.GetJSONValue(True)));
+      if FInstanceOwner then
+        FRetrieveNoBuktiCommand.FreeOnExecute(Result);
+    finally
+      FreeAndNil(FUnMarshal)
+    end
+  end
+  else
+    Result := nil;
+end;
+
+function TServerCetakBarcodeClient.RetrieveNoBukti_Cache(ANoBukti: string; const ARequestFilter: string): IDSRestCachedTCetakBarcode;
+begin
+  if FRetrieveNoBuktiCommand_Cache = nil then
+  begin
+    FRetrieveNoBuktiCommand_Cache := FConnection.CreateCommand;
+    FRetrieveNoBuktiCommand_Cache.RequestType := 'GET';
+    FRetrieveNoBuktiCommand_Cache.Text := 'TServerCetakBarcode.RetrieveNoBukti';
+    FRetrieveNoBuktiCommand_Cache.Prepare(TServerCetakBarcode_RetrieveNoBukti_Cache);
+  end;
+  FRetrieveNoBuktiCommand_Cache.Parameters[0].Value.SetWideString(ANoBukti);
+  FRetrieveNoBuktiCommand_Cache.ExecuteCache(ARequestFilter);
+  Result := TDSRestCachedTCetakBarcode.Create(FRetrieveNoBuktiCommand_Cache.Parameters[1].Value.GetString);
 end;
 
 function TServerCetakBarcodeClient.DoJournal(ANoBukti: string; AModTransClass: string; AIsHapusJurnal: Integer; const ARequestFilter: string): Boolean;
@@ -18130,6 +18254,8 @@ begin
   FRetrieveCommand_Cache.DisposeOf;
   FRetrieveCDSlipCommand.DisposeOf;
   FRetrieveCDSlipCommand_Cache.DisposeOf;
+  FRetrieveNoBuktiCommand.DisposeOf;
+  FRetrieveNoBuktiCommand_Cache.DisposeOf;
   FDoJournalCommand.DisposeOf;
   FGenerateNoBuktiCommand.DisposeOf;
   FRetrieveDataCommand.DisposeOf;

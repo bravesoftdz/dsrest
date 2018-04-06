@@ -275,9 +275,9 @@ begin
       if Save(PenerimaanBarang) then
       begin
         ActionBaruExecute(Sender);
+        FreeAndNil(FPenerimaanBarang);
       end;
     finally
-      FreeAndNil(FPenerimaanBarang);
       Free;
     end;
   end;

@@ -493,9 +493,10 @@ end;
 function TClientDataModule.GetServerCetakBarcodeClient:
     TServerCetakBarcodeClient;
 begin
-  if FServerCetakBarcodeClient = nil then
-    FServerCetakBarcodeClient := TServerCetakBarcodeClient.Create;
+  if FServerCetakBarcodeClient <> nil then
+    FreeAndNil(FServerCetakBarcodeClient);
 
+  FServerCetakBarcodeClient := TServerCetakBarcodeClient.Create(DSRestConnection, FInstanceOwner);
   Result := FServerCetakBarcodeClient;
 end;
 

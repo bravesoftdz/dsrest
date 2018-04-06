@@ -22,6 +22,7 @@ type
   public
     function DS_CabangLookUp: TDataset;
     function DS_BarangLookUp: TDataset;
+    function DS_Bank: TDataset;
     function DS_MenuLookUp: TDataset;
     function DS_UserLookUp: TDataset;
     function DS_GudangLookUp: TDataset;
@@ -267,7 +268,8 @@ type
     function GetServerPenerimaanKas: TServerPenerimaanKas;
     function HapusARAP(AOBject: TAppObject): Boolean;
     function SimpanARAP(AOBject: TAppObject): Boolean;
-    function SimpanBayar(APenjualan : TPenjualan; ADibayar : Double): Boolean;
+    function SimpanBayar(APenjualan : TPenjualan; ADibayar : Double; ARekBank :
+        TRekBank): Boolean;
     property ServerAR: TServerAR read GetServerAR write FServerAR;
     property ServerAp: TServerAP read GetServerAp write FServerAp;
     property ServerPenerimaanKas: TServerPenerimaanKas read GetServerPenerimaanKas
@@ -292,7 +294,8 @@ type
     function RetrieveNoBukti(ANoBukti : String): TPenjualan;
     function RetrieveCDSlip(ATglAwal , ATglAtglAkhir : TDateTime; ACabang :
         TCabang; ANoBukti : String): TFDJSONDataSets;
-    function SaveToDBDibayar(APenjualan : TPenjualan; ADibayar : Double): Boolean;
+    function SaveToDBDibayar(APenjualan : TPenjualan; ADibayar : Double; ARekBank :
+        TRekBank): Boolean;
 
   end;
 
@@ -528,7 +531,8 @@ type
   TServerCetakBarcode = class(TServerTransaction)
   public
     function Retrieve(AID : String): TCetakBarcode;
-    function RetrieveCDSlip(AID : String): TDataset;
+    function RetrieveCDSlip(AID : String): TFDJSONDataSets;
+    function RetrieveNoBukti(ANoBukti : String): TCetakBarcode;
   end;
 
   
@@ -2604,7 +2608,7 @@ begin
 end;
 
 function TServerPenjualan.SaveToDBDibayar(APenjualan : TPenjualan; ADibayar :
-    Double): Boolean;
+    Double; ARekBank : TRekBank): Boolean;
 begin
   Result := False;
 
@@ -2612,7 +2616,7 @@ begin
   try
     if SaveNoCommit(APenjualan) then
     begin
-      if SimpanBayar(APenjualan,ADibayar) then
+      if SimpanBayar(APenjualan,ADibayar, ARekBank) then
       begin
         ADConnection.Commit;
         Result := True;
@@ -2670,14 +2674,14 @@ begin
 end;
 
 function TServerPenjualan.SimpanBayar(APenjualan : TPenjualan; ADibayar :
-    Double): Boolean;
+    Double; ARekBank : TRekBank): Boolean;
 var
   lAR: TAR;
   lPenerimaanKas: TPenerimaanKas;
   lPenerimaanKasAR: TPenerimaanKasAR;
 begin
-  Result := True;
-  Exit;
+//  Result := True;
+//  Exit;
 
   lPenerimaanKas := TPenerimaanKas.Create();
   try
@@ -2689,7 +2693,7 @@ begin
     lPenerimaanKas.Pembeli        := TSupplier.CreateID(APenjualan.Pembeli.ID);
     lPenerimaanKas.Petugas        := APenjualan.Kasir;
 
-    lPenerimaanKas.RekBank        := TRekBank.CreateID(SettingAppServer.RekBankCash.ID);
+    lPenerimaanKas.RekBank        := TRekBank.CreateID(ARekBank.ID);
     lPenerimaanKas.TglBukti       := APenjualan.TglBukti;
 
     lPenerimaanKasAR              := TPenerimaanKasAR.Create();
@@ -4072,6 +4076,14 @@ begin
   Result := TDBUtils.OpenDataset(sSQL);
 end;
 
+function TDSData.DS_Bank: TDataset;
+var
+  sSQL: string;
+begin
+  sSQL   := 'select * from vbank';
+  Result := TDBUtils.OpenDataset(sSQL);
+end;
+
 function TDSData.DS_MenuLookUp: TDataset;
 var
   sSQL: string;
@@ -4716,14 +4728,43 @@ begin
   TDBUtils.LoadFromDB(Result, AID);
 end;
 
-function TServerCetakBarcode.RetrieveCDSlip(AID : String): TDataset;
+function TServerCetakBarcode.RetrieveCDSlip(AID : String): TFDJSONDataSets;
 var
   sSQL: string;
 begin
-  sSQL   := 'select * from TAR a ' +
-            ' where a.id = ' + QuotedStr(AID);
+  Result := TFDJSONDataSets.Create;
 
-  Result := TDBUtils.OpenDataset(sSQL);
+  sSQL   := ' select * from vcetakbarcode_slip ' +
+            ' where 1 = 1 ';
+
+  if AID <> '' then
+    sSQL := sSQL + ' and id = ' + QuotedStr(AID)
+  else
+    sSQL := sSQL + ' and id = newid()';
+
+
+  TFDJSONDataSetsWriter.ListAdd(Result, TDBUtils.OpenQuery(sSQL));
+end;
+
+function TServerCetakBarcode.RetrieveNoBukti(ANoBukti : String): TCetakBarcode;
+var
+  sID: string;
+  sSQL: string;
+begin
+  sSQL := 'select * from ' + GetTableName
+          + ' where nobukti = ' + QuotedStr(ANoBukti);
+
+  with TDBUtils.OpenDataset(sSQL) do
+  begin
+    try
+      sID := FieldByName('ID').AsString;
+      Result := Retrieve(sID);
+    finally
+      Free;
+    end;
+  end;
+
+
 end;
 
 

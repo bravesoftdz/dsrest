@@ -251,9 +251,9 @@ begin
       if Save(ReturSupplier) then
       begin
         ActionBaruExecute(Sender);
+        FreeAndNil(FReturSupplier);
       end;
     finally
-      FreeAndNil(FReturSupplier);
       Free;
     end;
   end;
