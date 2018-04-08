@@ -202,6 +202,15 @@ object frmServer: TfrmServer
         TabOrder = 4
         OnClick = btn1Click
       end
+      object btnBackUPDB: TButton
+        Left = 18
+        Top = 107
+        Width = 156
+        Height = 25
+        Caption = 'Backup Database'
+        TabOrder = 5
+        OnClick = btnBackUPDBClick
+      end
     end
   end
   object mmoLogs: TMemo
@@ -222,34 +231,34 @@ object frmServer: TfrmServer
   end
   object ApplicationEvents1: TApplicationEvents
     OnIdle = ApplicationEvents1Idle
-    Left = 216
-    Top = 208
+    Left = 120
+    Top = 296
   end
   object ds1: TDataSource
     Left = 80
     Top = 296
   end
   object FDPhysMSSQLDriverLink1: TFDPhysMSSQLDriverLink
-    Left = 368
-    Top = 56
+    Left = 272
+    Top = 296
   end
   object FDPhysPgDriverLink1: TFDPhysPgDriverLink
-    Left = 312
-    Top = 56
+    Left = 48
+    Top = 296
   end
   object FDGUIxWaitCursor1: TFDGUIxWaitCursor
     Provider = 'Forms'
-    Left = 448
-    Top = 56
+    Left = 480
+    Top = 16
   end
   object FDConnection1: TFDConnection
-    Left = 304
-    Top = 160
+    Left = 160
+    Top = 296
   end
   object FDTransaction1: TFDTransaction
     Connection = FDConnection1
-    Left = 432
-    Top = 216
+    Left = 392
+    Top = 296
   end
   object FDMemTable1: TFDMemTable
     FetchOptions.AssignedValues = [evMode]
@@ -258,23 +267,23 @@ object frmServer: TfrmServer
     ResourceOptions.SilentMode = True
     UpdateOptions.AssignedValues = [uvCheckRequired]
     UpdateOptions.CheckRequired = False
-    Left = 368
-    Top = 264
+    Left = 312
+    Top = 296
   end
   object FDQuery1: TFDQuery
     Connection = FDConnection1
-    Left = 384
-    Top = 144
+    Left = 352
+    Top = 296
   end
   object fdstnstrgbnlnkMotoroli: TFDStanStorageBinLink
-    Left = 297
-    Top = 113
+    Left = 193
+    Top = 297
   end
   object tmrDB: TTimer
     Enabled = False
     Interval = 2000
     OnTimer = tmrDBTimer
-    Left = 328
-    Top = 112
+    Left = 232
+    Top = 296
   end
 end

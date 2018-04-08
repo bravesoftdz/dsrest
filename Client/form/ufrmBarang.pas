@@ -52,6 +52,7 @@ type
     bAddGroup: TcxButton;
     lblDiskonMember: TLabel;
     edDiskonMember: TcxCurrencyEdit;
+    btnUbah: TcxButton;
     procedure FormCreate(Sender: TObject);
     procedure ActionBaruExecute(Sender: TObject);
     procedure ActionHapusExecute(Sender: TObject);
@@ -63,6 +64,7 @@ type
     procedure cxGridDBTableOverviewCellDblClick(Sender: TcxCustomGridTableView;
         ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton; AShift:
         TShiftState; var AHandled: Boolean);
+    procedure btnUbahClick(Sender: TObject);
   private
     FBarang: TBarang;
     fcds: tclientDataSet;
@@ -226,6 +228,54 @@ begin
     end;
   end;
 
+end;
+
+procedure TfrmBarang.btnUbahClick(Sender: TObject);
+var
+  lGB: TGroupBarang;
+  sGroup: string;
+  sKode: string;
+begin
+  inherited;
+  if cbbGroup.EditValue = null then
+  begin
+    TAppUtils.Error('Pilih Data Yang Akan Diubah Terlebih Dahulu');
+    Exit;
+  end;
+
+  if cbbGroup.EditValue = '' then
+  begin
+    TAppUtils.Error('Pilih Data Yang Akan Diubah Terlebih Dahulu');
+    Exit;
+  end;
+
+  sKode  := InputBox('Kode','Kode','');
+  sGroup := InputBox('Nama','Nama','');
+
+  with TServerGroupBarangClient.Create(ClientDataModule.DSRestConnection, False) do
+  begin
+    try
+      lGB := ClientDataModule.ServerGroupBarangClient.Retrieve(cbbGroup.EditValue);
+      lGB.Kode := sKode;
+      lGB.Nama := sGroup;
+
+      if trim(lGB.Kode) = '' then
+        Exit;
+
+      if (lGB.Nama) = '' then
+        Exit;
+
+      if Save(lGB) then
+      begin
+        InisialisaiGroupBarang;
+        FCDSGB.Filter       := 'kode = ' + QuotedStr(lGB.Kode);
+        FCDSGB.Filtered     := True;
+        cbbGroup.EditValue  := FCDSGB.FieldByName('id').AsString;
+      end;
+    finally
+      FCDSGB.Filtered := False;
+    end;
+  end;
 end;
 
 procedure TfrmBarang.cxGridDBTableOverviewCellDblClick(Sender:

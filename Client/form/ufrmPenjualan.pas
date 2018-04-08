@@ -134,6 +134,7 @@ type
     procedure LoadDataPembeli(AKode : String);
     procedure SetHarga(AJenisHarga : String);
     procedure SetInfix; virtual;
+    procedure ClearForm; virtual;
     property CDSPembeli: TClientDataset read GetCDSPembeli write FCDSPembeli;
     property CDSSalesman: TClientDataset read GetCDSSalesman write FCDSSalesman;
     property Infix: string read FInfix write FInfix;
@@ -293,24 +294,8 @@ end;
 procedure TfrmPenjualan.ActionBaruExecute(Sender: TObject);
 begin
   inherited;
-  SetInfix;
+  ClearForm;
 
-  with ClientDataModule.ServerPenjualanClient do
-  begin
-    edTglBukti.Date := Now;
-    edJthTempo.Date := edTglBukti.Date + 7;
-    edNoBukti.Text  := GenerateNoBukti(edTglBukti.Date, ClientDataModule.Cabang.Kode + Infix);
-
-    memKeterangan.Clear;
-    cxGridTablePenjualan.ClearRows;
-
-    edKodePembeli.Text    := '';
-    cbbPembeli.EditValue  := null;
-    edDeposit.Value       := 0;
-
-    edKodePembeli.SetFocus;
-    FreeAndNil(FPenjualan);
-  end;
 end;
 
 procedure TfrmPenjualan.ActionHapusExecute(Sender: TObject);
@@ -343,7 +328,7 @@ begin
   end;
 
   cxGridDBTableOverview.SetDataset(lcds, True);
-  cxGridDBTableOverview.SetVisibleColumns(['id','cabangid','jenispenjualan', 'salesmanid'], False);
+  cxGridDBTableOverview.SetVisibleColumns(['id','cabangid','jenispenjualan', 'salesmanid','fee'], False);
   cxGridDBTableOverview.ApplyBestFit();
 end;
 
@@ -468,6 +453,28 @@ begin
 //        ExecuteReport('Reports/Slip_Penjualan_POS' ,lcds, ParamStr(1)='1')
 //      else
       ExecuteReport('Reports/Slip_Penjualan_POS' ,lcds, False);
+  end;
+end;
+
+procedure TfrmPenjualan.ClearForm;
+begin
+  SetInfix;
+
+  with ClientDataModule.ServerPenjualanClient do
+  begin
+    edTglBukti.Date := Now;
+    edJthTempo.Date := edTglBukti.Date + 7;
+    edNoBukti.Text  := GenerateNoBukti(edTglBukti.Date, ClientDataModule.Cabang.Kode + Infix);
+
+    memKeterangan.Clear;
+    cxGridTablePenjualan.ClearRows;
+
+    edKodePembeli.Text    := '';
+    cbbPembeli.EditValue  := null;
+    edDeposit.Value       := 0;
+
+    edKodePembeli.SetFocus;
+    FreeAndNil(FPenjualan);
   end;
 end;
 

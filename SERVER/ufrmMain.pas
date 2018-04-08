@@ -56,6 +56,7 @@ type
     btn1: TButton;
     fdstnstrgbnlnkMotoroli: TFDStanStorageBinLink;
     tmrDB: TTimer;
+    btnBackUPDB: TButton;
     procedure FormCreate(Sender: TObject);
     procedure ApplicationEvents1Idle(Sender: TObject; var Done: Boolean);
     procedure btn1Click(Sender: TObject);
@@ -68,6 +69,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure mmoLogsChange(Sender: TObject);
     procedure tmrDBTimer(Sender: TObject);
+    procedure btnBackUPDBClick(Sender: TObject);
   private
     FCRUDServer: TCRUDServer;
     FServer: TIdHTTPWebBrokerBridge;
@@ -129,6 +131,23 @@ end;
 procedure TfrmServer.btn1Click(Sender: TObject);
 begin
   mmoLogs.Clear;
+end;
+
+procedure TfrmServer.btnBackUPDBClick(Sender: TObject);
+var
+  sSQL : string;
+  sNama : string;
+  sFilePath : String;
+begin
+  sNama := FormatDateTime('yyyy-MM-dd-hhmmss', Now) + '.bak';
+  sFilePath := ExtractFileDir(ParamStr(0));
+
+  sSQL := 'BACKUP DATABASE ' + edDatabase.Text + ' TO DISK = ' + QuotedStr(sFilePath + '\backupdb\' + sNama) +
+          ' WITH FORMAT,MEDIANAME = ' + QuotedStr('Z_SQLServerBackups') + ' ,NAME = ' + QuotedStr('Full Backup of MDS');
+  if TDBUtils.ExecuteSQL(sSQL) then
+  begin
+    ShowMessage('Database berhasil di-backup ke folder backup dengan nama file ' + sNama);
+  end;
 end;
 
 procedure TfrmServer.btnTestClick(Sender: TObject);

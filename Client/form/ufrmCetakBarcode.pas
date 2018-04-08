@@ -65,13 +65,15 @@ var
   I: Integer;
   sNoBukti: string;
 begin
+  FreeAndNil(FCetakBarcode);
+
   sNoBukti                := ClientDataModule.ServerCetakBarcodeClient.GenerateNoBukti(Now,'CB');
   CetakBarcode.NoBukti    := sNoBukti;
   CetakBarcode.Tanggal    := Now;
   CetakBarcode.JenisLabel := cbbJenisLabel.Text;
 
   CetakBarcode.CetakBarcodeItems.Clear;
-  for I := 0 to cxSpinQty.Value do
+  for I := 1 to cxSpinQty.Value do
   begin
     lCBItem             := TCetakBarcodeItem.Create;
     lCBItem.Barang      := TBarang.CreateID(cbbBarang.EditValue);

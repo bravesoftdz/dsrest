@@ -109,6 +109,8 @@ inherited frmBarang: TfrmBarang
         object cxTSHeader: TcxTabSheet
           Caption = 'Barang'
           ImageIndex = 0
+          ExplicitLeft = 3
+          ExplicitTop = 27
           object lblKode: TLabel
             Left = 47
             Top = 18
@@ -154,7 +156,7 @@ inherited frmBarang: TfrmBarang
           end
           object lblDiskonMember: TLabel
             Left = 14
-            Top = 92
+            Top = 120
             Width = 72
             Height = 13
             Caption = 'Diskon Member'
@@ -164,7 +166,7 @@ inherited frmBarang: TfrmBarang
             Top = 15
             TabOrder = 0
             OnKeyDown = edKodeKeyDown
-            Width = 121
+            Width = 148
           end
           object edNama: TcxTextEdit
             Left = 90
@@ -180,7 +182,7 @@ inherited frmBarang: TfrmBarang
             Properties.FocusPopup = True
             Properties.ListFieldItem = cxgrdbclmnGridDBTableGroupBarangColumnNama
             TabOrder = 2
-            Width = 121
+            Width = 148
           end
           object cbbPPN: TcxComboBox
             Left = 409
@@ -212,30 +214,35 @@ inherited frmBarang: TfrmBarang
             Width = 121
           end
           object bAddGroup: TcxButton
-            Left = 217
-            Top = 61
+            Left = 90
+            Top = 87
             Width = 73
             Height = 25
             Caption = 'Tambah Baru'
-            TabOrder = 3
+            TabOrder = 4
             OnClick = bAddGroupClick
           end
           object edDiskonMember: TcxCurrencyEdit
             Left = 90
-            Top = 88
+            Top = 116
             Properties.DisplayFormat = ',0.00;(,0.00)'
-            TabOrder = 4
-            Width = 121
+            TabOrder = 3
+            Width = 148
+          end
+          object btnUbah: TcxButton
+            Left = 165
+            Top = 87
+            Width = 73
+            Height = 25
+            Caption = 'Ubah'
+            TabOrder = 8
+            OnClick = btnUbahClick
           end
         end
         object cxTSSatuan: TcxTabSheet
           Caption = 'Satuan'
           ImageIndex = 2
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object cxGridDBSatuan: TcxGrid
             Left = 0
             Top = 0
@@ -423,7 +430,7 @@ inherited frmBarang: TfrmBarang
     Left = 232
     Top = 200
     Bitmap = {
-      494C010106000800EC0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010106000800F00018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

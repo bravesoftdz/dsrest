@@ -2493,6 +2493,8 @@ var
   lAP: TAP;
   lAR: TAR;
   lPJ: TPenjualan;
+
+  lPenerimaanKas : TPenerimaanKas;
 begin
   Result := False;
 
@@ -2503,9 +2505,16 @@ begin
     if ServerAP.DeleteNoCommit(lAP) then
       Result := True;
   end else begin
-    lAR := ServerAR.RetrieveTransaksi(lPJ.ClassName, AOBject.ID);
-    if ServerAR.DeleteNoCommit(lAR) then
-      Result := True;
+//    lPenerimaanKas := TPenerimaanKas.Create();
+    lPenerimaanKas := ServerPenerimaanKas.RetrieveNoBukti(lPJ.NoBukti);
+
+//    lAP := ServerAP.RetrieveTransaksi(lPJ.ClassName, AOBject.ID);
+    if ServerPenerimaanKas.DeleteNoCommit(lPenerimaanKas) then
+    begin
+      lAR := ServerAR.RetrieveTransaksi(lPJ.ClassName, AOBject.ID);
+      if ServerAR.DeleteNoCommit(lAR) then
+        Result := True;
+    end;
   end;
 end;
 
@@ -2631,7 +2640,7 @@ end;
 function TServerPenjualan.SimpanARAP(AOBject: TAppObject): Boolean;
 var
   lAP: TAP;
-//  lAR: TAR;
+  lAR: TAR;
   lPJ: TPenjualan;
 begin
   Result := False;
@@ -2654,18 +2663,18 @@ begin
     if ServerAp.SaveNoCommit(lAP) then
       Result := True;
   end else begin
-//    lAR                   := ServerAR.RetrieveTransaksi(lPJ.ClassName, AOBject.ID);
-//    lAR.Cabang            := TCabang.CreateID(lPJ.Cabang.ID);
-//    lAR.Customer          := TSupplier.CreateID(lPJ.Pembeli.ID);
-//    lAR.IDTransaksi       := lPJ.ID;
-//    lAR.NoBukti           := lPJ.NoBukti;
-//    lAR.Nominal           := lPJ.Total;
-//    lAR.Transaksi         := lPJ.ClassName;
-//    lAR.JatuhTempo        := lPJ.JatuhTempo;
-//    lAR.NoBuktiTransaksi  := lPJ.NoBukti;
-//    lAR.TglBukti          := lPJ.TglBukti;
-//
-//    if ServerAR.SaveNoCommit(lAR) then
+    lAR                   := ServerAR.RetrieveTransaksi(lPJ.ClassName, AOBject.ID);
+    lAR.Cabang            := TCabang.CreateID(lPJ.Cabang.ID);
+    lAR.Customer          := TSupplier.CreateID(lPJ.Pembeli.ID);
+    lAR.IDTransaksi       := lPJ.ID;
+    lAR.NoBukti           := lPJ.NoBukti;
+    lAR.Nominal           := lPJ.Total;
+    lAR.Transaksi         := lPJ.ClassName;
+    lAR.JatuhTempo        := lPJ.JatuhTempo;
+    lAR.NoBuktiTransaksi  := lPJ.NoBukti;
+    lAR.TglBukti          := lPJ.TglBukti;
+
+    if ServerAR.SaveNoCommit(lAR) then
       Result := True;
   end;
 
@@ -2678,7 +2687,7 @@ var
   lPenerimaanKas: TPenerimaanKas;
   lPenerimaanKasAR: TPenerimaanKasAR;
 begin
-//  Result := True;
+  Result := False;
 //  Exit;
 
   lPenerimaanKas := TPenerimaanKas.Create();

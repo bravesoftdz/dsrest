@@ -192,7 +192,7 @@ end;
 procedure TfrmSettingAplikasi.InisialisasiRekBang;
 begin
   FCDSBank := TDBUtils.DSToCDS(ClientDataModule.DSDataCLient.DS_Bank(), Self);
-  ShowMessage(FCDSBank.FieldByName('bank').AsString);
+//  ShowMessage(FCDSBank.FieldByName('bank').AsString);
   cbbKasPOS.Properties.LoadFromCDS(FCDSBank,'ID','Bank',['ID'],Self);
   cbbKasPOS.Properties.SetMultiPurposeLookup;
 end;

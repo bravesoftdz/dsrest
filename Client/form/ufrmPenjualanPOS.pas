@@ -18,7 +18,6 @@ uses
 
 type
   TfrmPenjualanPOS = class(TfrmPenjualan)
-    procedure ActionBaruExecute(Sender: TObject);
     procedure ActionSimpanExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -29,6 +28,7 @@ type
     function JenisPembayaran: string; override;
     function JenisPenjualan: string; override;
     procedure SetInfix; override;
+    procedure ClearForm; override;
   public
     { Public declarations }
   end;
@@ -40,20 +40,20 @@ implementation
 
 {$R *.dfm}
 
-procedure TfrmPenjualanPOS.ActionBaruExecute(Sender: TObject);
-begin
-  inherited;
-  edKodePembeli.Text := 'POS';
-  LoadDataPembeli(edKodePembeli.Text);
-  edPLU.SetFocus;
-end;
-
 procedure TfrmPenjualanPOS.ActionSimpanExecute(Sender: TObject);
 begin
   cbbJenisPembayaran.ItemIndex := 0;
   cbbFee.ItemIndex             := 1;
   edTempo.Value                := 0;
   inherited;
+end;
+
+procedure TfrmPenjualanPOS.ClearForm;
+begin
+  inherited;
+  edKodePembeli.Text := 'POS';
+  LoadDataPembeli(edKodePembeli.Text);
+  edPLU.SetFocus;
 end;
 
 procedure TfrmPenjualanPOS.FormCreate(Sender: TObject);

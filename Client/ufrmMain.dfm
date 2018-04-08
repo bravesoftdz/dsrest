@@ -40,6 +40,7 @@ object frmMain: TfrmMain
       Index = 0
     end
     object dxrbnTabMaster: TdxRibbonTab
+      Active = True
       Caption = 'Master'
       Groups = <
         item
@@ -52,7 +53,6 @@ object frmMain: TfrmMain
       Index = 1
     end
     object dxrbntbPenerimaanBarangTransaksi: TdxRibbonTab
-      Active = True
       Caption = 'Inventory'
       Groups = <
         item
@@ -1029,7 +1029,7 @@ object frmMain: TfrmMain
     end
     object actPenjualanSales: TAction
       Category = 'Penjualan'
-      Caption = 'Penjualan Santri'
+      Caption = 'Penjualan Deposit'
       OnExecute = actPenjualanSalesExecute
     end
     object actPenjualanPOS: TAction
@@ -1180,7 +1180,7 @@ object frmMain: TfrmMain
     Left = 688
     Top = 128
     Bitmap = {
-      494C01011900C003380220002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C01011900C003480220002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000080000000E0000000010020000000000000C0
       0100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000040B0E131238
