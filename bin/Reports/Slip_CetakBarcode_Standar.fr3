@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<TfrxReport Version="5.3.16" DotMatrixReport="False" IniFile="\Software\Fast Reports" PreviewOptions.Buttons="4095" PreviewOptions.Zoom="1" PrintOptions.Printer="Default" PrintOptions.PrintOnSheet="0" ReportOptions.CreateDate="43189.9683870255" ReportOptions.Description.Text="" ReportOptions.LastChange="43195.2375684259" ScriptLanguage="PascalScript" ScriptText.Text="&#13;&#10;begin&#13;&#10;&#13;&#10;end.">
+  <Datasets>
+    <item DataSet="IBQ1" DataSetName="IBQ1"/>
+  </Datasets>
+  <TfrxDataPage Name="Data" Height="1000" Left="0" Top="0" Width="1000"/>
+  <TfrxReportPage Name="Page1" PaperWidth="82" PaperHeight="20" PaperSize="256" LeftMargin="0" RightMargin="0" TopMargin="0" BottomMargin="0" Columns="2" ColumnWidth="41" ColumnPositions.Text="0&#13;&#10;41" HGuides.Text="" VGuides.Text="">
+    <TfrxMasterData Name="MasterData1" FillType="ftBrush" FillGap.Top="0" FillGap.Left="0" FillGap.Bottom="0" FillGap.Right="0" Height="60.47245559" Left="0" Top="18.89765" Width="154.96073" ColumnWidth="0" ColumnGap="0" DataSet="IBQ1" DataSetName="IBQ1" RowCount="0">
+      <TfrxMemoView Name="Memo1" Left="7.55906" Top="46.89765" Width="98.26778" Height="9.4488189" DataField="nama" DataSet="IBQ1" DataSetName="IBQ1" Font.Charset="1" Font.Color="0" Font.Height="-8" Font.Name="Arial" Font.Style="0" ParentFont="False" Text="[IBQ1.&#34;nama&#34;]"/>
+      <TfrxBarCodeView Name="BarCode1" Left="7.55906" Top="5" Width="90" Height="41.57483" BarType="bcCodeEAN128" Expression="&#60;IBQ1.&#34;sku&#34;&#62;" Rotation="0" Text="12345678" WideBarRatio="2" Zoom="1" Font.Charset="1" Font.Color="0" Font.Height="-12" Font.Name="Arial" Font.Style="0"/>
+      <TfrxMemoView Name="IBQ1hargajual" Left="105.82684" Top="46.89765" Width="45.35436" Height="9.4488189" DataField="hargajual" DataSet="IBQ1" DataSetName="IBQ1" DisplayFormat.FormatStr="%2.0n" DisplayFormat.Kind="fkNumeric" Font.Charset="1" Font.Color="0" Font.Height="-8" Font.Name="Arial" Font.Style="0" HAlign="haRight" ParentFont="False" Text="[IBQ1.&#34;hargajual&#34;]"/>
+    </TfrxMasterData>
+  </TfrxReportPage>
+</TfrxReport>
