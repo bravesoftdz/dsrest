@@ -84,8 +84,7 @@ uses
   uSetoranModal in '..\model\uSetoranModal.pas',
   ufrmSetoranKas in 'form\ufrmSetoranKas.pas' {frmSetoranKas},
   ufrmCetakBarcode in 'form\ufrmCetakBarcode.pas' {frmCetakBarcode},
-  uCetakBarcode in '..\model\uCetakBarcode.pas',
-  ufrmBackUpDB in 'form\ufrmBackUpDB.pas' {frmBackUpDB};
+  uCetakBarcode in '..\model\uCetakBarcode.pas';
 
 {$R *.res}
 
@@ -95,7 +94,6 @@ begin
   Application.CreateForm(TClientDataModule, ClientDataModule);
   Application.CreateForm(TfrmMain, frmMain);
   Application.CreateForm(TDMReport, DMReport);
-  Application.CreateForm(TfrmBackUpDB, frmBackUpDB);
   Application.Run;
 
 

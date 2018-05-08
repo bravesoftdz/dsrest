@@ -162,11 +162,12 @@ begin
   inherited;
   FreeAndNil(FCDSMenuItem);
   LoadDaftarMenu;
+  FreeAndNil(FUser);
 
   if AID = '' then
     Exit;
 
-  FreeAndNil(FUser);
+
   FUser := ClientDataModule.ServerUserClient.Retrieve(AID);
 
   edUser.Text     := User.UserName;
