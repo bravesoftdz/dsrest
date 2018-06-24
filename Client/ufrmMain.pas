@@ -529,7 +529,7 @@ end;
 
 procedure TfrmMain.FormCreate(Sender: TObject);
 begin
-  //  Caption := Caption + ' Ver : ' + TAppUtils.GetAppVersion;
+//  Caption := Caption + ' Ver : ' + TAppUtils.GetAppVersion;
   frmKoneksi := TfrmKoneksi.Create(Self);
   try
     if (TAppUtils.BacaRegistry('Database') = '') or (TAppUtils.BacaRegistry('RestServer') = '')then
@@ -618,7 +618,7 @@ begin
 
       if uSettingApp.UserApplikasi <> nil then
       begin
-        if UserApplikasi.UserName = 'admin' then
+        if (UserApplikasi.UserName = 'admin') or (UserApplikasi.IsAdmin = 1) then
           actlstMainMenu.Actions[I].Enabled := True
         else begin
           for j := 0 to UserApplikasi.UserMenuItems.Count - 1 do

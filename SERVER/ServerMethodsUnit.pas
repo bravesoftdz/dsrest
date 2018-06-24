@@ -4105,7 +4105,7 @@ function TDSData.DS_UserLookUp: TDataset;
 var
   sSQL: string;
 begin
-  sSQL   := 'select id,username from tuser';
+  sSQL   := 'select id,username,cast(isadmin as BIT) as is_admin from tuser';
   Result := TDBUtils.OpenDataset(sSQL);
 end;
 

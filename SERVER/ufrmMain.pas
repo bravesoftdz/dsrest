@@ -73,6 +73,7 @@ type
   private
     FCRUDServer: TCRUDServer;
     FServer: TIdHTTPWebBrokerBridge;
+    procedure EksekusiSQLBaru;
     function GetCRUDServer: TCRUDServer;
     procedure StartServer;
     property CRUDServer: TCRUDServer read GetCRUDServer write FCRUDServer;
@@ -172,6 +173,7 @@ begin
   begin
     if TDBUtils.ConnectDB(cbbEngine.Text, edServer.Text, edDatabase.Text, edUser.Text, edPassword.Text, edPort.Text) then
     begin
+      EksekusiSQLBaru;
       btnKonekDB.Caption := 'Disconect';
       grpRestServer.Enabled := True;
       mmoLogs.Lines.Add('Menambungkan DB ke ' + edServer.Text);
@@ -207,6 +209,22 @@ begin
     edUser.Text := 'sa';
   end;
 
+end;
+
+procedure TfrmServer.EksekusiSQLBaru;
+var
+  sSQL: string;
+begin
+  // SQL ADD ISADMIN
+
+  sSQL := 'IF COL_LENGTH(' + QuotedStr('tuser') + ',' + QuotedStr('isadmin') + ') IS NULL' +
+          ' BEGIN' +
+          '   ALTER TABLE tuser' +
+          '   ADD isadmin INT' +
+          ' END';
+
+  TDBUtils.ExecuteSQL(sSQL);
+  
 end;
 
 procedure TfrmServer.FormCreate(Sender: TObject);

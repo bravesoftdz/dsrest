@@ -10,6 +10,7 @@ type
 
   TUser = class(TAppObject)
   private
+    FIsAdmin: Integer;
     FPassword: string;
     FUserMenuItems: TObjectList<TUserMenuItem>;
     FUserName: string;
@@ -17,6 +18,7 @@ type
   public
     destructor Destroy; override;
   published
+    property IsAdmin: Integer read FIsAdmin write FIsAdmin;
     property Password: string read FPassword write FPassword;
     property UserMenuItems: TObjectList<TUserMenuItem> read GetUserMenuItems write
         FUserMenuItems;

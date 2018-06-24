@@ -81,7 +81,7 @@ inherited frmUser: TfrmUser
         Left = 0
         Top = 0
         Width = 699
-        Height = 74
+        Height = 97
         Align = alTop
         TabOrder = 0
         object lblUser: TLabel
@@ -116,14 +116,22 @@ inherited frmUser: TfrmUser
           Text = 'edPassword'
           Width = 121
         end
+        object chkIsAdmin: TcxCheckBox
+          Left = 68
+          Top = 61
+          Caption = 'Is Admin'
+          TabOrder = 2
+        end
       end
       object cxGridMenu: TcxGrid
         Left = 0
-        Top = 74
+        Top = 97
         Width = 699
-        Height = 256
+        Height = 233
         Align = alClient
         TabOrder = 1
+        ExplicitTop = 74
+        ExplicitHeight = 256
         object cxGridTableMenu: TcxGridTableView
           Navigator.Buttons.CustomButtons = <>
           DataController.Summary.DefaultGroupSummaryItems = <>
@@ -213,7 +221,7 @@ inherited frmUser: TfrmUser
     Left = 64
     Top = 176
     Bitmap = {
-      494C010107000800240118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010107000800280118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

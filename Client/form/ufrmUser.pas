@@ -27,6 +27,7 @@ type
     cxGridColMenuName: TcxGridColumn;
     cxGridColMenuCaption: TcxGridColumn;
     cxGridColStatus: TcxGridColumn;
+    chkIsAdmin: TcxCheckBox;
     procedure ActionBaruExecute(Sender: TObject);
     procedure ActionHapusExecute(Sender: TObject);
     procedure ActionRefreshExecute(Sender: TObject);
@@ -96,6 +97,10 @@ begin
   User.UserName := edUser.Text;
   User.Password := edPassword.Text;
 
+  User.IsAdmin  := 0;
+  if chkIsAdmin.Checked then
+    User.IsAdmin  := 1;
+
   UpdateUserMenuItem;
   if ClientDataModule.ServerUserClient.Save(User) then
   begin
@@ -163,6 +168,7 @@ begin
   FreeAndNil(FCDSMenuItem);
   LoadDaftarMenu;
   FreeAndNil(FUser);
+  chkIsAdmin.Checked := False;
 
   if AID = '' then
     Exit;
@@ -170,8 +176,9 @@ begin
 
   FUser := ClientDataModule.ServerUserClient.Retrieve(AID);
 
-  edUser.Text     := User.UserName;
-  edPassword.Text := User.Password;
+  edUser.Text         := User.UserName;
+  edPassword.Text     := User.Password;
+  chkIsAdmin.Checked  := User.IsAdmin = 1;
 
   UpdateStatusMenu;
 

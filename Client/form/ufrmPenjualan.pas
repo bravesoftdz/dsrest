@@ -126,6 +126,7 @@ type
     function IsBisaSimpan: Boolean;
     function IsPenjualanItemValid: Boolean;
     function IsPLUKetemu(AKode : String; var AQtyInput : Double): Boolean;
+    function IsPunyaOtorisasi: Boolean;
     { Private declarations }
   protected
     function getDefaultHarga: string; virtual;
@@ -151,7 +152,7 @@ var
 implementation
 
 uses
-  uModel, ufrmCustomerInvoice, System.Math;
+  uModel, ufrmCustomerInvoice, System.Math, uSettingApp, uUser;
 
 {$R *.dfm}
 
@@ -304,6 +305,9 @@ begin
   if not TAppUtils.Confirm('Anda Yakin Akan Menghapus Data ?') then
     Exit;
 
+  if not IsPunyaOtorisasi then
+    Exit;
+
   if ClientModule.ClientDataModule.ServerPenjualanClient.Delete(Penjualan) then
     ActionBaruExecute(Sender);
 end;
@@ -348,7 +352,12 @@ begin
     Exit;
 
   if Penjualan.ID = '' then
+  begin
     edNoBukti.Text  := ClientModule.ClientDataModule.ServerPenjualanClient.GenerateNoBukti(edTglBukti.Date, ClientDataModule.Cabang.Kode + Infix);
+  end else begin
+    if not IsPunyaOtorisasi then
+      Exit;
+  end;
 
   Penjualan.NoBukti        := edNoBukti.Text;
   Penjualan.Cabang         := TCabang.CreateID(ClientDataModule.Cabang.ID);
@@ -867,6 +876,34 @@ begin
 
     fCDSSKU.Next;
   end;
+end;
+
+function TfrmPenjualan.IsPunyaOtorisasi: Boolean;
+var
+  lUser: TUser;
+  sPassword: string;
+  sUser: string;
+begin
+  Result := False;
+
+  if UserApplikasi.IsAdmin = 0 then
+  begin
+    sUser     := InputBox('User', 'User','');
+    sPassword := InputBox('Password', #31'User','');
+    lUser     := ClientDataModule.ServerUserClient.DoLogin(sUser, sPassword);
+
+    if lUser = nil then
+    begin
+      TAppUtils.Warning('User Tidak Ditemukan');
+      Exit;
+    end else if lUser.IsAdmin <> 1 then
+    begin
+      TAppUtils.Warning('User Tidak Berhak Melakukan Edit/Hapus Data POS');
+      Exit;
+    end;
+  end;
+
+  Result := True;
 end;
 
 function TfrmPenjualan.JenisPenjualan: string;
