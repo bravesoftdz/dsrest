@@ -169,6 +169,7 @@ end;
 procedure TfrmPenerimaanBarang.ActionBaruExecute(Sender: TObject);
 begin
   inherited;
+  edTglBukti.Date := Now;
   with TServerPenerimaanBarangClient.Create(ClientDataModule.DSRestConnection, False) do
   begin
     try
