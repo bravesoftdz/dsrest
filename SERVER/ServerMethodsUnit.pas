@@ -1602,14 +1602,15 @@ function TServerLaporan.RetrivePenjualan(ATglAwal , ATglAtglAkhir : TDateTime;
 var
   sSQL : String;
 begin
-  sSQL := 'select * from vpenjualan a' +
+  sSQL := ' select * from vpenjualan a' +
           ' where a.tglbukti between ' + TAppUtils.QuotDt(StartOfTheDay(ATglAwal))+
           ' and ' + TAppUtils.QuotDt(EndOfTheDay(ATglAtglAkhir));
 
   if ACabang <> nil then
     sSQL := sSQL + ' and a.cabangid = ' + QuotedStr(ACabang.ID);
 
-  Result   := TDBUtils.OpenDataset(sSQL);
+  sSQL      := sSQL + ' ORDER BY A.nobukti DESC';
+  Result    := TDBUtils.OpenDataset(sSQL);
 end;
 
 { TLaporan }
@@ -2692,7 +2693,14 @@ begin
   Result := False;
 //  Exit;
 
-  lPenerimaanKas := TPenerimaanKas.Create();
+  if (APenjualan.ObjectState = 1) then
+  begin
+    lPenerimaanKas := TPenerimaanKas.Create();
+  end else begin
+    lPenerimaanKas := ServerPenerimaanKas.RetrieveNoBukti(APenjualan.NoBukti);
+    lPenerimaanKas.PenerimaanKasARItems.Clear;
+  end;
+
   try
     lPenerimaanKas.Cabang         := TCabang.CreateID(APenjualan.Cabang.ID);
     lPenerimaanKas.JenisTransaksi := 'CASH';
